@@ -1,0 +1,36 @@
+/* eslint-disable style/comma-spacing */
+/* eslint-disable jsonc/object-curly-newline */
+/* eslint-disable antfu/consistent-list-newline */
+/* eslint-disable jsonc/object-property-newline */
+/* eslint-disable jsonc/array-bracket-spacing */
+/* eslint-disable jsonc/object-curly-spacing */
+/* eslint-disable jsonc/key-spacing */
+/* eslint-disable style/no-multi-spaces */
+
+{
+//     "fonts": [
+//         { "id": "Material-Sharp", "src": [ {"path": "./../fonts/MaterialSymbolsSharp.ttf", "format": "truetype"} ], "weight": "lighter" }
+
+
+    //     ],
+
+
+    //     "iconDefinitions": {
+    //         // "explorer-view-icon"      : {"fontCharacter": "", "fontId": ""},
+    //         // "search-view-icon"        : {"fontCharacter": "", "fontId": ""},
+    //         // "run-view-icon"           : {"fontCharacter": "", "fontId": ""},
+    //         // "extensions-view-icon"    : {"fontCharacter": "", "fontId": ""},
+    //         // "source-control-view-icon": {"fontCharacter": "", "fontId": ""},
+    //         // "tree-item-expanded"      : {"fontCharacter": "", "fontId": ""},
+    //         // "feedback"                : {"fontCharacter": "", "fontId": ""},
+
+        
+    //         "folding-collapsed": {"fontCharacter": "\\e356", "fontId": "Material-Sharp"},
+    //         "folding-expanded" : {"fontCharacter": "\\f789", "fontId": "Material-Sharp"}
+        
+        
+
+    //     }
+
+
+}

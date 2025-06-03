@@ -1,0 +1,39 @@
+# Configuration for Focused UI Extension
+
+ContextCherryPicker:
+  ignore:
+    - "**/node_modules/**"
+    - "**/.git/**"
+    - "**/.vscode/**"
+    - "**/build/**"
+    - "**/dist/**"
+    - "**/out/**"
+    - "**/*.log"
+    - "coverage/"
+    - "focused-ui-*.vsix"
+    - ".editorconfig"
+    - ".gitignore"
+    - ".npmrc"
+    - ".vscode-test.mjs"
+    - ".vscodeignore"
+    - "CHANGELOG.md"
+    - "LICENSE.txt"
+    - "package-lock.json"
+    - "desktop.ini"
+
+  projectTreeDisplay:
+    # Never show these in the <project_tree> even if checked
+    alwaysHide: 
+
+    # If this list has items, only checked items matching these appear in <project_tree>
+    showIfSelected: 
+
+  directoryContentDisplay:
+    # show this dir, but not its helper scripts individually in UI
+    showDirHideContents: 
+    
+    # directory and its contents are completely hidden from UI
+    hideDirAndContents: 
+      - "assets/icons"
+    
+    

@@ -1,0 +1,41 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+
+        { "label": "watch",  //> ["npm: watch:tsc", "npm: watch:esbuild"] // "transfer_package_json"
+            "dependsOn": ["npm: watch:tsc", "npm: watch:esbuild"],
+            "icon": { "id": "sync" } ,
+            "presentation": { "reveal": "never" },
+            "group": { "kind": "build", "isDefault": true }
+        }, //<
+
+        { "label": "transfer_package_json", //>
+            "hide": true,
+            "type": "npm",
+            "script": "Utility:Transfer_Package_Parts",
+            "group": { "kind": "build" },
+            "presentation": { "group": "watch", "reveal": "never" }
+        }, //<
+
+        { "label": "npm: watch:esbuild", //>
+            "hide": true,
+            "type": "npm",
+            "script": "Watch:Esbuild_Watch",
+            "group": "build",
+            "problemMatcher": "$ts-esbuild-watch",
+            "isBackground": true,
+            "presentation": { "group": "watch", "reveal": "never" }
+        }, //<
+
+        { "label": "npm: watch:tsc", //>
+            "hide": true,
+            "type": "npm",
+            "script": "Watch:TSC_Watch",
+            "group": "build",
+            "problemMatcher": "$tsc-watch",
+            "isBackground": true,
+            "presentation": { "group": "watch", "reveal": "never" }
+        }, //<
+
+	]
+}

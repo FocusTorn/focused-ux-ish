@@ -1,20 +1,57 @@
 {
-  "name": "focused-ui-suite",
-  "private": true,
-  "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev",
-    "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "check-types": "turbo run check-types"
-  },
-  "devDependencies": {
-    "prettier": "^3.5.3",
-    "turbo": "^2.5.4",
-    "typescript": "5.8.2"
-  },
-  "packageManager": "pnpm@9.0.0",
-  "engines": {
-    "node": ">=18"
-  }
+    "name": "focused-ui-suite",
+    "scripts": {
+        "check-types": "turbo run check-types",
+        "lint": "turbo run lint",
+        "lint:fix": "turbo run lint:fix",
+        "tval": "turbo run check-types && turbo run lint",
+        "tfix": "turbo run check-types && turbo run lint:fix",
+        
+        
+        "build": "turbo run build",
+        "dev": "turbo run dev",
+        "eslint": "eslint \"./src/**/*.{js,jsx,ts,tsx,cjs}\"",
+        "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+        "validate": "node ./packages/tools/src/validate/index.js",
+        "vlint": "node ./packages/tools/src/validate/index.js lint",
+        "vdeps": "node ./packages/tools/src/validate/index.js deps",
+        "vtsc": "node ./packages/tools/src/validate/index.js tsc",
+        
+        
+        
+        "nuke": "rimraf node_modules && pnpm store prune && echo 'Node_modules and pnpm store pruned. Run pnpm install to reinstall.'",
+        "nuke:full": "rimraf node_modules && del pnpm-lock.yaml && pnpm store prune && pnpm install",
+        
+        
+        "generate:eslint-tsconfig": "pnpm --filter @focused-ui/tools run generate:eslint-tsconfig"
+    },
+    "devDependencies": {
+        
+        "@antfu/eslint-config": "^4.13.2",
+        "@eslint/js": "^9.27.0",
+        "@typescript-eslint/parser": "^8.33.0",
+        "eslint": "^9.27.0",
+        "typescript": "^5.8.3",
+        "typescript-eslint": "^8.32.0",        
+        
+        "@types/node": "latest",
+        "@turbo/gen": "latest",
+        "@types/vscode": "latest",
+        "@vitest/coverage-v8": "^3.1.4",
+        "prettier": "^3.5.3",
+        "rimraf": "^6.0.1",
+        "ts-node": "^10.9.2",
+        "turbo": "^2.5.4",
+        "knip": "^5.59.1"
+
+        
+        
+    },
+    "version": "0.1.0",
+    "private": true,
+    "packageManager": "pnpm@9.0.0",
+    "type": "module",
+    "engines": {
+        "node": ">=20"
+    }
 }

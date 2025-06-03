@@ -1,0 +1,30 @@
+/* General folder icon styling (applies to all folders) */
+#notesHub-container .monaco-tree-row-item .codicon[class*="folder"] {
+    width: 18px;
+    height: 18px;
+}
+
+/* Expanded Folder */
+#notesHub-container .monaco-list-row[aria-expanded="true"] > .monaco-tree-row-item .codicon {
+    transform: rotate(90deg); /* Or your desired expanded state style */
+}
+
+/* Collapsed Folder (includes the root folder when collapsed) */
+#notesHub-container .monaco-list-row:not([aria-expanded="true"]) > .monaco-tree-row-item .codicon,
+#notesHub-container .monaco-list-row[aria-expanded="false"] > .monaco-tree-row-item .codicon {
+    transform: rotate(0deg); /* Or your desired collapsed state style */
+}
+
+/* Root Folder ONLY (aria-level=1) this overrides the above */
+/* #notesHub-container .monaco-list-row[aria-level="1"] > .monaco-tree-row-item .codicon { */
+    /* Styles specific to the root folder icon */
+/* } */
+
+
+/* File Icons */
+/* #notesHub-container .monaco-list-row .monaco-tree-row-item .codicon:not([class*="folder"]) { */
+    /* Styles specific to file icons */
+/* } */
+
+
+

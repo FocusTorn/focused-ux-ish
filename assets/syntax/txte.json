@@ -1,0 +1,18 @@
+
+{
+    "name": "txte",
+    "scopeName": "source.txte",
+    "fileTypes": [ "txte" ],
+    "patterns": [
+        { "name": "comment.txte", "match": "(^|\\s)(ᶜ|#)\\s.*"   },
+        { "name": "white.txte"  , "match": "(^|\\s)(ᵂ|_)\\s.*"   },
+        { "name": "grey.txte"   , "match": "(^|\\s)(ᴰ|_)\\s.*"   },
+        { "name": "red.txte"    , "match": "(^|\\s)(ᴿ|\\!)\\s.*" },
+        { "name": "orange.txte" , "match": "(^|\\s)(ᴼ|\\+)\\s.*" },
+        { "name": "cyan.txte"   , "match": "(^|\\s)(ᴬ|\\^)\\s.*" },
+        { "name": "purple.txte" , "match": "(^|\\s)(ⱽ|\\.)\\s.*" },
+        { "name": "indigo.txte" , "match": "(^|\\s)(ᴮ|\\-)\\s.*" }
+    ]
+}
+
+

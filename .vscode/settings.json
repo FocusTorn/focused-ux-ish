@@ -1,7 +1,23 @@
 {
-  "eslint.workingDirectories": [
-    {
-      "mode": "auto"
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "editor.formatOnSave": false,
+    //   "editor.defaultFormatter": "esbenp.prettier-vscode",
+    //   "eslintuseFlatConfig": true,
+    "eslint.workingDirectories": [
+        {
+            "mode": "auto"
+        }
+    ],
+    "search.exclude": {
+        "**/node_modules": true,
+        "**/.turbo": true,
+        "**/dist": true,
+        "**/coverage": true
+    },
+    "files.exclude": {
+        "**/node_modules": true,
+        "**/.turbo": true,
+        // "**/dist": true,
+        // "**/coverage": true
     }
-  ]
 }

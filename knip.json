@@ -1,0 +1,64 @@
+{
+    "$schema": "https://unpkg.com/knip@latest/schema.json",
+    "entry": [
+        "src/extension.ts",
+        "gulpfile.mjs"
+    ],
+    "project": [
+        "src/**/*.ts",
+        "src/**/*.mts",
+        "src/**/*.js",
+        "src/**/*.mjs"
+    ],
+    "ignore": [
+        
+        "**/*removed*/**/*",
+        "**/X_*/**/*",
+        "**/*X_*.*",
+        "**/*.bak*",
+        
+        "node_modules/**",
+        "dist/**",
+        "out/**",
+        "build/**",
+        ".vscode-test/**",
+        "coverage/**",
+        "assets/**",
+
+        "src/core/helpers/logger.ts"
+        
+    ],
+    "ignoreDependencies": [
+        //= BUILD TOOLS ============================================================================= 
+        "@types/puppeteer",   // Used in icon preview image generator
+        "@types/sharp",       // Used in icon preview image generator
+        //= LINTING ================================================================================= 
+        "@typescript-eslint/utils",
+        "@typescript-eslint/visitor-keys",
+        "@typescript-eslint/eslint-plugin",
+        "@typescript-eslint/parser",
+        "typescript-eslint",
+        "remark-lint",
+        //= NODE RELATED ============================================================================ 
+        "npm-run-all",
+        "yalc",
+        //= TESTING ================================================================================= 
+        "@vitest/coverage-istanbul",
+        "@vitest/coverage-v8",
+        "vitest",
+        //= VSCODE ==================================================================================
+        "@vscode/test-cli",      // Native VSCode testing
+        "@vscode/test-electron"  // Native VSCode testing
+    ],
+    "ignoreBinaries": [
+        //= BUILD TOOLS ============================================================================= 
+        "esbuild-visualizer",
+        //= VSCODE ==================================================================================
+        "vsce"
+    ],
+    
+    "typescript": {
+        "config": "tsconfig.json"
+    }
+}
+

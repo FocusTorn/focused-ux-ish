@@ -1,0 +1,32 @@
+{
+    "name": "@focused-ui/utilities-core",
+    "version": "0.1.0",
+    "private": true,
+    "type": "module",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "scripts": {
+        "check-types": "tsc --noEmit -p tsconfig.json --pretty",
+        "lint": "eslint . --ext .ts",
+        "lint:fix": "eslint . --ext .ts --fix",
+        
+        "build": "pnpm run build:types && pnpm run build:js",
+        "build:types": "tsc -p tsconfig.json --emitDeclarationOnly",
+        "build:js": "esbuild ./src/index.ts --bundle --outfile=dist/index.js --platform=node --format=esm --external:vscode --external:tsyringe --external:reflect-metadata"
+        
+    },
+    "dependencies": {
+        "strip-json-comments": "^5.0.2",
+        "gpt-tokenizer": "^2.9.0"
+    },
+    "devDependencies": {
+        "@types/node": "latest",
+        "@types/vscode": "latest",
+        "typescript": "^5.8.3",
+        "esbuild": "^0.25.4"
+    },
+    "peerDependencies": {
+        "tsyringe": "^4.10.0",
+        "reflect-metadata": "^0.2.2"
+    }
+}

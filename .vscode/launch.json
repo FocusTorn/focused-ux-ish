@@ -1,0 +1,21 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		
+        {
+			"name": "ES: Debug",
+			"type": "extensionHost",
+			"request": "launch",
+			"args": [
+				"--profile=Clean",
+				"--extensionDevelopmentPath=${workspaceFolder}",
+				"${workspaceFolder}"
+			],
+			"sourceMaps": true,
+			"preLaunchTask": "${defaultBuildTask}"
+		}
+        
+        
+        
+	]
+}
