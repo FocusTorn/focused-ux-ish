@@ -12,7 +12,7 @@
         "dev": "turbo run dev",
         "watch-only": "turbo run watch-only",
         "package": "mkdirp vsix_packages && turbo run package",
-        "clean": "turbo run clean && rimraf node_modules/.cache/turbo && && rimraf .turbo/cache",
+        "clean": "turbo run clean && rimraf node_modules/.cache/turbo .turbo/cache",
         "nuke": "rimraf node_modules && rimraf packages/*/node_modules && pnpm store prune",
         "nuke:full": "rimraf node_modules && rimraf packages/*/node_modules && rimraf pnpm-lock.yaml && pnpm install",
         "validate": "node ./packages/tools/src/validate/index.js",
