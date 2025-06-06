@@ -1,252 +1,137 @@
-# Action Plan: Refactor to a Suite with Shared Core Logic
+# Action Plan: focused-ux Monorepo
 
-**Goal:** Create a suite of VS Code tools where:
-1.  Individual features (e.g., Dynamicons, Terminal Actions) can be published and installed as standalone VS Code extensions.
-2.  A main "FocusedUX" suite extension can be published and installed, providing the combined functionality by directly using the core logic of these features.
-3.  Code for core feature logic is kept DRY and reused across the standalone extensions and the main suite.
-4.  When a user installs the "FocusedUX" suite, they see one primary extension entry, not multiple separate feature extensions being automatically installed as dependencies.
+This document outlines key configurations, conventions, and troubleshooting steps for the `focused-ux` monorepo.
 
-**Build Strategy Note:**
-*   **TypeScript Compiler (`tsc`):** Will be used primarily for type checking (`--noEmit` or `emitDeclarationOnly: true`) and generating TypeScript declaration files (`.d.ts`).
-*   **`esbuild`:** Will be used for fast JavaScript bundling and transformation, producing the final runnable JS files.
+## 1. Project Setup & Configuration
 
----
+### 1.1. Rule: Module Strategy for Packages (ESM/CJS)
 
-## 1. Monorepo Setup (Turborepo)
+-   **Directive:** For packages intended as dependencies of a VS Code extension part (which is typically CommonJS, CJS), ensure the dependency package also outputs CJS.
+    -   **Action:** In the `package.json` of such library packages (e.g., `@focused-ux/dynamicons-core` when consumed by `@focused-ux/dynamicons-ext`):
+        -   Set `format: cjs` in `esbuild` (or equivalent bundler) build scripts.
+        -   Remove `"type": "module"` if present, or ensure it's not set, to default to CJS.
+-   **Directive:** The root project and standalone tool scripts (e.g., in `@focused-ux/tools`) **MAY** remain ES Modules (ESM) by having `"type": "module"` in their respective `package.json` files.
+-   **Rationale:** Ensures compatibility between VS Code extension CJS parts and their CJS library dependencies, particularly for resolving special modules like `vscode`.
 
-*   **Action:** Initialize Turborepo. Create root `package.json`, `turbo.json`, `tsconfig.base.json`. Create `packages/` (for shared core libraries and thin extension wrappers) and `apps/` (for the main suite extension).
-*   **Details:**
-    *   Use `pnpm` as the package manager, leveraging workspaces.
-    *   Root `tsconfig.base.json` will define common TypeScript settings.
-*   **Files/Cmds:**
-    *   `npx create-turbo@latest focused-ui-suite`
-    *   `focused-ui-suite/package.json` (root)
-    *   `focused-ui-suite/turbo.json`
-    *   `focused-ui-suite/tsconfig.base.json`
-    *   `focused-ui-suite/pnpm-workspace.yaml`
-    *   `focused-ui-suite/packages/`
-    *   `focused-ui-suite/apps/`
+### 1.2. Rule: VS Code Debugging for Satellite Packages
 
-## 2. Create Shared `utilities-core` Library
+-   **Directive:** Maintain separate launch configurations in the root `.vscode/launch.json` for each satellite extension package (e.g., "Debug Dynamicons Extension", "Debug TerminalActions Extension").
+    -   **Path Configuration:** The `args` array's `"--extensionDevelopmentPath"` **MUST** point to the specific satellite package's extension directory (e.g., `"${workspaceFolder}/packages/dynamicons/ext"`).
+    -   **Workspace Argument:** The second path argument in `args` (which determines the workspace opened in the Extension Host) **MAY** point to the satellite package's directory for focused debugging or to `"${workspaceFolder}"` to debug in the context of the entire monorepo.
+    -   **Output Files:** The `outFiles` array **SHOULD** include paths to the `dist` directories of both the satellite extension package and its corresponding core package (if any) to aid source map discovery (e.g., `"${workspaceFolder}/packages/dynamicons/ext/dist/**/*.js"`, `"${workspaceFolder}/packages/dynamicons/core/dist/**/*.js"`).
+-   **Directive:** Create corresponding `preLaunchTask` entries in the root `.vscode/tasks.json` for each satellite debug configuration.
+    -   **Task Command:** These tasks **SHOULD** use `pnpm exec turbo run dev --filter=<satellite-ext-name> --filter=<satellite-core-name>` (adjusting package names) to build and watch only the necessary packages for that specific debug session.
+    -   **Background Task:** Set `isBackground: true` for these watch tasks.
+-   **Rationale:** Provides isolated and efficient debugging environments for each satellite extension, with builds scoped to relevant packages.
 
-*   **Action:**
-    *   Create `packages/utilities-core/`. This is a **local library package**, not a VS Code extension.
-    *   Move original `src/modules/utilities/` content (services, interfaces) and relevant helpers (e.g., `readJsonFileSync.ts`) here.
-    *   Setup `package.json` (name: `@focused-ui/utilities-core`, version, main pointing to `esbuild` output, types pointing to `tsc` output, `"private": true` to prevent accidental NPM publishing).
-        *   **Build Scripts:** Implement `build:types` (using `tsc -p . --emitDeclarationOnly`) and `build:js` (using `esbuild`), with a main `build` script orchestrating them. Add a `typecheck` script (`tsc --noEmit`).
-        *   **Dependencies:**
-            *   Include necessary runtime dependencies (e.g., `strip-json-comments`, `gpt-tokenizer`).
-            *   Include `@types/node` in `devDependencies` to provide type definitions for Node.js built-in modules and globals.
-            *   **If the library uses types from the VS Code API (e.g., `vscode.Disposable`, `vscode.Uri`), add `@types/vscode` to its `devDependencies` to ensure it can be type-checked in isolation.**
-            *   List `tsyringe` and `reflect-metadata` as `peerDependencies` if they are expected to be provided by the consuming VS Code extension environment.
-    *   Setup `tsconfig.json` (extends base, `composite: true`, `emitDeclarationOnly: true`, `outDir` for declarations).
-    *   **CRITICAL:** Ensure all imports from Node.js built-in modules use the `node:` prefix (e.g., `import * as fs from 'node:fs';`).
-    *   This package will be a local workspace dependency for core logic libraries and all extensions.
-*   **Files:**
-    *   `packages/utilities-core/src/`
-    *   `packages/utilities-core/package.json` (with `esbuild` and `tsc` scripts, and relevant `@types/*` packages in devDependencies)
-    *   `packages/utilities-core/tsconfig.json` (configured for `emitDeclarationOnly: true`)
-    *   `packages/utilities-core/src/index.ts` (to export utilities)
+### 1.3. Rule: NPM Script Conventions
 
-## 3. Develop Core Logic Libraries (Internal, Non-Extension Packages)
+-   **Directive:** For setting environment variables (e.g., `NODE_NO_WARNINGS=1`) within `package.json` scripts, **MUST** use `cross-env` to ensure cross-platform compatibility.
+    -   _Example:_ `"myscript": "cross-env MY_VAR=true node ./script.js"`
+-   **Directive:** For executing `.ts` files directly with Node.js in an ESM context (especially for scripts within packages that are themselves `"type": "module"` or when the root project is ESM):
+    -   **MUST** use the `node --import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("ts-node/esm", pathToFileURL("./"));' your_script.ts` pattern.
+    -   This addresses Node.js warnings about `--experimental-loader` and is the current recommended method.
+-   **Directive:** For lengthy or complex Node.js invocations (like the ESM `.ts` execution command above), **SHOULD** create a simple CLI wrapper script (e.g., `ts-run.js`) within the `@focused-ux/tools` package.
+    -   This wrapper script **MUST** be exposed as an executable command via the `bin` field in `packages/tools/package.json`.
+    -   Root `package.json` scripts **SHOULD** then use `pnpm exec <wrapper-command>` (e.g., `pnpm exec ts-run`) for a cleaner and more maintainable interface.
+-   **Rationale:** Promotes script portability, adherence to modern Node.js practices, and script readability.
 
-*   **General Approach for each feature's core logic (e.g., `Dynamicons`, `TerminalActions`):**
-    *   (Example using "Dynamicons". Repeat for others.)
+### 1.4. Rule: `pnpm` Workspace and Binaries
 
-*   **Step 3.1: Create the Core Logic Library (e.g., `dynamicons-core`)**
-    *   **Action:**
-        *   Create `packages/dynamicons-core/`. This is a **local library package**, not a VS Code extension.
-        *   Move the non-VS Code specific business logic, services (e.g., `IconThemeGeneratorService`, `IconActionsService` - to be renamed appropriately for Dynamicons), data models, and assets (e.g., icon definitions) from the original icon theme module into `packages/dynamicons-core/src/`.
-        *   Create `packages/dynamicons-core/package.json`:
-            *   `name`: `@focused-ui/dynamicons-core`
-            *   `version`: e.g., "0.1.0"
-            *   `main`: e.g., "dist/index.js" (points to its build output)
-            *   `types`: e.g., "dist/index.d.ts"
-            *   `"private": true` (recommended, as it's an internal library)
-            *   `dependencies`: `{ "@focused-ui/utilities-core": "workspace:*" }` and any other pure JS/TS libs.
-            *   **NO** VS Code specific fields like `engines.vscode`, `activationEvents`, `contributes`.
-            *   **Build Scripts:** Similar to `utilities-core` (`build:types` with `tsc`, `build:js` with `esbuild`).
-        *   Create `packages/dynamicons-core/tsconfig.json` (extends base, `composite: true`, `emitDeclarationOnly: true`).
-        *   Create `packages/dynamicons-core/src/index.ts` to export its public API (services, types, etc.).
-    *   **Files:**
-        *   `packages/dynamicons-core/src/`
-        *   `packages/dynamicons-core/package.json`
-        *   `packages/dynamicons-core/tsconfig.json`
-        *   `packages/dynamicons-core/src/index.ts`
+-   **Directive:** When defining executable scripts for a workspace package via the `bin` field in its `package.json`:
+    -   Ensure the script path in the `bin` value is correct and relative to the package's root.
+    -   Ensure the script file itself has the appropriate shebang (e.g., `#!/usr/bin/env node`).
+-   **Directive:** If `pnpm` fails to recognize or link a `bin` command from a local workspace package:
+    -   **MUST** first verify the `bin` definition and script path.
+    -   **MUST** then perform a full clean pnpm installation at the monorepo root (e.g., `rimraf node_modules pnpm-lock.yaml && pnpm install`) to resolve potential linking or caching issues.
+-   **Rationale:** Ensures that local package binaries are correctly installed and accessible within the pnpm workspace.
 
-*   **REPEAT STEP 3.1 FOR EACH FEATURE'S CORE LOGIC:**
-    *   `packages/terminal-actions-core/` (exports `TerminalActionsService`, etc.)
-    *   `packages/notes-hub-core/`
-    *   `packages/context-cherry-picker-core/`
-    *   `packages/code-editing-core/`
-    *   (Each will depend on `@focused-ui/utilities-core": "workspace:*"`)
+## 2. Build & Utility Scripts
 
-## 4. Develop Standalone "Satellite" VS Code Extensions (Thin Wrappers)
+### 2.1. Rule: Script Compatibility with Package Module Type
 
-*   **General Approach for each feature's VS Code extension wrapper:**
-    *   (Example using "Dynamicons". Repeat for others.)
+-   **Directive:** Utility scripts within a package (e.g., build scripts, generators like `generate_icon_manifests.ts` in `dynamicons-core`) **MUST** be compatible with the module type (`"type": "module"` for ESM, or default CJS) of the package they reside in, especially if they are type-checked under that package's `tsconfig.json` context.
+    -   If the package is CJS (no `"type": "module"` in its `package.json`), scripts type-checked by its `tsc` **MUST NOT** use ESM-specific features like `import.meta.url`.
+    -   **Action:** Use CJS alternatives (e.g., `__dirname`, `__filename`, which `ts-node` provides in a CJS execution context) or ensure the script is executed in an environment that supports its syntax (e.g., `ts-node --esm` if the script itself is ESM but the package is CJS, though this can be complex for type-checking).
+-   **Rationale:** Prevents TypeScript errors (like TS1470 for `import.meta` in CJS) when scripts are type-checked or executed.
 
-*   **Step 4.1: Create the Satellite Extension Package (e.g., `dynamicons-ext`)**
-    *   **Action:**
-        *   Create `packages/dynamicons-ext/`. This **is** a full VS Code extension project.
-        *   This extension will be a thin wrapper around the corresponding `-core` library.
-    *   **Files:**
-        *   `packages/dynamicons-ext/`
+### 2.2. Rule: Output Parsing Scripts (e.g., `aggregate-tsc-errors.ts`)
 
-*   **Step 4.2: Satellite Extension's `package.json` (e.g., for `dynamicons-ext`)**
-    *   **Action:**
-        *   Create `packages/dynamicons-ext/package.json`.
-        *   `publisher`, `name` (e.g., `yourPublisher.dynamicons`).
-        *   `main`: e.g., `./dist/extension.js`.
-        *   `engines.vscode`, `activationEvents`.
-        *   `dependencies`:
-            *   `"@focused-ui/dynamicons-core": "workspace:*"`
-            *   `"@focused-ui/utilities-core": "workspace:*"` (if directly used, or rely on transitive from `-core`)
-            *   `vscode` (devDependency, for types), `tsyringe` (if used for DI within the extension shell).
-        *   `contributes`: Extract *only the `contributes` entries relevant to this specific feature* (Dynamicons) from the original icon theme `package.json`.
-            *   **Prefixing:** All command IDs, view IDs, configuration keys in this satellite's `package.json` and its code **MUST** use a prefix unique to this satellite (e.g., `dynamicons.activateTheme`).
-        *   `scripts`: `build` (using `esbuild` to bundle JS, potentially `tsc` for a final type check or if declarations are specific to the wrapper; `vsce package` would use the `esbuild` output). Add `typecheck` script.
-            *   `esbuild` command should mark `vscode` as external.
-    *   **Files:**
-        *   `packages/dynamicons-ext/package.json`
+-   **Directive:** Scripts designed to parse output from build tools like `turbo` and `tsc` **MUST** be resilient to interleaved output from multiple packages.
+    -   **Context Tracking:** Implement robust "sticky" context tracking (e.g., for the active package name based on `turbo`'s output prefixes) to correctly attribute unprefixed lines to the last known context.
+    -   **Error Pattern Matching:** Utilize regular expressions for both detailed error lines (e.g., `tsc`'s file, line, and column output) and summary/generic failure lines from the tools.
+    -   **Generic Failure Handling:** Account for generic failure reports from `turbo` (e.g., `ERROR: command finished with error`) and provide a fallback message in the aggregated summary if detailed errors for that package aren't successfully parsed.
+-   **Directive:** When invoking `turbo` for such aggregation purposes, **MUST** use the `--continue` flag to ensure the script can collect errors from all packages, not just the first one that fails.
+-   **Rationale:** Ensures comprehensive and accurate error reporting in a monorepo environment.
 
-*   **Step 4.3: Satellite Extension's Entry Point & Logic (e.g., for `dynamicons-ext`)**
-    *   **Action:**
-        *   Create `packages/dynamicons-ext/src/extension.ts`:
-            *   `activate` function will:
-                *   Import services/functions from `@focused-ui/dynamicons-core` (e.g., `import { DynamiconsService } from '@focused-ui/dynamicons-core';`).
-                *   Perform DI setup if needed (e.g., `container.register('IDynamiconsService', { useClass: DynamiconsService })`).
-                *   Register its VS Code commands, views, etc., using the logic from the imported core service.
-        *   Create `packages/dynamicons-ext/src/_config/constants.ts` (using its unique prefix).
-        *   Create `packages/dynamicons-ext/src/injection.ts` (if using DI for the extension shell itself).
-        *   Move any VS Code specific UI or interaction logic (that wasn't part of the pure core logic) here.
-    *   **Files:**
-        *   `packages/dynamicons-ext/src/extension.ts`
-        *   `packages/dynamicons-ext/src/_config/constants.ts`
-        *   `packages/dynamicons-ext/src/injection.ts` (optional)
+## 3. VS Code Extension Specifics (e.g., `dynamicons/ext`)
 
-*   **Step 4.4: Satellite Extension's `tsconfig.json` (e.g., for `dynamicons-ext`)**
-    *   **Action:** Create `packages/dynamicons-ext/tsconfig.json` (extends `../../tsconfig.base.json`, `composite: true`, references its `-core` package if needed for build order, `outDir` to `dist`). If `esbuild` handles all JS transformation, this `tsconfig.json` might also use `emitDeclarationOnly: true` or `noEmit: true` if its types are only for local dev.
-    *   **Files:**
-        *   `packages/dynamicons-ext/tsconfig.json`
+### 3.1. Rule: `package.json` Contributions
 
-*   **REPEAT STEPS 4.1 to 4.4 FOR EACH FEATURE EXTENSION WRAPPER:**
-    *   `packages/terminal-actions-ext/` (depends on `@focused-ui/terminal-actions-core`)
-    *   `packages/notes-hub-ext/`
-    *   `packages/context-cherry-picker-ext/`
-    *   `packages/code-editing-ext/`
+-   **Directive:** To make commands visible in the VS Code UI, **MUST** add appropriate `menus` contributions in the extension's `package.json` (e.g., for `explorer/context`, `view/title`).
+-   **Directive:** For commands primarily intended for context menus or other specific UI elements and not general use from the Command Palette, **SHOULD** use `"when": "false"` in their `menus > commandPalette` contribution to hide them from the palette.
+-   **Rationale:** Provides a clean and intuitive user experience for extension commands.
 
-## 5. Develop the Main "FocusedUX" Suite Extension
+### 3.2. Rule: Asset Path Resolution
 
-*   **Action:**
-    *   Create `apps/focused-ux-ext/`. This **is** the main VS Code extension for the suite.
-*   **Files:**
-    *   `apps/focused-ux-ext/`
+-   **Directive:** When accessing assets packaged with an extension (e.g., built-in icons, HTML views) from within the extension's runtime code (services, providers):
+    -   The service or class needing access **MUST** have `ExtensionContext` injected (typically in its constructor).
+    -   **MUST** use `vscode.Uri.joinPath(context.extensionUri, 'path', 'to', 'asset')` to construct correct and platform-independent file URIs for these assets.
+-   **Rationale:** Ensures reliable access to extension assets regardless of installation location or platform.
 
-*   **Step 5.1: `FocusedUX` Extension's `package.json`**
-    *   **Action:**
-        *   Create `apps/focused-ux-ext/package.json`.
-        *   `publisher`, `name` (e.g., `yourPublisher.focused-ux-suite`).
-        *   `main`: `./dist/extension.js`.
-        *   `activationEvents`.
-        *   `dependencies`:
-            *   `"@focused-ui/dynamicons-core": "workspace:*"`
-            *   `"@focused-ui/terminal-actions-core": "workspace:*"`
-            *   `"@focused-ui/notes-hub-core": "workspace:*"`
-            *   `"@focused-ui/context-cherry-picker-core": "workspace:*"`
-            *   `"@focused-ui/code-editing-core": "workspace:*"`
-            *   `"@focused-ui/utilities-core": "workspace:*"`
-            *   `vscode` (devDependency), `tsyringe` (if used).
-        *   **`extensionDependencies`: DO NOT list the satellite `-ext` wrappers here.**
-        *   `contributes`: Define any commands, views, or settings *unique to the FocusedUX suite itself* or that provide a unified interface over the core features. If it re-exposes features, ensure IDs are distinct or clearly namespaced for the suite.
-        *   `scripts`: `build` (using `esbuild` to bundle JS, `tsc` for type checking). `esbuild` marks `vscode` as external. Add `typecheck` script.
-    *   **Files:**
-        *   `apps/focused-ux-ext/package.json`
+### 3.3. Rule: Configuration Access
 
-*   **Step 5.2: `FocusedUX` Extension's Entry Point & Logic**
-    *   **Action:**
-        *   Create `apps/focused-ux-ext/src/extension.ts`:
-            *   `activate` function will:
-                *   Import services/functions from all necessary `-core` libraries (e.g., `import { DynamiconsService } from '@focused-ui/dynamicons-core';`, `import { TerminalActionsService } from '@focused-ui/terminal-actions-core';`).
-                *   Perform DI setup for all core services it uses.
-                *   Register its VS Code commands, views, etc., orchestrating or directly using the logic from the imported core services.
-        *   Create `apps/focused-ux-ext/src/_config/constants.ts` (for suite-specific constants).
-        *   Create `apps/focused-ux-ext/src/injection.ts` (for DI setup).
-        *   Original `logger.ts` can live here: `apps/focused-ux-ext/src/core/helpers/logger.ts`.
-    *   **Files:**
-        *   `apps/focused-ux-ext/src/extension.ts`
-        *   `apps/focused-ux-ext/src/_config/constants.ts`
-        *   `apps/focused-ux-ext/src/injection.ts`
-        *   `apps/focused-ux-ext/src/core/helpers/logger.ts`
+-   **Directive:** Services and other extension components **MUST** use the injected `IWorkspace` adapter (or `vscode.workspace` directly if not using an adapter) to retrieve configuration values.
+-   **Directive:** Configuration keys **SHOULD** be accessed using a combination of a defined `configPrefix` (e.g., `dynamiconsConstants.configPrefix`) and the specific key (e.g., `config.get<string>(`${CONFIG_PREFIX}.${CONFIG_KEYS.userIconsDirectory}`)`).
+-   **Rationale:** Promotes consistent and safe access to extension settings.
 
-*   **Step 5.3: `FocusedUX` Extension's `tsconfig.json`**
-    *   **Action:** Create `apps/focused-ux-ext/tsconfig.json` (extends `../../tsconfig.base.json`, `composite: true`, references all `-core` packages, `outDir` to `dist`). Similar to satellite extensions, may use `emitDeclarationOnly: true` or `noEmit: true` if `esbuild` handles JS.
-    *   **Files:**
-        *   `apps/focused-ux-ext/tsconfig.json`
+## 4. Troubleshooting: Issues and Corrections
 
-## 6. Update Build System & Adapt Scripts
+This section documents common issues encountered during development and their resolutions.
 
-*   **Action:**
-    *   Configure `turbo.json` build pipelines.
-        *   Ensure `-core` libraries' `build:types` and `build:js` tasks are dependencies for the `build` tasks of extensions that consume them.
-        *   Include a root `typecheck` pipeline in `turbo.json` that runs `tsc --noEmit` across all relevant packages.
-    *   Root `package.json` scripts use `turbo run build`, `turbo run typecheck`, etc.
-    *   Each extension (`-ext` wrappers and `focused-ux-ext`) will have its own build script. This script will:
-        1.  (Optionally) Run `tsc -p . --emitDeclarationOnly true` if the package needs to emit its own specific declarations not covered by its `-core` dependency.
-        2.  Run `esbuild` to bundle its `src/extension.ts` (and imported local code from its `-core` dependencies) into a single JS file in its `dist/` folder (e.g., `dist/extension.js`), ensuring `vscode` is marked as external.
-    *   Adapt original `src/scripts/` (validation, version bumping). Asset generation scripts (like for icons) will now live within their respective `-core` or `-ext` packages.
-*   **Files:**
-    *   `turbo.json` (updated pipelines)
-    *   `package.json` (root, updated scripts)
-    *   Build scripts within each package/app (reflecting `tsc` for types/declarations and `esbuild` for JS bundling).
+### 4.1. Issue: `TypeError: Unknown file extension ".ts"` when running `.ts` scripts with `node`.
 
-## 7. Development, Testing, and Publishing
+-   **Symptom:** `ERR_UNKNOWN_FILE_EXTENSION` when executing a command like `node ./path/to/script.ts`.
+-   **Cause:** Node.js is trying to execute a TypeScript file directly without a transpiler/loader, especially in a project configured for ES Modules.
+-   **Correction:**
+    -   Modify the npm script (or direct command) to use `node --import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("ts-node/esm", pathToFileURL("./"));' ./path/to/script.ts`.
+    -   Alternatively, create a CLI wrapper (like `ts-run` in `@focused-ux/tools`) that encapsulates this Node.js invocation and use `pnpm exec <wrapper-command> ./path/to/script.ts`.
+-   **Reference:** Section 1.3 (NPM Script Conventions).
 
-*   **Action:**
-    *   Run `pnpm install` at the root.
-    *   Build all packages/apps using `turbo run build` (or `pnpm build`).
-    *   **Testing Standalone Extensions:** Open specific `packages/*-ext/` folders in VS Code and use F5 to debug them individually.
-    *   **Testing Suite Extension:** Open `apps/focused-ux-ext/` folder in VS Code and use F5 to debug the full suite.
-    *   Publish each `-ext` wrapper and the `focused-ux-ext` to the VS Code Marketplace as separate `.vsix` files.
-*   **Files:** All files across the monorepo.
+### 4.2. Issue: `'ENV_VAR' is not recognized as an internal or external command...` on Windows.
 
-## 8. Notes for Implementing Additional Features (from original project)
+-   **Symptom:** Error when trying to set an environment variable directly in an npm script on Windows (e.g., `NODE_NO_WARNINGS=1 mycommand`).
+-   **Cause:** Windows Command Prompt/PowerShell do not support setting environment variables and running a command on the same line in that manner.
+-   **Correction:**
+    -   Install `cross-env` as a root devDependency (`pnpm add -D -w cross-env`).
+    -   Prefix the command in `package.json` script with `cross-env`: `"myscript": "cross-env NODE_NO_WARNINGS=1 mycommand"`.
+-   **Reference:** Section 1.3 (NPM Script Conventions).
 
-To integrate remaining features (e.g., `ContextCherryPicker`, `CodeEditing`, `NotesHub`) from the original `focused-ui` project into this new architecture, follow the same pattern:
+### 4.3. Issue: `ERR_REQUIRE_CYCLE_MODULE` or `Cannot require() ES Module ... in a cycle`.
 
-1.  **Create a Core Logic Library (`packages/<feature>-core/`):**
-    *   Isolate the non-VS Code specific business logic, services, data models, and assets for the feature.
-    *   Define its `package.json` (making it a private workspace library, e.g., `@focused-ui/<feature>-core`) and `tsconfig.json`.
-    *   Export its public API from `src/index.ts`.
-    *   This library will depend on `@focused-ui/utilities-core": "workspace:*"`.
+-   **Symptom:** Error when a CommonJS context attempts to `require()` an ES Module, especially if the ESM context is not clearly defined for the package containing the target script.
+-   **Cause:** Mismatch in module systems or unclear module type declaration for a package.
+-   **Correction:**
+    -   Ensure the `package.json` of the package containing the ES Module script (e.g., `packages/tools/package.json` for `aggregate-tsc-errors.ts`) explicitly declares `"type": "module"`.
+    -   Ensure the command invoking the script correctly uses ESM loading mechanisms (e.g., `node --import 'data:...'` as per 4.1).
+-   **Reference:** Section 1.1 (Module Strategy), Section 1.3 (NPM Script Conventions).
 
-2.  **Create a Thin VS Code Extension Wrapper (`packages/<feature>-ext/`):**
-    *   This is the independently publishable VS Code extension for the individual feature.
-    *   It depends on `packages/<feature>-core/` via `workspace:*`.
-    *   Its `package.json` defines VS Code contributions (commands, views, settings) specific to this feature, with unique ID prefixes.
-    *   Its `src/extension.ts` imports from its `-core` library and wires up the VS Code integrations.
+### 4.4. Issue: `TypeError: Cannot read properties of undefined (reading 'trim')` in regex match.
 
-3.  **Integrate into `FocusedUX` Suite Extension (`apps/focused-ux-ext/`):**
-    *   Add `packages/<feature>-core/` as a `workspace:*` dependency to `apps/focused-ux-ext/package.json`.
-    *   In `apps/focused-ux-ext/src/extension.ts`:
-        *   Import the necessary services/functions from `@focused-ui/<feature>-core`.
-        *   Initialize/register them within the suite's DI container (if applicable).
-        *   If the suite provides a unified UI or commands for this feature, implement that logic here, calling into the `-core` services.
-    *   Update the `FocusedUX` `package.json` `contributes` section if the suite exposes any new unified commands/views related to this feature.
+-   **Symptom:** Script crashes when trying to access a property of a regex match's `groups` object that doesn't exist because the capture group was unnamed or incorrectly named.
+-   **Cause:** Incorrectly trying to access a named capture group (e.g., `match.groups.myGroup`) when the group was defined as unnamed (`(.*)`) in the regex, or a typo in the group name.
+-   **Correction:**
+    -   If the regex uses an unnamed capture group like `(.*)`, access its content via the match array index (e.g., `match[1]`, `match[2]`, etc., where `match[0]` is the full match).
+    -   Ensure named capture groups in the regex (`(?<name>...)`) are spelled correctly when accessed via `match.groups.name`.
+    -   Add checks for `undefined` before attempting to call methods like `.trim()` on potentially undefined capture group results.
+-   **Example Fix:** Change `match.groups.restOfLine.trim()` to `(match[2] !== undefined ? match[2] : '').trim()` if `restOfLine` corresponded to the second capture group `(.*)`.
 
-4.  **Update Build System:**
-    *   Ensure `turbo.json` and `tsconfig.json` references are updated to include the new `-core` and `-ext` packages in the build order.
+## 5. General Development & Troubleshooting
 
-**Example: Adding `ContextCherryPicker`**
+## Personal Notes
 
-*   `packages/context-cherry-picker-core/`: Contains `CCP_Manager.service.ts`, `ContextDataCollector.service.ts`, etc. (refactored to be VS Code agnostic if possible, or to take VS Code specific parts as constructor args/dependencies).
-*   `packages/context-cherry-picker-ext/`:
-    *   Depends on `@focused-ui/context-cherry-picker-core`.
-    *   `package.json` contributes `focusedUiCCP.*` commands and views.
-    *   `extension.ts` initializes and uses services from the core.
-*   `apps/focused-ux-ext/`:
-    *   Depends on `@focused-ui/context-cherry-picker-core`.
-    *   Its `extension.ts` might initialize CCP services if the suite needs to interact with CCP data or trigger CCP actions programmatically.
-    *   If `FocusedUX` has a "master dashboard" view, it might display information or provide quick actions related to CCP, using the CCP core services.
+Check on the sim for any bin created
+dir node_modules\.bin
 
-This approach ensures that new features are also developed with a clean separation of core logic and VS Code integration, maintaining the DRY principle and the desired publishing structure.
+pnpm m ls
+pnpm list @focused-ux/tools

@@ -1,0 +1,24 @@
+{
+    "extends": "../../tsconfig.base.json", // Adjusted path to root tsconfig.base.json
+    "compilerOptions": {
+        "tsBuildInfoFile": "./tsconfig.tsbuildinfo",
+        "composite": true,
+        "rootDir": ".",
+        "outDir": "./dist",
+        "baseUrl": ".",
+        "emitDeclarationOnly": true
+    },
+    "include": [
+        "src/**/*.ts",      // If you have a src directory for build:js
+        "cli/**/*.js",      // For ts-run.js if you want it type-checked (though it's .js)
+                            // Or, if ts-run.js is meant to be plain JS, exclude it or don't include.
+                            // Given it's a bin script, it might be better to ensure it's .ts or handle separately.
+                            // For now, let's assume .ts files are the primary concern for tsc.
+        "src/scripts/**/*.ts"   // To include your utility scripts
+    ],
+    "exclude": [
+        "node_modules",
+        "dist"
+    ]
+    // No "references" needed unless this package depends on other local TS packages directly for types.
+}

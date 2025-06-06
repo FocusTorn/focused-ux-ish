@@ -1,45 +1,66 @@
 {
-    "extends": [ "//" ],
-
+    "$schema": "https://turborepo.org/schema.json",
+    "globalDependencies": [
+        // "tsconfig.base.json"
+    ],
     "tasks": {
-        "build": { //>
+        "clean": {
+            "cache": false
+        },
+        
+        "lint": {
+            "dependsOn": [
+                "^lint"
+            ]
+        },
+        
+        "lint:fix": {
+            "dependsOn": [
+                "^lint:fix"
+            ]
+        },
+
+        "package": {
             "dependsOn": [
                 "^build"
-            ],
-            "inputs": [
-                "$TURBO_DEFAULT$",
-                ".env*"
+            ]
+        },
+
+        "check-types": {
+            "dependsOn": [
+                "^check-types"
+            ]
+        },
+
+        "build": {
+            "dependsOn": [
+                "^build"
             ],
             "outputs": [
                 "dist/**"
             ]
-        }, //<
+        },
 
-        "lint": { //>
+        "build:assets": {
+            "dependsOn": [
+                "^build:assets"
+            ],
+            "outputs": [
+                "dist/assets/**"
+            ]
+        },
+
+        "dev": {
+            "cache": false,
             "dependsOn": [
                 "^build"
             ],
-            "outputs": []
-        }, //<
+            "persistent": true
+        },
 
-        "lint:fix": { //>
-            "dependsOn": [
-                "^build"
-            ],
-            "outputs": []
-        }, //<
-        
-        "check-types": { //>
-            "dependsOn": [
-                "^build"
-            ],
-            "outputs": []
-        }, //<
-
-        "dev": { //>
+        "watch-only": {
             "cache": false,
             "persistent": true
-        } //<
-
+        }
     }
 }

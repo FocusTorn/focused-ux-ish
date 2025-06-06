@@ -17,10 +17,10 @@
         "emitDeclarationOnly": true,
 
         //= FOR MONOREPOS WITH PROJECT REFERENCES ===================================================
-        "declaration": true,
+        "declaration": true,         
         "declarationMap": true,
         "sourceMap": true,
-        // "noEmit": true,
+        "noEmit": false,
 
         //= DECORATORS ==========================================================================
         "experimentalDecorators": true,
@@ -29,12 +29,12 @@
         //= ALLOWED =============================================================================
         "allowSyntheticDefaultImports": true,
         "allowJs": true,
-        "allowImportingTsExtensions": true,
+        // "allowImportingTsExtensions": true,
 
         //= PATH ALIASES ========================================================================
         "baseUrl": ".",
-        "rootDir": "src",
-        "outDir": "dist",
+        "rootDir": "src", // Default rootDir
+        "outDir": "dist",   // Default outDir
         "paths": { }
 
     },
@@ -44,14 +44,3 @@
     ]
 
 }
-
-
-
-        // "lib": [
-        //     "ES2022"
-        // ],
-        // "types": [
-        //     "node",
-        //     "vscode"
-        // ],
-

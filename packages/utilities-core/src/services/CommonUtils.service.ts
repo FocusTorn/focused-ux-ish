@@ -7,10 +7,10 @@ import { inject, injectable } from 'tsyringe'
 import { encode } from 'gpt-tokenizer'
 
 //= IMPLEMENTATION TYPES ======================================================================================
-import type { ICommonUtilsService } from '../_interfaces/ICommonUtilsService.ts'
+import type { ICommonUtilsService } from '../_interfaces/ICommonUtilsService.js'
 
 //= INJECTED TYPES ============================================================================================
-import type { IWindow } from '../_vscode_abstractions/IWindow.ts'
+import type { IWindow } from '../_vscode_abstractions/IWindow.js'
 
 //--------------------------------------------------------------------------------------------------------------<<
 
@@ -24,7 +24,9 @@ export class CommonUtilsService implements ICommonUtilsService { //>
 	public delay( //>
 		ms: number,
 	): Promise<void> {
-		if (ms === 0) { return Promise.resolve() }
+		if (ms === 0) {
+			return Promise.resolve()
+		}
 		return new Promise(resolve => setTimeout(resolve, ms))
 	} //<
 
@@ -42,10 +44,16 @@ export class CommonUtilsService implements ICommonUtilsService { //>
 	public calculateTokens( //>
 		text: string,
 	): number {
-		if (!text) { return 0 }
-		try { return encode(text).length }
-		catch (error) {
-			console.error('[CommonUtilsService] Error using gpt-tokenizer for local token calculation:', error)
+		if (!text) {
+			return 0
+		}
+		try {
+			return encode(text).length
+		} catch (error) {
+			console.error(
+				'[CommonUtilsService] Error using gpt-tokenizer for local token calculation:',
+				error,
+			)
 			return Math.ceil(text.length / 4)
 		}
 	} //<

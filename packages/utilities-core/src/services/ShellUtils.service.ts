@@ -8,11 +8,11 @@ import * as cp from 'node:child_process'
 import * as process from 'node:process'
 
 //= IMPLEMENTATION TYPES ======================================================================================
-import type { IShellUtilsService } from '../_interfaces/IShellUtilsService.ts'
+import type { IShellUtilsService } from '../_interfaces/IShellUtilsService.js'
 
 //= INJECTED TYPES ============================================================================================
-import type { IWindow } from '../_vscode_abstractions/IWindow.ts'
-import type { ICommonUtilsService } from '../_interfaces/ICommonUtilsService.ts'
+import type { IWindow } from '../_vscode_abstractions/IWindow.js'
+import type { ICommonUtilsService } from '../_interfaces/ICommonUtilsService.js'
 
 //--------------------------------------------------------------------------------------------------------------<<
 
@@ -39,8 +39,7 @@ export class ShellUtilsService implements IShellUtilsService { //>
 			spawnedProcess.on('close', (code: number | null) => {
 				if (code !== 0) {
 					reject(new Error(`Command "${command}" exited with code ${code}`))
-				}
-				else {
+				} else {
 					resolve()
 				}
 			})
@@ -60,11 +59,9 @@ export class ShellUtilsService implements IShellUtilsService { //>
 
 			if (isWindows && terminalName.includes('cmd')) {
 				commandStr = `cd /d "${path}"`
-			}
-			else if (isWindows && (terminalName.includes('powershell') || terminalName.includes('pwsh'))) {
+			} else if (isWindows && (terminalName.includes('powershell') || terminalName.includes('pwsh'))) {
 				commandStr = `Set-Location '${path}'`
-			}
-			else {
+			} else {
 				commandStr = `cd "${path}"`
 			}
 
@@ -72,14 +69,14 @@ export class ShellUtilsService implements IShellUtilsService { //>
 				try {
 					cp.execSync('poetry --version', { stdio: 'ignore' })
 					commandStr += ' && poetry shell'
-				}
-				catch (error) {
+				} catch (error) {
 					console.warn('[ShellUtilsService] Poetry check failed:', error)
-					this.iWindow.showWarningMessage('Poetry command not found or failed. Cannot activate Poetry shell.')
+					this.iWindow.showWarningMessage(
+						'Poetry command not found or failed. Cannot activate Poetry shell.',
+					)
 				}
 			}
-		}
-		else {
+		} else {
 			return undefined
 		}
 		return commandStr

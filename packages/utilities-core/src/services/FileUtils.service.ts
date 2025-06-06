@@ -8,8 +8,19 @@ import type { Uri } from 'vscode'
 
 //= NODE JS ===================================================================================================
 import type * as nodePath from 'node:path'
-import type { access as fspAccessType, copyFile as fspCopyFileType, readFile as fspReadFileType, writeFile as fspWriteFileType, mkdir as fspMkdirType } from 'node:fs/promises'
-import type { PathLike, MakeDirectoryOptions, WriteFileOptions, readFileSync as nodeFsReadFileSyncType } from 'node:fs'
+import type {
+	access as fspAccessType,
+	copyFile as fspCopyFileType,
+	readFile as fspReadFileType,
+	writeFile as fspWriteFileType,
+	mkdir as fspMkdirType,
+} from 'node:fs/promises'
+import type {
+	PathLike,
+	MakeDirectoryOptions,
+	WriteFileOptions,
+	readFileSync as nodeFsReadFileSyncType,
+} from 'node:fs'
 
 // import type { Buffer } from 'node:buffer'
 
@@ -17,11 +28,11 @@ import type { PathLike, MakeDirectoryOptions, WriteFileOptions, readFileSync as 
 import stripJsonComments from 'strip-json-comments'
 
 //= IMPLEMENTATION TYPES ======================================================================================
-import type { IFileUtilsService } from '../_interfaces/IFileUtilsService.ts'
-import type { ICommonUtilsService } from '../_interfaces/ICommonUtilsService.ts'
+import type { IFileUtilsService } from '../_interfaces/IFileUtilsService.js'
+import type { ICommonUtilsService } from '../_interfaces/ICommonUtilsService.js'
 
 //= INJECTED TYPES ============================================================================================
-import type { IWindow } from '../_vscode_abstractions/IWindow.ts'
+import type { IWindow } from '../_vscode_abstractions/IWindow.js'
 
 //--------------------------------------------------------------------------------------------------------------<<
 
@@ -61,8 +72,7 @@ export class FileUtilsService implements IFileUtilsService { //>
 					backupFileName = `${baseName}.bak${backupNumber}`
 					destinationPath = this.iPathNormalize(this.iPathJoin(directory, backupFileName))
 				}
-			}
-			catch (error: any) {
+			} catch (error: any) {
 				if (error.code !== 'ENOENT') {
 					throw error
 				}
@@ -70,39 +80,48 @@ export class FileUtilsService implements IFileUtilsService { //>
 
 			await this.iFspCopyFile_node(sourcePath, destinationPath)
 			this.iWindow.showInformationMessage(`Backup created: ${backupFileName}`)
-		}
-		catch (error) {
+		} catch (error) {
 			this.iCommonUtils.errMsg(`Error creating backup for ${fileUri.fsPath}`, error)
 		}
 	} //<
 
-	public readJsonFileSync<T = any>(filePath: string, encoding: BufferEncoding = 'utf-8'): T | undefined { //>
+	public readJsonFileSync<T = any>(
+		filePath: string,
+		encoding: BufferEncoding = 'utf-8',
+	): T | undefined { //>
 		try {
 			const absolutePath = this.iPathIsAbsolute(filePath) ? filePath : this.iPathResolve(filePath)
 			const fileContent = this.iFsReadFileSync_node(absolutePath, encoding)
 			const contentWithoutComments = stripJsonComments(fileContent.toString())
+
 			return JSON.parse(contentWithoutComments) as T
-		}
-		catch (error) {
+		} catch (error) {
 			this.iCommonUtils.errMsg(`Error reading or parsing JSON file synchronously: ${filePath}`, error)
 			return undefined
 		}
 	} //<
 
-	public async readJsonFileAsync<T = any>(filePath: string, encoding: BufferEncoding = 'utf-8'): Promise<T | undefined> { //>
+	public async readJsonFileAsync<T = any>(
+		filePath: string,
+		encoding: BufferEncoding = 'utf-8',
+	): Promise<T | undefined> { //>
 		try {
 			const absolutePath = this.iPathIsAbsolute(filePath) ? filePath : this.iPathResolve(filePath)
 			const fileContent = await this.iFspReadFile_node(absolutePath, { encoding })
 			const contentWithoutComments = stripJsonComments(fileContent.toString())
+
 			return JSON.parse(contentWithoutComments) as T
-		}
-		catch (error) {
+		} catch (error) {
 			this.iCommonUtils.errMsg(`Error reading or parsing JSON file asynchronously: ${filePath}`, error)
 			return undefined
 		}
 	} //<
 
-	public async iFspWriteFile(path: PathLike | import('node:fs/promises').FileHandle, data: string | Uint8Array, options?: WriteFileOptions): Promise<void> { //>
+	public async iFspWriteFile(
+		path: PathLike | import('node:fs/promises').FileHandle,
+		data: string | Uint8Array,
+		options?: WriteFileOptions,
+	): Promise<void> { //>
 		return this.iFspWriteFile_node(path, data, options)
 	} //<
 
@@ -110,7 +129,10 @@ export class FileUtilsService implements IFileUtilsService { //>
 		return this.iFspAccess_node(path, mode)
 	} //<
 
-	public async iFspMkdir(path: PathLike, options?: MakeDirectoryOptions): Promise<string | undefined> { //>
+	public async iFspMkdir(
+		path: PathLike,
+		options?: MakeDirectoryOptions,
+	): Promise<string | undefined> { //>
 		return this.iFspMkdir_node(path, options)
 	} //<
 

@@ -1,14 +1,10 @@
-// ESLint & Imports -->>
-
-//--------------------------------------------------------------------------------------------------------------<<
-
 // Interfaces
-export type { IIconActionsService } from './_interfaces/IIconActionsService.ts'
-export type { IIconThemeGeneratorService } from './_interfaces/IIconThemeGeneratorService.ts'
+export type { IIconActionsService } from './_interfaces/IIconActionsService.js'
+export type { IIconThemeGeneratorService } from './_interfaces/IIconThemeGeneratorService.js'
 
 // Services
-export { IconActionsService } from './services/IconActionsService.ts'
-export { IconThemeGeneratorService } from './services/IconThemeGeneratorService.ts'
+export { IconActionsService } from './services/IconActionsService.js'
+export { IconThemeGeneratorService } from './services/IconThemeGeneratorService.js'
 
 // Constants
-export { dynamiconsConstants } from '../../_config/dynamicons.constants.ts'
+export { dynamiconsConstants } from './_config/dynamicons.constants.js'

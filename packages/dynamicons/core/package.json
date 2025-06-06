@@ -1,26 +1,36 @@
 {
-    "name": "@focused-ui/dynamicons-core",
+    "name": "@focused-ux/dynamicons-core",
     "version": "0.1.0",
-    "private": true,
-    "type": "module",
-    "main": "./dist/index.js",
-    "types": "./dist/index.d.ts",
     "scripts": {
         "check-types": "tsc --noEmit -p tsconfig.json --pretty",
         "lint": "eslint . --ext .ts",
         "lint:fix": "eslint . --ext .ts --fix",
+        "build:types": "tsc -p tsconfig.json --emitDeclarationOnly",
+        "watch:types": "tsc -p tsconfig.json --emitDeclarationOnly --watch",
+        
+        
+        "build:js":"esbuild ./src/index.ts --bundle --outfile=dist/index.js  --platform=node --format=esm --external:vscode --external:tsyringe --external:reflect-metadata --external:@focused-ux/utilities-core",
+        "build:cjs": "esbuild ./src/index.ts --bundle --outfile=dist/index.cjs --platform=node --format=cjs --external:vscode --external:tsyringe --external:reflect-metadata --external:@focused-ux/utilities-core",
+        
+        "watch:js":     "esbuild ./src/index.ts --bundle --outfile=dist/index.js  --platform=node --format=esm --external:vscode --external:tsyringe --external:reflect-metadata --external:@focused-ux/utilities-core --watch",
+        "watch:cjs": "esbuild ./src/index.ts --bundle --outfile=dist/index.cjs --platform=node --format=cjs --external:vscode --external:tsyringe --external:reflect-metadata --external:@focused-ux/utilities-core --watch",
+        
+        
         
         "build": "pnpm run build:types && pnpm run build:js",
-        "build:types": "tsc -p tsconfig.json --emitDeclarationOnly",
-        "build:js": "esbuild ./src/index.ts --bundle --outfile=dist/index.js --platform=node --format=esm --external:vscode --external:tsyringe --external:reflect-metadata --external:@focused-ui/utilities-core",
+        "dev": "pnpm run watch:types & pnpm run watch:js",
+        "watch-only": "pnpm run watch:types & pnpm run watch:js",
+        "clean": "rimraf ./dist ./tsconfig.tsbuildinfo",
         
-        "clean:dist_assets": "rimraf ./dist/assets",
-        "optimize:icons": "ts-node ./scripts/optimize_icons.ts",
-        "generate:base_manifest": "ts-node ./scripts/generate_icon_manifests.ts",
-        "build:assets": "pnpm run clean:dist_assets && pnpm run optimize:icons && pnpm run generate:base_manifest"
+        "optimize:icons": "cross-env NODE_NO_WARNINGS=1 pnpm exec ts-run  ./src/scripts/optimize_icons.ts",
+        "generate:manifests": "cross-env NODE_NO_WARNINGS=1 pnpm exec ts-run  ./src/scripts/generate_icon_manifests.ts",
+        "generate:previews": "cross-env NODE_NO_WARNINGS=1 pnpm exec ts-run ./src/scripts/generate_icon_previews.ts",
+        "build:assets": "cross-env NODE_NO_WARNINGS=1 pnpm exec ts-run ./src/scripts/build_dynamicon_assets.ts",
+        "build:assets:files": "cross-env NODE_NO_WARNINGS=1 pnpm exec ts-run ./src/scripts/build_dynamicon_assets.ts file",
+        "build:assets:folders": "cross-env NODE_NO_WARNINGS=1 pnpm exec ts-run ./src/scripts/build_dynamicon_assets.ts folder"
     },
     "dependencies": {
-        "@focused-ui/utilities-core": "workspace:*",
+        "@focused-ux/utilities-core": "workspace:*",
         "tsyringe": "^4.10.0",
         "reflect-metadata": "^0.2.2"
     },
@@ -36,7 +46,16 @@
         "puppeteer": "^22.6.5",
         "strip-json-comments": "^5.0.2"
     },
-    "peerDependencies": {
-        
+    "type": "module",
+    "private": true,
+    
+    "main": "./dist/index.js",
+    "module": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.js"
+        }
     }
 }

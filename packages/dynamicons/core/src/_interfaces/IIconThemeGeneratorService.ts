@@ -1,7 +1,3 @@
-// ESLint & Imports -->>
-
-//--------------------------------------------------------------------------------------------------------------<<
-
 export interface IIconThemeGeneratorService {
 	generateIconThemeManifest: (
 		baseManifestPath: string,

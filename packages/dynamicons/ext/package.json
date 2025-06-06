@@ -1,28 +1,41 @@
 {
-    "name": "focused-ui-dynamicons",
-    "displayName": "Dynamicons",
-    "description": "A dynamic and customizable icon theme for a focused user experience.",
-    "version": "0.1.0",
-    "private": true,
-    "publisher": "New Reality Designs",
-    "engines": {
-        "vscode": "^1.80.0"
+    "name": "focused-ux-dynamicons",
+    "version": "0.1.2",
+    "scripts": {
+        "check-types": "tsc --noEmit -p tsconfig.json --pretty",
+        "lint": "eslint . --ext .ts",
+        "lint:fix": "eslint . --ext .ts --fix",
+        "build:types": "tsc -p tsconfig.json --emitDeclarationOnly",
+        "watch:types": "tsc -p tsconfig.json --emitDeclarationOnly --watch",
+        "build:js": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.js --platform=node --format=esm --external:vscode --external:tsyringe --external:reflect-metadata --external:@focused-ux/dynamicons-core --external:focused-ux-dynamicons",
+        "watch:js": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.js --platform=node --format=esm --external:vscode --external:tsyringe --external:reflect-metadata --external:@focused-ux/dynamicons-core --external:focused-ux-dynamicons --watch",
+        "build:cjs": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.cjs --platform=node --format=cjs --external:vscode --external:tsyringe --external:reflect-metadata --external:@focused-ux/dynamicons-core --external:focused-ux-dynamicons",
+        "watch:cjs": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.cjs --platform=node --format=cjs --external:vscode --external:tsyringe --external:reflect-metadata --external:@focused-ux/dynamicons-core --external:focused-ux-dynamicons --watch",
+        "build": "pnpm run build:js",
+        "dev": "pnpm run watch:js",
+        "watch-only": "pnpm run watch:js",
+        "vscode:prepublish": "pnpm run build",
+        "package": "vsce package --no-dependencies -o ../../../vsix_packages/",
+        "publish": "vsce publish --no-dependencies",
+        "clean": "rimraf ./dist ./tsconfig.tsbuildinfo"
     },
-    "activationEvents": [
-        "onStartupFinished"
-    ],
-    "main": "./dist/extension.js",
-    "categories": [
-        "Themes"
-    ],
-    "keywords": [
-        "icon theme",
-        "theme",
-        "icons",
-        "dynamicons",
-        "focused",
-        "ui"
-    ],
+    "dependencies": {
+        "@focused-ux/dynamicons-core": "workspace:*",
+        "@focused-ux/utilities-core": "workspace:*",
+        "reflect-metadata": "^0.2.2",
+        "tsyringe": "^4.10.0"
+    },
+    "devDependencies": {
+        "@types/node": "latest",
+        "@types/vscode": "^1.100.0",
+        "cpx": "^1.5.0",
+        "esbuild": "^0.25.4",
+        "mkdirp": "^3.0.1",
+        "rimraf": "^5.0.5",
+        "sharp": "^0.33.5",
+        "ts-node": "^10.9.2",
+        "typescript": "^5.8.3"
+    },
     "contributes": {
         "iconThemes": [
             {
@@ -39,13 +52,13 @@
             },
             {
                 "command": "dynamicons.assignIcon",
-                "title": "Dynamicons: Assign Icon to File/Folder...",
+                "title": "Assign Icon to File/Folder...",
                 "category": "Dynamicons",
                 "icon": "$(symbol-color)"
             },
             {
                 "command": "dynamicons.revertIcon",
-                "title": "Dynamicons: Revert Icon Assignment for File/Folder",
+                "title": "Revert Icon Assignment",
                 "category": "Dynamicons",
                 "icon": "$(discard)"
             },
@@ -71,6 +84,31 @@
                 "icon": "$(refresh)"
             }
         ],
+        "submenus": [
+            {
+                "id": "dynamicons.actionsSubmenu",
+                "label": "Dynamicons: Icon Actions"
+            }
+        ],
+        "menus": {
+            "explorer/context": [
+                {
+                    "submenu": "dynamicons.actionsSubmenu",
+                    "group": "navigation",
+                    "when": "explorerResourceIsFolder || resourceFilename"
+                }
+            ],
+            "dynamicons.actionsSubmenu": [
+                {
+                    "command": "dynamicons.assignIcon",
+                    "group": "1_assign"
+                },
+                {
+                    "command": "dynamicons.revertIcon",
+                    "group": "1_assign"
+                }
+            ]
+        },
         "configuration": {
             "title": "Dynamicons Icon Theme",
             "properties": {
@@ -83,7 +121,7 @@
                 "dynamicons.customIconMappings": {
                     "type": "object",
                     "default": {},
-                    "description": "User-defined custom icon mappings. Keys are typically 'file:filename.ext', 'folder:foldername', or 'language:languageId'. Values are icon definition keys (e.g., '_file', '_myCustomIcon'). Managed by commands; direct editing not recommended.",
+                    "description": "User-defined custom icon mappings. Keys are typically 'file:filename.ext', 'folder:foldername', or 'language:languageId'. Values are icon definition keys (e.g., '_file', '_usr-myCustomIcon'). Managed by commands; direct editing not recommended.",
                     "scope": "window"
                 },
                 "dynamicons.hideExplorerArrows": {
@@ -110,34 +148,36 @@
             }
         }
     },
-    "scripts": {
-        "check-types": "tsc --noEmit -p tsconfig.json --pretty",
-        "lint": "eslint . --ext .ts",
-        "lint:fix": "eslint . --ext .ts --fix",
-        
-        "build:types": "tsc -p tsconfig.json --emitDeclarationOnly",
-        "build:js": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.js --platform=node --format=cjs --external:vscode --external:tsyringe --external:reflect-metadata --external:@focused-ui/dynamicons-core --external:@focused-ui/utilities-core",
-        "build": "pnpm run build:js",
-        
-        "vscode:prepublish": "pnpm run build",
-        "package": "vsce package --no-dependencies",
-        "publish": "vsce publish --no-dependencies",
-        "clean": "rimraf ./dist ./out ./*.vsix"
-
+    "displayName": "F-UX: Dynamicons",
+    "publisher": "NewRealityDesigns",
+    "description": "A dynamic and customizable icon theme for a focused user experience.",
+    "repository": "https://github.com/FocusTorn/focused-ux",
+    "private": true,
+    "engines": {
+        "vscode": "^1.100.0"
     },
-    "dependencies": {
-        "@focused-ui/dynamicons-core": "workspace:*",
-        "@focused-ui/utilities-core": "workspace:*",
-        "reflect-metadata": "^0.2.2",
-        "tsyringe": "^4.10.0"
-    },
-    "devDependencies": {
-        "@types/node": "latest",
-        "@types/vscode": "^1.100.0",
-        "esbuild": "^0.25.4",
-        "rimraf": "^5.0.5",
-        "ts-node": "^10.9.2",
-        "typescript": "^5.8.3",
-        "vsce": "^2.15.0"
-    }
+    "activationEvents": [
+        "onStartupFinished"
+    ],
+    "categories": [
+        "Themes"
+    ],
+    "keywords": [
+        "icon theme",
+        "theme",
+        "icons",
+        "dynamicons",
+        "focused",
+        "ui"
+    ],
+    "type": "module",
+    "main": "./dist/extension.js",
+    "references": [
+        {
+            "path": "../core"
+        },
+        {
+            "path": "../../utilities-core"
+        }
+    ]
 }

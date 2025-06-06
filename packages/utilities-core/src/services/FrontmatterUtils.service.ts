@@ -8,10 +8,10 @@ import * as readline from 'node:readline'
 import type { ReadStream, createReadStream as nodeCreateReadStreamType } from 'node:fs'
 
 //= IMPLEMENTATION TYPES ======================================================================================
-import type { IFrontmatterUtilsService } from '../_interfaces/IFrontmatterUtilsService.ts'
+import type { IFrontmatterUtilsService } from '../_interfaces/IFrontmatterUtilsService.js'
 
 //= INJECTED TYPES ============================================================================================
-import type { ICommonUtilsService } from '../_interfaces/ICommonUtilsService.ts'
+import type { ICommonUtilsService } from '../_interfaces/ICommonUtilsService.js'
 
 //--------------------------------------------------------------------------------------------------------------<<
 
@@ -20,7 +20,9 @@ export class FrontmatterUtilsService implements IFrontmatterUtilsService { //>
 
 	constructor(
 		@inject('ICommonUtilsService') private readonly iCommonUtils: ICommonUtilsService,
-		@inject('iFsCreateReadStream') private readonly iFsCreateReadStream: typeof nodeCreateReadStreamType,
+		@inject(
+			'iFsCreateReadStream',
+		) private readonly iFsCreateReadStream: typeof nodeCreateReadStreamType,
 	) {}
 
 	public async getFrontmatter( //>
@@ -77,21 +79,20 @@ export class FrontmatterUtilsService implements IFrontmatterUtilsService { //>
 					if (frontmatterStarted) {
 						cleanupAndResolve(frontmatterContent.trimEnd())
 						return
-					}
-					else {
+					} else {
 						frontmatterStarted = true
 					}
-				}
-				else if (frontmatterStarted) {
+				} else if (frontmatterStarted) {
 					frontmatterContent += `${line}\n`
-				}
-				else if (line.trim() !== '' && lineCount > 1) {
+				} else if (line.trim() !== '' && lineCount > 1) {
 					cleanupAndResolve(undefined)
 					return
 				}
 
 				if (lineCount > maxHeaderLines && frontmatterStarted) {
-					console.warn(`[FrontmatterUtilsService] Max header lines (${maxHeaderLines}) reached while parsing frontmatter.`)
+					console.warn(
+						`[FrontmatterUtilsService] Max header lines (${maxHeaderLines}) reached while parsing frontmatter.`,
+					)
 					cleanupAndResolve(undefined)
 				}
 			})
@@ -110,6 +111,7 @@ export class FrontmatterUtilsService implements IFrontmatterUtilsService { //>
 		if (!fileContent || typeof fileContent !== 'string') {
 			return false
 		}
+
 		const lines = fileContent.split(/\r?\n/)
 
 		if (lines.length === 0 || lines[0].trim() !== '---') {
@@ -121,6 +123,7 @@ export class FrontmatterUtilsService implements IFrontmatterUtilsService { //>
 		}
 
 		let frontmatterEndFound = false
+
 		for (let i = 1; i < lines.length; i++) {
 			if (lines[i].trim() === '---') {
 				frontmatterEndFound = true
@@ -141,9 +144,11 @@ export class FrontmatterUtilsService implements IFrontmatterUtilsService { //>
 				continue
 
 			const separatorIndex = line.indexOf(':')
+
 			if (separatorIndex !== -1) {
 				const key = line.slice(0, separatorIndex).trim()
 				const value = line.slice(separatorIndex + 1).trim()
+
 				if (key) {
 					result[key] = value
 				}

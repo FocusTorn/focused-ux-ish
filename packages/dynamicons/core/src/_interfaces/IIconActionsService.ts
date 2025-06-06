@@ -5,11 +5,32 @@ import type { Uri } from 'vscode'
 
 //--------------------------------------------------------------------------------------------------------------<<
 
-export interface IIconActionsService { //>
-	assignIconToResource: (resourceUri: Uri | undefined, iconTypeScope?: 'file' | 'folder' | 'language') => Promise<void>
-	revertIconAssignment: (resourceUri: Uri | undefined) => Promise<void>
-	showAvailableIconsQuickPick: (iconFilter?: (iconName: string) => boolean) => Promise<string | undefined>
+export interface IIconActionsService {
+	assignIconToResource: (
+		resourceUri: Uri | undefined,
+		iconTypeScope?: 'file' | 'folder' | 'language'
+	) => Promise<void>
+
+	/**
+	 * Shows a QuickPick list of available icon definitions.
+	 * @param assignableToType Filters icons suitable for 'file' or 'folder' assignment. If undefined, shows all.
+	 * @param currentFilter An optional filter function to further refine the list of icons based on their definition key.
+	 * @returns The selected icon definition key (e.g., "_file", "_usr-myCustomIcon") or undefined if no selection is made.
+	 */
+	showAvailableIconsQuickPick: (
+		assignableToType?: 'file' | 'folder',
+		currentFilter?: (iconName: string) => boolean
+	) => Promise<string | undefined>
+
+	showUserIconAssignments: (
+		type: 'file' | 'folder' | 'language' // Changed from 'file' | 'folder' to include 'language'
+	) => Promise<void>
+
+	revertIconAssignment: (
+		resourceUri: Uri | undefined
+	) => Promise<void>
+
 	toggleExplorerArrows: () => Promise<void>
-	showUserIconAssignments: (type: 'file' | 'folder') => Promise<void>
 	refreshIconTheme: () => Promise<void>
-} //<
+
+} // <

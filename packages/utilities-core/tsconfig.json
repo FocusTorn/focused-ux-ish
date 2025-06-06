@@ -1,15 +1,47 @@
 {
     "extends": "../../tsconfig.base.json",
     "compilerOptions": {
+        "tsBuildInfoFile": "./tsconfig.tsbuildinfo",
         "composite": true,
-        "rootDir": "./src",
-        "outDir": "./dist"
+        "rootDir": "src",
+        "outDir": "./dist",
+        "baseUrl": "."
     },
     "include": [
         "src/**/*"
     ],
     "exclude": [
         "node_modules",
-        "dist"
-    ]
+        "dist",
+        "ext/**/*"
+    ],
 }
+
+
+// {
+//     "compilerOptions": {
+//         "target": "ES2022",
+//         "module": "NodeNext",
+//         "moduleResolution": "NodeNext",
+//         "strict": true,
+//         "esModuleInterop": true,
+//         "skipLibCheck": false,
+//         "forceConsistentCasingInFileNames": true,
+        
+//         "baseUrl": ".",
+//         "rootDir": "src",     // Essential
+//         "outDir": "dist",    // Essential
+        
+        
+//         "declaration": true, // Essential
+//         "emitDeclarationOnly": true, // Essential for this test
+        
+        
+//         "composite": true,
+        
+//         "experimentalDecorators": true,
+//         "emitDecoratorMetadata": true,
+//     },
+//     "include": ["src/**/*"],
+//     "exclude": ["node_modules", "dist"]
+// }

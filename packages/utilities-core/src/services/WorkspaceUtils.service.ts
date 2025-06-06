@@ -7,10 +7,13 @@ import { inject, injectable } from 'tsyringe'
 import type { Uri } from 'vscode'
 
 //= IMPLEMENTATION TYPES ======================================================================================
-import type { IWorkspaceUtilsService, WorkspaceInfo } from '../_interfaces/IWorkspaceUtilsService.ts'
+import type {
+	IWorkspaceUtilsService,
+	WorkspaceInfo,
+} from '../_interfaces/IWorkspaceUtilsService.js'
 
 //= INJECTED TYPES ============================================================================================
-import type { IWorkspace } from '../_vscode_abstractions/IWorkspace.ts'
+import type { IWorkspace } from '../_vscode_abstractions/IWorkspace.js'
 
 //--------------------------------------------------------------------------------------------------------------<<
 
@@ -54,8 +57,7 @@ export class WorkspaceUtilsService implements IWorkspaceUtilsService { //>
 					}
 				}
 			})
-		}
-		else {
+		} else {
 			safeWorkspaceName = `no_workspace_open`
 		}
 

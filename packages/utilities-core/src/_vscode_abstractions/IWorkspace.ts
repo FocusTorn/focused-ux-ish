@@ -33,12 +33,37 @@ export interface IWorkspace { //>
 	) => FileSystemWatcher
 	getWorkspaceFolder: (uri: Uri) => WorkspaceFolder | undefined
 	asRelativePath: (pathOrUri: string | Uri, includeWorkspaceFolder?: boolean) => string
-	findFiles: (include: GlobPattern, exclude?: GlobPattern | null, maxResults?: number, token?: CancellationToken) => Thenable<Uri[]>
+	findFiles: (
+		include: GlobPattern,
+		exclude?: GlobPattern | null,
+		maxResults?: number,
+		token?: CancellationToken
+	) => Thenable<Uri[]>
 	saveAll: (includeUntitled?: boolean) => Thenable<boolean>
 	applyEdit: (edit: WorkspaceEdit) => Thenable<boolean>
-	onDidChangeConfiguration: (listener: (e: ConfigurationChangeEvent) => any, thisArgs?: any, disposables?: Disposable[]) => Disposable
-	onDidOpenTextDocument: (listener: (document: TextDocument) => any, thisArgs?: any, disposables?: Disposable[]) => Disposable
-	onDidCloseTextDocument: (listener: (document: TextDocument) => any, thisArgs?: any, disposables?: Disposable[]) => Disposable
-	onDidSaveTextDocument: (listener: (document: TextDocument) => any, thisArgs?: any, disposables?: Disposable[]) => Disposable
-	onDidChangeWorkspaceFolders: (listener: (event: WorkspaceFoldersChangeEvent) => any, thisArgs?: any, disposables?: Disposable[]) => Disposable
+	onDidChangeConfiguration: (
+		listener: (e: ConfigurationChangeEvent) => any,
+		thisArgs?: any,
+		disposables?: Disposable[]
+	) => Disposable
+	onDidOpenTextDocument: (
+		listener: (document: TextDocument) => any,
+		thisArgs?: any,
+		disposables?: Disposable[]
+	) => Disposable
+	onDidCloseTextDocument: (
+		listener: (document: TextDocument) => any,
+		thisArgs?: any,
+		disposables?: Disposable[]
+	) => Disposable
+	onDidSaveTextDocument: (
+		listener: (document: TextDocument) => any,
+		thisArgs?: any,
+		disposables?: Disposable[]
+	) => Disposable
+	onDidChangeWorkspaceFolders: (
+		listener: (event: WorkspaceFoldersChangeEvent) => any,
+		thisArgs?: any,
+		disposables?: Disposable[]
+	) => Disposable
 } //<

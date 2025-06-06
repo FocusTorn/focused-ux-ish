@@ -6,3 +6,4 @@ packages:
   - 'packages/terminal-actions/ext'
   - 'packages/utilities-core'
   - 'packages/tools'
+  

@@ -1,9 +1,9 @@
 {
 	"version": "0.2.0",
 	"configurations": [
-		
-        {
-			"name": "ES: Debug",
+
+        
+        { "name": "Focused UX", //>
 			"type": "extensionHost",
 			"request": "launch",
 			"args": [
@@ -11,11 +11,69 @@
 				"--extensionDevelopmentPath=${workspaceFolder}",
 				"${workspaceFolder}"
 			],
+			"outFiles": [
+				"${workspaceFolder}/dist/**/*.js"
+			],
 			"sourceMaps": true,
-			"preLaunchTask": "${defaultBuildTask}"
-		}
+            "preLaunchTask": "npm: build - monorepo"
+			// "preLaunchTask": "watch"
+		}, //<
+
         
         
         
+        
+        { "name": "Dynamicons", //>
+			"type": "extensionHost",
+			"request": "launch",
+			"args": [
+                "--profile=Clean",
+				"--extensionDevelopmentPath=${workspaceFolder}/packages/dynamicons/ext",
+				"${workspaceFolder}/packages/dynamicons/ext" // "${workspaceFolder} // for root
+			],
+			"outFiles": [
+				"${workspaceFolder}/packages/dynamicons/ext/dist/**/*.js",
+				"${workspaceFolder}/packages/dynamicons/core/dist/**/*.js"
+			],
+			"sourceMaps": true,
+
+            "preLaunchTask": "npm: build - monorepo"
+            // "preLaunchTask": "Prelaunch: Dynamicons" // MODIFIED HERE
+
+		}, //<
+        
+        
+        // { "name": "Dynamicons", //>
+		// 	"type": "extensionHost",
+		// 	"request": "launch",
+		// 	"args": [
+        //         "--profile=Clean",
+		// 		"--extensionDevelopmentPath=${workspaceFolder}/packages/dynamicons/ext",
+		// 		"${workspaceFolder}/packages/dynamicons/ext" // "${workspaceFolder} // for root
+		// 	],
+		// 	"outFiles": [
+		// 		"${workspaceFolder}/packages/dynamicons/ext/dist/**/*.js",
+		// 		"${workspaceFolder}/packages/dynamicons/core/dist/**/*.js"
+		// 	],
+		// 	"sourceMaps": true,
+		// 	"preLaunchTask": "Watch Dynamicons Packages"
+		// }, //<
+ 
+
+
+        // { "name": "ES: Debug", //>
+		// 	"type": "extensionHost",
+		// 	"request": "launch",
+		// 	"args": [
+		// 		"--profile=Clean",
+		// 		"--extensionDevelopmentPath=${workspaceFolder}",
+		// 		"${workspaceFolder}"
+		// 	],
+		// 	"sourceMaps": true,
+		// 	"preLaunchTask": "${defaultBuildTask}"
+		// } //<
+
+
+
 	]
 }

@@ -1,19 +1,21 @@
 {
     "extends": "../../../tsconfig.base.json",
     "compilerOptions": {
+        "tsBuildInfoFile": "./tsconfig.tsbuildinfo",
         "composite": true,
-        "rootDir": "..",
-        "outDir": "./dist",
-        "baseUrl": ".."
+        "rootDir": "../",      // Points to packages/dynamicons/
+        "outDir": "./dist",    // Relative to this tsconfig.json
+        "baseUrl": "../"       // Points to packages/dynamicons/
     },
     "include": [
-        "src/**/*",
-        "../_config/**/*"
+        "ext/src/**/*",        // Relative to baseUrl: packages/dynamicons/ext/src/**/*
+        "_config/**/*"         // Relative to baseUrl: packages/dynamicons/_config/**/*
     ],
     "exclude": [
         "node_modules",
         "dist",
-        "core/**/*"
+        "core/**/*"            // Similar to above, this exclude might need review.
+                               // It's likely intended to exclude the sibling 'core' package's sources.
     ],
     "references": [
         {

@@ -7,10 +7,10 @@ import { inject, injectable } from 'tsyringe'
 import type { QuickPickItem, QuickPickOptions } from 'vscode'
 
 //= IMPLEMENTATION TYPES ======================================================================================
-import type { IQuickPickUtilsService } from '../_interfaces/IQuickPickUtilsService.ts'
+import type { IQuickPickUtilsService } from '../_interfaces/IQuickPickUtilsService.js'
 
 //= INJECTED TYPES ============================================================================================
-import type { IWindow } from '../_vscode_abstractions/IWindow.ts'
+import type { IWindow } from '../_vscode_abstractions/IWindow.js'
 
 //--------------------------------------------------------------------------------------------------------------<<
 
@@ -29,6 +29,7 @@ export class QuickPickUtilsService implements IQuickPickUtilsService { //>
 		return new Promise<T[K] | undefined>((resolve) => {
 			let accepted = false
 			const quickPick = this.iWindow.createQuickPick<T>()
+
 			quickPick.items = items
 			quickPick.placeholder = options.placeHolder
 			quickPick.ignoreFocusOut = options.ignoreFocusOut === undefined ? true : options.ignoreFocusOut
@@ -38,13 +39,14 @@ export class QuickPickUtilsService implements IQuickPickUtilsService { //>
 
 			quickPick.onDidAccept(() => {
 				accepted = true
+
 				const selectedItem = quickPick.selectedItems[0]
+
 				quickPick.hide()
 				quickPick.dispose()
 				if (selectedItem) {
 					resolve(defaultKey ? selectedItem[defaultKey] : (selectedItem as unknown as T[K]))
-				}
-				else {
+				} else {
 					resolve(undefined)
 				}
 			})

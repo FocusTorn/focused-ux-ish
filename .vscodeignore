@@ -19,7 +19,7 @@
 
 !dist/extension.cjs
 
-
+# **/node_modules/**/*
 
 # Exclude everything else
 **/* 
