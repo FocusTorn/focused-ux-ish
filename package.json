@@ -3,8 +3,10 @@
     "scripts": {
         
               
-        "build:debug": "pnpm run build && powershell -Command \"Write-Host ('Debug build finished at: ' + (Get-Date -Format 'yyyy-MM-dd HH:mm:ss'))\"",
-
+      
+        "build:debug_old": "pnpm run build && powershell -Command \"$now = (Get-Date -Format 'yyyy-MM-dd HH:mm:ss'); Write-Host \\\"`$thresholdTime = Get-Date `\\\"$now`\\\"\\\"\"",
+        "build:debug": "pnpm run build && powershell -ExecutionPolicy Bypass -File ./_scripts/print-build-debug-info.ps1",
+    
     
         
         "tsum": "cross-env NODE_NO_WARNINGS=1 pnpm exec ts-run ./packages/tools/src/scripts/node/aggregate-tsc-errors.ts",
@@ -18,7 +20,7 @@
         "dev": "turbo run dev",
         "watch-only": "turbo run watch-only",
         "package": "mkdirp vsix_packages && turbo run package",
-        "clean": "turbo run clean && rimraf node_modules/.cache/turbo .turbo/cache",
+        "clean": "turbo run clean && rimraf node_modules/.cache/turbo .turbo",
         "nuke": "rimraf node_modules && rimraf packages/*/node_modules && pnpm store prune",
         "nuke:full": "rimraf node_modules && rimraf packages/*/node_modules && rimraf pnpm-lock.yaml && pnpm install",
         "validate": "node ./packages/tools/src/validate/index.js",
