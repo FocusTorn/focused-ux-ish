@@ -176,7 +176,7 @@ async function activateIconThemeIfNeeded(context: ExtensionContext): Promise<voi
 } //<
 
 export async function activate(context: ExtensionContext): Promise<void> { //>
-	console.log('ya')
+	// console.log('ya')
 	console.log(`[${EXT_NAME}] Activating...`)
 	registerDynamiconsDependencies(context)
 
