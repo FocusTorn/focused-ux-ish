@@ -1,6 +1,12 @@
 {
     "name": "focused-ux",
     "scripts": {
+        
+              
+        "build:debug": "pnpm run build && powershell -Command \"Write-Host ('Debug build finished at: ' + (Get-Date -Format 'yyyy-MM-dd HH:mm:ss'))\"",
+
+    
+        
         "tsum": "cross-env NODE_NO_WARNINGS=1 pnpm exec ts-run ./packages/tools/src/scripts/node/aggregate-tsc-errors.ts",
         "lsum": "cross-env NODE_NO_WARNINGS=1 pnpm exec ts-run ./packages/tools/src/scripts/node/aggregate-eslint-errors.ts",
         "tval":        "turbo run check-types && turbo run lint",
