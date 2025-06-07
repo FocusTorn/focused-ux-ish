@@ -233,7 +233,7 @@ export async function activate(context: ExtensionContext): Promise<void> { //>
 		}),
 	)
 	console.log(`[${EXT_NAME}] Activated.`)
-	console.log(`[${EXT_NAME}] Activated.`)
+	// console.log(`[${EXT_NAME}] Activated.`)
 } //<
 
 export function deactivate(): void { //>

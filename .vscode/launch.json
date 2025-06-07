@@ -37,8 +37,8 @@
 			],
 			"sourceMaps": true,
 
-            "preLaunchTask": "npm: build - monorepo"
-            // "preLaunchTask": "Prelaunch: Dynamicons" // MODIFIED HERE
+            // "preLaunchTask": "npm: build - monorepo"
+            "preLaunchTask": "Prelaunch: Dynamicons"
 
 		}, //<
         

@@ -4,7 +4,7 @@
         //= ESM AND NODENEXT ========================================================================
         "module": "NodeNext",
         "moduleResolution": "NodeNext",
-        "target": "ES2022", // Or ESNext, or a recent ECMAScript version
+        "target": "ES2022",
 
         //== STRONG TYPESCRIPT ======================================================================
         "strict": true,
@@ -29,13 +29,11 @@
         //= ALLOWED =============================================================================
         "allowSyntheticDefaultImports": true,
         "allowJs": true,
-        // "allowImportingTsExtensions": true,
 
         //= PATH ALIASES ========================================================================
         "baseUrl": ".",
         "rootDir": "src", // Default rootDir
         "outDir": "dist",   // Default outDir
-        "paths": { }
 
     },
     "exclude": [

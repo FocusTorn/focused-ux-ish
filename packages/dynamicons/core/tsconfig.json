@@ -1,23 +1,42 @@
 {
-    "extends": "../../../tsconfig.base.json",
     "compilerOptions": {
+        // "tsBuildInfoFile": "./tsconfig.tsbuildinfo",
+        // "composite": true,
         
-        "composite": true,
+        //= ESM AND NODENEXT ========================================================================
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
+        "target": "ES2022",
+        //== STRONG TYPESCRIPT ======================================================================
+        "strict": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "emitDeclarationOnly": true,
+        //= FOR MONOREPOS WITH PROJECT REFERENCES ===================================================
+        "declaration": true,
+        // "declarationMap": true,
+        "sourceMap": true,
+        "noEmit": false,
+        //= DECORATORS ==========================================================================
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        //= ALLOWED =============================================================================
+        "allowSyntheticDefaultImports": true,
+        "allowJs": true,
+        //= PATH ALIASES ========================================================================
+        "baseUrl": ".",
         "rootDir": "src",
-        "outDir": "./dist",
-        "baseUrl": "."
+        "outDir": "dist",
     },
     "include": [
-        "src/**/*"
+        "src/**/*.ts"
     ],
     "exclude": [
         "node_modules",
         "dist",
-        "ext/**/*"
     ],
-    "references": [
-        {
-            "path": "../../utilities-core"
-        }
-    ]
+   
 }

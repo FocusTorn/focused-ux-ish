@@ -7,10 +7,14 @@
         "ts-run": "./cli/ts-run.js"
     },
     "scripts": {
+        "== BUILD ============================================================================================ ": "",
         "build": "pnpm run build:types && pnpm run build:js",
-        "build:types": "tsc -p tsconfig.json --emitDeclarationOnly",
+        "build:types": "tsc -p tsconfig.json",
         "build:js": "esbuild ./src/index.ts --bundle --outfile=dist/index.js --platform=node --format=esm --external:vscode --external:tsyringe --external:reflect-metadata",
-        "clean": "rimraf ./dist ./tsconfig.tsbuildinfo"
+        
+        "== UTILITIES ======================================================================================== ": "",
+        "clean": "rimraf ./dist .turbo"
+
     },
     "devDependencies": {
         "chalk": "^5.3.0",

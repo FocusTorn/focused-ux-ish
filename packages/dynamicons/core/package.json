@@ -2,32 +2,34 @@
     "name": "@focused-ux/dynamicons-core",
     "version": "0.1.0",
     "scripts": {
+        "== BUILD ============================================================================================ ": "",
+        "build": "pnpm run build:types && pnpm run build:js",
+        "build:types": "tsc -p tsconfig.json",
+        "build:js":  "esbuild ./src/index.ts --bundle --outfile=dist/index.js  --format=esm --platform=node --external:vscode --external:tsyringe --external:reflect-metadata --external:@focused-ux/utilities-core",
+        "build:cjs": "esbuild ./src/index.ts --bundle --outfile=dist/index.cjs --format=cjs --platform=node --external:vscode --external:tsyringe --external:reflect-metadata --external:@focused-ux/utilities-core",
+
+        "== ASSETS =========================================================================================== ": "",
+        "build:assets": "cross-env NODE_NO_WARNINGS=1 pnpm exec ts-run ./src/scripts/build_dynamicon_assets.ts",
+        "build:assets:files": "cross-env NODE_NO_WARNINGS=1 pnpm exec ts-run ./src/scripts/build_dynamicon_assets.ts file",
+        "build:assets:folders": "cross-env NODE_NO_WARNINGS=1 pnpm exec ts-run ./src/scripts/build_dynamicon_assets.ts folder",
+        
+        "== WATCH ============================================================================================ ": "",
+        "watch-only": "pnpm run watch:types & pnpm run watch:js",
+        "watch:types": "tsc -p tsconfig.json --watch",        
+        "watch:js":     "esbuild ./src/index.ts --bundle --outfile=dist/index.js  --platform=node --format=esm --external:vscode --external:tsyringe --external:reflect-metadata --external:@focused-ux/utilities-core --watch",
+        "watch:cjs": "esbuild ./src/index.ts --bundle --outfile=dist/index.cjs --platform=node --format=cjs --external:vscode --external:tsyringe --external:reflect-metadata --external:@focused-ux/utilities-core --watch",
+
+        "== VALIDATE ========================================================================================= ": "",
         "check-types": "tsc --noEmit -p tsconfig.json --pretty",
         "lint": "eslint . --ext .ts",
         "lint:fix": "eslint . --ext .ts --fix",
-        "build:types": "tsc -p tsconfig.json --emitDeclarationOnly",
-        "watch:types": "tsc -p tsconfig.json --emitDeclarationOnly --watch",
         
-        
-        "build:js":"esbuild ./src/index.ts --bundle --outfile=dist/index.js  --platform=node --format=esm --external:vscode --external:tsyringe --external:reflect-metadata --external:@focused-ux/utilities-core",
-        "build:cjs": "esbuild ./src/index.ts --bundle --outfile=dist/index.cjs --platform=node --format=cjs --external:vscode --external:tsyringe --external:reflect-metadata --external:@focused-ux/utilities-core",
-        
-        "watch:js":     "esbuild ./src/index.ts --bundle --outfile=dist/index.js  --platform=node --format=esm --external:vscode --external:tsyringe --external:reflect-metadata --external:@focused-ux/utilities-core --watch",
-        "watch:cjs": "esbuild ./src/index.ts --bundle --outfile=dist/index.cjs --platform=node --format=cjs --external:vscode --external:tsyringe --external:reflect-metadata --external:@focused-ux/utilities-core --watch",
-        
-        
-        
-        "build": "pnpm run build:types && pnpm run build:js",
-        "dev": "pnpm run watch:types & pnpm run watch:js",
-        "watch-only": "pnpm run watch:types & pnpm run watch:js",
-        "clean": "rimraf ./dist ./tsconfig.tsbuildinfo",
-        
+        "== UTILITIES ======================================================================================== ": "",
+        "clean": "rimraf ./dist .turbo",
         "optimize:icons": "cross-env NODE_NO_WARNINGS=1 pnpm exec ts-run  ./src/scripts/optimize_icons.ts",
         "generate:manifests": "cross-env NODE_NO_WARNINGS=1 pnpm exec ts-run  ./src/scripts/generate_icon_manifests.ts",
-        "generate:previews": "cross-env NODE_NO_WARNINGS=1 pnpm exec ts-run ./src/scripts/generate_icon_previews.ts",
-        "build:assets": "cross-env NODE_NO_WARNINGS=1 pnpm exec ts-run ./src/scripts/build_dynamicon_assets.ts",
-        "build:assets:files": "cross-env NODE_NO_WARNINGS=1 pnpm exec ts-run ./src/scripts/build_dynamicon_assets.ts file",
-        "build:assets:folders": "cross-env NODE_NO_WARNINGS=1 pnpm exec ts-run ./src/scripts/build_dynamicon_assets.ts folder"
+        "generate:previews": "cross-env NODE_NO_WARNINGS=1 pnpm exec ts-run ./src/scripts/generate_icon_previews.ts"
+        
     },
     "dependencies": {
         "@focused-ux/utilities-core": "workspace:*",

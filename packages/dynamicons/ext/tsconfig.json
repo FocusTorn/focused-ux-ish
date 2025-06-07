@@ -1,28 +1,49 @@
 {
-    "extends": "../../../tsconfig.base.json",
     "compilerOptions": {
-        "tsBuildInfoFile": "./tsconfig.tsbuildinfo",
-        "composite": true,
-        "rootDir": "../",      // Points to packages/dynamicons/
-        "outDir": "./dist",    // Relative to this tsconfig.json
-        "baseUrl": "../"       // Points to packages/dynamicons/
+        // "tsBuildInfoFile": "./tsconfig.tsbuildinfo",
+        // "composite": true,
+        
+        //= ESM AND NODENEXT ========================================================================
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
+        "target": "ES2022",
+        //== STRONG TYPESCRIPT ======================================================================
+        "strict": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "emitDeclarationOnly": true,
+        //= FOR MONOREPOS WITH PROJECT REFERENCES ===================================================
+        "declaration": true,
+        // "declarationMap": true,
+        "sourceMap": true,
+        "noEmit": false,
+        //= DECORATORS ==========================================================================
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        //= ALLOWED =============================================================================
+        "allowSyntheticDefaultImports": true,
+        "allowJs": true,
+        //= PATH ALIASES ========================================================================
+        "baseUrl": "../", // Points to packages/dynamicons/
+        "rootDir": "../", // Points to packages/dynamicons/
+        "outDir": "./dist", // Relative to this tsconfig.json
     },
     "include": [
-        "ext/src/**/*",        // Relative to baseUrl: packages/dynamicons/ext/src/**/*
-        "_config/**/*"         // Relative to baseUrl: packages/dynamicons/_config/**/*
+        "src/**/*.ts",
     ],
     "exclude": [
         "node_modules",
         "dist",
-        "core/**/*"            // Similar to above, this exclude might need review.
-                               // It's likely intended to exclude the sibling 'core' package's sources.
     ],
-    "references": [
-        {
-            "path": "../core"
-        },
-        {
-            "path": "../../utilities-core"
-        }
-    ]
+    // "references": [
+    //     {
+    //         "path": "../core"
+    //     },
+    //     {
+    //         "path": "../../utilities-core"
+    //     }
+    // ]
 }

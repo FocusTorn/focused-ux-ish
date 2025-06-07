@@ -1,24 +1,43 @@
 {
-    "extends": "../../tsconfig.base.json", // Adjusted path to root tsconfig.base.json
     "compilerOptions": {
-        "tsBuildInfoFile": "./tsconfig.tsbuildinfo",
-        "composite": true,
-        "rootDir": ".",
-        "outDir": "./dist",
-        "baseUrl": ".",
-        "emitDeclarationOnly": true
+        // "tsBuildInfoFile": "./tsconfig.tsbuildinfo",
+        // "composite": true,
+        
+        //= ESM AND NODENEXT ========================================================================
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
+        "target": "ES2022",
+        //== STRONG TYPESCRIPT ======================================================================
+        "strict": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "emitDeclarationOnly": true,
+        //= FOR MONOREPOS WITH PROJECT REFERENCES ===================================================
+        "declaration": true,
+        // "declarationMap": true,
+        "sourceMap": true,
+        "noEmit": false,
+        //= DECORATORS ==========================================================================
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        //= ALLOWED =============================================================================
+        "allowSyntheticDefaultImports": true,
+        "allowJs": true,
+        //= PATH ALIASES ========================================================================
+        "baseUrl": ".", // Points to packages/dynamicons/
+        "rootDir": ".", // Points to packages/dynamicons/
+        "outDir": "dist", // Relative to this tsconfig.json
     },
     "include": [
-        "src/**/*.ts",      // If you have a src directory for build:js
-        "cli/**/*.js",      // For ts-run.js if you want it type-checked (though it's .js)
-                            // Or, if ts-run.js is meant to be plain JS, exclude it or don't include.
-                            // Given it's a bin script, it might be better to ensure it's .ts or handle separately.
-                            // For now, let's assume .ts files are the primary concern for tsc.
-        "src/scripts/**/*.ts"   // To include your utility scripts
+        "src/**/*.ts",
     ],
     "exclude": [
         "node_modules",
-        "dist"
-    ]
-    // No "references" needed unless this package depends on other local TS packages directly for types.
+        "dist",
+        "cli/**/*.js",
+    ],
+    
 }

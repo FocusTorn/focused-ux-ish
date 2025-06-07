@@ -1359,7 +1359,7 @@
     "svgo.config.js": "_svgo-config",
     "svgo.config.yaml": "_svgo-config",
     ".vscode-test.mjs": "_test",
-    "tsconfig.json": "_ahk",
+    "tsconfig.json": "_arduino-cli",
     "tsconfig.test.json": "_tsconfig",
     ".pnp.cjs": "_yarn",
     ".pnp.loader.mjs": "_yarn",

@@ -1,41 +1,44 @@
 {
     "name": "focused-ux",
     "scripts": {
-        
-              
-      
-        "build:debug_old": "pnpm run build && powershell -Command \"$now = (Get-Date -Format 'yyyy-MM-dd HH:mm:ss'); Write-Host \\\"`$thresholdTime = Get-Date `\\\"$now`\\\"\\\"\"",
-        "build:debug": "pnpm run build && powershell -ExecutionPolicy Bypass -File ./_scripts/print-build-debug-info.ps1",
-    
-    
-        
-        "tsum": "cross-env NODE_NO_WARNINGS=1 pnpm exec ts-run ./packages/tools/src/scripts/node/aggregate-tsc-errors.ts",
-        "lsum": "cross-env NODE_NO_WARNINGS=1 pnpm exec ts-run ./packages/tools/src/scripts/node/aggregate-eslint-errors.ts",
-        "tval":        "turbo run check-types && turbo run lint",
-        "tfix":        "turbo run check-types && turbo run lint:fix",
-        "check-types": "turbo run check-types",
-        "lint":        "turbo run lint",
-        "lint:fix":    "turbo run lint:fix",
+        "== BUILD ============================================================================================ ": "",
         "build": "turbo run build",
-        "dev": "turbo run dev",
+        "build:debug": "pnpm run build && powershell -ExecutionPolicy Bypass -File ./_scripts/print-build-debug-info.ps1",
+        "build:debug_old": "pnpm run build && powershell -Command \"$now = (Get-Date -Format 'yyyy-MM-dd HH:mm:ss'); Write-Host \\\"`$thresholdTime = Get-Date `\\\"$now`\\\"\\\"\"",
+        
+        "== WATCH ============================================================================================ ": "",
         "watch-only": "turbo run watch-only",
-        "package": "mkdirp vsix_packages && turbo run package",
-        "clean": "turbo run clean && rimraf node_modules/.cache/turbo .turbo",
-        "nuke": "rimraf node_modules && rimraf packages/*/node_modules && pnpm store prune",
-        "nuke:full": "rimraf node_modules && rimraf packages/*/node_modules && rimraf pnpm-lock.yaml && pnpm install",
+
+        "== VALIDATE ========================================================================================= ": "",
+        "check-types": "turbo run check-types",
+        "lint": "turbo run lint",
+        "lint:fix": "turbo run lint:fix",
+
         "validate": "node ./packages/tools/src/validate/index.js",
         "vlint": "node ./packages/tools/src/validate/index.js lint",
         "vdeps": "node ./packages/tools/src/validate/index.js deps",
         "vtsc": "node ./packages/tools/src/validate/index.js tsc",
-        "eslint": "eslint \"**/src/**/*.{js,jsx,ts,tsx,cjs}\""
+        
+        "tsum": "cross-env NODE_NO_WARNINGS=1 pnpm exec ts-run ./packages/tools/src/scripts/node/aggregate-tsc-errors.ts",
+        "lsum": "cross-env NODE_NO_WARNINGS=1 pnpm exec ts-run ./packages/tools/src/scripts/node/aggregate-eslint-errors.ts",
+        "tval": "turbo run check-types && turbo run lint",
+        "tfix": "turbo run check-types && turbo run lint:fix",
+        
+        "eslint": "eslint \"**/src/**/*.{js,jsx,ts,tsx,cjs}\"",
+        "== FINALIZE ========================================================================================= ": "",
+        "package": "mkdirp vsix_packages && turbo run package",
+        
+        "== UTILITIES ======================================================================================== ": "",
+        "clean": "turbo run clean && rimraf node_modules/.cache/turbo .turbo",
+        "nuke": "rimraf node_modules && rimraf packages/*/node_modules && pnpm store prune",
+        "nuke:full": "rimraf node_modules && rimraf packages/*/node_modules && rimraf pnpm-lock.yaml && pnpm install"
+        
     },
     "devDependencies": {
-        "@focused-ux/tools": "workspace:*",
-        "focused-ux-dynamicons": "workspace:*",
         "@antfu/eslint-config": "^4.13.2",
         "@eslint/js": "^9.27.0",
+        "@focused-ux/tools": "workspace:*",
         "@seahax/eslint-plugin-wrap": "^0.6.7",
-        "@turbo/gen": "latest",
         "@types/node": "latest",
         "@types/vscode": "latest",
         "@typescript-eslint/parser": "^8.33.0",
@@ -44,6 +47,7 @@
         "cross-env": "^7.0.3",
         "eslint": "^9.27.0",
         "eslint-plugin-import": "^2.31.0",
+        "focused-ux-dynamicons": "workspace:*",
         "knip": "^5.59.1",
         "mkdirp": "^3.0.1",
         "prettier": "^3.5.3",
