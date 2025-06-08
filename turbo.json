@@ -1,6 +1,7 @@
 {
     "$schema": "./node_modules/turbo/schema.json", // "$schema": "https://turborepo.org/schema.json",
     "globalDependencies": ["pnpm-lock.yaml"],  // "extends": ["//"],
+    "globalEnv": [],
     "tasks": {
         "clean": {
             "cache": false

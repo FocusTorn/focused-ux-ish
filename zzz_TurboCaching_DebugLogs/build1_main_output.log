@@ -1,0 +1,423 @@
+2025-06-08T06:36:10.399-0500 [DEBUG] turborepo_lib::shim: Global turbo version: 2.5.4
+2025-06-08T06:36:10.401-0500 [TRACE] turborepo_repository::package_json: loading package.json from D:\_dev\!Projects\focused-ux\focused-ux\package.json
+2025-06-08T06:36:10.411-0500 [TRACE] turborepo_repository::package_json: loading package.json from D:\_dev\!Projects\focused-ux\package.json
+2025-06-08T06:36:10.411-0500 [TRACE] turborepo_repository::package_json: loading package.json from D:\_dev\!Projects\package.json
+2025-06-08T06:36:10.411-0500 [TRACE] turborepo_repository::package_json: loading package.json from D:\_dev\package.json
+2025-06-08T06:36:10.411-0500 [TRACE] turborepo_repository::package_json: loading package.json from D:\package.json
+2025-06-08T06:36:10.412-0500 [DEBUG] turborepo_lib::shim: Repository Root: D:\_dev\!Projects\focused-ux\focused-ux
+2025-06-08T06:36:10.412-0500 [DEBUG] turborepo_lib::shim::local_turbo_state: No local turbo binary found at: D:\_dev\!Projects\focused-ux\focused-ux\node_modules\turbo-windows-64\bin\turbo.exe
+2025-06-08T06:36:10.412-0500 [DEBUG] turborepo_lib::shim::local_turbo_state: No local turbo binary found at: D:\_dev\!Projects\focused-ux\focused-ux\node_modules\turbo\node_modules\turbo-windows-64\bin\turbo.exe
+2025-06-08T06:36:10.412-0500 [TRACE] turborepo_repository::package_json: loading package.json from D:\_dev\!Projects\focused-ux\focused-ux\node_modules\.pnpm\turbo@2.5.4\node_modules\turbo-windows-64\package.json
+2025-06-08T06:36:10.412-0500 [DEBUG] turborepo_lib::shim::local_turbo_state: Local turbo path: D:\_dev\!Projects\focused-ux\focused-ux\node_modules\.pnpm\turbo-windows-64@2.5.4\node_modules\turbo-windows-64\bin\turbo.exe
+2025-06-08T06:36:10.412-0500 [DEBUG] turborepo_lib::shim::local_turbo_state: Local turbo version: 2.5.4
+2025-06-08T06:36:10.417-0500 [DEBUG] turborepo_lib::shim: Running local turbo binary in D:\_dev\!Projects\focused-ux\focused-ux\node_modules\.pnpm\turbo-windows-64@2.5.4\node_modules\turbo-windows-64\bin\turbo.exe
+
+2025-06-08T06:36:10.418-0500 [DEBUG] turborepo_lib::shim: supports_skip_infer_and_single_package true
+2025-06-08T06:36:10.442-0500 [DEBUG] turborepo_lib::shim: Global turbo version: 2.5.4
+2025-06-08T06:36:10.464-0500 [TRACE] turborepo_telemetry::config: Telemetry config path: C:\Users\slett\AppData\Roaming\turborepo\telemetry.json
+turbo 2.5.4
+
+2025-06-08T06:36:10.501-0500 [DEBUG] turborepo_process: spawning children with pty: false
+2025-06-08T06:36:10.501-0500 [TRACE] turborepo_lib::run::builder: performing run on "windows-64"
+2025-06-08T06:36:10.502-0500 [TRACE] turborepo_repository::package_json: loading package.json from D:\_dev\!Projects\focused-ux\focused-ux\package.json
+2025-06-08T06:36:10.502-0500 [TRACE] turborepo_telemetry::config: Telemetry config path: C:\Users\slett\AppData\Roaming\turborepo\telemetry.json
+2025-06-08T06:36:10.503-0500 [DEBUG] turborepo_lib::run::builder: skipping turbod since we appear to be in a non-interactive context
+2025-06-08T06:36:10.503-0500 [TRACE] turborepo_telemetry: Flushed telemetry event queue (num_events=10)
+2025-06-08T06:36:10.505-0500 [DEBUG] turborepo_repository::discovery: discovering packages using caching strategy
+2025-06-08T06:36:10.505-0500 [DEBUG] turborepo_repository::discovery: discovering packages using primary strategy
+2025-06-08T06:36:10.505-0500 [DEBUG] turborepo_repository::discovery: discovering packages using local strategy
+2025-06-08T06:36:10.517-0500 [DEBUG] globwalk: processing includes: ["apps/*/package.json", "packages/dynamicons/core/package.json", "packages/dynamicons/ext/package.json", "packages/terminal-actions/core/package.json", "packages/terminal-actions/ext/package.json", "packages/utilities-core/package.json", "packages/tools/package.json"]
+2025-06-08T06:36:10.517-0500 [DEBUG] globwalk: processing excludes: ["**/node_modules/**", "**/bower_components/**"]
+2025-06-08T06:36:10.518-0500 [DEBUG] globwalk: 'D:\_dev\!Projects\focused-ux\focused-ux\packages\terminal-actions\core\package.json' doesn't have metadata
+2025-06-08T06:36:10.519-0500 [DEBUG] globwalk: 'D:\_dev\!Projects\focused-ux\focused-ux\packages\terminal-actions\ext\package.json' doesn't have metadata
+2025-06-08T06:36:10.519-0500 [DEBUG] globwalk: processed includes: ["D\\:/_dev/!Projects/focused-ux/focused-ux/apps/*/package.json", "D\\:/_dev/!Projects/focused-ux/focused-ux/packages/dynamicons/core/package.json", "D\\:/_dev/!Projects/focused-ux/focused-ux/packages/dynamicons/ext/package.json", "D\\:/_dev/!Projects/focused-ux/focused-ux/packages/terminal-actions/core/package.json", "D\\:/_dev/!Projects/focused-ux/focused-ux/packages/terminal-actions/ext/package.json", "D\\:/_dev/!Projects/focused-ux/focused-ux/packages/utilities-core/package.json", "D\\:/_dev/!Projects/focused-ux/focused-ux/packages/tools/package.json"]
+2025-06-08T06:36:10.519-0500 [DEBUG] globwalk: processed excludes: ["D\\:/_dev/!Projects/focused-ux/focused-ux/**/node_modules/**", "D\\:/_dev/!Projects/focused-ux/focused-ux/**/bower_components/**"]
+2025-06-08T06:36:10.557-0500 [TRACE] turborepo_repository::package_json: loading package.json from D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\ext\package.json
+2025-06-08T06:36:10.558-0500 [TRACE] turborepo_repository::package_json: loading package.json from D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\core\package.json
+2025-06-08T06:36:10.559-0500 [TRACE] turborepo_repository::package_json: loading package.json from D:\_dev\!Projects\focused-ux\focused-ux\packages\utilities-core\package.json
+2025-06-08T06:36:10.560-0500 [TRACE] turborepo_repository::package_json: loading package.json from D:\_dev\!Projects\focused-ux\focused-ux\packages\tools\package.json
+2025-06-08T06:36:10.560-0500 [DEBUG] turborepo_repository::discovery: discovering packages using caching strategy
+2025-06-08T06:36:10.562-0500 [DEBUG] turborepo_repository::discovery: discovering packages using caching strategy
+2025-06-08T06:36:10.623-0500 [TRACE] log: signal: Want
+2025-06-08T06:36:10.623-0500 [TRACE] log: signal found waiting giver, notifying
+2025-06-08T06:36:10.623-0500 [TRACE] log: poll_want: taker wants!
+2025-06-08T06:36:10.625-0500 [DEBUG] turborepo_repository::discovery: discovering packages using caching strategy
+2025-06-08T06:36:10.632-0500 [DEBUG] turborepo_lib::run::task_access: TASK ACCESS TRACE: unable to restore config from cache
+2025-06-08T06:36:10.635-0500 [DEBUG] turborepo_lib::turbo_json::loader: path: D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\core, turbo_json: Ok(None), turbo_jsonc: Ok(None)
+2025-06-08T06:36:10.635-0500 [DEBUG] turborepo_lib::turbo_json::loader: path: D:\_dev\!Projects\focused-ux\focused-ux\packages\tools, turbo_json: Ok(None), turbo_jsonc: Ok(None)
+2025-06-08T06:36:10.635-0500 [DEBUG] turborepo_lib::turbo_json::loader: path: D:\_dev\!Projects\focused-ux\focused-ux\packages\utilities-core, turbo_json: Ok(None), turbo_jsonc: Ok(None)
+2025-06-08T06:36:10.635-0500 [DEBUG] turborepo_lib::turbo_json::loader: path: D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\ext, turbo_json: Ok(None), turbo_jsonc: Ok(None)
+2025-06-08T06:36:10.635-0500 [DEBUG] turborepo_lib::turbo_json::loader: path: D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\core, turbo_json: Ok(None), turbo_jsonc: Ok(None)
+2025-06-08T06:36:10.635-0500 [DEBUG] turborepo_lib::turbo_json::loader: path: D:\_dev\!Projects\focused-ux\focused-ux\packages\tools, turbo_json: Ok(None), turbo_jsonc: Ok(None)
+2025-06-08T06:36:10.635-0500 [DEBUG] turborepo_lib::turbo_json::loader: path: D:\_dev\!Projects\focused-ux\focused-ux\packages\utilities-core, turbo_json: Ok(None), turbo_jsonc: Ok(None)
+2025-06-08T06:36:10.635-0500 [DEBUG] turborepo_lib::turbo_json::loader: path: D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\ext, turbo_json: Ok(None), turbo_jsonc: Ok(None)
+2025-06-08T06:36:10.635-0500 [DEBUG] turborepo_lib::turbo_json::loader: path: D:\_dev\!Projects\focused-ux\focused-ux\packages\utilities-core, turbo_json: Ok(None), turbo_jsonc: Ok(None)
+2025-06-08T06:36:10.636-0500 [DEBUG] turborepo_lib::turbo_json::loader: path: D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\core, turbo_json: Ok(None), turbo_jsonc: Ok(None)
+2025-06-08T06:36:10.636-0500 [DEBUG] turborepo_lib::turbo_json::loader: path: D:\_dev\!Projects\focused-ux\focused-ux\packages\utilities-core, turbo_json: Ok(None), turbo_jsonc: Ok(None)
+ΓÇó Packages in scope: @focused-ux/dynamicons-core, @focused-ux/tools, @focused-ux/utilities-core, focused-ux-dynamicons
+ΓÇó Running build in 4 packages
+ΓÇó Remote caching disabled
+2025-06-08T06:36:10.636-0500 [TRACE] turborepo_lib::task_hash: scm running in git mode
+2025-06-08T06:36:10.638-0500 [TRACE] turborepo_telemetry::config: Telemetry config path: C:\Users\slett\AppData\Roaming\turborepo\telemetry.json
+2025-06-08T06:36:10.638-0500 [TRACE] turborepo_telemetry::config: Telemetry config path: C:\Users\slett\AppData\Roaming\turborepo\telemetry.json
+2025-06-08T06:36:10.638-0500 [TRACE] turborepo_telemetry::config: Telemetry config path: C:\Users\slett\AppData\Roaming\turborepo\telemetry.json
+2025-06-08T06:36:10.638-0500 [TRACE] turborepo_telemetry::config: Telemetry config path: C:\Users\slett\AppData\Roaming\turborepo\telemetry.json
+2025-06-08T06:36:10.639-0500 [TRACE] turborepo_telemetry::config: Telemetry config path: C:\Users\slett\AppData\Roaming\turborepo\telemetry.json
+2025-06-08T06:36:10.639-0500 [TRACE] turborepo_telemetry::config: Telemetry config path: C:\Users\slett\AppData\Roaming\turborepo\telemetry.json
+2025-06-08T06:36:10.640-0500 [DEBUG] globwalk: processing includes: ["packages/utilities-core/src/**", "packages/utilities-core/cli/**", "packages/utilities-core/assets/**", "packages/utilities-core/package.json", "packages/utilities-core/tsconfig.json", "packages/utilities-core/package.json", "packages/utilities-core/turbo.json", "packages/utilities-core/turbo.jsonc"]
+2025-06-08T06:36:10.640-0500 [DEBUG] globwalk: processing excludes: ["packages/utilities-core/**/.turbo/**"]
+2025-06-08T06:36:10.640-0500 [TRACE] turborepo_telemetry::config: Telemetry config path: C:\Users\slett\AppData\Roaming\turborepo\telemetry.json
+2025-06-08T06:36:10.640-0500 [TRACE] turborepo_telemetry::config: Telemetry config path: C:\Users\slett\AppData\Roaming\turborepo\telemetry.json
+2025-06-08T06:36:10.640-0500 [TRACE] turborepo_telemetry: Flushed telemetry event queue (num_events=10)
+2025-06-08T06:36:10.640-0500 [DEBUG] globwalk: 'D:\_dev\!Projects\focused-ux\focused-ux\packages\utilities-core\turbo.json' doesn't have metadata
+2025-06-08T06:36:10.640-0500 [DEBUG] globwalk: 'D:\_dev\!Projects\focused-ux\focused-ux\packages\utilities-core\turbo.jsonc' doesn't have metadata
+2025-06-08T06:36:10.640-0500 [DEBUG] globwalk: processed includes: ["D\\:/_dev/!Projects/focused-ux/focused-ux/packages/utilities-core/src/**", "D\\:/_dev/!Projects/focused-ux/focused-ux/packages/utilities-core/cli/**", "D\\:/_dev/!Projects/focused-ux/focused-ux/packages/utilities-core/assets/**", "D\\:/_dev/!Projects/focused-ux/focused-ux/packages/utilities-core/package.json", "D\\:/_dev/!Projects/focused-ux/focused-ux/packages/utilities-core/tsconfig.json", "D\\:/_dev/!Projects/focused-ux/focused-ux/packages/utilities-core/package.json", "D\\:/_dev/!Projects/focused-ux/focused-ux/packages/utilities-core/turbo.json", "D\\:/_dev/!Projects/focused-ux/focused-ux/packages/utilities-core/turbo.jsonc"]
+2025-06-08T06:36:10.640-0500 [DEBUG] globwalk: processed excludes: ["D\\:/_dev/!Projects/focused-ux/focused-ux/packages/utilities-core/**/.turbo/**"]
+2025-06-08T06:36:10.641-0500 [DEBUG] globwalk: processing includes: ["packages/dynamicons/ext/src/**", "packages/dynamicons/ext/cli/**", "packages/dynamicons/ext/assets/**", "packages/dynamicons/ext/package.json", "packages/dynamicons/ext/tsconfig.json", "packages/dynamicons/ext/package.json", "packages/dynamicons/ext/turbo.json", "packages/dynamicons/ext/turbo.jsonc"]
+2025-06-08T06:36:10.641-0500 [DEBUG] globwalk: processing excludes: ["packages/dynamicons/ext/**/.turbo/**"]
+2025-06-08T06:36:10.641-0500 [DEBUG] globwalk: 'D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\ext\turbo.json' doesn't have metadata
+2025-06-08T06:36:10.641-0500 [DEBUG] globwalk: 'D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\ext\turbo.jsonc' doesn't have metadata
+2025-06-08T06:36:10.641-0500 [DEBUG] globwalk: processed includes: ["D\\:/_dev/!Projects/focused-ux/focused-ux/packages/dynamicons/ext/src/**", "D\\:/_dev/!Projects/focused-ux/focused-ux/packages/dynamicons/ext/cli/**", "D\\:/_dev/!Projects/focused-ux/focused-ux/packages/dynamicons/ext/assets/**", "D\\:/_dev/!Projects/focused-ux/focused-ux/packages/dynamicons/ext/package.json", "D\\:/_dev/!Projects/focused-ux/focused-ux/packages/dynamicons/ext/tsconfig.json", "D\\:/_dev/!Projects/focused-ux/focused-ux/packages/dynamicons/ext/package.json", "D\\:/_dev/!Projects/focused-ux/focused-ux/packages/dynamicons/ext/turbo.json", "D\\:/_dev/!Projects/focused-ux/focused-ux/packages/dynamicons/ext/turbo.jsonc"]
+2025-06-08T06:36:10.641-0500 [DEBUG] globwalk: processed excludes: ["D\\:/_dev/!Projects/focused-ux/focused-ux/packages/dynamicons/ext/**/.turbo/**"]
+2025-06-08T06:36:10.643-0500 [DEBUG] globwalk: processing includes: ["packages/tools/src/**", "packages/tools/cli/**", "packages/tools/assets/**", "packages/tools/package.json", "packages/tools/tsconfig.json", "packages/tools/package.json", "packages/tools/turbo.json", "packages/tools/turbo.jsonc"]
+2025-06-08T06:36:10.643-0500 [DEBUG] globwalk: processing excludes: ["packages/tools/**/.turbo/**"]
+2025-06-08T06:36:10.640-0500 [DEBUG] globwalk: processing includes: ["packages/dynamicons/core/src/**", "packages/dynamicons/core/cli/**", "packages/dynamicons/core/assets/**", "packages/dynamicons/core/package.json", "packages/dynamicons/core/tsconfig.json", "packages/dynamicons/core/package.json", "packages/dynamicons/core/turbo.json", "packages/dynamicons/core/turbo.jsonc"]
+2025-06-08T06:36:10.643-0500 [DEBUG] globwalk: processing excludes: ["packages/dynamicons/core/**/.turbo/**"]
+2025-06-08T06:36:10.643-0500 [DEBUG] globwalk: 'D:\_dev\!Projects\focused-ux\focused-ux\packages\tools\turbo.json' doesn't have metadata
+2025-06-08T06:36:10.643-0500 [DEBUG] globwalk: 'D:\_dev\!Projects\focused-ux\focused-ux\packages\tools\turbo.jsonc' doesn't have metadata
+2025-06-08T06:36:10.643-0500 [DEBUG] globwalk: processed includes: ["D\\:/_dev/!Projects/focused-ux/focused-ux/packages/tools/src/**", "D\\:/_dev/!Projects/focused-ux/focused-ux/packages/tools/cli/**", "D\\:/_dev/!Projects/focused-ux/focused-ux/packages/tools/assets/**", "D\\:/_dev/!Projects/focused-ux/focused-ux/packages/tools/package.json", "D\\:/_dev/!Projects/focused-ux/focused-ux/packages/tools/tsconfig.json", "D\\:/_dev/!Projects/focused-ux/focused-ux/packages/tools/package.json", "D\\:/_dev/!Projects/focused-ux/focused-ux/packages/tools/turbo.json", "D\\:/_dev/!Projects/focused-ux/focused-ux/packages/tools/turbo.jsonc"]
+2025-06-08T06:36:10.643-0500 [DEBUG] globwalk: processed excludes: ["D\\:/_dev/!Projects/focused-ux/focused-ux/packages/tools/**/.turbo/**"]
+2025-06-08T06:36:10.648-0500 [DEBUG] globwalk: 'D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\core\turbo.json' doesn't have metadata
+2025-06-08T06:36:10.649-0500 [DEBUG] globwalk: 'D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\core\turbo.jsonc' doesn't have metadata
+2025-06-08T06:36:10.650-0500 [DEBUG] globwalk: processed includes: ["D\\:/_dev/!Projects/focused-ux/focused-ux/packages/dynamicons/core/src/**", "D\\:/_dev/!Projects/focused-ux/focused-ux/packages/dynamicons/core/cli/**", "D\\:/_dev/!Projects/focused-ux/focused-ux/packages/dynamicons/core/assets/**", "D\\:/_dev/!Projects/focused-ux/focused-ux/packages/dynamicons/core/package.json", "D\\:/_dev/!Projects/focused-ux/focused-ux/packages/dynamicons/core/tsconfig.json", "D\\:/_dev/!Projects/focused-ux/focused-ux/packages/dynamicons/core/package.json", "D\\:/_dev/!Projects/focused-ux/focused-ux/packages/dynamicons/core/turbo.json", "D\\:/_dev/!Projects/focused-ux/focused-ux/packages/dynamicons/core/turbo.jsonc"]
+2025-06-08T06:36:10.650-0500 [DEBUG] globwalk: processed excludes: ["D\\:/_dev/!Projects/focused-ux/focused-ux/packages/dynamicons/core/**/.turbo/**"]
+2025-06-08T06:36:10.744-0500 [TRACE] log: signal: Want
+2025-06-08T06:36:10.744-0500 [TRACE] log: signal: Want
+2025-06-08T06:36:10.745-0500 [TRACE] log: signal: Want
+2025-06-08T06:36:10.745-0500 [TRACE] log: signal found waiting giver, notifying
+2025-06-08T06:36:10.745-0500 [TRACE] log: poll_want: taker wants!
+2025-06-08T06:36:10.863-0500 [TRACE] log: signal: Want
+2025-06-08T06:36:10.863-0500 [TRACE] log: signal: Want
+2025-06-08T06:36:11.302-0500 [DEBUG] turborepo_lib::run::global_hash: global hash env vars []
+2025-06-08T06:36:11.306-0500 [DEBUG] globwalk: processing includes: ["pnpm-lock.yaml"]
+2025-06-08T06:36:11.306-0500 [DEBUG] globwalk: processing excludes: ["**/node_modules/**", "**/bower_components/**"]
+2025-06-08T06:36:11.306-0500 [DEBUG] globwalk: processed includes: ["D\\:/_dev/!Projects/focused-ux/focused-ux/pnpm-lock.yaml"]
+2025-06-08T06:36:11.306-0500 [DEBUG] globwalk: processed excludes: ["D\\:/_dev/!Projects/focused-ux/focused-ux/**/node_modules/**", "D\\:/_dev/!Projects/focused-ux/focused-ux/**/bower_components/**"]
+2025-06-08T06:36:11.313-0500 [DEBUG] turborepo_lib::run::global_hash: external deps hash: 2ba366f59c9fe93a
+2025-06-08T06:36:11.477-0500 [DEBUG] turborepo_lib::run: running visitor
+2025-06-08T06:36:11.482-0500 [TRACE] turborepo_telemetry::config: Telemetry config path: C:\Users\slett\AppData\Roaming\turborepo\telemetry.json
+2025-06-08T06:36:11.483-0500 [TRACE] turborepo_telemetry::config: Telemetry config path: C:\Users\slett\AppData\Roaming\turborepo\telemetry.json
+2025-06-08T06:36:11.483-0500 [DEBUG] turborepo_lib::task_graph::visitor: task @focused-ux/tools#build hash is 5d179a5b1a1f79dd
+2025-06-08T06:36:11.485-0500 [TRACE] turborepo_telemetry::config: Telemetry config path: C:\Users\slett\AppData\Roaming\turborepo\telemetry.json
+2025-06-08T06:36:11.486-0500 [TRACE] turborepo_telemetry::config: Telemetry config path: C:\Users\slett\AppData\Roaming\turborepo\telemetry.json
+@focused-ux/tools:build: cache miss, executing 5d179a5b1a1f79dd
+2025-06-08T06:36:11.486-0500 [TRACE] turborepo_process: acquiring lock for spawning (D:\_dev\!Projects\focused-ux\focused-ux\packages\tools) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:11.486-0500 [TRACE] turborepo_process: acquired lock for spawning (D:\_dev\!Projects\focused-ux\focused-ux\packages\tools) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:11.486-0500 [TRACE] turborepo_telemetry::config: Telemetry config path: C:\Users\slett\AppData\Roaming\turborepo\telemetry.json
+2025-06-08T06:36:11.487-0500 [DEBUG] turborepo_lib::task_graph::visitor: task @focused-ux/utilities-core#build hash is 2efd96504ec7aab5
+2025-06-08T06:36:11.489-0500 [TRACE] turborepo_telemetry::config: Telemetry config path: C:\Users\slett\AppData\Roaming\turborepo\telemetry.json
+@focused-ux/utilities-core:build: cache miss, executing 2efd96504ec7aab5
+2025-06-08T06:36:11.490-0500 [TRACE] turborepo_process: acquiring lock for spawning (D:\_dev\!Projects\focused-ux\focused-ux\packages\utilities-core) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:11.493-0500 [TRACE] turborepo_process: releasing lock for spawning (D:\_dev\!Projects\focused-ux\focused-ux\packages\tools) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:11.493-0500 [TRACE] turborepo_process: acquired lock for spawning (D:\_dev\!Projects\focused-ux\focused-ux\packages\utilities-core) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:11.494-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\tools) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:11.494-0500 [DEBUG] turborepo_process::child: waiting for task: Some(8096)
+2025-06-08T06:36:11.499-0500 [TRACE] turborepo_process: releasing lock for spawning (D:\_dev\!Projects\focused-ux\focused-ux\packages\utilities-core) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:11.500-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\utilities-core) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:11.500-0500 [DEBUG] turborepo_process::child: waiting for task: Some(14972)
+2025-06-08T06:36:12.495-0500 [TRACE] turborepo_telemetry: Flushed telemetry event queue (num_events=6)
+2025-06-08T06:36:12.595-0500 [TRACE] turborepo_process::child: processing stdout line
+@focused-ux/utilities-core:build: 
+2025-06-08T06:36:12.596-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\utilities-core) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:12.596-0500 [TRACE] turborepo_process::child: processing stdout line
+@focused-ux/utilities-core:build: > @focused-ux/utilities-core@0.1.0 build D:\_dev\!Projects\focused-ux\focused-ux\packages\utilities-core
+2025-06-08T06:36:12.596-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\utilities-core) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+@focused-ux/utilities-core:build: > pnpm run build:types && pnpm run build:js
+2025-06-08T06:36:12.596-0500 [TRACE] turborepo_process::child: processing stdout line
+2025-06-08T06:36:12.596-0500 [TRACE] turborepo_process::child: processing stdout line
+@focused-ux/utilities-core:build: 
+2025-06-08T06:36:12.596-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\utilities-core) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+@focused-ux/tools:build: 
+2025-06-08T06:36:12.600-0500 [TRACE] turborepo_process::child: processing stdout line
+@focused-ux/tools:build: > @focused-ux/tools@0.1.0 build D:\_dev\!Projects\focused-ux\focused-ux\packages\tools
+@focused-ux/tools:build: > pnpm run build:types && pnpm run build:js
+2025-06-08T06:36:12.600-0500 [TRACE] turborepo_process::child: processing stdout line
+2025-06-08T06:36:12.600-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\tools) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:12.600-0500 [TRACE] turborepo_process::child: processing stdout line
+2025-06-08T06:36:12.600-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\tools) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+@focused-ux/tools:build: 
+2025-06-08T06:36:12.600-0500 [TRACE] turborepo_process::child: processing stdout line
+2025-06-08T06:36:12.600-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\tools) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:12.609-0500 [TRACE] log: signal: Want
+2025-06-08T06:36:12.610-0500 [TRACE] log: signal: Want
+2025-06-08T06:36:13.186-0500 [TRACE] turborepo_process::child: processing stdout line
+@focused-ux/tools:build: 
+@focused-ux/tools:build: > @focused-ux/tools@0.1.0 build:types D:\_dev\!Projects\focused-ux\focused-ux\packages\tools
+@focused-ux/tools:build: > tsc -p tsconfig.json
+@focused-ux/tools:build: 
+2025-06-08T06:36:13.186-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\tools) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:13.186-0500 [TRACE] turborepo_process::child: processing stdout line
+2025-06-08T06:36:13.186-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\tools) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:13.186-0500 [TRACE] turborepo_process::child: processing stdout line
+2025-06-08T06:36:13.186-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\tools) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:13.186-0500 [TRACE] turborepo_process::child: processing stdout line
+2025-06-08T06:36:13.186-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\tools) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:13.211-0500 [TRACE] turborepo_process::child: processing stdout line
+@focused-ux/utilities-core:build: 
+@focused-ux/utilities-core:build: > @focused-ux/utilities-core@0.1.0 build:types D:\_dev\!Projects\focused-ux\focused-ux\packages\utilities-core
+@focused-ux/utilities-core:build: > tsc -p tsconfig.json
+@focused-ux/utilities-core:build: 
+2025-06-08T06:36:13.211-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\utilities-core) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:13.211-0500 [TRACE] turborepo_process::child: processing stdout line
+2025-06-08T06:36:13.211-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\utilities-core) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:13.211-0500 [TRACE] turborepo_process::child: processing stdout line
+2025-06-08T06:36:13.211-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\utilities-core) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:13.211-0500 [TRACE] turborepo_process::child: processing stdout line
+2025-06-08T06:36:13.211-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\utilities-core) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:16.667-0500 [TRACE] turborepo_process::child: processing stdout line
+@focused-ux/tools:build: 
+@focused-ux/tools:build: > @focused-ux/tools@0.1.0 build:js D:\_dev\!Projects\focused-ux\focused-ux\packages\tools
+@focused-ux/tools:build: > esbuild ./src/index.ts --bundle --outfile=dist/index.js --platform=node --format=esm --external:vscode --external:tsyringe --external:reflect-metadata
+@focused-ux/tools:build: 
+2025-06-08T06:36:16.668-0500 [TRACE] turborepo_process::child: processing stdout line
+2025-06-08T06:36:16.668-0500 [TRACE] turborepo_process::child: processing stdout line
+2025-06-08T06:36:16.668-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\tools) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:16.668-0500 [TRACE] turborepo_process::child: processing stdout line
+2025-06-08T06:36:16.668-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\tools) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+@focused-ux/tools:build: 
+2025-06-08T06:36:16.855-0500 [TRACE] turborepo_process::child: processing stderr line
+2025-06-08T06:36:16.855-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\tools) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:16.855-0500 [TRACE] turborepo_process::child: processing stderr line
+@focused-ux/tools:build:   dist\index.js  162b 
+@focused-ux/tools:build: 
+2025-06-08T06:36:16.856-0500 [TRACE] turborepo_process::child: processing stderr line
+2025-06-08T06:36:16.856-0500 [TRACE] turborepo_process::child: processing stderr line
+@focused-ux/tools:build: Done in 6ms
+2025-06-08T06:36:16.856-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\tools) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:16.877-0500 [TRACE] turborepo_process::child: processing stdout line
+@focused-ux/utilities-core:build: 
+@focused-ux/utilities-core:build: > @focused-ux/utilities-core@0.1.0 build:js D:\_dev\!Projects\focused-ux\focused-ux\packages\utilities-core
+@focused-ux/utilities-core:build: > esbuild ./src/index.ts --bundle --outfile=dist/index.js --platform=node --format=esm --external:vscode --external:tsyringe --external:reflect-metadata
+2025-06-08T06:36:16.877-0500 [TRACE] turborepo_process::child: processing stdout line
+2025-06-08T06:36:16.877-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\utilities-core) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:16.877-0500 [TRACE] turborepo_process::child: processing stdout line
+@focused-ux/utilities-core:build: 
+2025-06-08T06:36:16.877-0500 [TRACE] turborepo_process::child: processing stdout line
+2025-06-08T06:36:16.877-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\utilities-core) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:16.994-0500 [TRACE] turborepo_process::child: reached EOF
+2025-06-08T06:36:16.994-0500 [TRACE] turborepo_process::child: reached EOF
+2025-06-08T06:36:17.012-0500 [DEBUG] turborepo_process::child: child process exited normally
+2025-06-08T06:36:17.012-0500 [TRACE] turborepo_process::child: sending child exit
+2025-06-08T06:36:17.012-0500 [DEBUG] turborepo_process::child: child process stopped
+2025-06-08T06:36:17.012-0500 [TRACE] turborepo_process::child: exit channel was updated
+2025-06-08T06:36:17.012-0500 [TRACE] turborepo_process::child: child process exited: (D:\_dev\!Projects\focused-ux\focused-ux\packages\tools) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:17.013-0500 [TRACE] turborepo_process::child: reached EOF
+2025-06-08T06:36:17.013-0500 [TRACE] turborepo_process::child: reached EOF
+2025-06-08T06:36:17.013-0500 [TRACE] turborepo_process::child: flushing child stdout/stderr buffers
+2025-06-08T06:36:17.013-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\tools) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:17.013-0500 [TRACE] turborepo_process::child: exit channel sender was dropped
+2025-06-08T06:36:17.013-0500 [DEBUG] turborepo_lib::run::cache: caching outputs: outputs: TaskOutputs { inclusions: ["packages\\tools\\.turbo/turbo-build.log", "packages\\tools\\dist/**"], exclusions: [] }
+2025-06-08T06:36:17.013-0500 [DEBUG] globwalk: processing includes: ["packages/tools/.turbo/turbo-build.log", "packages/tools/dist/**"]
+2025-06-08T06:36:17.013-0500 [DEBUG] globwalk: processing excludes: []
+2025-06-08T06:36:17.016-0500 [DEBUG] globwalk: processed includes: ["D\\:/_dev/!Projects/focused-ux/focused-ux/packages/tools/.turbo/turbo-build.log", "D\\:/_dev/!Projects/focused-ux/focused-ux/packages/tools/dist/**"]
+2025-06-08T06:36:17.016-0500 [DEBUG] globwalk: processed excludes: []
+@focused-ux/utilities-core:build: 
+2025-06-08T06:36:17.281-0500 [TRACE] turborepo_process::child: processing stderr line
+2025-06-08T06:36:17.281-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\utilities-core) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:17.282-0500 [TRACE] turborepo_process::child: processing stderr line
+@focused-ux/utilities-core:build:   dist\index.js  1.1mb
+2025-06-08T06:36:17.282-0500 [TRACE] turborepo_process::child: processing stderr line
+@focused-ux/utilities-core:build: 
+2025-06-08T06:36:17.282-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\utilities-core) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:17.282-0500 [TRACE] turborepo_process::child: processing stderr line
+@focused-ux/utilities-core:build: Done in 117ms
+2025-06-08T06:36:17.282-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\utilities-core) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:17.428-0500 [TRACE] turborepo_process::child: reached EOF
+2025-06-08T06:36:17.429-0500 [TRACE] turborepo_process::child: reached EOF
+2025-06-08T06:36:17.450-0500 [DEBUG] turborepo_process::child: child process exited normally
+2025-06-08T06:36:17.450-0500 [TRACE] turborepo_process::child: sending child exit
+2025-06-08T06:36:17.450-0500 [DEBUG] turborepo_process::child: child process stopped
+2025-06-08T06:36:17.450-0500 [TRACE] turborepo_process::child: exit channel was updated
+2025-06-08T06:36:17.450-0500 [TRACE] turborepo_process::child: child process exited: (D:\_dev\!Projects\focused-ux\focused-ux\packages\utilities-core) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:17.450-0500 [TRACE] turborepo_process::child: reached EOF
+2025-06-08T06:36:17.450-0500 [TRACE] turborepo_process::child: reached EOF
+2025-06-08T06:36:17.450-0500 [TRACE] turborepo_process::child: flushing child stdout/stderr buffers
+2025-06-08T06:36:17.450-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\utilities-core) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:17.450-0500 [TRACE] turborepo_process::child: exit channel sender was dropped
+2025-06-08T06:36:17.451-0500 [DEBUG] turborepo_lib::run::cache: caching outputs: outputs: TaskOutputs { inclusions: ["packages\\utilities-core\\.turbo/turbo-build.log", "packages\\utilities-core\\dist/**"], exclusions: [] }
+2025-06-08T06:36:17.451-0500 [DEBUG] globwalk: processing includes: ["packages/utilities-core/.turbo/turbo-build.log", "packages/utilities-core/dist/**"]
+2025-06-08T06:36:17.451-0500 [DEBUG] globwalk: processing excludes: []
+2025-06-08T06:36:17.454-0500 [DEBUG] globwalk: processed includes: ["D\\:/_dev/!Projects/focused-ux/focused-ux/packages/utilities-core/.turbo/turbo-build.log", "D\\:/_dev/!Projects/focused-ux/focused-ux/packages/utilities-core/dist/**"]
+2025-06-08T06:36:17.454-0500 [DEBUG] globwalk: processed excludes: []
+2025-06-08T06:36:17.466-0500 [TRACE] turborepo_telemetry::config: Telemetry config path: C:\Users\slett\AppData\Roaming\turborepo\telemetry.json
+2025-06-08T06:36:17.466-0500 [TRACE] turborepo_telemetry::config: Telemetry config path: C:\Users\slett\AppData\Roaming\turborepo\telemetry.json
+2025-06-08T06:36:17.467-0500 [DEBUG] turborepo_lib::task_graph::visitor: task @focused-ux/dynamicons-core#build hash is eef775c0eda1e6c9
+2025-06-08T06:36:17.471-0500 [TRACE] turborepo_telemetry::config: Telemetry config path: C:\Users\slett\AppData\Roaming\turborepo\telemetry.json
+@focused-ux/dynamicons-core:build: cache miss, executing eef775c0eda1e6c9
+2025-06-08T06:36:17.474-0500 [TRACE] turborepo_process: acquiring lock for spawning (D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\core) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:17.474-0500 [TRACE] turborepo_process: acquired lock for spawning (D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\core) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:17.480-0500 [TRACE] turborepo_process: releasing lock for spawning (D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\core) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:17.481-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\core) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:17.481-0500 [DEBUG] turborepo_process::child: waiting for task: Some(15348)
+@focused-ux/dynamicons-core:build: 
+2025-06-08T06:36:18.388-0500 [TRACE] turborepo_process::child: processing stdout line
+2025-06-08T06:36:18.389-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\core) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:18.389-0500 [TRACE] turborepo_process::child: processing stdout line
+2025-06-08T06:36:18.389-0500 [TRACE] turborepo_process::child: processing stdout line
+2025-06-08T06:36:18.389-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\core) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:18.389-0500 [TRACE] turborepo_process::child: processing stdout line
+@focused-ux/dynamicons-core:build: > @focused-ux/dynamicons-core@0.1.0 build D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\core
+@focused-ux/dynamicons-core:build: > pnpm run build:types && pnpm run build:js
+@focused-ux/dynamicons-core:build: 
+2025-06-08T06:36:18.389-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\core) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:18.478-0500 [TRACE] turborepo_telemetry: Flushed telemetry event queue (num_events=1)
+2025-06-08T06:36:18.593-0500 [TRACE] log: signal: Want
+2025-06-08T06:36:18.593-0500 [TRACE] log: signal: Want
+2025-06-08T06:36:18.766-0500 [TRACE] turborepo_process::child: processing stdout line
+@focused-ux/dynamicons-core:build: 
+@focused-ux/dynamicons-core:build: > @focused-ux/dynamicons-core@0.1.0 build:types D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\core
+@focused-ux/dynamicons-core:build: > tsc -p tsconfig.json
+@focused-ux/dynamicons-core:build: 
+2025-06-08T06:36:18.766-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\core) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:18.766-0500 [TRACE] turborepo_process::child: processing stdout line
+2025-06-08T06:36:18.766-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\core) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:18.766-0500 [TRACE] turborepo_process::child: processing stdout line
+2025-06-08T06:36:18.766-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\core) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:18.766-0500 [TRACE] turborepo_process::child: processing stdout line
+2025-06-08T06:36:18.766-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\core) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:21.452-0500 [TRACE] turborepo_process::child: processing stdout line
+@focused-ux/dynamicons-core:build: 
+@focused-ux/dynamicons-core:build: > @focused-ux/dynamicons-core@0.1.0 build:js D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\core
+@focused-ux/dynamicons-core:build: > esbuild ./src/index.ts --bundle --outfile=dist/index.js  --format=esm --platform=node --external:vscode --external:tsyringe --external:reflect-metadata --external:@focused-ux/utilities-core
+2025-06-08T06:36:21.452-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\core) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:21.452-0500 [TRACE] turborepo_process::child: processing stdout line
+2025-06-08T06:36:21.452-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\core) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:21.452-0500 [TRACE] turborepo_process::child: processing stdout line
+2025-06-08T06:36:21.452-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\core) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:21.452-0500 [TRACE] turborepo_process::child: processing stdout line
+@focused-ux/dynamicons-core:build: 
+2025-06-08T06:36:21.452-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\core) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:21.600-0500 [TRACE] turborepo_process::child: processing stderr line
+@focused-ux/dynamicons-core:build: 
+2025-06-08T06:36:21.600-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\core) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:21.601-0500 [TRACE] turborepo_process::child: processing stderr line
+@focused-ux/dynamicons-core:build:   dist\index.js  20.2kb
+@focused-ux/dynamicons-core:build: 
+2025-06-08T06:36:21.601-0500 [TRACE] turborepo_process::child: processing stderr line
+2025-06-08T06:36:21.601-0500 [TRACE] turborepo_process::child: processing stderr line
+@focused-ux/dynamicons-core:build: Done in 10ms
+2025-06-08T06:36:21.601-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\core) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:21.705-0500 [TRACE] turborepo_process::child: reached EOF
+2025-06-08T06:36:21.705-0500 [TRACE] turborepo_process::child: reached EOF
+2025-06-08T06:36:21.720-0500 [DEBUG] turborepo_process::child: child process exited normally
+2025-06-08T06:36:21.720-0500 [TRACE] turborepo_process::child: sending child exit
+2025-06-08T06:36:21.720-0500 [DEBUG] turborepo_process::child: child process stopped
+2025-06-08T06:36:21.720-0500 [TRACE] turborepo_process::child: exit channel was updated
+2025-06-08T06:36:21.720-0500 [TRACE] turborepo_process::child: child process exited: (D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\core) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:21.720-0500 [TRACE] turborepo_process::child: reached EOF
+2025-06-08T06:36:21.720-0500 [TRACE] turborepo_process::child: reached EOF
+2025-06-08T06:36:21.720-0500 [TRACE] turborepo_process::child: flushing child stdout/stderr buffers
+2025-06-08T06:36:21.720-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\core) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:21.720-0500 [TRACE] turborepo_process::child: exit channel sender was dropped
+2025-06-08T06:36:21.720-0500 [DEBUG] turborepo_lib::run::cache: caching outputs: outputs: TaskOutputs { inclusions: ["packages\\dynamicons\\core\\.turbo/turbo-build.log", "packages\\dynamicons\\core\\dist/**"], exclusions: [] }
+2025-06-08T06:36:21.720-0500 [DEBUG] globwalk: processing includes: ["packages/dynamicons/core/.turbo/turbo-build.log", "packages/dynamicons/core/dist/**"]
+2025-06-08T06:36:21.720-0500 [DEBUG] globwalk: processing excludes: []
+2025-06-08T06:36:21.721-0500 [DEBUG] globwalk: processed includes: ["D\\:/_dev/!Projects/focused-ux/focused-ux/packages/dynamicons/core/.turbo/turbo-build.log", "D\\:/_dev/!Projects/focused-ux/focused-ux/packages/dynamicons/core/dist/**"]
+2025-06-08T06:36:21.721-0500 [DEBUG] globwalk: processed excludes: []
+2025-06-08T06:36:21.730-0500 [TRACE] turborepo_telemetry::config: Telemetry config path: C:\Users\slett\AppData\Roaming\turborepo\telemetry.json
+2025-06-08T06:36:21.731-0500 [TRACE] turborepo_telemetry::config: Telemetry config path: C:\Users\slett\AppData\Roaming\turborepo\telemetry.json
+2025-06-08T06:36:21.732-0500 [DEBUG] turborepo_lib::task_graph::visitor: task focused-ux-dynamicons#build hash is 10459b46622f0188
+2025-06-08T06:36:21.736-0500 [TRACE] turborepo_telemetry::config: Telemetry config path: C:\Users\slett\AppData\Roaming\turborepo\telemetry.json
+focused-ux-dynamicons:build: cache miss, executing 10459b46622f0188
+2025-06-08T06:36:21.737-0500 [TRACE] turborepo_process: acquiring lock for spawning (D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\ext) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:21.737-0500 [TRACE] turborepo_process: acquired lock for spawning (D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\ext) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:21.742-0500 [TRACE] turborepo_process: releasing lock for spawning (D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\ext) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:21.742-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\ext) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:21.743-0500 [DEBUG] turborepo_process::child: waiting for task: Some(8344)
+2025-06-08T06:36:22.611-0500 [TRACE] turborepo_process::child: processing stdout line
+focused-ux-dynamicons:build: 
+focused-ux-dynamicons:build: > focused-ux-dynamicons@0.1.2 build D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\ext
+focused-ux-dynamicons:build: > pnpm run build:types && pnpm run build:js
+focused-ux-dynamicons:build: 
+2025-06-08T06:36:22.611-0500 [TRACE] turborepo_process::child: processing stdout line
+2025-06-08T06:36:22.611-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\ext) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:22.611-0500 [TRACE] turborepo_process::child: processing stdout line
+2025-06-08T06:36:22.611-0500 [TRACE] turborepo_process::child: processing stdout line
+2025-06-08T06:36:22.611-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\ext) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:22.733-0500 [TRACE] turborepo_telemetry: Flushed telemetry event queue (num_events=1)
+2025-06-08T06:36:22.846-0500 [TRACE] log: signal: Want
+2025-06-08T06:36:22.846-0500 [TRACE] log: signal: Want
+2025-06-08T06:36:23.105-0500 [TRACE] turborepo_process::child: processing stdout line
+focused-ux-dynamicons:build: 
+focused-ux-dynamicons:build: > focused-ux-dynamicons@0.1.2 build:types D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\ext
+focused-ux-dynamicons:build: > tsc -p tsconfig.json
+2025-06-08T06:36:23.105-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\ext) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+focused-ux-dynamicons:build: 
+2025-06-08T06:36:23.105-0500 [TRACE] turborepo_process::child: processing stdout line
+2025-06-08T06:36:23.105-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\ext) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:23.105-0500 [TRACE] turborepo_process::child: processing stdout line
+2025-06-08T06:36:23.105-0500 [TRACE] turborepo_process::child: processing stdout line
+2025-06-08T06:36:23.105-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\ext) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+focused-ux-dynamicons:build: 
+2025-06-08T06:36:25.303-0500 [TRACE] turborepo_process::child: processing stdout line
+2025-06-08T06:36:25.303-0500 [TRACE] turborepo_process::child: processing stdout line
+2025-06-08T06:36:25.303-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\ext) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:25.303-0500 [TRACE] turborepo_process::child: processing stdout line
+focused-ux-dynamicons:build: > focused-ux-dynamicons@0.1.2 build:js D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\ext
+focused-ux-dynamicons:build: > esbuild ./src/extension.ts --bundle --outfile=dist/extension.js --platform=node --format=esm --external:vscode --external:tsyringe --external:reflect-metadata --external:@focused-ux/dynamicons-core --external:focused-ux-dynamicons
+2025-06-08T06:36:25.303-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\ext) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:25.303-0500 [TRACE] turborepo_process::child: processing stdout line
+focused-ux-dynamicons:build: 
+2025-06-08T06:36:25.303-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\ext) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:25.523-0500 [TRACE] turborepo_process::child: processing stderr line
+focused-ux-dynamicons:build: 
+2025-06-08T06:36:25.523-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\ext) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:25.523-0500 [TRACE] turborepo_process::child: processing stderr line
+focused-ux-dynamicons:build:   dist\extension.js  1.1mb
+focused-ux-dynamicons:build: 
+2025-06-08T06:36:25.523-0500 [TRACE] turborepo_process::child: processing stderr line
+2025-06-08T06:36:25.523-0500 [TRACE] turborepo_process::child: processing stderr line
+focused-ux-dynamicons:build: Done in 72ms
+2025-06-08T06:36:25.523-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\ext) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:25.615-0500 [TRACE] turborepo_process::child: reached EOF
+2025-06-08T06:36:25.615-0500 [TRACE] turborepo_process::child: reached EOF
+2025-06-08T06:36:25.632-0500 [DEBUG] turborepo_process::child: child process exited normally
+2025-06-08T06:36:25.632-0500 [TRACE] turborepo_process::child: sending child exit
+2025-06-08T06:36:25.632-0500 [DEBUG] turborepo_process::child: child process stopped
+2025-06-08T06:36:25.632-0500 [TRACE] turborepo_process::child: exit channel was updated
+2025-06-08T06:36:25.632-0500 [TRACE] turborepo_process::child: child process exited: (D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\ext) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:25.632-0500 [TRACE] turborepo_process::child: reached EOF
+2025-06-08T06:36:25.632-0500 [TRACE] turborepo_process::child: reached EOF
+2025-06-08T06:36:25.632-0500 [TRACE] turborepo_process::child: flushing child stdout/stderr buffers
+2025-06-08T06:36:25.632-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\ext) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:25.632-0500 [TRACE] turborepo_process::child: exit channel sender was dropped
+2025-06-08T06:36:25.632-0500 [DEBUG] turborepo_lib::run::cache: caching outputs: outputs: TaskOutputs { inclusions: ["packages\\dynamicons\\ext\\.turbo/turbo-build.log", "packages\\dynamicons\\ext\\dist/**"], exclusions: [] }
+2025-06-08T06:36:25.632-0500 [DEBUG] globwalk: processing includes: ["packages/dynamicons/ext/.turbo/turbo-build.log", "packages/dynamicons/ext/dist/**"]
+2025-06-08T06:36:25.632-0500 [DEBUG] globwalk: processing excludes: []
+2025-06-08T06:36:25.632-0500 [DEBUG] globwalk: processed includes: ["D\\:/_dev/!Projects/focused-ux/focused-ux/packages/dynamicons/ext/.turbo/turbo-build.log", "D\\:/_dev/!Projects/focused-ux/focused-ux/packages/dynamicons/ext/dist/**"]
+2025-06-08T06:36:25.632-0500 [DEBUG] globwalk: processed excludes: []
+
+  Tasks:    4 successful, 4 total
+ Cached:    0 cached, 4 total
+   Time:    15.14s 
+Summary:    D:\_dev\!Projects\focused-ux\focused-ux\.turbo\runs\2yDwjJ5IoqDqShNhUwmEaQGXgWm.json
+
+2025-06-08T06:36:25.652-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\tools) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:25.652-0500 [DEBUG] turborepo_process: waiting for 4 processes to exit
+2025-06-08T06:36:25.653-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\ext) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:25.653-0500 [TRACE] turborepo_process::child: exit channel was updated
+2025-06-08T06:36:25.652-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\utilities-core) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:25.653-0500 [TRACE] turborepo_process::child: exit channel was updated
+2025-06-08T06:36:25.652-0500 [TRACE] turborepo_process::child: watching exit channel of (D:\_dev\!Projects\focused-ux\focused-ux\packages\dynamicons\core) C:\Users\slett\AppData\Local\pnpm\pnpm.exe run build
+2025-06-08T06:36:25.653-0500 [TRACE] turborepo_process::child: exit channel was updated
+2025-06-08T06:36:25.653-0500 [TRACE] turborepo_process::child: exit channel was updated
+2025-06-08T06:36:25.653-0500 [TRACE] turborepo_process: process exited: Ok(Some(Finished(Some(0))))
+2025-06-08T06:36:25.653-0500 [TRACE] turborepo_process: process exited: Ok(Some(Finished(Some(0))))
+2025-06-08T06:36:25.653-0500 [TRACE] turborepo_process: process exited: Ok(Some(Finished(Some(0))))
+2025-06-08T06:36:25.653-0500 [TRACE] turborepo_process: process exited: Ok(Some(Finished(Some(0))))
+2025-06-08T06:36:25.733-0500 [TRACE] turborepo_telemetry: Flushed telemetry event queue (num_events=1)
+2025-06-08T06:36:25.854-0500 [TRACE] log: signal: Want
+2025-06-08T06:36:25.854-0500 [TRACE] log: signal: Want
+2025-06-08T06:36:25.854-0500 [DEBUG] turborepo_telemetry: telemetry handle closed
+2025-06-08T06:36:25.855-0500 [TRACE] log: signal: Closed
+2025-06-08T06:36:25.855-0500 [TRACE] log: signal: Closed

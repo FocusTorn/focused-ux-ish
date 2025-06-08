@@ -21,7 +21,7 @@ ContextCherryPicker:
     - "**/.turbo/**"
     #- TESTING ---------------------------------------------- 
     - "coverage/"
-    - "**/*.log"
+    # - "**/*.log"
     #- BUILD ------------------------------------------------ 
     # - "**/build/**"
     # - "**/out/**"
@@ -38,6 +38,7 @@ ContextCherryPicker:
     - "**/LICENSE.txt"
     - "package-lock.json"
     - "desktop.ini"
+    
 
   projectTreeDisplay:
     alwaysHide: 

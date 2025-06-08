@@ -1,10 +1,9 @@
 {
 	"version": "2.0.0",
 	"tasks": [
-		
-        
-        {
-            "label": "npm: build - monorepo",
+
+
+        { "label": "npm: build - monorepo", //>
             "type": "npm",
             "script": "build",
             "problemMatcher": ["$tsc-watch", "$ts-esbuild-watch"],
@@ -14,13 +13,12 @@
                 "isDefault": true
             },
             "detail": "Runs 'pnpm run build' (turbo run build) for the entire monorepo."
-        },
-        
-        
+        }, //<
+
         { "label": "Build Dynamicons Packages", //>
 			"type": "shell",
 			// "command": "pnpm exec turbo run build --filter=focused-ux-dynamicons --filter=@focused-ux/dynamicons-core",
-            "command": "pnpm exec turbo run build --filter=focused-ux-dynamicons --filter=@focused-ux/dynamicons-core --verbosity=3", 
+            "command": "pnpm exec turbo run build --filter=focused-ux-dynamicons --filter=@focused-ux/dynamicons-core --verbosity=3",
 			"problemMatcher": ["$tsc"],
 			"presentation": {
 				"reveal": "always",
@@ -30,19 +28,93 @@
 			},
 			"group": "build"
 		}, //<
-            
-        
+
+        { "label": "Internal Watch Dynamicons", //>
+			"type": "shell",
+			"command": "pnpm exec turbo run watch-only --filter=focused-ux-dynamicons --filter=@focused-ux/dynamicons-core  --verbosity=3",
+			"isBackground": true,
+			"problemMatcher": ["$tsc-watch", "$ts-esbuild-watch"],
+			"presentation": {
+				"reveal": "silent",
+				"panel": "shared",
+				"group": "dynamiconsPrelaunch"
+			},
+			"group": "build"
+		}, //<
+
+        { "label": "Prelaunch: Dynamicons", //>
+			"dependsOrder": "sequence",
+			"dependsOn": ["Build Dynamicons Packages", "Internal Watch Dynamicons"],
+			"group": {
+				"kind": "build",
+				"isDefault": false
+			},
+			"problemMatcher": []
+		}, //<
+
+        { "label": "tsc", //>
+			"type": "shell",
+			"command": "tsc",
+			"args": ["--noEmit"],
+			"presentation": {
+				"reveal": "never",
+				"echo": false,
+				"focus": false,
+				"panel": "dedicated"
+			},
+			"problemMatcher": "$tsc-watch"
+		} //<
+
+        // { "label": "watch",  //> ["npm: watch:tsc", "npm: watch:esbuild"] // "transfer_package_json"
+		//     "dependsOn": ["npm: watch:tsc", "npm: watch:esbuild"],
+		//     "icon": { "id": "sync" } ,
+		//     "presentation": { "reveal": "never" },
+		//     "group": { "kind": "build", "isDefault": true }
+		// }, //<
+
+        // { "label": "transfer_package_json", //>
+		//     "hide": true,
+		//     "type": "npm",
+		//     "script": "Utility:Transfer_Package_Parts",
+		//     "group": { "kind": "build" },
+		//     "presentation": { "group": "watch", "reveal": "never" }
+		// }, //<
+
+        // { "label": "npm: watch:esbuild", //>
+		//     "hide": true,
+		//     "type": "npm",
+		//     "script": "Watch:Esbuild_Watch",
+		//     "group": "build",
+		//     "problemMatcher": "$ts-esbuild-watch",
+		//     "isBackground": true,
+		//     "presentation": { "group": "watch", "reveal": "never" }
+		// }, //<
+
+        // { "label": "npm: watch:tsc", //>
+		//     "hide": true,
+		//     "type": "npm",
+		//     "script": "Watch:TSC_Watch",
+		//     "group": "build",
+		//     "problemMatcher": "$tsc-watch",
+		//     "isBackground": true,
+		//     "presentation": { "group": "watch", "reveal": "never" }
+		// }, //<
+
+    ]
+}
+
+
         /*
         pnpm run clean
         turbo run build --filter=@focused-ux/utilities-core --dry=json > utilities_build1_dry.json
         pnpm exec turbo run build --filter=focused-ux-dynamicons --filter=@focused-ux/dynamicons-core
 
         in a separate terminal
-        
-        
-        
-        
-        
+
+
+
+
+
 
         First Build (Dry Run to capture initial state):
             turbo run build --filter=@focused-ux/utilities-core --dry=json > utilities_build1_dry.json
@@ -50,7 +122,7 @@
 
         Actual First Full Build (of relevant parts for the scenario):
             pnpm exec turbo run build --filter=focused-ux-dynamicons --filter=@focused-ux/dynamicons-core
-        
+
 
         Simulate the Watcher's Effect (if easy to do manually):
 
@@ -70,80 +142,6 @@
             utilities_build1_dry.json vs utilities_build2_dry.json
 
             dynamicons_core_build1_dry.json vs dynamicons_core_build2_dry.json
-            
+
         */
-        
-        
-        { "label": "Internal Watch Dynamicons", //>
-			"type": "shell",
-			"command": "pnpm exec turbo run watch-only --filter=focused-ux-dynamicons --filter=@focused-ux/dynamicons-core  --verbosity=3",
-			"isBackground": true,
-			"problemMatcher": ["$tsc-watch", "$ts-esbuild-watch"],
-			"presentation": {
-				"reveal": "silent",
-				"panel": "shared",
-				"group": "dynamiconsPrelaunch"
-			},
-			"group": "build"
-		}, //<
-		
-        { "label": "Prelaunch: Dynamicons", //>
-			"dependsOrder": "sequence",
-			"dependsOn": ["Build Dynamicons Packages", "Internal Watch Dynamicons"],
-			"group": {
-				"kind": "build",
-				"isDefault": false
-			},
-			"problemMatcher": []
-		}, //<
-		
-        { "label": "tsc", //>
-			"type": "shell",
-			"command": "tsc",
-			"args": ["--noEmit"],
-			"presentation": {
-				"reveal": "never",
-				"echo": false,
-				"focus": false,
-				"panel": "dedicated"
-			},
-			"problemMatcher": "$tsc-watch"
-		} //<
-		
-        // { "label": "watch",  //> ["npm: watch:tsc", "npm: watch:esbuild"] // "transfer_package_json"
-		//     "dependsOn": ["npm: watch:tsc", "npm: watch:esbuild"],
-		//     "icon": { "id": "sync" } ,
-		//     "presentation": { "reveal": "never" },
-		//     "group": { "kind": "build", "isDefault": true }
-		// }, //<
-		
-        // { "label": "transfer_package_json", //>
-		//     "hide": true,
-		//     "type": "npm",
-		//     "script": "Utility:Transfer_Package_Parts",
-		//     "group": { "kind": "build" },
-		//     "presentation": { "group": "watch", "reveal": "never" }
-		// }, //<
-		
-        // { "label": "npm: watch:esbuild", //>
-		//     "hide": true,
-		//     "type": "npm",
-		//     "script": "Watch:Esbuild_Watch",
-		//     "group": "build",
-		//     "problemMatcher": "$ts-esbuild-watch",
-		//     "isBackground": true,
-		//     "presentation": { "group": "watch", "reveal": "never" }
-		// }, //<
-		
-        // { "label": "npm: watch:tsc", //>
-		//     "hide": true,
-		//     "type": "npm",
-		//     "script": "Watch:TSC_Watch",
-		//     "group": "build",
-		//     "problemMatcher": "$tsc-watch",
-		//     "isBackground": true,
-		//     "presentation": { "group": "watch", "reveal": "never" }
-		// }, //<
-	
-    ]
-}
+
