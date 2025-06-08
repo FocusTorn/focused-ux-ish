@@ -14,9 +14,6 @@ importers:
       '@eslint/js':
         specifier: ^9.27.0
         version: 9.28.0
-      '@focused-ux/tools':
-        specifier: workspace:*
-        version: link:packages/tools
       '@seahax/eslint-plugin-wrap':
         specifier: ^0.6.7
         version: 0.6.7(@typescript-eslint/parser@8.33.1(eslint@9.28.0(jiti@2.4.2))(typescript@5.8.3))(eslint@9.28.0(jiti@2.4.2))(typescript@5.8.3)
@@ -32,9 +29,6 @@ importers:
       '@vitest/coverage-v8':
         specifier: ^3.1.4
         version: 3.2.1(vitest@3.2.1(@types/debug@4.1.12)(@types/node@22.15.29)(jiti@2.4.2)(yaml@2.8.0))
-      cpx:
-        specifier: ^1.5.0
-        version: 1.5.0
       cross-env:
         specifier: ^7.0.3
         version: 7.0.3
@@ -44,9 +38,6 @@ importers:
       eslint-plugin-import:
         specifier: ^2.31.0
         version: 2.31.0(@typescript-eslint/parser@8.33.1(eslint@9.28.0(jiti@2.4.2))(typescript@5.8.3))(eslint@9.28.0(jiti@2.4.2))
-      focused-ux-dynamicons:
-        specifier: workspace:*
-        version: link:packages/dynamicons/ext
       knip:
         specifier: ^5.59.1
         version: 5.60.1(@types/node@22.15.29)(typescript@5.8.3)
@@ -77,9 +68,6 @@ importers:
       '@focused-ux/utilities-core':
         specifier: workspace:*
         version: link:../../utilities-core
-      reflect-metadata:
-        specifier: ^0.2.2
-        version: 0.2.2
       tsyringe:
         specifier: ^4.10.0
         version: 4.10.0
@@ -160,6 +148,9 @@ importers:
 
   packages/tools:
     devDependencies:
+      '@focused-ux/dynamicons-core':
+        specifier: workspace:*
+        version: link:../dynamicons/core
       chalk:
         specifier: ^5.3.0
         version: 5.4.1
@@ -178,9 +169,6 @@ importers:
       gray-matter:
         specifier: ^4.0.3
         version: 4.0.3
-      reflect-metadata:
-        specifier: ^0.2.2
-        version: 0.2.2
       tsyringe:
         specifier: ^4.10.0
         version: 4.10.0

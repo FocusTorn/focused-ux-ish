@@ -6,19 +6,15 @@
         "build": "pnpm run build:types && pnpm run build:js",
         "build:types": "tsc -p tsconfig.json",
         "build:js": "esbuild ./src/index.ts --bundle --outfile=dist/index.js --platform=node --format=esm --external:vscode --external:tsyringe --external:reflect-metadata",
-        
         "== WATCH ============================================================================================ ": "",
         "watch:types": "tsc -p tsconfig.json --watch",
         "watch:js": "esbuild ./src/index.ts --bundle --outfile=dist/index.js --platform=node --format=esm --external:vscode --external:tsyringe --external:reflect-metadata --watch",
-        
         "== VALIDATE ========================================================================================= ": "",
         "check-types": "tsc --noEmit -p tsconfig.json --pretty",
         "lint": "eslint . --ext .ts",
         "lint:fix": "eslint . --ext .ts --fix",
-        
         "== UTILITIES ======================================================================================== ": "",
         "clean": "rimraf ./dist .turbo"
-        
     },
     "dependencies": {
         "gray-matter": "^4.0.3",
@@ -45,6 +41,4 @@
             "import": "./dist/index.js"
         }
     }
-    
-    
 }

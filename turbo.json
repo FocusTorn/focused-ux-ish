@@ -65,7 +65,7 @@
         "build": {
         "dependsOn": ["^build"],
         "outputs": [
-            "dist/**" // ONLY dist/**
+            "dist/**"
         ],
         "inputs": [
             "src/**",
@@ -86,13 +86,7 @@
                 "dist/assets/**"
             ]
         },
-        "dev": {
-            "cache": false,
-            "dependsOn": [
-                "^build"
-            ],
-            "persistent": true
-        },
+        
         "watch-only": {
             "cache": false,
             "persistent": true

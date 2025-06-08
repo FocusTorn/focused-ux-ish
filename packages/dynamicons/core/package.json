@@ -33,8 +33,7 @@
     },
     "dependencies": {
         "@focused-ux/utilities-core": "workspace:*",
-        "tsyringe": "^4.10.0",
-        "reflect-metadata": "^0.2.2"
+        "tsyringe": "^4.10.0"
     },
     "devDependencies": {
         "typescript": "^5.8.3",
@@ -60,4 +59,10 @@
             "import": "./dist/index.js"
         }
     }
+    
+    
+    
+    
+    
+    
 }
