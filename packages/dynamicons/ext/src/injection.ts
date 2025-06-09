@@ -28,7 +28,7 @@ import type { // Corrected: Added 'type' for all interface imports
 	IWindow,
 	IWorkspace,
 	ICommands,
-} from '@focused-ux/utilities-core'
+} from '@focused-ux/shared-services'
 import {
 	CommonUtilsService,
 	FileUtilsService,
@@ -37,7 +37,7 @@ import {
 	QuickPickUtilsService,
 	ShellUtilsService,
 	WorkspaceUtilsService,
-} from '@focused-ux/utilities-core'
+} from '@focused-ux/shared-services'
 
 //= NODE JS ===================================================================================================
 import { createReadStream as nodeFsCreateReadStreamFunction } from 'node:fs'

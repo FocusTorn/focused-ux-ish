@@ -21,7 +21,7 @@ import type {
 	IPathUtilsService,
 	IQuickPickUtilsService,
 	ICommonUtilsService,
-} from '@focused-ux/utilities-core'
+} from '@focused-ux/shared-services'
 import type { IIconThemeGeneratorService } from '../_interfaces/IIconThemeGeneratorService.js'
 
 //--------------------------------------------------------------------------------------------------------------<<

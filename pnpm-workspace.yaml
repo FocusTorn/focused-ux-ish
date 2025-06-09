@@ -1,9 +1,5 @@
 packages:
-  - 'apps/*'
-  - 'packages/dynamicons/core'
-  - 'packages/dynamicons/ext'
-  - 'packages/terminal-actions/core'
-  - 'packages/terminal-actions/ext'
-  - 'packages/utilities-core'
-  - 'packages/tools'
-  
+  - apps/*
+  - packages/shared/*
+  - packages/dynamicons/core
+  - packages/dynamicons/ext

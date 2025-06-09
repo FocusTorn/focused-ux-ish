@@ -7,7 +7,9 @@
         "build:types": "tsc -p tsconfig.json",
         "build:js":  "esbuild ./src/index.ts --bundle --outfile=dist/index.js  --format=esm --platform=node --external:vscode --external:tsyringe --external:reflect-metadata --external:@focused-ux/utilities-core",
         "build:cjs": "esbuild ./src/index.ts --bundle --outfile=dist/index.cjs --format=cjs --platform=node --external:vscode --external:tsyringe --external:reflect-metadata --external:@focused-ux/utilities-core",
-
+        "build:clean": "pnpm run clean && pnpm run build",
+        
+        
         "== ASSETS =========================================================================================== ": "",
         "build:assets": "cross-env NODE_NO_WARNINGS=1 pnpm exec ts-run ./src/scripts/build_dynamicon_assets.ts",
         "build:assets:files": "cross-env NODE_NO_WARNINGS=1 pnpm exec ts-run ./src/scripts/build_dynamicon_assets.ts file",
@@ -32,10 +34,12 @@
         
     },
     "dependencies": {
-        "@focused-ux/utilities-core": "workspace:*",
+        "@focused-ux/shared-services": "workspace:*",
         "tsyringe": "^4.10.0"
     },
     "devDependencies": {
+        "@focused-ux/tsconfig": "workspace:*",
+        "@focused-ux/config-eslint": "workspace:*",
         "typescript": "^5.8.3",
         "esbuild": "^0.25.4",
         "@types/node": "^20.17.47",
@@ -46,6 +50,7 @@
         "sharp": "^0.33.3",
         "puppeteer": "^22.6.5",
         "strip-json-comments": "^5.0.2"
+        
     },
     "type": "module",
     "private": true,

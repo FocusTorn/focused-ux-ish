@@ -1,5 +1,5 @@
 {
-    "name": "@focused-ux/utilities-core",
+    "name": "@focused-ux/shared-services",
     "version": "0.1.0",
     "scripts": {
         "== BUILD ============================================================================================ ": "",
@@ -7,6 +7,10 @@
         "build:types": "tsc -p tsconfig.json",
         "build:js": "esbuild ./src/index.ts --bundle --outfile=dist/index.js --platform=node --format=esm --external:vscode --external:tsyringe --external:reflect-metadata",
         
+        "build:clean": "pnpm run clean && pnpm run build",
+        
+        
+
         "== WATCH ============================================================================================ ": "",
         "watch:types": "tsc -p tsconfig.json --watch",
         "watch:js": "esbuild ./src/index.ts --bundle --outfile=dist/index.js --platform=node --format=esm --external:vscode --external:tsyringe --external:reflect-metadata --watch",
@@ -25,6 +29,8 @@
         "tsyringe": "^4.10.0"
     },
     "devDependencies": {
+        "@focused-ux/tsconfig": "workspace:*",
+        "@focused-ux/config-eslint": "workspace:*",
         "@types/node": "^20.17.47",
         "@types/vscode": "^1.100.0",
         "esbuild": "^0.25.4",

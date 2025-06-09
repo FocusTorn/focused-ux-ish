@@ -1,6 +1,7 @@
 {
     "typescript.tsdk": "node_modules/typescript/lib",
     "editor.formatOnSave": false,
+    "eslint.useFlatConfig": true,
     "eslint.workingDirectories": [
         {
             "mode": "auto"

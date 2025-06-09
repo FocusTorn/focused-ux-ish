@@ -9,15 +9,15 @@
     "scripts": {
         "== BUILD ============================================================================================ ": "",
         "build": "pnpm run build:types && pnpm run build:js",
+        "build:clean": "pnpm run clean && pnpm run build",
         "build:types": "tsc -p tsconfig.json",
         "build:js": "esbuild ./src/index.ts --bundle --outfile=dist/index.js --platform=node --format=esm --external:vscode --external:tsyringe --external:reflect-metadata",
-        
         "== UTILITIES ======================================================================================== ": "",
         "clean": "rimraf ./dist .turbo"
-
     },
     "devDependencies": {
-        "@focused-ux/dynamicons-core": "workspace:*",
+        "@focused-ux/tsconfig": "workspace:*",
+        "@focused-ux/config-eslint": "workspace:*",
         "chalk": "^5.3.0",
         "ts-node": "^10.9.2",
         "typescript": "^5.8.3",

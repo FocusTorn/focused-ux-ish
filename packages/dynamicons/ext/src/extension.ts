@@ -18,7 +18,7 @@ import type {
 	IPathUtilsService,
 	IFileUtilsService,
 	IWorkspace,
-} from '@focused-ux/utilities-core'
+} from '@focused-ux/shared-services'
 
 //--------------------------------------------------------------------------------------------------------------<<
 

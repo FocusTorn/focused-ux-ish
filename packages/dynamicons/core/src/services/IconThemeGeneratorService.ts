@@ -9,7 +9,7 @@ import { constants as fsConstants } from 'node:fs'
 
 //= IMPLEMENTATION TYPES ======================================================================================
 import type { IIconThemeGeneratorService } from '../_interfaces/IIconThemeGeneratorService.js' // Corrected extension
-import type { IFileUtilsService, IPathUtilsService, ICommonUtilsService } from '@focused-ux/utilities-core'
+import type { IFileUtilsService, IPathUtilsService, ICommonUtilsService } from '@focused-ux/shared-services'
 
 import { dynamiconsConstants } from '../_config/dynamicons.constants.js'
 

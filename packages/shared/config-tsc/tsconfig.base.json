@@ -1,12 +1,11 @@
 {
     "compilerOptions": {
-        // "tsBuildInfoFile": "./tsconfig.tsbuildinfo",
-        // "composite": true,
-        
+
         //= ESM AND NODENEXT ========================================================================
         "module": "NodeNext",
         "moduleResolution": "NodeNext",
         "target": "ES2022",
+
         //== STRONG TYPESCRIPT ======================================================================
         "strict": true,
         "esModuleInterop": true,
@@ -15,29 +14,32 @@
         "resolveJsonModule": true,
         "isolatedModules": true,
         "emitDeclarationOnly": true,
+
         //= FOR MONOREPOS WITH PROJECT REFERENCES ===================================================
         "declaration": true,
-        // "declarationMap": true,
+        "declarationMap": true,
         "sourceMap": true,
         "noEmit": false,
+
         //= DECORATORS ==========================================================================
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
+
         //= ALLOWED =============================================================================
         "allowSyntheticDefaultImports": true,
         "allowJs": true,
+
         //= PATH ALIASES ========================================================================
-        "baseUrl": ".", // Points to packages/dynamicons/
-        "rootDir": ".", // Points to packages/dynamicons/
-        "outDir": "dist", // Relative to this tsconfig.json
+        "baseUrl": ".",
+        "rootDir": "./src",
+        "outDir": "./dist",
+
     },
     "include": [
         "src/**/*.ts",
     ],
     "exclude": [
         "node_modules",
-        "dist",
-        "cli/**/*.js",
-    ],
-    
+        "dist"
+    ]
 }

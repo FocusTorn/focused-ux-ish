@@ -29,7 +29,7 @@ function formatOptimizationDetailLine( //>
 	type: 'file' | 'folder',
 	currentCount: number,
 	totalCount: number,
-	maxPrefixAndNameLength: number, // Added missing parameter
+	maxPrefixAndNameLength: number,
 ): string {
 	const countStr = `${String(currentCount).padStart(String(totalCount).length, ' ')} of ${totalCount}`
 	const descriptionPrefix = `        ${countStr} ${type}: `

@@ -8,6 +8,8 @@
         "build:js": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.js --platform=node --format=esm --external:vscode --external:tsyringe --external:reflect-metadata --external:@focused-ux/dynamicons-core",
         "build:cjs": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.cjs --platform=node --format=cjs --external:vscode --external:tsyringe --external:reflect-metadata --external:@focused-ux/dynamicons-core",        
 
+        "build:clean": "pnpm run clean && pnpm run build",
+
         "== WATCH ============================================================================================ ": "",
         "watch-only": "pnpm run watch:types & pnpm run watch:js",        
         "watch:types": "tsc -p tsconfig.json --watch",
@@ -30,11 +32,13 @@
     },
     "dependencies": {
         "@focused-ux/dynamicons-core": "workspace:*",
-        "@focused-ux/utilities-core": "workspace:*",
+        "@focused-ux/shared-services": "workspace:*",
         "reflect-metadata": "^0.2.2",
         "tsyringe": "^4.10.0"
     },
     "devDependencies": {
+        "@focused-ux/tsconfig": "workspace:*",
+        "@focused-ux/config-eslint": "workspace:*",
         "@types/node": "latest",
         "@types/vscode": "^1.100.0",
         "cpx": "^1.5.0",

@@ -2,10 +2,8 @@
     "name": "focused-ux",
     "scripts": {
         "== BUILD ============================================================================================ ": "",
-        "build": "turbo run build --summarize --output-logs=new-only",
+        "build": "turbo run build --summarize --output-logs=errors-only",
         "build:clean": "pnpm run clean && pnpm run build",
-        
-        
         "== WATCH ============================================================================================ ": "",
         "watch-only": "turbo run watch-only",
         "== VALIDATE ========================================================================================= ": "",
@@ -29,24 +27,18 @@
         "nuke:full": "rimraf node_modules && rimraf packages/*/node_modules && rimraf pnpm-lock.yaml && pnpm install"
     },
     "devDependencies": {
-        "@antfu/eslint-config": "^4.13.2",
-        "@eslint/js": "^9.27.0",
-        "@seahax/eslint-plugin-wrap": "^0.6.7",
+        "@focused-ux/config-eslint": "workspace:*",
         "@types/node": "latest",
         "@types/vscode": "latest",
-        "@typescript-eslint/parser": "^8.33.0",
         "@vitest/coverage-v8": "^3.1.4",
         "cross-env": "^7.0.3",
-        "eslint": "^9.27.0",
-        "eslint-plugin-import": "^2.31.0",
         "knip": "^5.59.1",
         "mkdirp": "^3.0.1",
         "prettier": "^3.5.3",
         "rimraf": "^6.0.1",
         "ts-node": "^10.9.2",
         "turbo": "^2.5.4",
-        "typescript": "^5.8.3",
-        "typescript-eslint": "^8.32.0"
+        "typescript": "^5.8.3"
     },
     "version": "0.1.0",
     "repository": "https://github.com/FocusTorn/focused-ux",
