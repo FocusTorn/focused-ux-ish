@@ -2,13 +2,10 @@
     "name": "focused-ux",
     "scripts": {
         "== BUILD ============================================================================================ ": "",
-        "build": "turbo run build --summarize",
+        "build": "turbo run build --summarize --output-logs=new-only",
         "build:clean": "pnpm run clean && pnpm run build",
-        "build:debug1": "rimraf dry-run-before-build1.json && pnpm run clean && turbo run build --dry=json > build1_prebuild-dry-run.json && turbo run build --verbosity=4 > build1.log",
-        "build:debug2": "turbo run build --dry=json > build2_prebuild-dry-run.json && turbo run build --verbosity=4 > build2.log",
-        "clear-debug-logs": "npx rimraf --glob '**/zzz_TurboCaching_DebugLogs/*'",
-        "build:debug": "pnpm run build && powershell -ExecutionPolicy Bypass -File ./_scripts/print-build-debug-info.ps1",
-        "build:debug_old": "pnpm run build && powershell -Command \"$now = (Get-Date -Format 'yyyy-MM-dd HH:mm:ss'); Write-Host \\\"`$thresholdTime = Get-Date `\\\"$now`\\\"\\\"\"",
+        
+        
         "== WATCH ============================================================================================ ": "",
         "watch-only": "turbo run watch-only",
         "== VALIDATE ========================================================================================= ": "",

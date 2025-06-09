@@ -18,10 +18,6 @@
             "preLaunchTask": "npm: build - monorepo"
 			// "preLaunchTask": "watch"
 		}, //<
-
-        
-        
-        
         
         { "name": "Dynamicons", //>
 			"type": "extensionHost",
@@ -36,10 +32,7 @@
 				"${workspaceFolder}/packages/dynamicons/core/dist/**/*.js"
 			],
 			"sourceMaps": true,
-
-            // "preLaunchTask": "npm: build - monorepo"
-            "preLaunchTask": "Prelaunch: Dynamicons"
-
+            "preLaunchTask": "Build Dynamicons Packages"
 		}, //<
         
         

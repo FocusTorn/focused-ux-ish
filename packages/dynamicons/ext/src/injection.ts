@@ -165,14 +165,10 @@ class WorkspaceAdapter implements IWorkspace { //>
 		section?: string,
 		resource?: Uri,
 	) {
-		console.log('fwef wefwegeg')
-        
 		return VsCodeWorkspace.getConfiguration(section, resource)
 	}
 
 	openTextDocument(uriOrOptions?: any) {
-		console.log('fwef wefwegeg')
-
 		return VsCodeWorkspace.openTextDocument(uriOrOptions)
 	}
 
@@ -182,8 +178,6 @@ class WorkspaceAdapter implements IWorkspace { //>
 		ignoreChangeEvents?: boolean,
 		ignoreDeleteEvents?: boolean,
 	) {
-		console.log('fwef wefwegeg')
-
 		return VsCodeWorkspace.createFileSystemWatcher(
 			globPattern,
 			ignoreCreateEvents,
@@ -200,8 +194,6 @@ class WorkspaceAdapter implements IWorkspace { //>
 		pathOrUri: string | Uri,
 		includeWorkspaceFolder?: boolean,
 	) {
-		console.log('fwef wefwegegfwgewgeg')
-
 		return VsCodeWorkspace.asRelativePath(pathOrUri, includeWorkspaceFolder)
 	}
 
@@ -211,8 +203,6 @@ class WorkspaceAdapter implements IWorkspace { //>
 		maxResults?: number,
 		token?: any,
 	) {
-		console.log('fwef wefwegegfwgewgeg')
-        
 		return VsCodeWorkspace.findFiles(include, exclude, maxResults, token)
 	}
 

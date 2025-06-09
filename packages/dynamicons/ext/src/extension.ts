@@ -28,8 +28,6 @@ let pathUtilsService: IPathUtilsService
 let fileUtilsService: IFileUtilsService
 let workspaceService: IWorkspace
 
-// Use the shared constants directly
-
 const EXT_NAME = dynamiconsConstants.packageNameExt
 const CONFIG_PREFIX = dynamiconsConstants.configPrefix
 const COMMANDS = dynamiconsConstants.commands
@@ -41,8 +39,6 @@ const DEFAULT_FILENAMES = dynamiconsConstants.defaults
 async function getGeneratedThemePath( //>
 	context: ExtensionContext,
 ): Promise<string> {
-	console.log(`[${EXT_NAME}] Deactivated.`)
-
 	const pathUtils = container.resolve<IPathUtilsService>('IPathUtilsService')
 	const config = vscode.workspace.getConfiguration(CONFIG_PREFIX)
 	const generatedThemeFileName = config.get<string>(
@@ -60,15 +56,11 @@ async function getBaseThemePath(context: ExtensionContext): Promise<string> { //
 		CONFIG_KEYS.baseThemeFileName,
 		DEFAULT_FILENAMES.baseThemeFilenameDefault,
 	)
-
-	console.log(`[${EXT_NAME}] Deactivated.`)
     
 	return pathUtils.iPathJoin(context.extensionPath, ASSETS_PATHS.themesPath, baseThemeFileName)
 } //<
 
 async function ensureThemeAssets(context: ExtensionContext): Promise<void> { //>
-	console.log(`[${EXT_NAME}] Deactivated.`)
-
 	pathUtilsService = pathUtilsService || container.resolve<IPathUtilsService>('IPathUtilsService')
 	fileUtilsService = fileUtilsService || container.resolve<IFileUtilsService>('IFileUtilsService')
 
@@ -106,8 +98,6 @@ async function ensureThemeAssets(context: ExtensionContext): Promise<void> { //>
 } //<
 
 async function regenerateAndApplyTheme(context: ExtensionContext): Promise<void> { //>
-	console.log(`[${EXT_NAME}] Deactivated.`)
-
 	iconThemeGeneratorService = iconThemeGeneratorService
 	  || container.resolve<IIconThemeGeneratorService>('IIconThemeGeneratorService')
 
@@ -156,8 +146,6 @@ async function regenerateAndApplyTheme(context: ExtensionContext): Promise<void>
 } //<
 
 async function activateIconThemeIfNeeded(context: ExtensionContext): Promise<void> { //>
-	console.log(`[${EXT_NAME}] Deactivated.`)
-
 	workspaceService = workspaceService || container.resolve<IWorkspace>('iWorkspace')
 
 	const workbenchConfig = workspaceService.getConfiguration('workbench')
@@ -186,9 +174,7 @@ async function activateIconThemeIfNeeded(context: ExtensionContext): Promise<voi
 } //<
 
 export async function activate(context: ExtensionContext): Promise<void> { //>
-	console.log('ya')
 	console.log(`[${EXT_NAME}] Activating...`)
-	console.log(`[${EXT_NAME}] Deactivated.`)
 
 	registerDynamiconsDependencies(context)
 
@@ -244,11 +230,8 @@ export async function activate(context: ExtensionContext): Promise<void> { //>
 			}
 		}),
 	)
-	console.log(`[${EXT_NAME}] Activated.`)
-	console.log(`[${EXT_NAME}] Activated.`)
 } //<
 
 export function deactivate(): void { //>
 	console.log(`[${EXT_NAME}] Deactivated.`)
-	console.log('ya')
 } //<

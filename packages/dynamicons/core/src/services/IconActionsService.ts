@@ -97,23 +97,53 @@ export class IconActionsService implements IIconActionsService {
 		) => Promise<boolean | Record<string, string>>,
 	): Promise<void> {
 		const config = this.iWorkspace.getConfiguration(this.EXTENSION_CONFIG_PREFIX, resourceUri)
-		const currentMappings = config.get<Record<string, string>>(this.CUSTOM_MAPPINGS_KEY) || {}
-		const newMappingsResult = await updateFn(currentMappings, config)
+		const originalMappingsFromConfig = config.get<Record<string, string>>(this.CUSTOM_MAPPINGS_KEY) || {}
+		
+		// Create a mutable shallow copy to pass to updateFn.
+		// updateFn will modify this copy.
+		const mutableMappingsCopy = { ...originalMappingsFromConfig }
+
+		console.log(`[Dynamicons Update Debug] updateCustomIconMappings called.`)
+		console.log(`[Dynamicons Update Debug] Original mappings fetched from config.get:`, JSON.stringify(originalMappingsFromConfig, null, 2))
+		console.log(`[Dynamicons Update Debug] Mutable copy created for updateFn:`, JSON.stringify(mutableMappingsCopy, null, 2))
+
+		const newMappingsResult = await updateFn(mutableMappingsCopy, config) // updateFn modifies mutableMappingsCopy
 
 		if (typeof newMappingsResult === 'boolean') {
 			if (newMappingsResult) {
-				// If updateFn returns true (implies a change that needs a refresh, though not typical for assign/revert logic).
-				// Rely on onDidChangeConfiguration in extension.ts to handle the full regenerate & apply.
+				// This path is typically for operations that don't return the full mappings object but signal a change.
+				console.log(`[Dynamicons Update Debug] updateFn returned boolean 'true'. Assuming direct config update by updateFn or manual refresh needed.`)
 				this.iWindow.showInformationMessage('Configuration updated. Theme will refresh automatically.')
+			} else {
+				console.log(`[Dynamicons Update Debug] updateFn returned boolean 'false'. No changes to persist.`)
 			}
 		} else if (typeof newMappingsResult === 'object') {
-			await config.update(this.CUSTOM_MAPPINGS_KEY, newMappingsResult, this.vscodeConfigTarget.Global)
-			// Configuration updated. Rely on onDidChangeConfiguration in extension.ts
-			// to handle regeneration and application of the theme.
-			// Specific messages about assignment/reversion outcomes are handled by the calling methods (assignIconToResource, revertIconAssignment).
+			// This path is taken by revertIconAssignment.
+			// newMappingsResult should be the `mutableMappingsCopy` object, now modified by updateFn.
+			console.log(`[Dynamicons Update Debug] updateFn returned mappings object.`)
+			console.log(`[Dynamicons Update Debug] Original mappings (before updateFn was called on its copy):`, JSON.stringify(originalMappingsFromConfig, null, 2))
+			console.log(`[Dynamicons Update Debug] Mappings object after updateFn (this will be sent to config.update):`, JSON.stringify(newMappingsResult, null, 2))
+
+			if (JSON.stringify(originalMappingsFromConfig) === JSON.stringify(newMappingsResult)) {
+				console.warn(`[Dynamicons Update Debug] WARNING: Mappings object after updateFn is identical to original. No update will likely occur or is needed.`)
+				// If no message was shown by updateFn (e.g. "No custom assignment found"), show a generic one.
+				// This part might need refinement based on whether updateFn already showed a message.
+			} else {
+				console.log(`[Dynamicons Update Debug] Mappings object IS different. Proceeding with config.update.`)
+			}
+			
+			try {
+				console.log(`[Dynamicons Update Debug] Attempting to call config.update with key '${this.CUSTOM_MAPPINGS_KEY}' and target Global.`)
+				await config.update(this.CUSTOM_MAPPINGS_KEY, newMappingsResult, this.vscodeConfigTarget.Global)
+				console.log(`[Dynamicons Update Debug] config.update call completed for key: ${this.CUSTOM_MAPPINGS_KEY}. Check settings.json.`)
+				// The success message like "Icon assignment reverted" is shown by the calling method (revertIconAssignment)
+			} catch (error: any) {
+				console.error(`[Dynamicons Update Debug] Error during config.update:`, error)
+				this.iWindow.showErrorMessage(`Failed to update icon mappings: ${error.message || 'Unknown error'}`)
+			}
 		}
 	} //<
-
+    
 	private async getIconOptionsFromDirectory( //>
 		directoryUri: VsCodeUri,
 		iconKind: 'file' | 'folder' | 'user',
@@ -238,7 +268,7 @@ export class IconActionsService implements IIconActionsService {
 		) as IconQuickPickItemInternal[]
 
 		if (dataItems.length === 0) {
-			this.iWindow.showInformationMessage('No aaasaavailable icons match the criteria.')
+			this.iWindow.showInformationMessage('No available icons match the criteria.')
 			return undefined
 		}
 
@@ -329,50 +359,83 @@ export class IconActionsService implements IIconActionsService {
 
 		await this.updateCustomIconMappings(undefined, async (mappings) => {
 			let found = false
-			// Determine actual type to construct precise keys to check
 			let actualType: 'file' | 'folder' | undefined
+
+			// --- Start of Added Diagnostic Logging ---
+			console.log(`[Dynamicons Revert Debug] Called for URI: ${resourceUri.fsPath}`)
+			console.log(`[Dynamicons Revert Debug] Derived resourceName: '${resourceName}'`)
+			console.log(`[Dynamicons Revert Debug] Current mappings from settings:`, JSON.stringify(mappings, null, 2))
+			// --- End of Added Diagnostic Logging ---
 
 			try {
 				const stat = await this.iFspStat(resourceUri.fsPath)
 
 				actualType = stat.isDirectory() ? 'folder' : 'file'
-			} catch { /* ignore, will try all relevant prefixes */ }
+				// --- Added Diagnostic Logging ---
+				console.log(`[Dynamicons Revert Debug] Determined actualType: '${actualType}'`)
+				// --- End of Added Diagnostic Logging ---
+			} catch (statError) {
+				// --- Added Diagnostic Logging ---
+				console.warn(`[Dynamicons Revert Debug] Error stating file to determine type (will try both file/folder):`, statError)
+				// --- End of Added Diagnostic Logging ---
+				/* ignore, will try all relevant prefixes */
+			}
 
 			const typesToTry: IconAssociationType[] = actualType
 				? [actualType]
-				: ['file', 'folder'] // Only try language if explicitly requested or no other match
+				: ['file', 'folder']
 
 			for (const type of typesToTry) {
 				const associationKey = this.getAssociationKey(resourceName, type)
 
+				// --- Added Diagnostic Logging ---
+				console.log(`[Dynamicons Revert Debug] Trying associationKey: '${associationKey}' for type: '${type}'`)
+				// --- End of Added Diagnostic Logging ---
+
 				if (Object.prototype.hasOwnProperty.call(mappings, associationKey)) {
+					// --- Added Diagnostic Logging ---
+					console.log(`[Dynamicons Revert Debug] Found key '${associationKey}' in mappings. Deleting.`)
+					// --- End of Added Diagnostic Logging ---
 					delete mappings[associationKey]
 					found = true
-					this.iWindow.showInformationMessage(`Icon assignment for ${type} '${resourceName}' reverted. Theme will refresh.`)
 					messageShown = true
-					break // Found and removed
+					break
+				} else {
+					// --- Added Diagnostic Logging ---
+					console.log(`[Dynamicons Revert Debug] Key '${associationKey}' NOT found in mappings.`)
+					// --- End of Added Diagnostic Logging ---
 				}
 			}
 
-			if (!found) { // If still not found, check language associations as a last resort
+			if (!found) {
 				const langAssociationKey = this.getAssociationKey(resourceName, 'language')
 
+				// --- Added Diagnostic Logging ---
+				console.log(`[Dynamicons Revert Debug] Trying languageAssociationKey: '${langAssociationKey}'`)
+				// --- End of Added Diagnostic Logging ---
+
 				if (Object.prototype.hasOwnProperty.call(mappings, langAssociationKey)) {
+					// --- Added Diagnostic Logging ---
+					console.log(`[Dynamicons Revert Debug] Found language key '${langAssociationKey}' in mappings. Deleting.`)
+					// --- End of Added Diagnostic Logging ---
 					delete mappings[langAssociationKey]
 					found = true
-					this.iWindow.showInformationMessage(`Icon assignment for language '${resourceName}' reverted. Theme will refresh.`)
 					messageShown = true
+				} else {
+					// --- Added Diagnostic Logging ---
+					console.log(`[Dynamicons Revert Debug] Language key '${langAssociationKey}' NOT found in mappings.`)
+					// --- End of Added Diagnostic Logging ---
 				}
 			}
 
 			if (!found && !messageShown) {
 				this.iWindow.showInformationMessage(`No custom icon assignment found for '${resourceName}'.`)
-				return false // Indicate no changes made to mappings
+				return false
 			}
-			return mappings // Return the modified mappings object
+			return mappings
 		})
 	} //<
-
+    
 	public async toggleExplorerArrows(): Promise<void> { //>
 		const config = this.iWorkspace.getConfiguration(this.EXTENSION_CONFIG_PREFIX)
 		const currentSetting = config.get<boolean | null>(this.HIDE_ARROWS_KEY)
@@ -435,10 +498,6 @@ export class IconActionsService implements IIconActionsService {
 		// and the extension will handle the process.
         
 		console.log('[IconActionsService] refreshIconTheme() called. Actual refresh handled by extension command/event.')
-		// this.iWindow.showInformationMessage(
-		// 	`${dynamiconsConstants.featureName}: Refresh command received. The theme will be regenerated and re-applied.`,
-		// )
-		// The actual work is done by the command handler in extension.ts for COMMANDS.refreshIconTheme
 	} //<
 
 }
