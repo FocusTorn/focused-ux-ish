@@ -1,3 +1,4 @@
+// packages/dynamicons/ext/src/extension.ts
 // ESLint & Imports -->>
 
 //= TSYRINGE ==================================================================================================
@@ -6,11 +7,14 @@ import { container } from 'tsyringe'
 
 //= VSCODE TYPES & MOCKED INTERNALS ===========================================================================
 import type { ExtensionContext, Uri } from 'vscode'
-import * as vscode from 'vscode'
+import * as vscode from 'vscode' // Keep for vscode.ConfigurationTarget
+
+//= NODE JS ===================================================================================================
+import type * as nodePath from 'node:path' // For type of iPathDirname
 
 //= IMPLEMENTATIONS ===========================================================================================
 import { registerDynamiconsDependencies } from './injection.js'
-      
+
 import { dynamiconsConstants } from '@focused-ux/dynamicons-core'
 
 import type { IIconActionsService, IIconThemeGeneratorService } from '@focused-ux/dynamicons-core'
@@ -24,9 +28,9 @@ import type {
 
 let iconActionsService: IIconActionsService
 let iconThemeGeneratorService: IIconThemeGeneratorService
-let pathUtilsService: IPathUtilsService
 let fileUtilsService: IFileUtilsService
 let workspaceService: IWorkspace
+let iPathDirname: typeof nodePath.dirname // Variable to hold the resolved dirname function
 
 const EXT_NAME = dynamiconsConstants.packageNameExt
 const CONFIG_PREFIX = dynamiconsConstants.configPrefix
@@ -56,15 +60,17 @@ async function getBaseThemePath(context: ExtensionContext): Promise<string> { //
 		CONFIG_KEYS.baseThemeFileName,
 		DEFAULT_FILENAMES.baseThemeFilenameDefault,
 	)
-    
+
 	return pathUtils.iPathJoin(context.extensionPath, ASSETS_PATHS.themesPath, baseThemeFileName)
 } //<
 
 async function ensureThemeAssets(context: ExtensionContext): Promise<void> { //>
-	pathUtilsService = pathUtilsService || container.resolve<IPathUtilsService>('IPathUtilsService')
+	// pathUtilsService = pathUtilsService || container.resolve<IPathUtilsService>('IPathUtilsService') // pathUtilsService is not used here
 	fileUtilsService = fileUtilsService || container.resolve<IFileUtilsService>('IFileUtilsService')
 
-	const themesDir = pathUtilsService.iPathJoin(context.extensionPath, ASSETS_PATHS.themesPath)
+	const localPathUtils = container.resolve<IPathUtilsService>('IPathUtilsService') // Use a local var if only for iPathJoin
+
+	const themesDir = localPathUtils.iPathJoin(context.extensionPath, ASSETS_PATHS.themesPath)
 	const baseThemePath = await getBaseThemePath(context)
 	const generatedThemePath = await getGeneratedThemePath(context)
 
@@ -76,7 +82,7 @@ async function ensureThemeAssets(context: ExtensionContext): Promise<void> { //>
 
 	const defaultBaseManifest = {
 		iconDefinitions: {
-			_file: { iconPath: './icons/file.svg' },
+			_file: { iconPath: './icons/file.svg' }, // Example, actual default might differ
 		},
 		file: '_file',
 	}
@@ -93,6 +99,9 @@ async function ensureThemeAssets(context: ExtensionContext): Promise<void> { //>
 	try {
 		await fileUtilsService.iFspAccess(generatedThemePath)
 	} catch {
+		// If generated theme doesn't exist, regenerate it.
+		// regenerateAndApplyTheme will be called during activation anyway if needed.
+		// For robustness, we can call it here too.
 		await regenerateAndApplyTheme(context)
 	}
 } //<
@@ -100,8 +109,9 @@ async function ensureThemeAssets(context: ExtensionContext): Promise<void> { //>
 async function regenerateAndApplyTheme(context: ExtensionContext): Promise<void> { //>
 	iconThemeGeneratorService = iconThemeGeneratorService
 	  || container.resolve<IIconThemeGeneratorService>('IIconThemeGeneratorService')
-
 	workspaceService = workspaceService || container.resolve<IWorkspace>('iWorkspace')
+	// const commandsService = container.resolve<ICommands>('iCommands'); // No longer needed here
+	iPathDirname = iPathDirname || container.resolve<typeof nodePath.dirname>('iPathDirname')
 
 	const config = workspaceService.getConfiguration(CONFIG_PREFIX)
 	const userIconsDir = config.get<string>(CONFIG_KEYS.userIconsDirectory)
@@ -110,10 +120,12 @@ async function regenerateAndApplyTheme(context: ExtensionContext): Promise<void>
 
 	const baseThemePath = await getBaseThemePath(context)
 	const generatedThemePath = await getGeneratedThemePath(context)
+	const generatedThemeDir = iPathDirname(generatedThemePath)
 
 	try {
 		const newManifest = await iconThemeGeneratorService.generateIconThemeManifest(
 			baseThemePath,
+			generatedThemeDir,
 			userIconsDir || undefined,
 			customMappings,
 			hideArrows,
@@ -126,12 +138,31 @@ async function regenerateAndApplyTheme(context: ExtensionContext): Promise<void>
 			const currentTheme = workbenchConfiguration.get<string>('iconTheme')
 
 			if (currentTheme === ICON_THEME_ID) {
-				// To force a refresh, set the theme to null (or another theme) and then back.
-				await workbenchConfiguration.update('iconTheme', null, vscode.ConfigurationTarget.Global)
-				// A small delay can sometimes be helpful but often isn't strictly necessary.
-				// await new Promise(resolve => setTimeout(resolve, 50));
-				await workbenchConfiguration.update('iconTheme', ICON_THEME_ID, vscode.ConfigurationTarget.Global)
-				console.log(`[${EXT_NAME}] Theme re-applied after regeneration.`)
+				// Option 1: Do nothing further and rely on VS Code's file watcher.
+				// This is how the original project effectively refreshed for customIconMapping changes.
+				console.log(`[${EXT_NAME}] ${ICON_THEME_ID} is active. VS Code should refresh the theme automatically.`)
+
+				// Option 2 (If Option 1 is not enough): A more targeted command if available,
+				// or a slightly less disruptive refresh hint if one exists.
+				// For now, let's test Option 1.
+
+				/*
+                // OLD TOGGLE LOGIC - Temporarily disabled for testing
+                try {
+                    console.log(`[${EXT_NAME}] Attempting to re-apply theme via configuration update.`);
+                    await workbenchConfiguration.update('iconTheme', null, vscode.ConfigurationTarget.Global);
+                    await new Promise(resolve => setTimeout(resolve, 100)); // Small delay
+                    await workbenchConfiguration.update('iconTheme', ICON_THEME_ID, vscode.ConfigurationTarget.Global);
+                    console.log(`[${EXT_NAME}] UI refresh attempted via configuration update.`);
+                } catch (updateError) {
+                    console.error(`[${EXT_NAME}] Error updating workbench.iconTheme configuration:`, updateError);
+                    vscode.window.showWarningMessage(
+                        `${dynamiconsConstants.featureName}: Could not automatically refresh theme. A window reload might be needed.`,
+                    );
+                }
+                */
+			} else {
+				console.log(`[${EXT_NAME}] Theme file updated, but ${ICON_THEME_ID} is not the active theme. No UI refresh attempted.`)
 			}
 		} else {
 			vscode.window.showErrorMessage(
@@ -147,6 +178,7 @@ async function regenerateAndApplyTheme(context: ExtensionContext): Promise<void>
 
 async function activateIconThemeIfNeeded(context: ExtensionContext): Promise<void> { //>
 	workspaceService = workspaceService || container.resolve<IWorkspace>('iWorkspace')
+	fileUtilsService = fileUtilsService || container.resolve<IFileUtilsService>('IFileUtilsService') // Ensure fileUtilsService is initialized
 
 	const workbenchConfig = workspaceService.getConfiguration('workbench')
 	const currentTheme = workbenchConfig.get<string>('iconTheme')
@@ -155,8 +187,7 @@ async function activateIconThemeIfNeeded(context: ExtensionContext): Promise<voi
 		const generatedThemePath = await getGeneratedThemePath(context)
 
 		try {
-			fileUtilsService = fileUtilsService || container.resolve<IFileUtilsService>('IFileUtilsService')
-			await fileUtilsService.iFspAccess(generatedThemePath)
+			await fileUtilsService.iFspAccess(generatedThemePath) // Check if our theme file exists
 
 			const choice = await vscode.window.showInformationMessage(
 				`The "${EXT_NAME}" extension provides an icon theme. Do you want to activate it?`,
@@ -168,7 +199,8 @@ async function activateIconThemeIfNeeded(context: ExtensionContext): Promise<voi
 				await workbenchConfig.update('iconTheme', ICON_THEME_ID, vscode.ConfigurationTarget.Global)
 			}
 		} catch {
-			// Theme file doesn't exist
+			// Theme file doesn't exist or other access error, do nothing.
+			// It will be generated on first full activation or config change.
 		}
 	}
 } //<
@@ -176,9 +208,10 @@ async function activateIconThemeIfNeeded(context: ExtensionContext): Promise<voi
 export async function activate(context: ExtensionContext): Promise<void> { //>
 	console.log(`[${EXT_NAME}] Activating...`)
 
-	registerDynamiconsDependencies(context)
+	registerDynamiconsDependencies(context) // This registers 'iPathDirname'
 
 	iconActionsService = container.resolve<IIconActionsService>('IIconActionsService')
+	// Other services like iPathDirname will be resolved on demand within functions
 
 	await ensureThemeAssets(context)
 	await regenerateAndApplyTheme(context) // Ensures theme is generated and applied on activation
@@ -208,10 +241,9 @@ export async function activate(context: ExtensionContext): Promise<void> { //>
 
 		vscode.commands.registerCommand(COMMANDS.showUserFolderIconAssignments, () =>
 			iconActionsService.showUserIconAssignments('folder')),
-            
+
 		vscode.commands.registerCommand(COMMANDS.refreshIconTheme, async () => {
 			await regenerateAndApplyTheme(context)
-			// Message reflects that regeneration and application were handled by the function above.
 			vscode.window.showInformationMessage(
 				`${dynamiconsConstants.featureName}: Icon theme regenerated and re-applied.`,
 			)

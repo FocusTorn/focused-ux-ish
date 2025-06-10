@@ -1,34 +1,29 @@
 {
     "name": "focused-ux-dynamicons",
-    "version": "0.1.2",
+    "version": "0.1.17",
     "scripts": {
         "== BUILD ============================================================================================ ": "",
         "build": "pnpm run build:types && pnpm run build:js",
         "build:types": "tsc -p tsconfig.json",
-        "build:js": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.js --platform=node --format=esm --external:vscode --external:tsyringe --external:reflect-metadata --external:@focused-ux/dynamicons-core",
-        "build:cjs": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.cjs --platform=node --format=cjs --external:vscode --external:tsyringe --external:reflect-metadata --external:@focused-ux/dynamicons-core",        
-
+        "build:js": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.js --platform=node --format=esm --external:vscode",
+        "build:cjs": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.cjs --platform=node --format=cjs --external:vscode",
         "build:clean": "pnpm run clean && pnpm run build",
-
         "== WATCH ============================================================================================ ": "",
-        "watch-only": "pnpm run watch:types & pnpm run watch:js",        
+        "watch-only": "pnpm run watch:types & pnpm run watch:js",
         "watch:types": "tsc -p tsconfig.json --watch",
         "watch:js": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.js --platform=node --format=esm --external:vscode --external:tsyringe --external:reflect-metadata --external:@focused-ux/dynamicons-core --watch",
-        "watch:cjs": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.cjs --platform=node --format=cjs --external:vscode --external:tsyringe --external:reflect-metadata --external:@focused-ux/dynamicons-core --watch",        
-
+        "watch:cjs": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.cjs --platform=node --format=cjs --external:vscode --external:tsyringe --external:reflect-metadata --external:@focused-ux/dynamicons-core --watch",
         "== VALIDATE ========================================================================================= ": "",
         "check-types": "tsc --noEmit -p tsconfig.json --pretty",
         "lint": "eslint . --ext .ts",
         "lint:fix": "eslint . --ext .ts --fix",
-
         "== FINALIZE ========================================================================================= ": "",
         "package": "vsce package --no-dependencies -o ../../../vsix_packages/",
-        "vscode:prepublish": "pnpm run build",
+        "vscode:prepublish": "pnpm run build && pnpm run version-bump",
         "publish": "vsce publish --no-dependencies",
-        
         "== UTILITIES ======================================================================================== ": "",
+        "version-bump": "bun ../../shared/tools/src/scripts/version_bump.ts",
         "clean": "rimraf ./dist .turbo"
-        
     },
     "dependencies": {
         "@focused-ux/dynamicons-core": "workspace:*",
@@ -37,6 +32,7 @@
         "tsyringe": "^4.10.0"
     },
     "devDependencies": {
+        "@focused-ux/tools": "workspace:*",
         "@focused-ux/tsconfig": "workspace:*",
         "@focused-ux/config-eslint": "workspace:*",
         "@types/node": "latest",
@@ -54,7 +50,8 @@
             {
                 "id": "dynamicons-theme",
                 "label": "Dynamicons",
-                "path": "./assets/themes/dynamicons.theme.json"
+                "path": "./assets/themes/dynamicons.theme.json",
+                "_watch": true
             }
         ],
         "commands": [

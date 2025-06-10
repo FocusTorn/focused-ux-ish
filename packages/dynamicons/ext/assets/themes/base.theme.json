@@ -15,9 +15,6 @@
     "_root-open": {
       "iconPath": "../icons/folder_icons/folder-root-open.svg"
     },
-    "_-mocha-config": {
-      "iconPath": "../icons/file_icons/-mocha-config.svg"
-    },
     "_ahk-alt": {
       "iconPath": "../icons/file_icons/ahk-alt.svg"
     },
@@ -32,9 +29,6 @@
     },
     "_arduino-sketch": {
       "iconPath": "../icons/file_icons/arduino-sketch.svg"
-    },
-    "_arkdown": {
-      "iconPath": "../icons/file_icons/arkdown.svg"
     },
     "_backup": {
       "iconPath": "../icons/file_icons/backup.svg"

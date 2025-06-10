@@ -2,8 +2,17 @@
     "name": "focused-ux",
     "scripts": {
         "== BUILD ============================================================================================ ": "",
-        "build": "turbo run build --summarize --output-logs=errors-only",
+        "build": "pnpm run build:assets && turbo run build --summarize --output-logs=new-only",
         "build:clean": "pnpm run clean && pnpm run build",
+        "build:assets": "bun packages/dynamicons/core/src/scripts/build_dynamicon_assets.ts",
+        "build:assets_old": "cross-env NODE_NO_WARNINGS=1 tsx ./src/scripts/build_dynamicon_assets.ts",
+        "build:assets:files": "bun ./src/scripts/build_dynamicon_assets.ts file",
+        "build:assets:folders": "bun ./src/scripts/build_dynamicon_assets.ts folder",
+        
+        "== FINALIZE ========================================================================================= ": "",
+        "pack": "mkdirp vsix_packages && turbo run package",
+        "pack:clean": "pnpm run clean && mkdirp vsix_packages && turbo run package",
+        
         "== WATCH ============================================================================================ ": "",
         "watch-only": "turbo run watch-only",
         "== VALIDATE ========================================================================================= ": "",
@@ -19,18 +28,19 @@
         "tval": "turbo run check-types && turbo run lint",
         "tfix": "turbo run check-types && turbo run lint:fix",
         "eslint": "eslint \"**/src/**/*.{js,jsx,ts,tsx,cjs}\"",
-        "== FINALIZE ========================================================================================= ": "",
-        "package": "mkdirp vsix_packages && turbo run package",
         "== UTILITIES ======================================================================================== ": "",
+        "version-bump": "cross-env NODE_NO_WARNINGS=1 pnpm exec ts-run packages/shared/tools/src/scripts/version_bump.ts",
         "clean": "turbo run clean --output-logs=errors-only && rimraf node_modules/.cache/turbo .turbo",
         "nuke": "rimraf node_modules && rimraf packages/*/node_modules && pnpm store prune",
-        "nuke:full": "rimraf node_modules && rimraf packages/*/node_modules && rimraf pnpm-lock.yaml && pnpm install"
+        "nuke:full": "pnpm run clean && rimraf packages/*/node_modules && rimraf node_modules && rimraf pnpm-lock.yaml && pnpm install"
     },
     "devDependencies": {
         "@focused-ux/config-eslint": "workspace:*",
+        "@focused-ux/tools": "workspace:*",
         "@types/node": "latest",
         "@types/vscode": "latest",
         "@vitest/coverage-v8": "^3.1.4",
+        "bun": "^1.2.15",
         "cross-env": "^7.0.3",
         "knip": "^5.59.1",
         "mkdirp": "^3.0.1",
@@ -40,7 +50,7 @@
         "turbo": "^2.5.4",
         "typescript": "^5.8.3"
     },
-    "version": "0.1.0",
+    "version": "0.1.1",
     "repository": "https://github.com/FocusTorn/focused-ux",
     "private": true,
     "packageManager": "pnpm@9.0.0",

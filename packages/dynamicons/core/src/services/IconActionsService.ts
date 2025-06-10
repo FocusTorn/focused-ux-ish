@@ -26,7 +26,7 @@ import type { IIconThemeGeneratorService } from '../_interfaces/IIconThemeGenera
 
 //--------------------------------------------------------------------------------------------------------------<<
 
-interface IconQuickPickItemInternal extends QuickPickItem { //> //>
+interface IconQuickPickItemInternal extends QuickPickItem { //>
 	iconNameInDefinitions: string
 } //<
 
@@ -98,7 +98,7 @@ export class IconActionsService implements IIconActionsService {
 	): Promise<void> {
 		const config = this.iWorkspace.getConfiguration(this.EXTENSION_CONFIG_PREFIX, resourceUri)
 		const originalMappingsFromConfig = config.get<Record<string, string>>(this.CUSTOM_MAPPINGS_KEY) || {}
-		
+
 		// Create a mutable shallow copy to pass to updateFn.
 		// updateFn will modify this copy.
 		const mutableMappingsCopy = { ...originalMappingsFromConfig }
@@ -113,7 +113,7 @@ export class IconActionsService implements IIconActionsService {
 			if (newMappingsResult) {
 				// This path is typically for operations that don't return the full mappings object but signal a change.
 				console.log(`[Dynamicons Update Debug] updateFn returned boolean 'true'. Assuming direct config update by updateFn or manual refresh needed.`)
-				this.iWindow.showInformationMessage('Configuration updated. Theme will refresh automatically.')
+				// this.iWindow.showInformationMessage('Configuration updated. Theme will refresh automatically.')
 			} else {
 				console.log(`[Dynamicons Update Debug] updateFn returned boolean 'false'. No changes to persist.`)
 			}
@@ -131,7 +131,7 @@ export class IconActionsService implements IIconActionsService {
 			} else {
 				console.log(`[Dynamicons Update Debug] Mappings object IS different. Proceeding with config.update.`)
 			}
-			
+
 			try {
 				console.log(`[Dynamicons Update Debug] Attempting to call config.update with key '${this.CUSTOM_MAPPINGS_KEY}' and target Global.`)
 				await config.update(this.CUSTOM_MAPPINGS_KEY, newMappingsResult, this.vscodeConfigTarget.Global)
@@ -143,7 +143,7 @@ export class IconActionsService implements IIconActionsService {
 			}
 		}
 	} //<
-    
+
 	private async getIconOptionsFromDirectory( //>
 		directoryUri: VsCodeUri,
 		iconKind: 'file' | 'folder' | 'user',
@@ -332,17 +332,15 @@ export class IconActionsService implements IIconActionsService {
 			mappings[associationKey] = iconNameKey
 			return mappings // Return the modified mappings object
 		})
-		this.iWindow.showInformationMessage(
-			`Icon '${iconNameKey.replace(dynamiconsConstants.defaults.iconThemeNamePrefix, '').replace(
-				dynamiconsConstants.defaults.userIconDefinitionPrefix,
-				'user:',
-			)}' assigned to ${typeToAssign} '${resourceName}'. Theme will refresh.`,
-		)
+		// this.iWindow.showInformationMessage(
+		// 	`Icon '${iconNameKey.replace(dynamiconsConstants.defaults.iconThemeNamePrefix, '').replace(
+		// 		dynamiconsConstants.defaults.userIconDefinitionPrefix,
+		// 		'user:',
+		// 	)}' assigned to ${typeToAssign} '${resourceName}'. Applying theme changes...`,
+		// )
 	} //<
 
-	public async revertIconAssignment( //>
-		resourceUri: VsCodeUri | undefined,
-	): Promise<void> {
+	public async revertIconAssignment(resourceUri: VsCodeUri | undefined): Promise<void> { //>
 		if (!resourceUri) {
 			this.iWindow.showWarningMessage('No file or folder selected.')
 			return
@@ -355,30 +353,20 @@ export class IconActionsService implements IIconActionsService {
 			return
 		}
 
-		let messageShown = false
+		let changeMade = false
 
 		await this.updateCustomIconMappings(undefined, async (mappings) => {
 			let found = false
 			let actualType: 'file' | 'folder' | undefined
 
-			// --- Start of Added Diagnostic Logging ---
-			console.log(`[Dynamicons Revert Debug] Called for URI: ${resourceUri.fsPath}`)
-			console.log(`[Dynamicons Revert Debug] Derived resourceName: '${resourceName}'`)
-			console.log(`[Dynamicons Revert Debug] Current mappings from settings:`, JSON.stringify(mappings, null, 2))
-			// --- End of Added Diagnostic Logging ---
-
 			try {
 				const stat = await this.iFspStat(resourceUri.fsPath)
 
 				actualType = stat.isDirectory() ? 'folder' : 'file'
-				// --- Added Diagnostic Logging ---
-				console.log(`[Dynamicons Revert Debug] Determined actualType: '${actualType}'`)
-				// --- End of Added Diagnostic Logging ---
-			} catch (statError) {
-				// --- Added Diagnostic Logging ---
-				console.warn(`[Dynamicons Revert Debug] Error stating file to determine type (will try both file/folder):`, statError)
-				// --- End of Added Diagnostic Logging ---
-				/* ignore, will try all relevant prefixes */
+
+				// eslint-disable-next-line unused-imports/no-unused-vars
+			} catch (_statError) {
+
 			}
 
 			const typesToTry: IconAssociationType[] = actualType
@@ -388,54 +376,38 @@ export class IconActionsService implements IIconActionsService {
 			for (const type of typesToTry) {
 				const associationKey = this.getAssociationKey(resourceName, type)
 
-				// --- Added Diagnostic Logging ---
-				console.log(`[Dynamicons Revert Debug] Trying associationKey: '${associationKey}' for type: '${type}'`)
-				// --- End of Added Diagnostic Logging ---
-
 				if (Object.prototype.hasOwnProperty.call(mappings, associationKey)) {
-					// --- Added Diagnostic Logging ---
-					console.log(`[Dynamicons Revert Debug] Found key '${associationKey}' in mappings. Deleting.`)
-					// --- End of Added Diagnostic Logging ---
 					delete mappings[associationKey]
 					found = true
-					messageShown = true
 					break
-				} else {
-					// --- Added Diagnostic Logging ---
-					console.log(`[Dynamicons Revert Debug] Key '${associationKey}' NOT found in mappings.`)
-					// --- End of Added Diagnostic Logging ---
 				}
 			}
 
 			if (!found) {
 				const langAssociationKey = this.getAssociationKey(resourceName, 'language')
 
-				// --- Added Diagnostic Logging ---
-				console.log(`[Dynamicons Revert Debug] Trying languageAssociationKey: '${langAssociationKey}'`)
-				// --- End of Added Diagnostic Logging ---
-
 				if (Object.prototype.hasOwnProperty.call(mappings, langAssociationKey)) {
-					// --- Added Diagnostic Logging ---
-					console.log(`[Dynamicons Revert Debug] Found language key '${langAssociationKey}' in mappings. Deleting.`)
-					// --- End of Added Diagnostic Logging ---
 					delete mappings[langAssociationKey]
 					found = true
-					messageShown = true
-				} else {
-					// --- Added Diagnostic Logging ---
-					console.log(`[Dynamicons Revert Debug] Language key '${langAssociationKey}' NOT found in mappings.`)
-					// --- End of Added Diagnostic Logging ---
 				}
 			}
 
-			if (!found && !messageShown) {
+			if (found) {
+				changeMade = true
+				return mappings // Return the modified mappings to be persisted
+			} else {
 				this.iWindow.showInformationMessage(`No custom icon assignment found for '${resourceName}'.`)
-				return false
+				return false // Signal no changes to persist
 			}
-			return mappings
 		})
+
+		if (changeMade) {
+			// this.iWindow.showInformationMessage(
+			// 	`Custom icon assignment for '${resourceName}' reverted. Applying theme changes...`,
+			// )
+		}
 	} //<
-    
+
 	public async toggleExplorerArrows(): Promise<void> { //>
 		const config = this.iWorkspace.getConfiguration(this.EXTENSION_CONFIG_PREFIX)
 		const currentSetting = config.get<boolean | null>(this.HIDE_ARROWS_KEY)
@@ -448,11 +420,9 @@ export class IconActionsService implements IIconActionsService {
 			newSetting = !currentSetting
 		}
 		await config.update(this.HIDE_ARROWS_KEY, newSetting, this.vscodeConfigTarget.Global)
-		this.iWindow.showInformationMessage(
-			`Explorer arrows will be ${newSetting ? 'hidden' : 'shown'} after theme refresh.`,
-		)
-		// The config.update above will trigger onDidChangeConfiguration in extension.ts,
-		// which calls regenerateAndApplyTheme.
+		// this.iWindow.showInformationMessage(
+		// 	`Explorer arrow visibility updated to '${newSetting ? 'hidden' : 'shown'}'. Applying theme changes...`,
+		// )
 	} //<
 
 	public async showUserIconAssignments( //>
@@ -496,7 +466,7 @@ export class IconActionsService implements IIconActionsService {
 		// Thus, this service method itself doesn't need to duplicate that logic.
 		// It can simply inform the user that the command has been received,
 		// and the extension will handle the process.
-        
+
 		console.log('[IconActionsService] refreshIconTheme() called. Actual refresh handled by extension command/event.')
 	} //<
 

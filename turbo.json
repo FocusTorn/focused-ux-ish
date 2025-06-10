@@ -10,7 +10,7 @@
             "dependsOn": [
                 "^lint"
             ]
-        },
+        }, 
         "lint:fix": {
             "dependsOn": [
                 "^lint:fix"
@@ -70,7 +70,6 @@
         "inputs": [
             "src/**",
             "cli/**",
-            "assets/**",
             "package.json",
             "tsconfig.json",
             "!**/.turbo/**"

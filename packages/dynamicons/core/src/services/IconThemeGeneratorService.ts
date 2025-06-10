@@ -1,3 +1,4 @@
+// packages/dynamicons/core/src/services/IconThemeGeneratorService.ts
 // ESLint & Imports -->>
 
 //= TSYRINGE ==================================================================================================
@@ -6,9 +7,10 @@ import { inject, injectable } from 'tsyringe'
 //= NODE JS ===================================================================================================
 import type { PathLike, Dirent } from 'node:fs'
 import { constants as fsConstants } from 'node:fs'
+import type * as nodePath from 'node:path' // Import the full 'path' module
 
 //= IMPLEMENTATION TYPES ======================================================================================
-import type { IIconThemeGeneratorService } from '../_interfaces/IIconThemeGeneratorService.js' // Corrected extension
+import type { IIconThemeGeneratorService } from '../_interfaces/IIconThemeGeneratorService.js'
 import type { IFileUtilsService, IPathUtilsService, ICommonUtilsService } from '@focused-ux/shared-services'
 
 import { dynamiconsConstants } from '../_config/dynamicons.constants.js'
@@ -18,8 +20,6 @@ import { dynamiconsConstants } from '../_config/dynamicons.constants.js'
 interface IconDefinition {
 	iconPath: string
 }
-// interface IconAssociation { name: string, fileExtensions?: string[], fileNames?: string[], folderNames?: string[], languageIds?: string[] }
-// interface IconSetModel { file?: { name: string }, folder?: { name: string }, rootFolder?: { name: string }, icons: IconAssociation[] }
 
 interface ThemeManifest {
 	iconDefinitions: Record<string, IconDefinition>
@@ -38,7 +38,7 @@ interface ThemeManifest {
 }
 
 @injectable()
-export class IconThemeGeneratorService implements IIconThemeGeneratorService { //>
+export class IconThemeGeneratorService implements IIconThemeGeneratorService {
 
 	constructor(
 		@inject('IFileUtilsService') private readonly iFileUtils: IFileUtilsService,
@@ -46,10 +46,13 @@ export class IconThemeGeneratorService implements IIconThemeGeneratorService { /
 		@inject('ICommonUtilsService') private readonly iCommonUtils: ICommonUtilsService,
 		@inject('iFspReaddir') private readonly iFspReaddir: (path: PathLike, options?: { encoding?: BufferEncoding | null, withFileTypes?: boolean } | BufferEncoding | undefined | null) => Promise<string[] | Dirent[]>,
 		@inject('iFspAccess') private readonly iFspAccess: (path: PathLike, mode?: number) => Promise<void>,
+		// Inject iPathRelative directly if not available through IPathUtilsService, or ensure IPathUtilsService exposes it
+		@inject('iPathRelative') private readonly iPathRelative: typeof nodePath.relative,
 	) {}
 
 	public async generateIconThemeManifest( //>
 		baseManifestPath: string,
+		generatedThemeDir: string, // New parameter
 		userIconsDirectory?: string,
 		customMappings?: Record<string, string>,
 		hideExplorerArrows?: boolean | null,
@@ -64,25 +67,29 @@ export class IconThemeGeneratorService implements IIconThemeGeneratorService { /
 		manifest.iconDefinitions = manifest.iconDefinitions || {}
 
 		if (userIconsDirectory) {
-			const userIconsPath = this.iPathUtils.santizePath(userIconsDirectory)
+			const userIconsAbsPath = this.iPathUtils.santizePath(userIconsDirectory) // This should be an absolute path from config
 
 			try {
-				await this.iFspAccess(userIconsPath, fsConstants.R_OK)
+				await this.iFspAccess(userIconsAbsPath, fsConstants.R_OK)
 
-				const files = await this.iFspReaddir(userIconsPath, { withFileTypes: true }) as Dirent[]
+				const files = await this.iFspReaddir(userIconsAbsPath, { withFileTypes: true }) as Dirent[]
 
 				for (const file of files) {
 					if (file.isFile() && file.name.endsWith('.svg')) {
 						const iconName = file.name.replace(/\.svg$/, '')
 						const definitionKey = `${dynamiconsConstants.defaults.userIconDefinitionPrefix}${iconName}`
+						const absoluteUserIconFilePath = this.iPathUtils.santizePath(this.iPathUtils.iPathJoin(userIconsAbsPath, file.name))
+
+						// Calculate path relative from the *directory of the generated theme file* to the *user icon file*
+						const relativeIconPath = this.iPathRelative(generatedThemeDir, absoluteUserIconFilePath).replace(/\\/g, '/')
 
 						manifest.iconDefinitions[definitionKey] = {
-							iconPath: this.iPathUtils.santizePath(this.iPathUtils.iPathJoin(userIconsPath, file.name)),
+							iconPath: relativeIconPath,
 						}
 					}
 				}
 			} catch (error) {
-				this.iCommonUtils.errMsg(`[IconThemeGeneratorService] Error accessing user icons directory '${userIconsPath}':`, error)
+				this.iCommonUtils.errMsg(`[IconThemeGeneratorService] Error accessing user icons directory '${userIconsAbsPath}':`, error)
 			}
 		}
 
@@ -93,7 +100,7 @@ export class IconThemeGeneratorService implements IIconThemeGeneratorService { /
 				if (key.startsWith(dynamiconsConstants.associationKeyPrefixes.file)) {
 					const fileNameOrExt = key.substring(dynamiconsConstants.associationKeyPrefixes.file.length).trim()
 
-					if (fileNameOrExt.includes('.')) { // Heuristic: if it contains '.', assume it's a full filename
+					if (fileNameOrExt.includes('.')) {
 						manifest.fileNames = manifest.fileNames || {}
 						manifest.fileNames[fileNameOrExt] = value
 					} else {
@@ -107,31 +114,24 @@ export class IconThemeGeneratorService implements IIconThemeGeneratorService { /
 					manifest.folderNamesExpanded = manifest.folderNamesExpanded || {}
 					manifest.folderNames[folderName] = value
 
-					// Attempt to create -open variant for folderNamesExpanded
 					let openDefinitionKey = value
 
-					// Check if the value itself is a definition key we manage (e.g., starts with our prefix)
 					if (value.startsWith(dynamiconsConstants.defaults.iconThemeNamePrefix)) {
 						const baseName = value.substring(dynamiconsConstants.defaults.iconThemeNamePrefix.length)
 
 						openDefinitionKey = `${dynamiconsConstants.defaults.iconThemeNamePrefix}${baseName}${dynamiconsConstants.defaults.openFolderIconSuffix}`
 					} else if (value.startsWith(dynamiconsConstants.defaults.userIconDefinitionPrefix)) {
-						// Handle user-defined icons if they follow a pattern that can have an -open variant
 						const baseName = value.substring(dynamiconsConstants.defaults.userIconDefinitionPrefix.length)
 
 						openDefinitionKey = `${dynamiconsConstants.defaults.userIconDefinitionPrefix}${baseName}${dynamiconsConstants.defaults.openFolderIconSuffix}`
 					} else {
-						// For generic icon names, just append -open, assuming an SVG exists
 						openDefinitionKey = `${value}${dynamiconsConstants.defaults.openFolderIconSuffix}`
 					}
 
-					// Check if the derived -open definition actually exists in iconDefinitions
 					if (manifest.iconDefinitions[openDefinitionKey]) {
 						manifest.folderNamesExpanded[folderName] = openDefinitionKey
 					} else {
-						// Fallback: if specific -open variant isn't found, use the original icon for expanded state
 						manifest.folderNamesExpanded[folderName] = value
-						// console.warn(`[IconThemeGeneratorService] No -open variant found for folder icon definition '${value}'. Using base icon for expanded state.`);
 					}
 				} else if (key.startsWith(dynamiconsConstants.associationKeyPrefixes.language)) {
 					const langId = key.substring(dynamiconsConstants.associationKeyPrefixes.language.length).trim()
@@ -145,7 +145,6 @@ export class IconThemeGeneratorService implements IIconThemeGeneratorService { /
 		if (hideExplorerArrows !== null && hideExplorerArrows !== undefined) {
 			manifest.hidesExplorerArrows = hideExplorerArrows
 		} else {
-			// If null or undefined, remove the key to let VS Code use its default
 			delete manifest.hidesExplorerArrows
 		}
 
@@ -163,4 +162,4 @@ export class IconThemeGeneratorService implements IIconThemeGeneratorService { /
 		}
 	} //<
 
-} // <
+}

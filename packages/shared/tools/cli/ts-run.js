@@ -3,8 +3,6 @@
 
 import { spawn } from 'node:child_process'
 import process from 'node:process'
-// import { fileURLToPath } from 'node:url'; // Not strictly needed for this simple script
-// import path from 'node:path';
 
 //--------------------------------------------------------------------------------------------------------------<<
 
@@ -18,18 +16,30 @@ if (scriptArgs.length === 0) {
 	process.exit(1)
 }
 
-const nodeExecutable = process.execPath // Path to the current Node.js executable
-const nodeImportArg = '--import=data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("ts-node/esm", pathToFileURL("./"));'
+// Determine the command for pnpm.
+const pnpmCommand = process.platform === 'win32' ? 'pnpm.CMD' : 'pnpm'
 
-const childProcessArgs = ['--trace-deprecation', nodeImportArg, ...scriptArgs]
+// Arguments for "pnpm exec ts-node ..."
+// The first argument to ts-node will be the script, followed by its arguments.
+const childProcessArgs = [
+	'exec', // pnpm command
+	'ts-node', // package binary to execute
+	'--esm', // Added --esm flag for ts-node
+	...scriptArgs, // script path and its arguments
+]
 
-const child = spawn(nodeExecutable, childProcessArgs, {
-	stdio: 'inherit', // Inherit stdin, stdout, stderr from the parent process
-	shell: false, // Generally safer and more direct unless shell features are needed
-	// cwd: process.cwd(), // The script will run in the current working directory by default
+// console.log(`Executing: ${pnpmCommand} ${childProcessArgs.join(' ')}`); // For debugging
+// console.log(`CWD for ts-run: ${process.cwd()}`);
+
+const child = spawn(pnpmCommand, childProcessArgs, {
+	stdio: 'inherit',
+	// shell: false is generally preferred. pnpm itself will handle finding ts-node.
+	// If 'pnpm.CMD' needs a shell on Windows, this might need to be true,
+	// but pnpm's shims are usually executable directly.
+	shell: process.platform === 'win32', // Changed to true for Windows
 	env: {
-		...process.env, // Inherit current environment
-		// NODE_NO_WARNINGS: '1', // Already handled by the calling script if needed there
+		...process.env,
+		NODE_NO_WARNINGS: process.env.NODE_NO_WARNINGS || '1',
 	},
 })
 
@@ -38,6 +48,11 @@ child.on('close', (code) => {
 })
 
 child.on('error', (err) => {
-	console.error(`Failed to start underlying Node.js process for ts-run: ${err.message}`)
+	console.error(`Failed to start process using command "${pnpmCommand} exec ts-node ...": ${err.message}`)
+	if (err.code === 'ENOENT') {
+		console.error(`Hint: Ensure '${pnpmCommand}' is accessible in your PATH. This script ('ts-run') relies on 'pnpm' to execute 'ts-node'.`)
+	} else if (err.code === 'EINVAL') {
+		console.error(`Hint: The arguments passed via '${pnpmCommand}' might be invalid. Args: ${childProcessArgs.join(' ')}`)
+	}
 	process.exit(1)
 })

@@ -1,6 +1,7 @@
 export interface IIconThemeGeneratorService {
 	generateIconThemeManifest: (
 		baseManifestPath: string,
+		generatedThemeDir: string, // New parameter
 		userIconsDirectory?: string,
 		customMappings?: Record<string, string>,
 		hideExplorerArrows?: boolean | null,
