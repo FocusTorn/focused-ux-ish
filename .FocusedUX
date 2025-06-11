@@ -1,0 +1,67 @@
+# Configuration for Focused UI Extension
+
+ContextCherryPicker:
+  ignore:
+  
+    # - "**/dist/**"
+    - "**/tsconfig.tsbuildinfo"
+    - "**/**/*.d.ts"
+    - "**/**/*.map"
+    - "**/*.svg"
+    - "**/*.png"
+    
+    # - ".gitignore"
+    # - ".vscodeignore"
+    
+  
+    #= STANDARD ================================================================= 
+    - "**/node_modules/**"
+    - "**/.git/**"
+    # - "**/.vscode/**"
+    - "**/.turbo/**"
+    #- TESTING ---------------------------------------------- 
+    - "coverage/"
+    # - "**/*.log"
+    #- BUILD ------------------------------------------------ 
+    # - "**/build/**"
+    # - "**/out/**"
+  
+    #= FOLDERS ================================================================== 
+    - "**/vsix_packages/**"
+  
+    #= FILES ==================================================================== 
+    - ".editorconfig"
+    
+    - ".npmrc"
+    - ".vscode-test.mjs"
+    - "CHANGELOG.md"
+    - "**/LICENSE.txt"
+    - "package-lock.json"
+    - "desktop.ini"
+    
+
+  projectTreeDisplay:
+    alwaysHide: 
+    # Never show these in the <project_tree> even if checked
+  
+    
+    showIfSelected: 
+    # If this list has items, only checked items matching these appear in <project_tree>
+
+
+
+
+  directoryContentDisplay:
+    showDirHideContents: 
+    # show this dir, but not its children individually in UI
+    # - "**/dynamicons/ext/assets/images"
+    # - "**/dynamicons/ext/assets/icons/*_icons"
+    
+    hideDirAndContents: 
+    # directory and its contents are completely hidden from UI
+      # - "assets/icons"
+    
+
+
+
+    

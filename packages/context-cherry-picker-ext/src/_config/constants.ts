@@ -1,0 +1,65 @@
+// ESLint & Imports -->>
+
+//--------------------------------------------------------------------------------------------------------------<<
+
+const EXT_ID_PREFIX = 'ccpSatellite'
+
+export const constants = {
+	extension: {
+		name: 'F-UX: Context Cherry Picker',
+		nickName: 'CCP Satellite',
+		id: `${EXT_ID_PREFIX}`,
+		configKey: `${EXT_ID_PREFIX}`,
+	},
+	commands: {
+		contextCherryPicker: {
+			saveCheckedState: `${EXT_ID_PREFIX}.saveCheckedState`,
+			refreshExplorer: `${EXT_ID_PREFIX}.refreshExplorer`,
+			deleteSavedState: `${EXT_ID_PREFIX}.deleteSavedState`,
+			loadSavedState: `${EXT_ID_PREFIX}.loadSavedState`,
+			clearAllCheckedInExplorer: `${EXT_ID_PREFIX}.clearAllCheckedInExplorer`,
+			copyContextOfCheckedItems: `${EXT_ID_PREFIX}.copyContextOfCheckedItems`,
+		},
+	},
+	views: {
+		contextCherryPicker: {
+			activityBar: `${EXT_ID_PREFIX}.activityBar`,
+			explorer: `${EXT_ID_PREFIX}.explorerView`,
+			savedStates: `${EXT_ID_PREFIX}.savedStatesView`,
+			quickSettings: `${EXT_ID_PREFIX}.quickSettingsView`,
+		},
+	},
+	configKeys: {
+		CCP_IGNORE_PATTERNS: `${EXT_ID_PREFIX}.ignoreGlobs`,
+		CCP_PROJECT_TREE_ALWAYS_HIDE_GLOBS: `${EXT_ID_PREFIX}.projectTreeDisplay.alwaysHideGlobs`,
+		CCP_PROJECT_TREE_SHOW_IF_SELECTED_GLOBS: `${EXT_ID_PREFIX}.projectTreeDisplay.showIfSelectedGlobs`,
+		CCP_DIR_CONTENT_SHOW_DIR_HIDE_CONTENTS_GLOBS: `${EXT_ID_PREFIX}.directoryContentDisplay.showDirHideContentsGlobs`,
+		CCP_DIR_CONTENT_HIDE_DIR_AND_CONTENTS_GLOBS: `${EXT_ID_PREFIX}.directoryContentDisplay.hideDirAndContentsGlobs`,
+		GOOGLE_API_KEY: `${EXT_ID_PREFIX}.google.apiKey`,
+	},
+	storageKeys: {
+		SAVED_STATES_KEY: `${EXT_ID_PREFIX}.savedStates`, // For Memento or globalState
+	},
+	projectConfig: {
+        
+		// fileName: '.ccpSatelliteConfig.yaml', // Or .focusedUi/ccp.yaml etc.
+		fileName: '.FocusedUX',
+        
+		keys: {
+			contextCherryPicker: 'ContextCherryPicker',
+			ignore: 'ignore',
+			projectTreeDisplay: 'projectTreeDisplay',
+			alwaysHide: 'alwaysHide',
+			showIfSelected: 'showIfSelected',
+			directoryContentDisplay: 'directoryContentDisplay',
+			hideDirAndContents: 'hideDirAndContents',
+			showDirHideContents: 'showDirHideContents',
+		},
+	},
+	quickSettings: {
+		projectStructureContents: {
+			id: `${EXT_ID_PREFIX}.quickSetting.projectStructureContents`,
+			// Options would be 'none', 'selected', 'all'
+		},
+	},
+} as const

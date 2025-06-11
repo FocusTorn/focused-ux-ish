@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- CSP source will be replaced by the extension -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${webview.cspSource} 'unsafe-inline'; script-src 'nonce-${nonce}';">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Settings</title>
+    <style>
+        body {
+            font-family: var(--vscode-font-family, Segoe WPC, Segoe UI, sans-serif);
+            color: var(--vscode-editor-foreground, #BBBBBB);
+            margin: 0;
+            padding: 10px;
+            background-color: var(--vscode-sideBar-background, #252526);
+        }
+        .quick-setting-group {
+            margin-bottom: 15px;
+        }
+        .quick-setting-title {
+            margin-bottom: 8px;
+            font-size: calc(var(--vscode-font-size) * 0.9);
+            font-weight: bold;
+            color: var(--vscode-foreground, #CCCCCC);
+        }
+        .options-container {
+            display: flex;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .option-button {
+            flex: 1;
+            padding: 0px 5px;
+            line-height: calc(var(--vscode-font-size) * 1.5);
+            font-size: calc(var(--vscode-font-size) * 0.85);
+            text-align: center;
+            cursor: pointer;
+            user-select: none;
+            background-color: var(--vscode-button-secondaryBackground, #3A3D41);
+            color: var(--vscode-button-secondaryForeground, #FFFFFF);
+            border: 1px solid var(--vscode-button-border, transparent);
+            margin-right: -1px; 
+            position: relative;
+        }
+        .option-button:first-child {
+             border-top-left-radius: 3px;
+             border-bottom-left-radius: 3px;
+        }
+        .option-button:last-child {
+            margin-right: 0;
+            border-top-right-radius: 3px;
+            border-bottom-right-radius: 3px;
+        }
+        .option-button.selected {
+            background-color: var(--vscode-button-background, #0E639C);
+            color: var(--vscode-button-foreground, #FFFFFF);
+            z-index: 1;
+        }
+        .option-button:hover:not(.selected) {
+            background-color: var(--vscode-button-secondaryHoverBackground, #4D5054);
+        }
+    </style>
+</head>
+<body>
+    <div class="quick-setting-group">
+        <div class="quick-setting-title">Project Structure Contents</div>
+        <!-- Placeholders for dynamic class assignment -->
+        <div class="options-container" data-setting-group-id="${PROJECT_STRUCTURE_SETTING_ID}">
+            <div class="option-button ${currentProjectStructureStateSelected.none}" data-setting-id="${PROJECT_STRUCTURE_SETTING_ID}" data-value="none">None</div>
+            <div class="option-button ${currentProjectStructureStateSelected.selected}" data-setting-id="${PROJECT_STRUCTURE_SETTING_ID}" data-value="selected">Selected</div>
+            <div class="option-button ${currentProjectStructureStateSelected.all}" data-setting-id="${PROJECT_STRUCTURE_SETTING_ID}" data-value="all">All</div>
+        </div>
+    </div>
+
+    <script nonce="${nonce}">
+        const vscode = acquireVsCodeApi();
+
+        function handleOptionButtonClick(event) {
+            const button = event.currentTarget;
+            const settingId = button.dataset.settingId;
+            const value = button.dataset.value;
+
+            if (!settingId || value === undefined || value === null) {
+                console.error('Button is missing data-setting-id or data-value', button);
+                return;
+            }
+            const parentContainer = button.closest('.options-container');
+            if (!parentContainer) {
+                console.error('Could not find parent .options-container for button', button);
+                return;
+            }
+            parentContainer.querySelectorAll('.option-button').forEach(btn => {
+                if (btn.dataset.settingId === settingId) { 
+                    btn.classList.remove('selected');
+                }
+            });
+            button.classList.add('selected');
+            
+            vscode.postMessage({
+                command: 'updateSetting',
+                settingId: settingId,
+                value: value
+            });
+        }
+
+        document.querySelectorAll('.option-button').forEach(button => {
+            button.addEventListener('click', handleOptionButtonClick);
+        });
+
+        window.addEventListener('message', event => {
+            const message = event.data; 
+            switch (message.command) {
+                case 'settingUpdated':
+                    const { settingId, value } = message;
+                    const buttonToSelect = document.querySelector(`.option-button[data-setting-id="\${settingId}"][data-value="\${value}"]`);
+                    
+                    if (buttonToSelect) {
+                        const parentContainer = buttonToSelect.closest('.options-container');
+                        if (parentContainer) {
+                            parentContainer.querySelectorAll('.option-button').forEach(btn => {
+                                if (btn.dataset.settingId === settingId) {
+                                    btn.classList.remove('selected');
+                                }
+                            });
+                            buttonToSelect.classList.add('selected');
+                        }
+                    }
+                    break;
+            }
+        });
+    </script>
+</body>
+</html>

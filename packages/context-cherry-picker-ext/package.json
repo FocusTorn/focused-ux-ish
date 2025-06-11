@@ -1,0 +1,247 @@
+{
+    "name": "focused-ux-context-cherry-picker",
+    "displayName": "F-UX: Context Cherry Picker",
+    "description": "A standalone extension for advanced context selection and formatting.",
+    "publisher": "NewRealityDesigns",
+    "version": "0.1.0",
+    "engines": {
+        "vscode": "^1.100.0"
+    },
+    "main": "./dist/extension.js",
+    "type": "module",
+    "icon": "assets/icon.jpg",
+    "scripts": {
+        
+        "== BUILD ============================================================================================ ": "",
+        "build": "fux-build ./src/extension.ts --outfile=./dist/extension.js",
+        "build:clean": "pnpm run clean && pnpm run build",
+        
+        "== VALIDATE ========================================================================================= ": "",
+        "lint": "pnpm eslint . --ext .ts",
+        "lint:fix": "eslint . --ext .ts --fix",
+        "check-types": "tsc --noEmit -p tsconfig.json",
+
+        "== FINALIZE ========================================================================================= ": "",
+        "vscode:prepublish": "pnpm run build",
+        "package": "vsce package --no-dependencies -o ../../vsix_packages/",
+        
+        "== WATCH ============================================================================================ ": "",
+        "watch": "fux-build ./src/extension.ts --outfile=./dist/extension.js --watch",
+        
+        "== UTILITIES ======================================================================================== ": "",
+        "clean": "rimraf ./dist .turbo"
+
+       
+        
+    },
+    "dependencies": {
+        "@focused-ux/shared-services": "workspace:*",
+        "tsyringe": "^4.10.0",
+        "reflect-metadata": "^0.2.2",
+        "micromatch": "^4.0.8",
+        "js-yaml": "^4.1.0",
+        "gpt-tokenizer": "^2.9.0"
+    },
+    "devDependencies": {
+        "@focused-ux/tsconfig": "workspace:*",
+        "@focused-ux/config-eslint": "workspace:*",
+        "@focused-ux/config-esbuild": "workspace:*",
+        "@types/vscode": "^1.100.0",
+        "@types/node": "latest",
+        "@types/micromatch": "^4.0.9",
+        "@types/js-yaml": "^4.0.9",
+        "typescript": "^5.8.3",
+        "esbuild": "^0.25.4",
+        "eslint": "^9.28.0",
+        "rimraf": "^6.0.1",
+        "vsce": "^2.15.0"
+    },
+    "activationEvents": [
+        "onView:ccpSatellite.explorerView"
+    ],
+    "categories": [
+        "Other",
+        "AI",
+        "Chat",
+        "Machine Learning",
+        "Education",
+        "Data Science"
+    ],
+    "keywords": [
+        "context",
+        "cherry pick",
+        "developer tools",
+        "focused ux"
+    ],
+    "contributes": {
+        "commands": [
+            {
+                "command": "ccpSatellite.saveCheckedState",
+                "title": "CCP: Save Checked State",
+                "category": "Context Cherry Picker",
+                "icon": "$(save)"
+            },
+            {
+                "command": "ccpSatellite.refreshExplorer",
+                "title": "CCP: Refresh Explorer",
+                "category": "Context Cherry Picker",
+                "icon": "$(refresh)"
+            },
+            {
+                "command": "ccpSatellite.deleteSavedState",
+                "title": "CCP: Delete Saved State",
+                "category": "Context Cherry Picker",
+                "icon": "$(trash)"
+            },
+            {
+                "command": "ccpSatellite.loadSavedState",
+                "title": "CCP: Load Saved State",
+                "category": "Context Cherry Picker",
+                "icon": "$(bookmark)"
+            },
+            {
+                "command": "ccpSatellite.clearAllCheckedInExplorer",
+                "title": "CCP: Clear All Checked Items",
+                "category": "Context Cherry Picker",
+                "icon": "$(clear-all)"
+            },
+            {
+                "command": "ccpSatellite.copyContextOfCheckedItems",
+                "title": "CCP: Copy Context of Checked Items",
+                "category": "Context Cherry Picker",
+                "icon": "$(clippy)"
+            }
+        ],
+        "viewsContainers": {
+            "activitybar": [
+                {
+                    
+                    "id": "contextCherryPicker",
+                    "title": "Context Cherry Picker",
+                    "icon": "assets/ccp_activity_bar_icon.svg"
+                }
+            ]
+        },
+        "views": {
+            "contextCherryPicker": [
+                {
+                    "id": "ccpSatellite.quickSettingsView",
+                    "name": "Quick Settings",
+                    "type": "webview",
+                    "icon": "$(settings-gear)"
+                },
+                {
+                    "id": "ccpSatellite.explorerView",
+                    "name": "Context Explorer",
+                    "type": "tree",
+                    "icon": "$(files)"
+                },
+                {
+                    "id": "ccpSatellite.savedStatesView",
+                    "name": "Saved States",
+                    "type": "tree",
+                    "icon": "$(save-all)"
+                }
+            ]
+        },
+        "menus": {
+            "view/title": [
+                {
+                    "command": "ccpSatellite.copyContextOfCheckedItems",
+                    "when": "view == ccpSatellite.explorerView",
+                    "group": "navigation@1"
+                },
+                {
+                    "command": "ccpSatellite.saveCheckedState",
+                    "when": "view == ccpSatellite.explorerView",
+                    "group": "navigation@2"
+                },
+                {
+                    "command": "ccpSatellite.clearAllCheckedInExplorer",
+                    "when": "view == ccpSatellite.explorerView",
+                    "group": "navigation@3"
+                },
+                {
+                    "command": "ccpSatellite.refreshExplorer",
+                    "when": "view == ccpSatellite.explorerView",
+                    "group": "navigation@4"
+                }
+            ],
+            "view/item/context": [
+                {
+                    "command": "ccpSatellite.loadSavedState",
+                    "when": "view == ccpSatellite.savedStatesView && viewItem == savedStateEntry",
+                    "group": "inline@1"
+                },
+                {
+                    "command": "ccpSatellite.deleteSavedState",
+                    "when": "view == ccpSatellite.savedStatesView && viewItem == savedStateEntry",
+                    "group": "inline@2"
+                }
+            ]
+        },
+        "configuration": {
+            "title": "Context Cherry Picker Satellite",
+            "properties": {
+                "ccpSatellite.ignoreGlobs": {
+                    "type": "array",
+                    "default": [
+                        "**/node_modules/**",
+                        "**/.git/**",
+                        "**/.vscode/**",
+                        "**/dist/**",
+                        "**/out/**",
+                        "**/*.log"
+                    ],
+                    "description": "Glob patterns for files/folders to completely ignore in the explorer view and processing. Overridden by .ccpSatelliteConfig.yaml if present.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "scope": "resource"
+                },
+                "ccpSatellite.projectTreeDisplay.alwaysHideGlobs": {
+                    "type": "array",
+                    "default": [],
+                    "description": "Glob patterns for items to NEVER show in the generated <project_tree>, even if checked. Overridden by .ccpSatelliteConfig.yaml if present.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "scope": "resource"
+                },
+                "ccpSatellite.projectTreeDisplay.showIfSelectedGlobs": {
+                    "type": "array",
+                    "default": [],
+                    "description": "If populated, ONLY checked items matching these globs (and not in 'alwaysHideGlobs') appear in <project_tree>. If empty, all checked items (not in 'alwaysHideGlobs') are candidates. Overridden by .ccpSatelliteConfig.yaml if present.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "scope": "resource"
+                },
+                "ccpSatellite.directoryContentDisplay.showDirHideContentsGlobs": {
+                    "type": "array",
+                    "default": [],
+                    "description": "Glob patterns for directories whose node IS visible in the UI, but contents are hidden (non-expandable). Path appears in <project_tree> if checked. Overridden by .ccpSatelliteConfig.yaml if present.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "scope": "resource"
+                },
+                "ccpSatellite.directoryContentDisplay.hideDirAndContentsGlobs": {
+                    "type": "array",
+                    "default": [],
+                    "description": "Glob patterns for directories whose node AND contents are HIDDEN from the UI. Overridden by .ccpSatelliteConfig.yaml if present.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "scope": "resource"
+                },
+                "ccpSatellite.google.apiKey": {
+                    "type": "string",
+                    "default": "",
+                    "description": "API Key for Google Generative AI services (e.g., for token counting).",
+                    "scope": "application"
+                }
+            }
+        }
+    }
+}

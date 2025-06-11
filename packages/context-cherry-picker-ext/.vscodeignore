@@ -1,0 +1,47 @@
+# General ignores
+.vscode/**
+.git/**
+.DS_Store
+*.vsix
+*.tgz
+*.log
+*.tsbuildinfo
+
+# Exclude node_modules, but ensure @types/vscode (if bundled by some process) is not ignored if needed.
+# Typically, for runtime, node_modules are not packaged.
+node_modules/
+# !node_modules/@types/vscode/** # Usually not needed as vscode types are provided by the environment
+
+# Source files (we ship compiled output)
+src/**
+
+# Config files not needed in package
+tsconfig.json
+eslint.config.js
+vitest.config.ts # If you add tests
+knip.json # If you add knip
+
+# Test files
+test/**
+tests/**
+
+# Output directories (but include specific built files)
+out/
+dist/
+!dist/extension.js
+# !dist/extension.cjs # Only if you build CJS as well
+
+# Project specific dev files
+.yalc/
+.turbo/
+
+# Include necessary files for publishing
+!package.json
+!README.md
+!CHANGELOG.md
+!LICENSE.txt
+!assets/**
+# Ensure specific assets are included if 'assets/**' is too broad or has sub-ignores
+!assets/icon.png
+!assets/ccp_activity_bar_icon.svg
+!assets/views/projectStructureQuickSetting.html
