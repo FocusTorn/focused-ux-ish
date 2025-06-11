@@ -3,16 +3,16 @@
     "_file": {
       "iconPath": "../icons/file_icons/file.svg"
     },
-    "_basic": {
+    "_folder-basic": {
       "iconPath": "../icons/folder_icons/folder-basic.svg"
     },
-    "_basic-open": {
+    "_folder-basic-open": {
       "iconPath": "../icons/folder_icons/folder-basic-open.svg"
     },
-    "_root": {
+    "_folder-root": {
       "iconPath": "../icons/folder_icons/folder-root.svg"
     },
-    "_root-open": {
+    "_folder-root-open": {
       "iconPath": "../icons/folder_icons/folder-root-open.svg"
     },
     "_ahk-alt": {
@@ -318,6 +318,12 @@
     "_tsconfig": {
       "iconPath": "../icons/file_icons/tsconfig.svg"
     },
+    "_turbo-json": {
+      "iconPath": "../icons/file_icons/turbo-json.svg"
+    },
+    "_turborepo": {
+      "iconPath": "../icons/file_icons/turborepo.svg"
+    },
     "_txt": {
       "iconPath": "../icons/file_icons/txt.svg"
     },
@@ -378,17 +384,17 @@
     "_folder-arduino": {
       "iconPath": "../icons/folder_icons/folder-arduino.svg"
     },
-    "_folder-basic-open": {
-      "iconPath": "../icons/folder_icons/folder-basic-open.svg"
-    },
-    "_folder-basic": {
-      "iconPath": "../icons/folder_icons/folder-basic.svg"
-    },
     "_folder-binary-open": {
       "iconPath": "../icons/folder_icons/folder-binary-open.svg"
     },
     "_folder-binary": {
       "iconPath": "../icons/folder_icons/folder-binary.svg"
+    },
+    "_folder-book-open": {
+      "iconPath": "../icons/folder_icons/folder-book-open.svg"
+    },
+    "_folder-book": {
+      "iconPath": "../icons/folder_icons/folder-book.svg"
     },
     "_folder-build-open": {
       "iconPath": "../icons/folder_icons/folder-build-open.svg"
@@ -561,6 +567,12 @@
     "_folder-out": {
       "iconPath": "../icons/folder_icons/folder-out.svg"
     },
+    "_folder-package-open": {
+      "iconPath": "../icons/folder_icons/folder-package-open.svg"
+    },
+    "_folder-package": {
+      "iconPath": "../icons/folder_icons/folder-package.svg"
+    },
     "_folder-pi-open": {
       "iconPath": "../icons/folder_icons/folder-pi-open.svg"
     },
@@ -602,12 +614,6 @@
     },
     "_folder-removed": {
       "iconPath": "../icons/folder_icons/folder-removed.svg"
-    },
-    "_folder-root-open": {
-      "iconPath": "../icons/folder_icons/folder-root-open.svg"
-    },
-    "_folder-root": {
-      "iconPath": "../icons/folder_icons/folder-root.svg"
     },
     "_folder-scripts-open": {
       "iconPath": "../icons/folder_icons/folder-scripts-open.svg"
@@ -681,6 +687,12 @@
     "_folder-toolbox": {
       "iconPath": "../icons/folder_icons/folder-toolbox.svg"
     },
+    "_folder-turborepo-open": {
+      "iconPath": "../icons/folder_icons/folder-turborepo-open.svg"
+    },
+    "_folder-turborepo": {
+      "iconPath": "../icons/folder_icons/folder-turborepo.svg"
+    },
     "_folder-typescript-open": {
       "iconPath": "../icons/folder_icons/folder-typescript-open.svg"
     },
@@ -704,491 +716,295 @@
     },
     "_folder-yarn": {
       "iconPath": "../icons/folder_icons/folder-yarn.svg"
-    },
-    "_binary-open": {
-      "iconPath": "../icons/folder_icons/folder-binary-open.svg"
-    },
-    "_build": {
-      "iconPath": "../icons/folder_icons/folder-build.svg"
-    },
-    "_build-open": {
-      "iconPath": "../icons/folder_icons/folder-build-open.svg"
-    },
-    "_config-open": {
-      "iconPath": "../icons/folder_icons/folder-config-open.svg"
-    },
-    "_c-open": {
-      "iconPath": "../icons/folder_icons/folder-c-open.svg"
-    },
-    "_cardboard-box": {
-      "iconPath": "../icons/folder_icons/folder-cardboard-box.svg"
-    },
-    "_cardboard-box-open": {
-      "iconPath": "../icons/folder_icons/folder-cardboard-box-open.svg"
-    },
-    "_cp": {
-      "iconPath": "../icons/folder_icons/folder-cp.svg"
-    },
-    "_cp-open": {
-      "iconPath": "../icons/folder_icons/folder-cp-open.svg"
-    },
-    "_cmake-open": {
-      "iconPath": "../icons/folder_icons/folder-cmake-open.svg"
-    },
-    "_cpp-open": {
-      "iconPath": "../icons/folder_icons/folder-cpp-open.svg"
-    },
-    "_core-alt": {
-      "iconPath": "../icons/folder_icons/folder-core-alt.svg"
-    },
-    "_core-alt-open": {
-      "iconPath": "../icons/folder_icons/folder-core-alt-open.svg"
-    },
-    "_dict-open": {
-      "iconPath": "../icons/folder_icons/folder-dict-open.svg"
-    },
-    "_env-open": {
-      "iconPath": "../icons/folder_icons/folder-env-open.svg"
-    },
-    "_eslint-open": {
-      "iconPath": "../icons/folder_icons/folder-eslint-open.svg"
-    },
-    "_generator-open": {
-      "iconPath": "../icons/folder_icons/folder-generator-open.svg"
-    },
-    "_git-open": {
-      "iconPath": "../icons/folder_icons/folder-git-open.svg"
-    },
-    "_green-arrow": {
-      "iconPath": "../icons/folder_icons/folder-green-arrow.svg"
-    },
-    "_green-arrow-open": {
-      "iconPath": "../icons/folder_icons/folder-green-arrow-open.svg"
-    },
-    "_header-open": {
-      "iconPath": "../icons/folder_icons/folder-header-open.svg"
-    },
-    "_helpers": {
-      "iconPath": "../icons/folder_icons/folder-helpers.svg"
-    },
-    "_helpers-open": {
-      "iconPath": "../icons/folder_icons/folder-helpers-open.svg"
-    },
-    "_home": {
-      "iconPath": "../icons/folder_icons/folder-home.svg"
-    },
-    "_home-open": {
-      "iconPath": "../icons/folder_icons/folder-home-open.svg"
-    },
-    "_images": {
-      "iconPath": "../icons/folder_icons/folder-images.svg"
-    },
-    "_images-open": {
-      "iconPath": "../icons/folder_icons/folder-images-open.svg"
-    },
-    "_icon": {
-      "iconPath": "../icons/folder_icons/folder-icon.svg"
-    },
-    "_icon-open": {
-      "iconPath": "../icons/folder_icons/folder-icon-open.svg"
-    },
-    "_javascript-open": {
-      "iconPath": "../icons/folder_icons/folder-javascript-open.svg"
-    },
-    "_json-open": {
-      "iconPath": "../icons/folder_icons/folder-json-open.svg"
-    },
-    "_lib": {
-      "iconPath": "../icons/folder_icons/folder-lib.svg"
-    },
-    "_lib-open": {
-      "iconPath": "../icons/folder_icons/folder-lib-open.svg"
-    },
-    "_model-open": {
-      "iconPath": "../icons/folder_icons/folder-model-open.svg"
-    },
-    "_node-open": {
-      "iconPath": "../icons/folder_icons/folder-node-open.svg"
-    },
-    "_notes": {
-      "iconPath": "../icons/folder_icons/folder-notes.svg"
-    },
-    "_notes-open": {
-      "iconPath": "../icons/folder_icons/folder-notes-open.svg"
-    },
-    "_out": {
-      "iconPath": "../icons/folder_icons/folder-out.svg"
-    },
-    "_out-open": {
-      "iconPath": "../icons/folder_icons/folder-out-open.svg"
-    },
-    "_pi": {
-      "iconPath": "../icons/folder_icons/folder-pi.svg"
-    },
-    "_pi-open": {
-      "iconPath": "../icons/folder_icons/folder-pi-open.svg"
-    },
-    "_puzzle": {
-      "iconPath": "../icons/folder_icons/folder-puzzle.svg"
-    },
-    "_puzzle-open": {
-      "iconPath": "../icons/folder_icons/folder-puzzle-open.svg"
-    },
-    "_pycache-open": {
-      "iconPath": "../icons/folder_icons/folder-pycache-open.svg"
-    },
-    "_python-open": {
-      "iconPath": "../icons/folder_icons/folder-python-open.svg"
-    },
-    "_removed": {
-      "iconPath": "../icons/folder_icons/folder-removed.svg"
-    },
-    "_removed-open": {
-      "iconPath": "../icons/folder_icons/folder-removed-open.svg"
-    },
-    "_scripts": {
-      "iconPath": "../icons/folder_icons/folder-scripts.svg"
-    },
-    "_scripts-open": {
-      "iconPath": "../icons/folder_icons/folder-scripts-open.svg"
-    },
-    "_sketch": {
-      "iconPath": "../icons/folder_icons/folder-sketch.svg"
-    },
-    "_sketch-open": {
-      "iconPath": "../icons/folder_icons/folder-sketch-open.svg"
-    },
-    "_shell-open": {
-      "iconPath": "../icons/folder_icons/folder-shell-open.svg"
-    },
-    "_source": {
-      "iconPath": "../icons/folder_icons/folder-source.svg"
-    },
-    "_source-open": {
-      "iconPath": "../icons/folder_icons/folder-source-open.svg"
-    },
-    "_syntax": {
-      "iconPath": "../icons/folder_icons/folder-syntax.svg"
-    },
-    "_syntax-open": {
-      "iconPath": "../icons/folder_icons/folder-syntax-open.svg"
-    },
-    "_test-alt-open": {
-      "iconPath": "../icons/folder_icons/folder-test-alt-open.svg"
-    },
-    "_template-open": {
-      "iconPath": "../icons/folder_icons/folder-template-open.svg"
-    },
-    "_terminal-open": {
-      "iconPath": "../icons/folder_icons/folder-terminal-open.svg"
-    },
-    "_theme-open": {
-      "iconPath": "../icons/folder_icons/folder-theme-open.svg"
-    },
-    "_toolbox": {
-      "iconPath": "../icons/folder_icons/folder-toolbox.svg"
-    },
-    "_toolbox-open": {
-      "iconPath": "../icons/folder_icons/folder-toolbox-open.svg"
-    },
-    "_typescript-open": {
-      "iconPath": "../icons/folder_icons/folder-typescript-open.svg"
-    },
-    "_vscode-open": {
-      "iconPath": "../icons/folder_icons/folder-vscode-open.svg"
-    },
-    "_webpack-open": {
-      "iconPath": "../icons/folder_icons/folder-webpack-open.svg"
-    },
-    "_yarn-open": {
-      "iconPath": "../icons/folder_icons/folder-yarn-open.svg"
     }
   },
   "folderNames": {
-    "bin": "_binary",
-    "build": "_build",
-    "config": "_config",
-    "configs": "_config",
-    "configuration": "_config",
-    ".arduino15": "_config",
-    ".user": "_config",
-    "c": "_c",
-    ".logs": "_cardboard-box",
-    "docs": "_notes",
-    "documents": "_notes",
-    "documentation": "_cardboard-box",
-    "resources": "_cardboard-box",
-    "assets": "_cardboard-box",
-    "cp": "_cpp",
-    "cpp": "_cp",
-    "CMakeFiles": "_cmake",
-    ".cmake": "_cmake",
-    "core": "_core-alt",
-    "dict": "_dict",
-    "dictionary": "_dict",
-    "data": "_dict",
-    ".venv": "_env",
-    ".eslint-rules": "_eslint",
-    "generator": "_generator",
-    "generators": "_generator",
-    ".git": "_git",
-    ".github": "_git",
-    "commands": "_green-arrow",
-    "h": "_header",
-    "header": "_header",
-    "headers": "_header",
-    "helper": "_helpers",
-    "helpers": "_helpers",
-    "home": "_home",
-    "images": "_images",
-    "pictures": "_images",
-    "pics": "_images",
-    "icon": "_icon",
-    "icons": "_icon",
-    "ico": "_icon",
-    "icos": "_icon",
-    "js": "_javascript",
-    ".js": "_javascript",
-    "_js_": "_javascript",
-    "__js__": "_javascript",
-    "___js___": "_javascript",
-    "_js": "_javascript",
-    "json": "_json",
-    ".json": "_json",
-    "_json_": "_json",
-    "__json__": "_json",
-    "___json___": "_json",
-    "_json": "_json",
-    "lib": "_lib",
-    "library": "_lib",
-    "libraries": "_lib",
-    "model": "_model",
-    "models": "_model",
-    "node_modules": "_node",
-    ".notes": "_notes",
-    ".pnotes": "_notes",
-    "_notes_": "_notes",
-    "__notes__": "_notes",
-    "___notes___": "_notes",
-    "pnotes": "_notes",
-    ".notesHub_projectNotes": "_notes",
-    ".notesHub_remoteNotes": "_notes",
-    ".notesHub_globalNotes": "_notes",
-    "dist": "_out",
-    "out": "_out",
-    "pi": "_pi",
-    "RPi": "_pi",
-    "plugin": "_puzzle",
-    "plugins": "_puzzle",
-    "extension": "_puzzle",
-    "extensions": "_puzzle",
-    "components": "_puzzle",
-    "include": "_puzzle",
-    "includes": "_puzzle",
-    "pycache": "_pycache",
-    ".pycache": "_pycache",
-    "_pycache": "_pycache",
-    "__pycache__": "_pycache",
-    "pytest_cache": "_pycache",
-    ".pytest_cache": "_pycache",
-    "_pytest_cache": "_pycache",
-    "__pytest_cache__": "_pycache",
-    "python": "_python",
-    ".python": "_python",
-    "_python": "_python",
-    "__python__": "_python",
-    "_removed": "_removed",
-    "_X_removed": "_removed",
-    "_XX_removed": "_removed",
-    "_XXX_removed": "_removed",
-    "removed": "_removed",
-    "X_removed": "_removed",
-    "XX_removed": "_removed",
-    "XXX_removed": "_removed",
-    "z_removed": "_removed",
-    "zz_removed": "_removed",
-    "zzz_removed": "_removed",
-    "unused": "_removed",
-    "X_unused": "_removed",
-    "XX_unused": "_removed",
-    "XXX_unused": "_removed",
-    "_unused": "_removed",
-    "_X_unused": "_removed",
-    "_XX_unused": "_removed",
-    "_XXX_unused": "_removed",
-    ".removed": "_removed",
-    "scripts": "_scripts",
-    "sketchbook": "_sketch",
-    "sh": "_shell",
-    "src": "_source",
-    "syntax": "_syntax",
-    "test": "_test-alt",
-    "tests": "_test-alt",
-    "_tests": "_test-alt",
-    "__tests": "_test-alt",
-    "_tests_": "_test-alt",
-    "__tests__": "_test-alt",
-    ".vscode-test": "_test-alt",
-    "template": "_template",
-    "templates": "_template",
-    "ps": "_terminal",
-    "ps1": "_terminal",
-    "powershell": "_terminal",
-    "theme": "_theme",
-    "themes": "_theme",
-    "_utilities_": "_toolbox",
-    "ts": "_typescript",
-    ".ts": "_typescript",
-    "_ts_": "_typescript",
-    "__ts__": "_typescript",
-    "___ts___": "_typescript",
-    "_ts": "_typescript",
-    ".vscode": "_vscode",
-    ".devcontainer": "_webpack",
-    ".yarn": "_yarn"
+    "bin": "_folder-binary",
+    "build": "_folder-build",
+    "config": "_folder-config",
+    "configs": "_folder-config",
+    "configuration": "_folder-config",
+    ".arduino15": "_folder-config",
+    ".user": "_folder-config",
+    "c": "_folder-c",
+    ".logs": "_folder-book",
+    "docs": "_folder-notes",
+    "documents": "_folder-notes",
+    "documentation": "_folder-book",
+    "_assets": "_folder-cardboard-box",
+    "assets": "_folder-cardboard-box",
+    "resources": "_folder-cardboard-box",
+    "cp": "_folder-cpp",
+    "cpp": "_folder-cp",
+    "CMakeFiles": "_folder-cmake",
+    ".cmake": "_folder-cmake",
+    "core": "_folder-core-alt",
+    ".venv": "_folder-env",
+    ".eslint": "_folder-eslint",
+    "generator": "_folder-generator",
+    "generators": "_folder-generator",
+    ".git": "_folder-git",
+    ".github": "_folder-git",
+    "commands": "_folder-green-arrow",
+    "h": "_folder-header",
+    "header": "_folder-header",
+    "headers": "_folder-header",
+    "helper": "_folder-helpers",
+    "helpers": "_folder-helpers",
+    "home": "_folder-home",
+    "images": "_folder-images",
+    "pictures": "_folder-images",
+    "pics": "_folder-images",
+    "icon": "_folder-icon",
+    "icons": "_folder-icon",
+    "ico": "_folder-icon",
+    "icos": "_folder-icon",
+    "js": "_folder-javascript",
+    ".js": "_folder-javascript",
+    "_js_": "_folder-javascript",
+    "__js__": "_folder-javascript",
+    "___js___": "_folder-javascript",
+    "_js": "_folder-javascript",
+    "json": "_folder-json",
+    ".json": "_folder-json",
+    "_json_": "_folder-json",
+    "__json__": "_folder-json",
+    "___json___": "_folder-json",
+    "_json": "_folder-json",
+    "lib": "_folder-lib",
+    "library": "_folder-lib",
+    "libraries": "_folder-lib",
+    "model": "_folder-model",
+    "models": "_folder-model",
+    "node_modules": "_folder-node",
+    ".notes": "_folder-notes",
+    ".pnotes": "_folder-notes",
+    "_notes_": "_folder-notes",
+    "__notes__": "_folder-notes",
+    "___notes___": "_folder-notes",
+    "pnotes": "_folder-notes",
+    ".notesHub_projectNotes": "_folder-notes",
+    ".notesHub_remoteNotes": "_folder-notes",
+    ".notesHub_globalNotes": "_folder-notes",
+    "dist": "_folder-out",
+    "out": "_folder-out",
+    "packages": "_folder-package",
+    "pi": "_folder-pi",
+    "RPi": "_folder-pi",
+    "plugin": "_folder-puzzle",
+    "plugins": "_folder-puzzle",
+    "extension": "_folder-puzzle",
+    "extensions": "_folder-puzzle",
+    "components": "_folder-puzzle",
+    "include": "_folder-puzzle",
+    "includes": "_folder-puzzle",
+    "pycache": "_folder-pycache",
+    ".pycache": "_folder-pycache",
+    "_pycache": "_folder-pycache",
+    "__pycache__": "_folder-pycache",
+    "pytest_cache": "_folder-pycache",
+    ".pytest_cache": "_folder-pycache",
+    "_pytest_cache": "_folder-pycache",
+    "__pytest_cache__": "_folder-pycache",
+    "python": "_folder-python",
+    ".python": "_folder-python",
+    "_python": "_folder-python",
+    "__python__": "_folder-python",
+    "_removed": "_folder-removed",
+    "_X_removed": "_folder-removed",
+    "_XX_removed": "_folder-removed",
+    "_XXX_removed": "_folder-removed",
+    "removed": "_folder-removed",
+    "X_removed": "_folder-removed",
+    "XX_removed": "_folder-removed",
+    "XXX_removed": "_folder-removed",
+    "z_removed": "_folder-removed",
+    "zz_removed": "_folder-removed",
+    "zzz_removed": "_folder-removed",
+    "unused": "_folder-removed",
+    "X_unused": "_folder-removed",
+    "XX_unused": "_folder-removed",
+    "XXX_unused": "_folder-removed",
+    "_unused": "_folder-removed",
+    "_X_unused": "_folder-removed",
+    "_XX_unused": "_folder-removed",
+    "_XXX_unused": "_folder-removed",
+    ".removed": "_folder-removed",
+    "scripts": "_folder-scripts",
+    "_scripts": "_folder-scripts",
+    "sketchbook": "_folder-sketch",
+    "sh": "_folder-shell",
+    "src": "_folder-source",
+    "syntax": "_folder-syntax",
+    "test": "_folder-test-alt",
+    "tests": "_folder-test-alt",
+    "_tests": "_folder-test-alt",
+    "__tests": "_folder-test-alt",
+    "_tests_": "_folder-test-alt",
+    "__tests__": "_folder-test-alt",
+    ".vscode-test": "_folder-test-alt",
+    "template": "_folder-template",
+    "templates": "_folder-template",
+    "ps": "_folder-terminal",
+    "ps1": "_folder-terminal",
+    "powershell": "_folder-terminal",
+    "theme": "_folder-theme",
+    "themes": "_folder-theme",
+    "_utilities_": "_folder-toolbox",
+    ".turbo": "_folder-turborepo",
+    "ts": "_folder-typescript",
+    ".ts": "_folder-typescript",
+    "_ts_": "_folder-typescript",
+    "__ts__": "_folder-typescript",
+    "___ts___": "_folder-typescript",
+    "_ts": "_folder-typescript",
+    ".vscode": "_folder-vscode",
+    ".devcontainer": "_folder-webpack",
+    ".yarn": "_folder-yarn"
   },
   "folderNamesExpanded": {
-    "bin": "_binary-open",
-    "build": "_build-open",
-    "config": "_config-open",
-    "configs": "_config-open",
-    "configuration": "_config-open",
-    ".arduino15": "_config-open",
-    ".user": "_config-open",
-    "c": "_c-open",
-    ".logs": "_cardboard-box-open",
-    "docs": "_notes-open",
-    "documents": "_notes-open",
-    "documentation": "_cardboard-box-open",
-    "resources": "_cardboard-box-open",
-    "assets": "_cardboard-box-open",
-    "cp": "_cpp-open",
-    "cpp": "_cp-open",
-    "CMakeFiles": "_cmake-open",
-    ".cmake": "_cmake-open",
-    "core": "_core-alt-open",
-    "dict": "_dict-open",
-    "dictionary": "_dict-open",
-    "data": "_dict-open",
-    ".venv": "_env-open",
-    ".eslint-rules": "_eslint-open",
-    "generator": "_generator-open",
-    "generators": "_generator-open",
-    ".git": "_git-open",
-    ".github": "_git-open",
-    "commands": "_green-arrow-open",
-    "h": "_header-open",
-    "header": "_header-open",
-    "headers": "_header-open",
-    "helper": "_helpers-open",
-    "helpers": "_helpers-open",
-    "home": "_home-open",
-    "images": "_images-open",
-    "pictures": "_images-open",
-    "pics": "_images-open",
-    "icon": "_icon-open",
-    "icons": "_icon-open",
-    "ico": "_icon-open",
-    "icos": "_icon-open",
-    "js": "_javascript-open",
-    ".js": "_javascript-open",
-    "_js_": "_javascript-open",
-    "__js__": "_javascript-open",
-    "___js___": "_javascript-open",
-    "_js": "_javascript-open",
-    "json": "_json-open",
-    ".json": "_json-open",
-    "_json_": "_json-open",
-    "__json__": "_json-open",
-    "___json___": "_json-open",
-    "_json": "_json-open",
-    "lib": "_lib-open",
-    "library": "_lib-open",
-    "libraries": "_lib-open",
-    "model": "_model-open",
-    "models": "_model-open",
-    "node_modules": "_node-open",
-    ".notes": "_notes-open",
-    ".pnotes": "_notes-open",
-    "_notes_": "_notes-open",
-    "__notes__": "_notes-open",
-    "___notes___": "_notes-open",
-    "pnotes": "_notes-open",
-    ".notesHub_projectNotes": "_notes-open",
-    ".notesHub_remoteNotes": "_notes-open",
-    ".notesHub_globalNotes": "_notes-open",
-    "dist": "_out-open",
-    "out": "_out-open",
-    "pi": "_pi-open",
-    "RPi": "_pi-open",
-    "plugin": "_puzzle-open",
-    "plugins": "_puzzle-open",
-    "extension": "_puzzle-open",
-    "extensions": "_puzzle-open",
-    "components": "_puzzle-open",
-    "include": "_puzzle-open",
-    "includes": "_puzzle-open",
-    "pycache": "_pycache-open",
-    ".pycache": "_pycache-open",
-    "_pycache": "_pycache-open",
-    "__pycache__": "_pycache-open",
-    "pytest_cache": "_pycache-open",
-    ".pytest_cache": "_pycache-open",
-    "_pytest_cache": "_pycache-open",
-    "__pytest_cache__": "_pycache-open",
-    "python": "_python-open",
-    ".python": "_python-open",
-    "_python": "_python-open",
-    "__python__": "_python-open",
-    "_removed": "_removed-open",
-    "_X_removed": "_removed-open",
-    "_XX_removed": "_removed-open",
-    "_XXX_removed": "_removed-open",
-    "removed": "_removed-open",
-    "X_removed": "_removed-open",
-    "XX_removed": "_removed-open",
-    "XXX_removed": "_removed-open",
-    "z_removed": "_removed-open",
-    "zz_removed": "_removed-open",
-    "zzz_removed": "_removed-open",
-    "unused": "_removed-open",
-    "X_unused": "_removed-open",
-    "XX_unused": "_removed-open",
-    "XXX_unused": "_removed-open",
-    "_unused": "_removed-open",
-    "_X_unused": "_removed-open",
-    "_XX_unused": "_removed-open",
-    "_XXX_unused": "_removed-open",
-    ".removed": "_removed-open",
-    "scripts": "_scripts-open",
-    "sketchbook": "_sketch-open",
-    "sh": "_shell-open",
-    "src": "_source-open",
-    "syntax": "_syntax-open",
-    "test": "_test-alt-open",
-    "tests": "_test-alt-open",
-    "_tests": "_test-alt-open",
-    "__tests": "_test-alt-open",
-    "_tests_": "_test-alt-open",
-    "__tests__": "_test-alt-open",
-    ".vscode-test": "_test-alt-open",
-    "template": "_template-open",
-    "templates": "_template-open",
-    "ps": "_terminal-open",
-    "ps1": "_terminal-open",
-    "powershell": "_terminal-open",
-    "theme": "_theme-open",
-    "themes": "_theme-open",
-    "_utilities_": "_toolbox-open",
-    "ts": "_typescript-open",
-    ".ts": "_typescript-open",
-    "_ts_": "_typescript-open",
-    "__ts__": "_typescript-open",
-    "___ts___": "_typescript-open",
-    "_ts": "_typescript-open",
-    ".vscode": "_vscode-open",
-    ".devcontainer": "_webpack-open",
-    ".yarn": "_yarn-open"
+    "bin": "_folder-binary-open",
+    "build": "_folder-build-open",
+    "config": "_folder-config-open",
+    "configs": "_folder-config-open",
+    "configuration": "_folder-config-open",
+    ".arduino15": "_folder-config-open",
+    ".user": "_folder-config-open",
+    "c": "_folder-c-open",
+    ".logs": "_folder-book-open",
+    "docs": "_folder-notes-open",
+    "documents": "_folder-notes-open",
+    "documentation": "_folder-book-open",
+    "_assets": "_folder-cardboard-box-open",
+    "assets": "_folder-cardboard-box-open",
+    "resources": "_folder-cardboard-box-open",
+    "cp": "_folder-cpp-open",
+    "cpp": "_folder-cp-open",
+    "CMakeFiles": "_folder-cmake-open",
+    ".cmake": "_folder-cmake-open",
+    "core": "_folder-core-alt-open",
+    ".venv": "_folder-env-open",
+    ".eslint": "_folder-eslint-open",
+    "generator": "_folder-generator-open",
+    "generators": "_folder-generator-open",
+    ".git": "_folder-git-open",
+    ".github": "_folder-git-open",
+    "commands": "_folder-green-arrow-open",
+    "h": "_folder-header-open",
+    "header": "_folder-header-open",
+    "headers": "_folder-header-open",
+    "helper": "_folder-helpers-open",
+    "helpers": "_folder-helpers-open",
+    "home": "_folder-home-open",
+    "images": "_folder-images-open",
+    "pictures": "_folder-images-open",
+    "pics": "_folder-images-open",
+    "icon": "_folder-icon-open",
+    "icons": "_folder-icon-open",
+    "ico": "_folder-icon-open",
+    "icos": "_folder-icon-open",
+    "js": "_folder-javascript-open",
+    ".js": "_folder-javascript-open",
+    "_js_": "_folder-javascript-open",
+    "__js__": "_folder-javascript-open",
+    "___js___": "_folder-javascript-open",
+    "_js": "_folder-javascript-open",
+    "json": "_folder-json-open",
+    ".json": "_folder-json-open",
+    "_json_": "_folder-json-open",
+    "__json__": "_folder-json-open",
+    "___json___": "_folder-json-open",
+    "_json": "_folder-json-open",
+    "lib": "_folder-lib-open",
+    "library": "_folder-lib-open",
+    "libraries": "_folder-lib-open",
+    "model": "_folder-model-open",
+    "models": "_folder-model-open",
+    "node_modules": "_folder-node-open",
+    ".notes": "_folder-notes-open",
+    ".pnotes": "_folder-notes-open",
+    "_notes_": "_folder-notes-open",
+    "__notes__": "_folder-notes-open",
+    "___notes___": "_folder-notes-open",
+    "pnotes": "_folder-notes-open",
+    ".notesHub_projectNotes": "_folder-notes-open",
+    ".notesHub_remoteNotes": "_folder-notes-open",
+    ".notesHub_globalNotes": "_folder-notes-open",
+    "dist": "_folder-out-open",
+    "out": "_folder-out-open",
+    "packages": "_folder-package-open",
+    "pi": "_folder-pi-open",
+    "RPi": "_folder-pi-open",
+    "plugin": "_folder-puzzle-open",
+    "plugins": "_folder-puzzle-open",
+    "extension": "_folder-puzzle-open",
+    "extensions": "_folder-puzzle-open",
+    "components": "_folder-puzzle-open",
+    "include": "_folder-puzzle-open",
+    "includes": "_folder-puzzle-open",
+    "pycache": "_folder-pycache-open",
+    ".pycache": "_folder-pycache-open",
+    "_pycache": "_folder-pycache-open",
+    "__pycache__": "_folder-pycache-open",
+    "pytest_cache": "_folder-pycache-open",
+    ".pytest_cache": "_folder-pycache-open",
+    "_pytest_cache": "_folder-pycache-open",
+    "__pytest_cache__": "_folder-pycache-open",
+    "python": "_folder-python-open",
+    ".python": "_folder-python-open",
+    "_python": "_folder-python-open",
+    "__python__": "_folder-python-open",
+    "_removed": "_folder-removed-open",
+    "_X_removed": "_folder-removed-open",
+    "_XX_removed": "_folder-removed-open",
+    "_XXX_removed": "_folder-removed-open",
+    "removed": "_folder-removed-open",
+    "X_removed": "_folder-removed-open",
+    "XX_removed": "_folder-removed-open",
+    "XXX_removed": "_folder-removed-open",
+    "z_removed": "_folder-removed-open",
+    "zz_removed": "_folder-removed-open",
+    "zzz_removed": "_folder-removed-open",
+    "unused": "_folder-removed-open",
+    "X_unused": "_folder-removed-open",
+    "XX_unused": "_folder-removed-open",
+    "XXX_unused": "_folder-removed-open",
+    "_unused": "_folder-removed-open",
+    "_X_unused": "_folder-removed-open",
+    "_XX_unused": "_folder-removed-open",
+    "_XXX_unused": "_folder-removed-open",
+    ".removed": "_folder-removed-open",
+    "scripts": "_folder-scripts-open",
+    "_scripts": "_folder-scripts-open",
+    "sketchbook": "_folder-sketch-open",
+    "sh": "_folder-shell-open",
+    "src": "_folder-source-open",
+    "syntax": "_folder-syntax-open",
+    "test": "_folder-test-alt-open",
+    "tests": "_folder-test-alt-open",
+    "_tests": "_folder-test-alt-open",
+    "__tests": "_folder-test-alt-open",
+    "_tests_": "_folder-test-alt-open",
+    "__tests__": "_folder-test-alt-open",
+    ".vscode-test": "_folder-test-alt-open",
+    "template": "_folder-template-open",
+    "templates": "_folder-template-open",
+    "ps": "_folder-terminal-open",
+    "ps1": "_folder-terminal-open",
+    "powershell": "_folder-terminal-open",
+    "theme": "_folder-theme-open",
+    "themes": "_folder-theme-open",
+    "_utilities_": "_folder-toolbox-open",
+    ".turbo": "_folder-turborepo-open",
+    "ts": "_folder-typescript-open",
+    ".ts": "_folder-typescript-open",
+    "_ts_": "_folder-typescript-open",
+    "__ts__": "_folder-typescript-open",
+    "___ts___": "_folder-typescript-open",
+    "_ts": "_folder-typescript-open",
+    ".vscode": "_folder-vscode-open",
+    ".devcontainer": "_folder-webpack-open",
+    ".yarn": "_folder-yarn-open"
   },
   "fileExtensions": {
     "ahk": "_ahk",
@@ -1341,6 +1157,7 @@
     "package.nls.json": "_package-nls",
     "poetry.p": "_poetry",
     "poetry.lock": "_poetry-lock",
+    "prettier.config.js": "_prettier",
     ".python-version": "_pyversion",
     "pyproject.toml": "_pyconfig",
     "requirements.txt": "_python",
@@ -1355,6 +1172,7 @@
     ".vscode-test.mjs": "_test",
     "tsconfig.json": "_tsconfig",
     "tsconfig.test.json": "_tsconfig",
+    "turbo.json": "_turbo-json",
     ".pnp.cjs": "_yarn",
     ".pnp.loader.mjs": "_yarn",
     ".yarnrc": "_yarn-config",

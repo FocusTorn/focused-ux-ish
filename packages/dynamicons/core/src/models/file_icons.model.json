@@ -65,7 +65,7 @@
         { "name": "png", "fileExtensions": ["png"] },
         { "name": "poetry", "fileNames": ["poetry.p"] },
         { "name": "poetry-lock", "fileNames": ["poetry.lock"] },
-
+        { "name": "prettier", "fileNames": ["prettier.config.js"] },
 
         { "name": "pyversion", "fileNames": [".python-version"] },
         { "name": "pyconfig", "fileNames": ["pyproject.toml"] },
@@ -81,6 +81,14 @@
         { "name": "theme", "fileExtensions": ["theme.json"] },
         { "name": "typescript", "fileExtensions": ["ts"] },
         { "name": "tsconfig", "fileNames": ["tsconfig.json", "tsconfig.test.json"] },
+        
+        
+        
+        { "name": "turbo-json", "fileNames": ["turbo.json"] },
+        
+        
+        
+        
         { "name": "text-file", "fileExtensions": ["txt", "txtc"] },
         { "name": "txte", "fileExtensions": ["txte"] },
         { "name": "yaml", "fileExtensions": ["yaml"] },

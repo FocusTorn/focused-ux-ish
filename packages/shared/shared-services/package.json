@@ -4,38 +4,31 @@
     "scripts": {
         "== BUILD ============================================================================================ ": "",
         "build": "pnpm run build:types && pnpm run build:js",
-        "build:types": "tsc -p tsconfig.json",
-        "build:js": "esbuild ./src/index.ts --bundle --outfile=dist/index.js --platform=node --format=esm --external:vscode --external:tsyringe --external:reflect-metadata",
-        
         "build:clean": "pnpm run clean && pnpm run build",
-        
-        
-
+        "build:types": "tsc -p tsconfig.json",
+        "build:js": "fux-build ./src/index.ts --outfile=./dist/index.js",
         "== WATCH ============================================================================================ ": "",
         "watch:types": "tsc -p tsconfig.json --watch",
-        "watch:js": "esbuild ./src/index.ts --bundle --outfile=dist/index.js --platform=node --format=esm --external:vscode --external:tsyringe --external:reflect-metadata --watch",
-        
+        "watch:js": "fux-build ./src/index.ts --outfile=./dist/index.js --watch",
         "== VALIDATE ========================================================================================= ": "",
         "check-types": "tsc --noEmit -p tsconfig.json --pretty",
         "lint": "eslint . --ext .ts",
         "lint:fix": "eslint . --ext .ts --fix",
-        
         "== UTILITIES ======================================================================================== ": "",
         "clean": "rimraf ./dist .turbo"
-        
     },
     "dependencies": {
         "gray-matter": "^4.0.3",
         "tsyringe": "^4.10.0"
     },
     "devDependencies": {
-        "@focused-ux/tsconfig": "workspace:*",
+        "@focused-ux/config-esbuild": "workspace:*",
         "@focused-ux/config-eslint": "workspace:*",
-        "@types/node": "^20.17.47",
+        "@focused-ux/tsconfig": "workspace:*",
+        "@types/node": "^24.0.0",
         "@types/vscode": "^1.100.0",
-        "esbuild": "^0.25.4",
-        "gpt-tokenizer": "^2.9.0",
-        "rimraf": "^5.0.5",
+        "esbuild": "^0.25.5",
+        "gpt-tokenizer": "^3.0.0",
         "strip-json-comments": "^5.0.2",
         "ts-node": "^10.9.2",
         "typescript": "^5.8.3"
@@ -51,6 +44,4 @@
             "import": "./dist/index.js"
         }
     }
-    
-    
 }

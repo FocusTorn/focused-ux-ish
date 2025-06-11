@@ -3,13 +3,12 @@
 
 import type { BuildOptions } from 'esbuild';
 import path from 'node:path';
-import { fileURLToPath, pathToFileURL } from 'node:url'; // Import pathToFileURL
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 //--------------------------------------------------------------------------------------------------------------<<
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const resolvePluginPath = (relativePath: string): string => { //>
-    // Assuming plugins are in packages/shared/config-esbuild/plugins/
     return path.resolve(__dirname, '../plugins', relativePath);
 }; //</
 
@@ -18,12 +17,8 @@ async function loadPlugins(pluginFileNames: string[]): Promise<any[]> { //>
         pluginFileNames.map(async (pluginFileName) => {
             try {
                 const pluginPath = resolvePluginPath(pluginFileName);
-                // console.log(`[config-esbuild] Attempting to load plugin from OS path: ${pluginPath}`);
-                
-                const pluginFileUrl = pathToFileURL(pluginPath).href; // Convert OS path to file URL
-                // console.log(`[config-esbuild] Importing plugin from URL: ${pluginFileUrl}`);
-                
-                const pluginModule = await import(pluginFileUrl); // Use the file URL for import
+                const pluginFileUrl = pathToFileURL(pluginPath).href;
+                const pluginModule = await import(pluginFileUrl);
                 let plugin = pluginModule.default;
 
                 if (plugin && typeof plugin === 'object' && !plugin.name) {
@@ -32,7 +27,6 @@ async function loadPlugins(pluginFileNames: string[]): Promise<any[]> { //>
                     console.warn(`[config-esbuild] Plugin at ${pluginPath} is not a valid esbuild plugin object or missing a name.`);
                     return null;
                 }
-                // console.log(`[config-esbuild] Successfully loaded plugin: ${plugin.name}`);
                 return plugin;
             } catch (err) {
                 console.error(`[config-esbuild] Error loading plugin: ${pluginFileName}`, err);
@@ -63,9 +57,6 @@ export async function getBaseEsbuildOptions( //>
         external: [
             'vscode',
             'typescript',
-            'tsyringe',
-            'reflect-metadata',
-            '@focused-ux/shared-services',
             'node:*'
         ],
         logOverride: {

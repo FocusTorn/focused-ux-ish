@@ -172,7 +172,14 @@ function addIconDefinitionToResult( //>
 	if (isOpenVariant)
 		iconFileNameInAssets += dynamiconsConstants.defaults.openFolderIconSuffix
 
-	const themeIconKey = `_${isOpenVariant ? `${iconModelName}${dynamiconsConstants.defaults.openFolderIconSuffix}` : iconModelName}`
+	let baseNameForDefinitionKey = iconModelName
+
+	if (type === 'folder') {
+		baseNameForDefinitionKey = `folder-${iconModelName}`
+	}
+
+	const themeIconKey = `_${isOpenVariant ? `${baseNameForDefinitionKey}${dynamiconsConstants.defaults.openFolderIconSuffix}` : baseNameForDefinitionKey}`
+
 	const iconDirRelPath = type === 'file' ? FILE_ICON_REL_PATH : FOLDER_ICON_REL_PATH
 
 	if (!result.iconDefinitions[themeIconKey]) {
@@ -211,14 +218,21 @@ function processIconAssociations( //>
 			if (!itemName)
 				continue
 
-			const themeIconNameKey = `_${iconModelName}`
+			let definitionKeyForAssociation: string
 
-			result[associationKey][itemName] = themeIconNameKey
+			if (type === 'folder') {
+				definitionKeyForAssociation = `_folder-${iconModelName}`
+			} else {
+				definitionKeyForAssociation = `_${iconModelName}`
+			}
+
+			result[associationKey][itemName] = definitionKeyForAssociation
 			addIconDefinitionToResult(result, iconModelName, type, false, silent)
-			if (associationKey === 'folderNames') {
-				const expandedThemeIconNameKey = `_${iconModelName}${dynamiconsConstants.defaults.openFolderIconSuffix}`
 
-				result.folderNamesExpanded[itemName] = expandedThemeIconNameKey
+			if (associationKey === 'folderNames') { // This implies type === 'folder'
+				const expandedDefinitionKeyForAssociation = `${definitionKeyForAssociation}${dynamiconsConstants.defaults.openFolderIconSuffix}`
+
+				result.folderNamesExpanded[itemName] = expandedDefinitionKeyForAssociation
 				addIconDefinitionToResult(result, iconModelName, type, true, silent)
 			}
 		}

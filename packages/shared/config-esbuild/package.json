@@ -13,10 +13,11 @@
         "clean": "rimraf ./dist .turbo"
     },
     "dependencies": {
-        "esbuild": "^0.25.4"
+        "esbuild": "^0.25.5"
     },
     "devDependencies": {
         "@focused-ux/tsconfig": "workspace:*",
+        "@focused-ux/config-eslint": "workspace:*",
         "typescript": "^5.8.3"
     }
 }

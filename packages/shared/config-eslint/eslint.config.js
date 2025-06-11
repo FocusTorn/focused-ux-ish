@@ -30,7 +30,12 @@ const focusTornBaseRules = { //>
 	'license/unknown': 'off',
 	'no-console': 'off',
 	'no-unused-vars': 'off', // Handled by unused-imports/no-unused-vars
-	'require-resolve-not-external': 'off',
+	
+    'require-resolve-not-external': 'error',
+    
+    // "@typescript-eslint/no-require-imports": "error",
+    
+    
 	'antfu/curly': 'off',
 	'style/indent': ['error', 'tab'],
 	'style/no-mixed-spaces-and-tabs': ['error', 'smart-tabs'],
@@ -45,7 +50,7 @@ const focusTornBaseRules = { //>
 		{ blocks: 'never', classes: 'always' },
 		{ allowSingleLineBlocks: true },
 	],
-	'style/brace-style': ['error', '1tbs', { allowSingleLine: false }],
+	// 'style/brace-style': ['error', '1tbs', { allowSingleLine: false }],
 	'operator-linebreak': ['error', 'before'],
 	'style/max-statements-per-line': 'off',
 	'style/no-tabs': 'off',

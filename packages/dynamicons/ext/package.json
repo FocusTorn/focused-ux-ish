@@ -1,18 +1,13 @@
 {
     "name": "focused-ux-dynamicons",
-    "version": "0.1.17",
+    "version": "0.1.27",
     "scripts": {
         "== BUILD ============================================================================================ ": "",
         "build": "pnpm run build:types && pnpm run build:js",
-        "build:types": "tsc -p tsconfig.json",
-        "build:js": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.js --platform=node --format=esm --external:vscode",
-        "build:cjs": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.cjs --platform=node --format=cjs --external:vscode",
         "build:clean": "pnpm run clean && pnpm run build",
-        "== WATCH ============================================================================================ ": "",
-        "watch-only": "pnpm run watch:types & pnpm run watch:js",
-        "watch:types": "tsc -p tsconfig.json --watch",
-        "watch:js": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.js --platform=node --format=esm --external:vscode --external:tsyringe --external:reflect-metadata --external:@focused-ux/dynamicons-core --watch",
-        "watch:cjs": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.cjs --platform=node --format=cjs --external:vscode --external:tsyringe --external:reflect-metadata --external:@focused-ux/dynamicons-core --watch",
+        "build:types": "tsc -p tsconfig.json",
+        "build:js": "fux-build ./src/extension.ts --outfile=./dist/extension.js",
+        "build:cjs": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.cjs --platform=node --format=cjs --external:vscode",
         "== VALIDATE ========================================================================================= ": "",
         "check-types": "tsc --noEmit -p tsconfig.json --pretty",
         "lint": "eslint . --ext .ts",
@@ -21,8 +16,13 @@
         "package": "vsce package --no-dependencies -o ../../../vsix_packages/",
         "vscode:prepublish": "pnpm run build && pnpm run version-bump",
         "publish": "vsce publish --no-dependencies",
+        "== WATCH ============================================================================================ ": "",
+        "watch-only": "pnpm run watch:types & pnpm run watch:js",
+        "watch:types": "tsc -p tsconfig.json --watch",
+        "watch:js": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.js --platform=node --format=esm --external:vscode --external:tsyringe --external:reflect-metadata --external:@focused-ux/dynamicons-core --watch",
+        "watch:cjs": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.cjs --platform=node --format=cjs --external:vscode --external:tsyringe --external:reflect-metadata --external:@focused-ux/dynamicons-core --watch",
         "== UTILITIES ======================================================================================== ": "",
-        "version-bump": "bun ../../shared/tools/src/scripts/version_bump.ts",
+        "version-bump": "tsx ../../shared/tools/src/scripts/version_bump.ts",
         "clean": "rimraf ./dist .turbo"
     },
     "dependencies": {
@@ -32,20 +32,27 @@
         "tsyringe": "^4.10.0"
     },
     "devDependencies": {
+        "@focused-ux/config-esbuild": "workspace:*",
+        "@focused-ux/config-eslint": "workspace:*",
         "@focused-ux/tools": "workspace:*",
         "@focused-ux/tsconfig": "workspace:*",
-        "@focused-ux/config-eslint": "workspace:*",
         "@types/node": "latest",
         "@types/vscode": "^1.100.0",
         "cpx": "^1.5.0",
-        "esbuild": "^0.25.4",
+        "esbuild": "^0.25.5",
         "mkdirp": "^3.0.1",
-        "rimraf": "^5.0.5",
-        "sharp": "^0.33.5",
-        "ts-node": "^10.9.2",
+        "sharp": "^0.34.2",
         "typescript": "^5.8.3"
     },
+    "icon": "assets/logo.jpeg",
     "contributes": {
+        "themes": [
+            {
+                "label": "Focused UX Color Theme",
+                "uiTheme": "vs-dark",
+                "path": "assets/themes/focused-ux-colors.theme.json"
+            }
+        ],
         "iconThemes": [
             {
                 "id": "dynamicons-theme",

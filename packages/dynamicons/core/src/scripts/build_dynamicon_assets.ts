@@ -5,8 +5,8 @@ import process from 'node:process'
 // Import path for relative path calculation if needed
 
 //= IMPLEMENTATIONS ===========================================================================================
-import { main as optimizeIconsMain } from './optimize_icons.js'
-import type { OptimizationDetail, OptimizeIconsResult } from './optimize_icons.js'
+import type { OptimizationDetail, OptimizeIconsResult } from './generate_optimized_icons.js'
+import { main as optimizeIconsMain } from './generate_optimized_icons.js'
 import { main as generateManifestsMain } from './generate_icon_manifests.js'
 import { main as generatePreviewsMain } from './generate_icon_previews.js'
 
@@ -77,7 +77,6 @@ async function run(): Promise<void> { //>
 			})
 
 			optResult.fileOptimizationDetails.forEach((detail, index) => {
-				// This call now correctly passes 5 arguments
 				console.log(formatOptimizationDetailLine(detail, 'file', index + 1, optResult.fileOptimizationDetails.length, maxFilePrefixAndNameLength))
 			})
 			anyIconsOptimizedThisStep = true
@@ -99,7 +98,6 @@ async function run(): Promise<void> { //>
 			})
 
 			optResult.folderOptimizationDetails.forEach((detail, index) => {
-				// This call now correctly passes 5 arguments
 				console.log(formatOptimizationDetailLine(detail, 'folder', index + 1, optResult.folderOptimizationDetails.length, maxFolderPrefixAndNameLength))
 			})
 			anyIconsOptimizedThisStep = true
@@ -110,8 +108,6 @@ async function run(): Promise<void> { //>
 
 	if (anyIconsOptimizedThisStep) {
 		console.log(`    ${ansii.green}✓ Icons optimized successfully.${ansii.none}`)
-	} else if (optResult.filesAttempted || optResult.foldersAttempted) {
-		// Messages for "No file/folder SVG files to optimize..." are now printed above
 	} else {
 		console.log(`    ${ansii.blueLight}✓ No icons processed for optimization based on argument '${arg}'.${ansii.none}`)
 	}

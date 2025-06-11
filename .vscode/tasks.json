@@ -27,7 +27,25 @@
 			},
 			"group": "build"
 		}, //<
+        
+        { "label": "Build CCP Satellite Package", //> New Task
+			"type": "shell",
+            // Assumes the package name in turbo is 'focused-ux-context-cherry-picker'
+            // and that it also depends on '@focused-ux/shared-services' which turbo will build if needed.
+            "command": "pnpm exec turbo run build --filter=focused-ux-context-cherry-picker", 
+			"problemMatcher": ["$tsc-watch", "$ts-esbuild-watch"],
+			"presentation": {
+				"reveal": "always",
+				"panel": "shared",
+				"group": "ccpPrelaunch", // Unique group for CCP
+				"clear": true
+			},
+			"group": "build"
+		}, //<
 
+        
+        
+        
         { "label": "Internal Watch Dynamicons", //>
 			"type": "shell",
 			"command": "pnpm exec turbo run watch-only --filter=focused-ux-dynamicons --filter=@focused-ux/dynamicons-core  --verbosity=3",
@@ -101,46 +119,3 @@
 
     ]
 }
-
-
-        /*
-        pnpm run clean
-        turbo run build --filter=@focused-ux/utilities-core --dry=json > utilities_build1_dry.json
-        pnpm exec turbo run build --filter=focused-ux-dynamicons --filter=@focused-ux/dynamicons-core
-
-        in a separate terminal
-
-
-
-
-
-
-        First Build (Dry Run to capture initial state):
-            turbo run build --filter=@focused-ux/utilities-core --dry=json > utilities_build1_dry.json
-            (And similarly for dynamicons-core if needed: turbo run build --filter=@focused-ux/dynamicons-core --dry=json > dynamicons_core_build1_dry.json)
-
-        Actual First Full Build (of relevant parts for the scenario):
-            pnpm exec turbo run build --filter=focused-ux-dynamicons --filter=@focused-ux/dynamicons-core
-
-
-        Simulate the Watcher's Effect (if easy to do manually):
-
-            Make a trivial change to a file in packages/dynamicons/ext/src.
-
-            in a separate terminal run the watch command for dynamicons-ext and dynamicons-core:
-                pnpm exec turbo run watch-only --filter=focused-ux-dynamicons --filter=@focused-ux/dynamicons-core
-
-            Wait for them to finish their incremental compilation. Then stop these watchers.
-
-        Second Build (Dry Run - to capture state before F5 would hit):
-        turbo run build --filter=@focused-ux/utilities-core --dry=json > utilities_build2_dry.json
-        turbo run build --filter=@focused-ux/dynamicons-core --dry=json > dynamicons_core_build2_dry.json
-
-        Compare:
-
-            utilities_build1_dry.json vs utilities_build2_dry.json
-
-            dynamicons_core_build1_dry.json vs dynamicons_core_build2_dry.json
-
-        */
-

@@ -1,3 +1,8 @@
+End goal of this project is to have singular VSCode extensions, EG, the dynamicons as well as a orchestrator that will contain all the functionality of the satellite extensions
+
+
+
+
 # Action Plan: focused-ux Monorepo
 
 This document outlines key configurations, conventions, and troubleshooting steps for the `focused-ux` monorepo.
@@ -9,7 +14,6 @@ This document outlines key configurations, conventions, and troubleshooting step
 -   **Directive:** For packages intended as dependencies of a VS Code extension part (which is typically CommonJS, CJS), ensure the dependency package also outputs CJS.
     -   **Action:** In the `package.json` of such library packages (e.g., `@focused-ux/dynamicons-core` when consumed by `@focused-ux/dynamicons-ext`):
         -   Set `format: cjs` in `esbuild` (or equivalent bundler) build scripts.
-        -   Remove `"type": "module"` if present, or ensure it's not set, to default to CJS.
 -   **Directive:** The root project and standalone tool scripts (e.g., in `@focused-ux/tools`) **MAY** remain ES Modules (ESM) by having `"type": "module"` in their respective `package.json` files.
 -   **Rationale:** Ensures compatibility between VS Code extension CJS parts and their CJS library dependencies, particularly for resolving special modules like `vscode`.
 

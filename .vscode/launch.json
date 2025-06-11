@@ -25,7 +25,7 @@
 			"args": [
                 "--profile=Clean",
 				"--extensionDevelopmentPath=${workspaceFolder}/packages/dynamicons/ext",
-				"${workspaceFolder}/packages/dynamicons/ext" // "${workspaceFolder} // for root
+				"${workspaceFolder}" // "${workspaceFolder} // for root or /packages/dynamicons/ext
 			],
 			"outFiles": [
 				"${workspaceFolder}/packages/dynamicons/ext/dist/**/*.js",
@@ -33,6 +33,25 @@
 			],
 			"sourceMaps": true,
             "preLaunchTask": "Build Dynamicons Packages"
+		}, //<
+        
+        { "name": "Context Cherry Picker", //>
+			"type": "extensionHost",
+			"request": "launch",
+			"args": [
+                "--profile=Clean",
+				"--extensionDevelopmentPath=${workspaceFolder}/packages/context-cherry-picker-ext",
+				// Workspace to open in the new EH window. Can be the root or the extension's own folder for focused testing.
+				// Using root for now, as CCP often operates on the whole workspace.
+				"${workspaceFolder}" 
+			],
+			"outFiles": [
+				"${workspaceFolder}/packages/context-cherry-picker-ext/dist/**/*.js",
+				// If CCP depends on shared-services and you need to debug into it:
+				"${workspaceFolder}/packages/shared/shared-services/dist/**/*.js" 
+			],
+			"sourceMaps": true,
+            "preLaunchTask": "Build CCP Satellite Package" // New preLaunchTask
 		}, //<
         
         
