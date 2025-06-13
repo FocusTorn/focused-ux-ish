@@ -4,7 +4,7 @@
     "publisher": "NewRealityDesigns",
     "description": "A standalone extension for advanced context selection and formatting.",
     "repository": "https://github.com/FocusTorn/focused-ux",
-    "version": "0.1.65",
+    "version": "0.1.70",
     "engines": {
         "vscode": "^1.100.0"
     },
@@ -25,7 +25,7 @@
         "check-types": "tsc --noEmit -p tsconfig.json",
         "== FINALIZE ========================================================================================= ": "",
         "vscode:prepublish": "",
-        "package": "pnpm run version-bump && vsce package --no-dependencies --out ../../vsix_packages ",
+        "package": "pnpm run version-bump && vsce package --no-dependencies --out vsix_packages/ ",
         "package:build": "pnpm run build && pnpm package",
         "package:clean": "pnpm run build:clean && pnpm package",
         "publish": "vsce publish",
@@ -72,7 +72,6 @@
         "esbuild-bundle-analyzer": "^0.0.1",
         "eslint": "^9.28.0",
         "mkdirp": "^3.0.1",
-        "rimraf": "^5.0.0",
         "tar": "^7.2.0",
         "typescript": "^5.8.3",
         "vitest": "^3.2.3",

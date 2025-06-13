@@ -6,6 +6,8 @@ packages:
   - packages/context-cherry-picker-ext
 
 onlyBuiltDependencies:
+  - bun
   - core-js
+  - esbuild
   - puppeteer
   - sharp

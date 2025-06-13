@@ -1,23 +1,6 @@
 {
     "name": "focused-ux",
     "scripts": {
-        
-        "== CONTEXT CHERRY PICKER ============================================================================ ": "",
-        "ccb": "pnpm --filter=ccp build",
-        "ccbc": "pnpm --filter=ccp build:clean",
-        "ccbv": "pnpm --filter=ccp build:vis && node _scripts/rename_esbuild_analysis_output.js",
-        "ccp": "pnpm --filter=ccp package",
-        "ccpv": "pnpm --filter=ccp package:build",
-        "ccpc": "pnpm --filter=ccp package:clean",
-        
-        
-        
-        
-        
-        
-        
-        
-        
         "== BUILD ============================================================================================ ": "",
         "build": "turbo run build --summarize --output-logs=new-only",
         "build:clean": "pnpm run clean && pnpm run build",
@@ -44,7 +27,7 @@
         "version-bump": "cross-env NODE_NO_WARNINGS=1 pnpm exec ts-run packages/shared/tools/src/scripts/version_bump.ts",
         "clean": "turbo run clean --output-logs=errors-only && rimraf node_modules/.cache/turbo .turbo",
         "nuke": "rimraf node_modules && rimraf packages/*/node_modules && pnpm store prune",
-        "nuke:full": "pnpm run clean && rimraf 'packages/*/node_modules' && rimraf node_modules && rimraf 'pnpm-lock.yaml' && pnpm install"
+        "nuke:full": "pnpm run clean && rimraf packages/*/node_modules && rimraf node_modules && rimraf 'pnpm-lock.yaml' && pnpm install"
     },
     "devDependencies": {
         "@focused-ux/config-eslint": "workspace:*",
@@ -52,11 +35,11 @@
         "@types/node": "latest",
         "@types/vscode": "latest",
         "@vitest/coverage-v8": "^3.2.3",
-        "bun": "^1.2.15",
         "cross-env": "^7.0.3",
         "knip": "^5.60.2",
         "mkdirp": "^3.0.1",
         "prettier": "^3.5.3",
+        "rimraf": "^5.0.10",
         "ts-node": "^10.9.2",
         "turbo": "^2.5.4",
         "typescript": "^5.8.3"

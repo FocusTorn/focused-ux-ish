@@ -30,14 +30,12 @@
         
         { "label": "Build CCP Satellite Package", //> New Task
 			"type": "shell",
-            // Assumes the package name in turbo is 'focused-ux-context-cherry-picker'
-            // and that it also depends on '@focused-ux/shared-services' which turbo will build if needed.
-            "command": "pnpm exec turbo run build --filter=focused-ux-context-cherry-picker", 
+            "command": "pnpm exec turbo run build --filter=ccp", 
 			"problemMatcher": ["$tsc-watch", "$ts-esbuild-watch"],
 			"presentation": {
 				"reveal": "always",
 				"panel": "shared",
-				"group": "ccpPrelaunch", // Unique group for CCP
+				"group": "ccpPrelaunch",
 				"clear": true
 			},
 			"group": "build"

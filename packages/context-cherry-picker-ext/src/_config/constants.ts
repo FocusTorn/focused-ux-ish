@@ -31,11 +31,11 @@ export const constants = {
 	},
 	configKeys: {
 		CCP_IGNORE_PATTERNS: `${EXT_ID_PREFIX}.ignoreGlobs`,
-		CCP_PROJECT_TREE_ALWAYS_SHOW_GLOBS: `${EXT_ID_PREFIX}.projectTree.alwaysShowGlobs`,
-		CCP_PROJECT_TREE_ALWAYS_HIDE_GLOBS: `${EXT_ID_PREFIX}.projectTree.alwaysHideGlobs`,
-		CCP_PROJECT_TREE_SHOW_IF_SELECTED_GLOBS: `${EXT_ID_PREFIX}.projectTree.showIfSelectedGlobs`,
-		CCP_CONTEXT_EXPLORER_IGNORE_GLOBS: `${EXT_ID_PREFIX}.contextExplorer.ignoreGlobs`,
-		CCP_CONTEXT_EXPLORER_HIDE_CHILDREN_GLOBS: `${EXT_ID_PREFIX}.contextExplorer.hideChildrenGlobs`,
+		CCP_PROJECT_TREE_ALWAYS_SHOW_GLOBS: `${EXT_ID_PREFIX}.projectTree.alwaysShowGlobs`, // Note: This specific key 'projectTree.alwaysShowGlobs' is not in package.json. If intended for user settings, it should be 'projectTreeDisplay.alwaysShowGlobs' or similar.
+		CCP_PROJECT_TREE_ALWAYS_HIDE_GLOBS: `${EXT_ID_PREFIX}.projectTreeDisplay.alwaysHideGlobs`,
+		CCP_PROJECT_TREE_SHOW_IF_SELECTED_GLOBS: `${EXT_ID_PREFIX}.projectTreeDisplay.showIfSelectedGlobs`,
+		CCP_CONTEXT_EXPLORER_IGNORE_GLOBS: `${EXT_ID_PREFIX}.directoryContentDisplay.hideDirAndContentsGlobs`,
+		CCP_CONTEXT_EXPLORER_HIDE_CHILDREN_GLOBS: `${EXT_ID_PREFIX}.directoryContentDisplay.showDirHideContentsGlobs`,
 		GOOGLE_API_KEY: `${EXT_ID_PREFIX}.google.apiKey`,
 	},
 	storageKeys: {

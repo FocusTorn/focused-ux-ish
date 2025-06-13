@@ -1,4 +1,3 @@
-// packages/shared/config-esbuild/src/esbuild.base.config.ts
 // ESLint & Imports -->>
 
 import type { BuildOptions } from 'esbuild';
@@ -75,3 +74,6 @@ export async function getBaseEsbuildOptions( //>
         },
     };
 } //</
+
+
+
