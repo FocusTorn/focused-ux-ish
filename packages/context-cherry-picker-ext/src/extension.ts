@@ -6,22 +6,32 @@ import { container } from 'tsyringe'
 
 //= VSCODE TYPES & MOCKED INTERNALS ===========================================================================
 import type { ExtensionContext, Disposable } from 'vscode'
-import * as vscode from 'vscode' // For vscode.commands
+import * as vscode from 'vscode'
 
 //= IMPLEMENTATIONS ===========================================================================================
 import { registerCCP_Dependencies } from './injection.js'
 import type { IContextCherryPickerManager } from './_interfaces/IContextCherryPickerManager.ts'
 import { constants } from './_config/constants.js'
 import type { SavedStateItem } from './models/SavedStateItem.ts'
+import type { IFileExplorerDataProvider } from './_interfaces/IFileExplorerDataProvider.ts' // For dispose
 
 //--------------------------------------------------------------------------------------------------------------<<
 
+// Store disposables that need to be cleaned up on deactivation
+const extensionDisposables: Disposable[] = [];
+
 export async function activate(context: ExtensionContext): Promise<void> { //>
-	console.log(`[${constants.extension.name}] Activating...`) // Uses satellite's constant
+	console.log(`[${constants.extension.name}] Activating...`)
 
 	registerCCP_Dependencies(context)
 
 	const ccpManager = container.resolve<IContextCherryPickerManager>('IContextCherryPickerManager')
+	const fileExplorerDataProvider = container.resolve<IFileExplorerDataProvider>('IFileExplorerDataProvider');
+
+	// Add the provider to disposables if it implements Disposable
+	if (typeof (fileExplorerDataProvider as any).dispose === 'function') {
+		extensionDisposables.push(fileExplorerDataProvider as unknown as Disposable);
+	}
 
 	try {
 		await ccpManager.initializeViews(
@@ -35,7 +45,7 @@ export async function activate(context: ExtensionContext): Promise<void> { //>
 		vscode.window.showErrorMessage(`[${constants.extension.name}] Failed to initialize views. See console for details.`)
 	}
 
-	const disposables: Disposable[] = [
+	const commandDisposables: Disposable[] = [
 		vscode.commands.registerCommand(
 			constants.commands.contextCherryPicker.saveCheckedState,
 			async () => await ccpManager.saveCurrentCheckedState(),
@@ -62,11 +72,21 @@ export async function activate(context: ExtensionContext): Promise<void> { //>
 		),
 	]
 
-	context.subscriptions.push(...disposables)
+	context.subscriptions.push(...commandDisposables);
+	extensionDisposables.push(...commandDisposables); // Also add command disposables to our local list
 
 	console.log(`[${constants.extension.name}] Activated and commands registered.`)
 } //<
 
 export function deactivate(): void { //>
-	console.log(`[${constants.extension.name}] Deactivated.`)
+	console.log(`[${constants.extension.name}] Deactivating...`)
+	for (const disposable of extensionDisposables) {
+		try {
+			disposable.dispose();
+		} catch (e) {
+			console.error(`[${constants.extension.name}] Error disposing resource:`, e);
+		}
+	}
+	extensionDisposables.length = 0; // Clear the array
+	console.log(`[${constants.extension.name}] Deactivated and resources disposed.`)
 } //<

@@ -5,7 +5,7 @@ import { inject, injectable } from 'tsyringe'
 
 //= VSCODE TYPES & MOCKED INTERNALS ===========================================================================
 import { EventEmitter, FileType as VsCodeFileTypeEnum, TreeItemCheckboxState, Uri, TreeItemCollapsibleState } from 'vscode'
-import type { Event, TreeItem, TreeItemLabel, FileSystemError, ConfigurationChangeEvent, FileSystemWatcher } from 'vscode'
+import type { Event, TreeItem, TreeItemLabel, FileSystemError, ConfigurationChangeEvent, FileSystemWatcher, Disposable } from 'vscode' // Added Disposable
 
 //= NODE JS ===================================================================================================
 import { Buffer } from 'node:buffer'
@@ -17,16 +17,16 @@ import * as yaml from 'js-yaml'
 //= IMPLEMENTATION TYPES ======================================================================================
 import type { IFileExplorerDataProvider } from '../_interfaces/IFileExplorerDataProvider.ts'
 import { FileExplorerItem } from '../models/FileExplorerItem.js'
-import { constants } from '../_config/constants.js' // Path to local constants
+import { constants } from '../_config/constants.js'
 
 //= INJECTED TYPES ============================================================================================
-import type { IWorkspace, IWindow } from '@focused-ux/shared-services' // Using shared services
+import type { IWorkspace, IWindow } from '@focused-ux/shared-services'
 
 //--------------------------------------------------------------------------------------------------------------<<
 
 interface ProjectYamlConfig { //>
 	ContextCherryPicker?: {
-		ignore?: string[] // Global ignore
+		ignore?: string[]
 		project_tree?: {
 			always_show?: string[]
 			always_hide?: string[]
@@ -40,7 +40,7 @@ interface ProjectYamlConfig { //>
 } //<
 
 @injectable()
-export class FileExplorerDataProvider implements IFileExplorerDataProvider { //>
+export class FileExplorerDataProvider implements IFileExplorerDataProvider, Disposable { //> // Added Disposable
 
 	private _onDidChangeTreeData: EventEmitter<FileExplorerItem | undefined | null | void> = new EventEmitter<FileExplorerItem | undefined | null | void>()
 	readonly onDidChangeTreeData: Event<FileExplorerItem | undefined | null | void> = this._onDidChangeTreeData.event
@@ -48,6 +48,7 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider { //>
 	private checkboxStates: Map<string, TreeItemCheckboxState> = new Map()
 	private fileWatcher: FileSystemWatcher | undefined
 	private isInitialized = false
+	private configChangeListener: Disposable | undefined;
 
 	// Configuration properties
 	private globalIgnoreGlobs: string[] = []
@@ -60,9 +61,8 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider { //>
 	constructor(
 		@inject('iWorkspace') private readonly workspaceAdapter: IWorkspace,
 		@inject('iWindow') private readonly windowAdapter: IWindow,
-	) {
-		// Register event listeners using bound class methods
-		this.workspaceAdapter.onDidChangeConfiguration(this._onVsCodeConfigChange)
+	) { //>
+		this.configChangeListener = this.workspaceAdapter.onDidChangeConfiguration(this._onVsCodeConfigChange)
 
 		if (this.workspaceAdapter.workspaceFolders && this.workspaceAdapter.workspaceFolders.length > 0) {
 			const workspaceRoot = this.workspaceAdapter.workspaceFolders[0].uri
@@ -74,23 +74,23 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider { //>
 			this.fileWatcher.onDidCreate(this._onFocusedUxConfigChange)
 			this.fileWatcher.onDidDelete(this._onFocusedUxConfigChange)
 		}
-	}
+	} //<
 
 	// ┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
 	// │                                          EVENT HANDLERS                                          │
 	// └──────────────────────────────────────────────────────────────────────────────────────────────────┘
 
-	private _onVsCodeConfigChange = async (e: ConfigurationChangeEvent): Promise<void> => {
+	private _onVsCodeConfigChange = async (e: ConfigurationChangeEvent): Promise<void> => { //>
 		if (e.affectsConfiguration(constants.extension.configKey)) {
 			console.log(`[${constants.extension.name}] VS Code settings changed. Refreshing explorer view.`)
 			await this.refresh()
 		}
-	}
+	} //<
 
-	private _onFocusedUxConfigChange = async (): Promise<void> => {
+	private _onFocusedUxConfigChange = async (): Promise<void> => { //>
 		console.log(`[${constants.extension.name}] '.FocusedUX' file configuration changed. Refreshing explorer view.`)
 		await this.refresh()
-	}
+	} //<
 
 	// ┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
 	// │                                     CONFIGURATION HANDLING                                       │
@@ -184,7 +184,7 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider { //>
 			this.projectTreeShowIfSelectedGlobs = newTreeShowIfSelected; changed = true
 		}
 
-		if (changed) {
+		if (changed && this.isInitialized) { // Only fire if initialized to avoid premature refresh
 			this._onDidChangeTreeData.fire()
 		}
 	} //<
@@ -236,7 +236,7 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider { //>
 				const relativeChildPath = this.workspaceAdapter.asRelativePath(childUri, false).replace(/\\/g, '/')
 
 				if (type === VsCodeFileTypeEnum.Directory && micromatch.isMatch(relativeChildPath, this.contextExplorerHideChildrenGlobs)) {
-					collapsibleStateOverride = TreeItemCollapsibleState.None // Directory shown, but not expandable
+					collapsibleStateOverride = TreeItemCollapsibleState.None
 				}
 				children.push(new FileExplorerItem(childUri, name, type, this.getCheckboxState(childUri) || TreeItemCheckboxState.Unchecked, undefined, collapsibleStateOverride))
 			}
@@ -257,7 +257,7 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider { //>
 			return labelA.localeCompare(labelB)
 		}) //<
 
-		return children 
+		return children
 	} //<
 
 	getTreeItem(element: FileExplorerItem): TreeItem { //>
@@ -272,7 +272,7 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider { //>
 	} //<
 
 	async refresh(): Promise<void> { //>
-		await this.loadConfigurationPatterns()
+		await this.loadConfigurationPatterns() // Ensure patterns are reloaded
 		this._onDidChangeTreeData.fire()
 	} //<
 
@@ -297,7 +297,7 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider { //>
 
 	updateCheckboxState(uri: Uri, state: TreeItemCheckboxState): void { //>
 		this.checkboxStates.set(uri.toString(), state)
-		this._onDidChangeTreeData.fire()
+		this._onDidChangeTreeData.fire() // Fire for individual updates too
 	} //<
 
 	getCheckboxState(uri: Uri): TreeItemCheckboxState | undefined { //>
@@ -334,28 +334,44 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider { //>
 	// ┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
 	// │                                     GLOB GETTERS FOR SERVICES                                    │
 	// └──────────────────────────────────────────────────────────────────────────────────────────────────┘
+
 	public getCoreScanIgnoreGlobs(): string[] { //>
-		return this.globalIgnoreGlobs
+		return [...this.globalIgnoreGlobs] // Return a copy
 	} //<
 
 	public getContextExplorerIgnoreGlobs(): string[] { //>
-		return this.contextExplorerIgnoreGlobs
+		return [...this.contextExplorerIgnoreGlobs] // Return a copy
 	} //<
 
 	public getContextExplorerHideChildrenGlobs(): string[] { //>
-		return this.contextExplorerHideChildrenGlobs
+		return [...this.contextExplorerHideChildrenGlobs] // Return a copy
 	} //<
 
 	public getProjectTreeAlwaysShowGlobs(): string[] { //>
-		return this.projectTreeAlwaysShowGlobs
+		return [...this.projectTreeAlwaysShowGlobs] // Return a copy
 	} //<
 
 	public getProjectTreeAlwaysHideGlobs(): string[] { //>
-		return this.projectTreeAlwaysHideGlobs
+		return [...this.projectTreeAlwaysHideGlobs] // Return a copy
 	} //<
 
 	public getProjectTreeShowIfSelectedGlobs(): string[] { //>
-		return this.projectTreeShowIfSelectedGlobs
+		return [...this.projectTreeShowIfSelectedGlobs] // Return a copy
+	} //<
+
+	// ┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
+	// │                                       LIFECYCLE MANAGEMENT                                       │
+	// └──────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+	public dispose(): void { //>
+		this._onDidChangeTreeData.dispose();
+		if (this.fileWatcher) {
+			this.fileWatcher.dispose();
+		}
+		if (this.configChangeListener) {
+			this.configChangeListener.dispose();
+		}
+		console.log(`[${constants.extension.name}] FileExplorerDataProvider disposed.`);
 	} //<
 
 }

@@ -5,39 +5,17 @@ import { container, Lifecycle } from 'tsyringe'
 
 //= VSCODE TYPES & MOCKED INTERNALS ===========================================================================
 import type { ExtensionContext } from 'vscode'
-import {
-	commands as VsCodeCommands,
-	window as VsCodeWindow,
-	workspace as VsCodeWorkspace,
+import { //>
 	Uri,
 	ConfigurationTarget,
 	FileType,
-} from 'vscode'
+} from 'vscode' //<
 
 //= IMPLEMENTATIONS ===========================================================================================
 import type { IIconActionsService, IIconThemeGeneratorService } from '@focused-ux/dynamicons-core'
 import { IconActionsService, IconThemeGeneratorService } from '@focused-ux/dynamicons-core'
-import type { // Corrected: Added 'type' for all interface imports
-	ICommonUtilsService,
-	IFileUtilsService,
-	IFrontmatterUtilsService,
-	IPathUtilsService,
-	IQuickPickUtilsService,
-	IShellUtilsService,
-	IWorkspaceUtilsService,
-	IWindow,
-	IWorkspace,
-	ICommands,
-} from '@focused-ux/shared-services'
-import {
-	CommonUtilsService,
-	FileUtilsService,
-	FrontmatterUtilsService,
-	PathUtilsService,
-	QuickPickUtilsService,
-	ShellUtilsService,
-	WorkspaceUtilsService,
-} from '@focused-ux/shared-services'
+import { SharedServicesModule } from '@focused-ux/shared-services' // Import SharedServicesModule
+import type { ICommands, IWindow, IWorkspace } from '@focused-ux/shared-services' // Keep these for type safety if needed, but registration comes from SharedServicesModule
 
 //= NODE JS ===================================================================================================
 import { createReadStream as nodeFsCreateReadStreamFunction } from 'node:fs'
@@ -48,250 +26,19 @@ import * as nodeFsPromises from 'node:fs/promises'
 
 //--------------------------------------------------------------------------------------------------------------<<
 
-class WindowAdapter implements IWindow { //>
-
-	get activeTextEditor() {
-		return VsCodeWindow.activeTextEditor
-	}
-
-	get visibleTextEditors() {
-		return VsCodeWindow.visibleTextEditors
-	}
-
-	get activeTerminal() {
-		return VsCodeWindow.activeTerminal
-	}
-
-	get terminals() {
-		return VsCodeWindow.terminals
-	}
-
-	showInformationMessage(
-		...args: any[]
-	): Thenable<any> {
-		return (VsCodeWindow.showInformationMessage as any)(...args)
-	}
-
-	showWarningMessage(
-		...args: any[]
-	): Thenable<any> {
-		return (VsCodeWindow.showWarningMessage as any)(...args)
-	}
-
-	showErrorMessage(
-		...args: any[]
-	): Thenable<any> {
-		return (VsCodeWindow.showErrorMessage as any)(...args)
-	}
-
-	showQuickPick(
-		...args: any[]
-	): Thenable<any> {
-		return (VsCodeWindow.showQuickPick as any)(...args)
-	}
-
-	showInputBox(...args: any[]): Thenable<string | undefined> {
-		return (VsCodeWindow.showInputBox as any)(...args)
-	}
-
-	createQuickPick<T extends import('vscode').QuickPickItem>(): import('vscode').QuickPick<T> {
-		return VsCodeWindow.createQuickPick<T>()
-	}
-
-	createTreeView<T>(
-		viewId: string,
-		options: import('vscode').TreeViewOptions<T>,
-	): import('vscode').TreeView<T> {
-		return VsCodeWindow.createTreeView(viewId, options)
-	}
-
-	showTextDocument(
-		...args: any[]
-	): Thenable<import('vscode').TextEditor> {
-		return (VsCodeWindow.showTextDocument as any)(...args)
-	}
-
-	createTerminal(
-		...args: any[]
-	): import('vscode').Terminal {
-		return (VsCodeWindow.createTerminal as any)(...args)
-	}
-
-	withProgress<R>(
-		options: import('vscode').ProgressOptions,
-		task: (
-			progress: import('vscode').Progress<{ message?: string, increment?: number }>,
-			token: import('vscode').CancellationToken
-		) => Thenable<R>,
-	): Thenable<R> {
-		return VsCodeWindow.withProgress(options, task)
-	}
-
-	createOutputChannel(
-		name: string,
-	): import('vscode').OutputChannel {
-		return VsCodeWindow.createOutputChannel(name)
-	}
-
-	registerWebviewViewProvider(
-		viewId: string,
-		provider: import('vscode').WebviewViewProvider,
-		options?: { webviewOptions?: { retainContextWhenHidden?: boolean } },
-	): import('vscode').Disposable {
-		return VsCodeWindow.registerWebviewViewProvider(
-			viewId,
-			provider,
-			options,
-		)
-	}
-
-} //<
-
-class WorkspaceAdapter implements IWorkspace { //>
-
-	get fs() {
-		return VsCodeWorkspace.fs
-	}
-    
-	get name() {
-		return VsCodeWorkspace.name
-	}
-
-	get workspaceFolders() {
-		return VsCodeWorkspace.workspaceFolders
-	}
-
-	getConfiguration(
-		section?: string,
-		resource?: Uri,
-	) {
-		return VsCodeWorkspace.getConfiguration(section, resource)
-	}
-
-	openTextDocument(uriOrOptions?: any) {
-		return VsCodeWorkspace.openTextDocument(uriOrOptions)
-	}
-
-	createFileSystemWatcher(
-		globPattern: any,
-		ignoreCreateEvents?: boolean,
-		ignoreChangeEvents?: boolean,
-		ignoreDeleteEvents?: boolean,
-	) {
-		return VsCodeWorkspace.createFileSystemWatcher(
-			globPattern,
-			ignoreCreateEvents,
-			ignoreChangeEvents,
-			ignoreDeleteEvents,
-		)
-	}
-
-	getWorkspaceFolder(uri: Uri) {
-		return VsCodeWorkspace.getWorkspaceFolder(uri)
-	}
-
-	asRelativePath(
-		pathOrUri: string | Uri,
-		includeWorkspaceFolder?: boolean,
-	) {
-		return VsCodeWorkspace.asRelativePath(pathOrUri, includeWorkspaceFolder)
-	}
-
-	findFiles(
-		include: any,
-		exclude?: any,
-		maxResults?: number,
-		token?: any,
-	) {
-		return VsCodeWorkspace.findFiles(include, exclude, maxResults, token)
-	}
-
-	saveAll(includeUntitled?: boolean) {
-		return VsCodeWorkspace.saveAll(includeUntitled)
-	}
-
-	applyEdit(edit: import('vscode').WorkspaceEdit) {
-		return VsCodeWorkspace.applyEdit(edit)
-	}
-
-	onDidChangeConfiguration(
-		listener: any,
-		thisArgs?: any,
-		disposables?: any,
-	) {
-		return VsCodeWorkspace.onDidChangeConfiguration(listener, thisArgs, disposables)
-	}
-
-	onDidOpenTextDocument(
-		listener: any,
-		thisArgs?: any,
-		disposables?: any,
-	) {
-		return VsCodeWorkspace.onDidOpenTextDocument(listener, thisArgs, disposables)
-	}
-
-	onDidCloseTextDocument(
-		listener: any,
-		thisArgs?: any,
-		disposables?: any,
-	) {
-		return VsCodeWorkspace.onDidCloseTextDocument(listener, thisArgs, disposables)
-	}
-
-	onDidSaveTextDocument(
-		listener: any,
-		thisArgs?: any,
-		disposables?: any,
-	) {
-		return VsCodeWorkspace.onDidSaveTextDocument(listener, thisArgs, disposables)
-	}
-
-	onDidChangeWorkspaceFolders(
-		listener: any,
-		thisArgs?: any,
-		disposables?: any,
-	) {
-		return VsCodeWorkspace.onDidChangeWorkspaceFolders(listener, thisArgs, disposables)
-	}
-
-} //<
-
-class CommandsAdapter implements ICommands { //>
-
-	registerCommand(
-		command: string,
-		callback: (...args: any[]) => any,
-		thisArg?: any,
-	) {
-		return VsCodeCommands.registerCommand(command, callback, thisArg)
-	}
-
-	executeCommand<T = unknown>(
-		command: string,
-		...rest: any[]
-	) {
-		return VsCodeCommands.executeCommand<T>(command, ...rest)
-	}
-
-	getCommands(filterInternal?: boolean) {
-		return VsCodeCommands.getCommands(filterInternal)
-	}
-
-} //<
+// Removed local adapter definitions (WindowAdapter, WorkspaceAdapter, CommandsAdapter)
+// They will be registered by SharedServicesModule.
 
 export function registerDynamiconsDependencies(context: ExtensionContext): void { //>
-	container.register<ICommonUtilsService>('ICommonUtilsService', CommonUtilsService)
-	container.register<IFileUtilsService>('IFileUtilsService', FileUtilsService)
-	container.register<IFrontmatterUtilsService>('IFrontmatterUtilsService', FrontmatterUtilsService)
-	container.register<IPathUtilsService>('IPathUtilsService', PathUtilsService)
-	container.register<IQuickPickUtilsService>('IQuickPickUtilsService', QuickPickUtilsService)
-	container.register<IShellUtilsService>('IShellUtilsService', ShellUtilsService)
-	container.register<IWorkspaceUtilsService>('IWorkspaceUtilsService', WorkspaceUtilsService)
+	// Register dependencies from @focused-ux/shared-services
+	// This will register ICommonUtilsService, IFileUtilsService, IPathUtilsService,
+	// IQuickPickUtilsService, IShellUtilsService, IWorkspaceUtilsService,
+	// and the VSCode Adapters (IWindow, IWorkspace, ICommands, IEnv).
+	SharedServicesModule.registerDependencies(container)
 
-	container.register<IWindow>('iWindow', WindowAdapter)
-	container.register<IWorkspace>('iWorkspace', WorkspaceAdapter)
-	container.register<ICommands>('iCommands', CommandsAdapter)
-
+	// Register Node.js module providers if not already covered by SharedServicesModule
+	// or if specific ones are needed here and not universally provided by SharedServicesModule.
+	// SharedServicesModule does not typically register these raw Node functions, so keep them.
 	container.register<typeof nodeFsCreateReadStreamFunction>(
 		'iFsCreateReadStream',
 		{ useValue: nodeFsCreateReadStreamFunction },
@@ -336,6 +83,7 @@ export function registerDynamiconsDependencies(context: ExtensionContext): void 
 	container.register<typeof nodePath.extname>('iPathExtname', { useValue: nodePath.extname })
 	container.register<typeof nodeOs.homedir>('iOsHomedir', { useValue: nodeOs.homedir })
 
+	// Register Dynamicons-specific services
 	container.register<IIconActionsService>(
 		'IIconActionsService',
 		{ useClass: IconActionsService },
@@ -347,6 +95,7 @@ export function registerDynamiconsDependencies(context: ExtensionContext): void 
 		{ lifecycle: Lifecycle.Singleton },
 	)
 
+	// Register VSCode specific values
 	container.register<ExtensionContext>('ExtensionContext', { useValue: context })
 	container.register<typeof Uri>('vscodeUri', { useValue: Uri })
 	container.register<typeof ConfigurationTarget>(
