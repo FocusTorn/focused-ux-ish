@@ -1,80 +1,53 @@
-# # General ignores
-# .vscode/**
-# .git/**
-# .DS_Store
-# *.vsix
-# *.tgz
-# *.log
-# *.tsbuildinfo
 
-# # Exclude node_modules, but ensure @types/vscode (if bundled by some process) is not ignored if needed.
-# # Typically, for runtime, node_modules are not packaged.
-
-# node_modules/
-# !node_modules/@types/vscode/** # Usually not needed as vscode types are provided by the environment
-# # !node_modules/reflect-metadata/**
-
-# # Source files (we ship compiled output)
-# src/**
-
-# # Config files not needed in package
-# tsconfig.json
-# eslint.config.js
-# vitest.config.ts # If you add tests
-# knip.json # If you add knip
-
-# # Test files
-# test/**
-# tests/**
-
-# # Output directories (but include specific built files)
-# out/
-# dist/
-# !dist/extension.js
-# # !dist/extension.cjs # Only if you build CJS as well
-
-# # Project specific dev files
-# .yalc/
-# .turbo/
-
-# # Include necessary files for publishing
-# !package.json
-# !README.md
-# !CHANGELOG.md
-# !LICENSE.txt
-# !assets/**
-# # Ensure specific assets are included if 'assets/**' is too broad or has sub-ignores
-# !assets/icon.png
-# !assets/ccp_activity_bar_icon.svg
-# !assets/views/projectStructureQuickSetting.html
+#  "files": [
+#         "dist/",
+#         "assets/",
+#         "LICENSE.txt",
+#         "README.md",
+#         "CHANGELOG.md",
+#         "node_modules/"
+#     ],
 
 
 
 
-#= Exclude the following files ================================================== 
 
-
-#= Do not exclude the following files =========================================== 
-
-
+#= Explicitly include what MUST be in the VSIX ====================================================== 
+!package.json
+# !package.nls*.json
+!dist/**
 !assets/**
-!assets/icon.png
-!assets/ccp_activity_bar_icon.svg
-!assets/views/projectStructureQuickSetting.html
 
-!CHANGELOG.md
 !LICENSE.txt
 !README.md
-
-!package.json
-!package.nls.json
-!package.nls.*.json
-
-!dist/extension.js
+!CHANGELOG.md
 
 
-# Exclude everything else
-**/* 
+
+
+# Exclude everything
+**/*
+
+
+
+
+#= Explicitly exclude what should NOT be in the VSIX, even if covered above ========================= 
+src/**
+test/**
+coverage/**
+packed/**
+vsce_stage/**
+package-vsix.js
+*.tsbuildinfo
+*.log
+.yalc/**
+.turbo/**
+.git/**
+.vscode/** 
+tsconfig.json
+yalc.lock
+tsconfig.json
+# *.map
 
 
 

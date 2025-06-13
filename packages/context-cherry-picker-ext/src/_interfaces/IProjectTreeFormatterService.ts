@@ -13,6 +13,7 @@ export interface IProjectTreeFormatterService { //>
 		treeEntries: Map<string, FileSystemEntry>,
 		projectRootUri: Uri,
 		projectRootName: string,
+		outputFilterAlwaysShow: string[],
 		outputFilterAlwaysHide: string[],
 		outputFilterShowIfSelected: string[],
 		initialCheckedUris: Uri[],

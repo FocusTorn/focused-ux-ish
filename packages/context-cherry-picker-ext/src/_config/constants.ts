@@ -31,10 +31,11 @@ export const constants = {
 	},
 	configKeys: {
 		CCP_IGNORE_PATTERNS: `${EXT_ID_PREFIX}.ignoreGlobs`,
-		CCP_PROJECT_TREE_ALWAYS_HIDE_GLOBS: `${EXT_ID_PREFIX}.projectTreeDisplay.alwaysHideGlobs`,
-		CCP_PROJECT_TREE_SHOW_IF_SELECTED_GLOBS: `${EXT_ID_PREFIX}.projectTreeDisplay.showIfSelectedGlobs`,
-		CCP_DIR_CONTENT_SHOW_DIR_HIDE_CONTENTS_GLOBS: `${EXT_ID_PREFIX}.directoryContentDisplay.showDirHideContentsGlobs`,
-		CCP_DIR_CONTENT_HIDE_DIR_AND_CONTENTS_GLOBS: `${EXT_ID_PREFIX}.directoryContentDisplay.hideDirAndContentsGlobs`,
+		CCP_PROJECT_TREE_ALWAYS_SHOW_GLOBS: `${EXT_ID_PREFIX}.projectTree.alwaysShowGlobs`,
+		CCP_PROJECT_TREE_ALWAYS_HIDE_GLOBS: `${EXT_ID_PREFIX}.projectTree.alwaysHideGlobs`,
+		CCP_PROJECT_TREE_SHOW_IF_SELECTED_GLOBS: `${EXT_ID_PREFIX}.projectTree.showIfSelectedGlobs`,
+		CCP_CONTEXT_EXPLORER_IGNORE_GLOBS: `${EXT_ID_PREFIX}.contextExplorer.ignoreGlobs`,
+		CCP_CONTEXT_EXPLORER_HIDE_CHILDREN_GLOBS: `${EXT_ID_PREFIX}.contextExplorer.hideChildrenGlobs`,
 		GOOGLE_API_KEY: `${EXT_ID_PREFIX}.google.apiKey`,
 	},
 	storageKeys: {
@@ -42,18 +43,18 @@ export const constants = {
 	},
 	projectConfig: {
         
-		// fileName: '.ccpSatelliteConfig.yaml', // Or .focusedUi/ccp.yaml etc.
 		fileName: '.FocusedUX',
         
 		keys: {
 			contextCherryPicker: 'ContextCherryPicker',
 			ignore: 'ignore',
-			projectTreeDisplay: 'projectTreeDisplay',
-			alwaysHide: 'alwaysHide',
-			showIfSelected: 'showIfSelected',
-			directoryContentDisplay: 'directoryContentDisplay',
-			hideDirAndContents: 'hideDirAndContents',
-			showDirHideContents: 'showDirHideContents',
+			project_tree: 'project_tree',
+			always_show: 'always_show',
+			always_hide: 'always_hide',
+			show_if_selected: 'show_if_selected',
+			context_explorer: 'context_explorer',
+			// 'ignore' is also a sub-key of context_explorer for UI-only ignore
+			hide_children: 'hide_children',
 		},
 	},
 	quickSettings: {

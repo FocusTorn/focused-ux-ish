@@ -6,7 +6,8 @@
         "build": "pnpm run build:types && pnpm run build:js",
         "build:clean": "pnpm run clean && pnpm run build",
         "build:types": "tsc -p tsconfig.json",
-        "build:js": "fux-build ./src/index.ts --outfile=./dist/index.js",
+        "build:js": "fux-build ./src/index.ts --outfile=./dist/index.js --meta",
+        "build:vis": "pnpm build --meta && esbuild-visualizer --metadata ./dist/metafile.json && node rename_esbuild_analysis_output.js",
         "== WATCH ============================================================================================ ": "",
         "watch:types": "tsc -p tsconfig.json --watch",
         "watch:js": "fux-build ./src/index.ts --outfile=./dist/index.js --watch",
@@ -19,7 +20,11 @@
     },
     "dependencies": {
         "gray-matter": "^4.0.3",
+        "strip-json-comments": "^5.0.2",
         "tsyringe": "^4.10.0"
+    },
+    "peerDependencies": {
+        "gpt-tokenizer": "^3.0.0"
     },
     "devDependencies": {
         "@focused-ux/config-esbuild": "workspace:*",
@@ -28,8 +33,9 @@
         "@types/node": "^24.0.0",
         "@types/vscode": "^1.100.0",
         "esbuild": "^0.25.5",
+        "esbuild-bundle-analyzer": "^0.0.1",
+        "esbuild-visualizer": "^0.7.0",
         "gpt-tokenizer": "^3.0.0",
-        "strip-json-comments": "^5.0.2",
         "ts-node": "^10.9.2",
         "typescript": "^5.8.3"
     },

@@ -1,37 +1,46 @@
 {
-    "name": "focused-ux-context-cherry-picker",
+    "name": "ccp",
     "displayName": "F-UX: Context Cherry Picker",
     "publisher": "NewRealityDesigns",
     "description": "A standalone extension for advanced context selection and formatting.",
     "repository": "https://github.com/FocusTorn/focused-ux",
-    "version": "0.1.13",
+    "version": "0.1.65",
     "engines": {
         "vscode": "^1.100.0"
     },
     "main": "./dist/extension.js",
     "type": "module",
-    "icon": "assets/logo.jpeg",
+    "icon": "assets/cherry-logo.png",
+    "sideEffects": [
+        "reflect-metadata"
+    ],
     "scripts": {
         "== BUILD ============================================================================================ ": "",
         "build": "fux-build ./src/extension.ts --outfile=./dist/extension.js",
         "build:clean": "pnpm run clean && pnpm run build",
+        "build:vis": "pnpm build --meta && esbuild-visualizer --metadata ./dist/metafile.json && node rename_esbuild_analysis_output.js",
         "== VALIDATE ========================================================================================= ": "",
         "lint": "pnpm eslint . --ext .ts",
         "lint:fix": "eslint . --ext .ts --fix",
         "check-types": "tsc --noEmit -p tsconfig.json",
         "== FINALIZE ========================================================================================= ": "",
-        "vscode:prepublish": "pnpm run build && pnpm run version-bump",
-        "package": "vsce package --no-dependencies -o ../../vsix_packages/",
-        "publish": "vsce publish --no-dependencies",
+        "vscode:prepublish": "",
+        "package": "pnpm run version-bump && vsce package --no-dependencies --out ../../vsix_packages ",
+        "package:build": "pnpm run build && pnpm package",
+        "package:clean": "pnpm run build:clean && pnpm package",
+        "publish": "vsce publish",
+        "__do_vsce_package": "node ./package-vsix.js",
+        "package_fucked": "pnpm run version-bump && pnpm run build && pnpm run __do_vsce_package",
         "== WATCH ============================================================================================ ": "",
-        "watch": "fux-build ./src/extension.ts --outfile=./dist/extension.js --watch",
+        "watch": "fux-build ./src/extension.ts --outfile=./dist/extension.js --watch --meta",
         "== TEST ============================================================================================= ": "",
         "test": "vitest run",
         "test:watch": "vitest watch",
         "coverage": "vitest run --coverage",
         "== UTILITIES ======================================================================================== ": "",
-        "clean": "rimraf ./dist .turbo",
-        "version-bump": "tsx ./../shared/tools/src/scripts/version_bump.ts"
+        "clean": "rimraf ./dist .turbo ./packed ./vsce_stage",
+        "version-bump": "tsx ./../shared/tools/src/scripts/version_bump.ts",
+        "analyze": "npx esbuild-bundle-analyzer ./dist/meta.json"
     },
     "dependencies": {
         "@focused-ux/shared-services": "workspace:*",
@@ -41,6 +50,14 @@
         "reflect-metadata": "^0.2.2",
         "tsyringe": "^4.10.0"
     },
+    "bundledDependencies": [
+        "@focused-ux/shared-services",
+        "gpt-tokenizer",
+        "js-yaml",
+        "micromatch",
+        "reflect-metadata",
+        "tsyringe"
+    ],
     "devDependencies": {
         "@focused-ux/config-esbuild": "workspace:*",
         "@focused-ux/config-eslint": "workspace:*",
@@ -48,17 +65,19 @@
         "@types/js-yaml": "^4.0.9",
         "@types/micromatch": "^4.0.9",
         "@types/node": "latest",
+        "@types/tar": "^6.1.0",
         "@types/vscode": "^1.100.0",
         "@vitest/coverage-v8": "^3.2.3",
         "esbuild": "^0.25.5",
+        "esbuild-bundle-analyzer": "^0.0.1",
         "eslint": "^9.28.0",
+        "mkdirp": "^3.0.1",
+        "rimraf": "^5.0.0",
+        "tar": "^7.2.0",
         "typescript": "^5.8.3",
         "vitest": "^3.2.3",
         "vitest-mock-extended": "^3.1.0"
     },
-    "sideEffects": [
-        "reflect-metadata"
-    ],
     "activationEvents": [
         "onStartupFinished"
     ],

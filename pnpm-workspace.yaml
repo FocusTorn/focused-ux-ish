@@ -6,5 +6,6 @@ packages:
   - packages/context-cherry-picker-ext
 
 onlyBuiltDependencies:
+  - core-js
   - puppeteer
   - sharp

@@ -42,9 +42,20 @@ const esbuildProblemMatcher = {
 		build.onEnd((result) => {
 			result.errors.forEach(({ text, location }) => {
 				console.error(`✘ [ERROR] ${text}`)
-				console.error(
-					`    ${location.file}:${location.line}:${location.column}:`,
-				)
+				if (location && location.file) { // Check if location and location.file are not null/undefined
+					console.error(
+						`    ${location.file}:${location.line}:${location.column}:`,
+					)
+				} else if (location) {
+					// Handle cases where location might exist but not file (less common for typical errors)
+					console.error(
+						`    (Location info incomplete: line ${location.line}, column ${location.column})`,
+					)
+				} else {
+					console.error(
+						`    (No location information available for this error)`,
+					)
+				}
 			})
 
 			// const currTime = getCurrentTimeWithMilliseconds()
@@ -52,12 +63,7 @@ const esbuildProblemMatcher = {
 
 			// console.log(`[${coloredTime}] Build finished`)
 
-			result.errors.forEach(({ text, location }) => {
-				console.error(`✘ [ERROR] ${text}`)
-				console.error(
-					`    ${location.file}:${location.line}:${location.column}:`,
-				)
-			})
+            // The redundant loop for errors was removed as it's identical to the one above.
 		})
 	},
 }

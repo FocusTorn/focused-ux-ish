@@ -134,6 +134,7 @@ export class ProjectTreeFormatterService implements IProjectTreeFormatterService
 		treeEntriesMap: Map<string, FileSystemEntry>,
 		projectRootUri: Uri,
 		projectRootName: string,
+		outputFilterAlwaysShow: string[],
 		outputFilterAlwaysHide: string[],
 		outputFilterShowIfSelected: string[],
 		initialCheckedUris: Uri[],
@@ -144,13 +145,23 @@ export class ProjectTreeFormatterService implements IProjectTreeFormatterService
 			const relativePath = entry.relativePath
 			const isExplicitlySelected = initialCheckedUris.some(u => u.fsPath === entry.uri.fsPath)
 
-			if (micromatch.isMatch(relativePath, outputFilterAlwaysHide)) { //>
-				if (isExplicitlySelected && micromatch.isMatch(relativePath, outputFilterShowIfSelected)) {
-					return true // Show if selected and matches showIfSelected, despite alwaysHide
-				}
-				// console.log(`${LOG_PREFIX} Hiding ${relativePath} from tree output (AlwaysHide rule).`);
-				return false // Hide
-			} //<
+			// Rule 1: `always_show` has the highest precedence.
+			if (micromatch.isMatch(relativePath, outputFilterAlwaysShow)) {
+				return true
+			}
+
+			// Rule 2: `always_hide` is a hard filter (unless overridden by always_show).
+			if (micromatch.isMatch(relativePath, outputFilterAlwaysHide)) {
+				return false
+			}
+
+			// Rule 3: If an item matches a `show_if_selected` glob, its visibility
+			// depends on whether it's currently selected in the UI.
+			if (micromatch.isMatch(relativePath, outputFilterShowIfSelected)) {
+				return isExplicitlySelected
+			}
+			
+			// Rule 4: If not covered by any specific rule, the item is included by default.
 			return true
 		}) //<
 

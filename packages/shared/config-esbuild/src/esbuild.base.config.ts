@@ -7,10 +7,16 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 
 //--------------------------------------------------------------------------------------------------------------<<
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const __dirname = path.dirname(fileURLToPath(import.meta.url)); 
+const packageRoot = path.resolve(__dirname, '..'); 
+
 const resolvePluginPath = (relativePath: string): string => { //>
-    return path.resolve(__dirname, '../plugins', relativePath);
+    return path.resolve(packageRoot, 'plugins', relativePath);
 }; //</
+
+const resolveSrcAssetPath = (relativePath: string): string => { //>
+    return path.resolve(packageRoot, 'src', relativePath);
+} //</
 
 async function loadPlugins(pluginFileNames: string[]): Promise<any[]> { //>
     const loadedPlugins = await Promise.all(
@@ -43,6 +49,8 @@ export async function getBaseEsbuildOptions( //>
     pluginFileNames: string[] = ['esbuildProblemMatcher.js']
 ): Promise<Partial<BuildOptions>> {
     const plugins = await loadPlugins(pluginFileNames);
+    const nodeGlobalsShimPath = resolveSrcAssetPath('node-globals.js'); 
+
     return {
         bundle: true,
         plugins,
@@ -54,10 +62,13 @@ export async function getBaseEsbuildOptions( //>
         format: 'esm',
         platform: 'node',
         logLevel: 'info',
+        inject: [nodeGlobalsShimPath], 
+        define: { 
+            'global': 'globalThis',
+        },
         external: [
             'vscode',
             'typescript',
-            'node:*'
         ],
         logOverride: {
             'require-resolve-not-external': 'silent',

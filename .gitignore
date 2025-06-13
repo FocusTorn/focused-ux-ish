@@ -1,8 +1,11 @@
 # # Dependencies
 
 node_modules
+vsix_packages
+
 .pnp
 .pnp.js
+
 
 
 
@@ -39,3 +42,8 @@ npm-debug.log*
 *.bak*
 
 packages/assets
+
+.yalc
+
+
+

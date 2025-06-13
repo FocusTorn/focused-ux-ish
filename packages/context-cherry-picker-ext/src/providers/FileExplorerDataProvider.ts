@@ -5,7 +5,7 @@ import { inject, injectable } from 'tsyringe'
 
 //= VSCODE TYPES & MOCKED INTERNALS ===========================================================================
 import { EventEmitter, FileType as VsCodeFileTypeEnum, TreeItemCheckboxState, Uri, TreeItemCollapsibleState } from 'vscode'
-import type { Event, TreeItem, TreeItemLabel, FileSystemError, ConfigurationChangeEvent } from 'vscode'
+import type { Event, TreeItem, TreeItemLabel, FileSystemError, ConfigurationChangeEvent, FileSystemWatcher } from 'vscode'
 
 //= NODE JS ===================================================================================================
 import { Buffer } from 'node:buffer'
@@ -26,14 +26,15 @@ import type { IWorkspace, IWindow } from '@focused-ux/shared-services' // Using 
 
 interface ProjectYamlConfig { //>
 	ContextCherryPicker?: {
-		ignore?: string[]
-		projectTreeDisplay?: {
-			alwaysHide?: string[]
-			showIfSelected?: string[]
+		ignore?: string[] // Global ignore
+		project_tree?: {
+			always_show?: string[]
+			always_hide?: string[]
+			show_if_selected?: string[]
 		}
-		directoryContentDisplay?: {
-			showDirHideContents?: string[]
-			hideDirAndContents?: string[]
+		context_explorer?: {
+			ignore?: string[]
+			hide_children?: string[]
 		}
 	}
 } //<
@@ -45,22 +46,50 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider { //>
 	readonly onDidChangeTreeData: Event<FileExplorerItem | undefined | null | void> = this._onDidChangeTreeData.event
 
 	private checkboxStates: Map<string, TreeItemCheckboxState> = new Map()
-	private coreIgnorePatterns: string[] = []
-	private coreDirContentHideDirAndContentsGlobs: string[] = []
-	private coreDirContentShowDirHideContentsGlobs: string[] = []
-	private outputProjectTreeAlwaysHideGlobs: string[] = []
-	private outputProjectTreeShowIfSelectedGlobs: string[] = []
+	private fileWatcher: FileSystemWatcher | undefined
+	private isInitialized = false
+
+	// Configuration properties
+	private globalIgnoreGlobs: string[] = []
+	private contextExplorerIgnoreGlobs: string[] = []
+	private contextExplorerHideChildrenGlobs: string[] = []
+	private projectTreeAlwaysShowGlobs: string[] = []
+	private projectTreeAlwaysHideGlobs: string[] = []
+	private projectTreeShowIfSelectedGlobs: string[] = []
 
 	constructor(
 		@inject('iWorkspace') private readonly workspaceAdapter: IWorkspace,
 		@inject('iWindow') private readonly windowAdapter: IWindow,
 	) {
-		this.loadConfigurationPatterns()
-		this.workspaceAdapter.onDidChangeConfiguration(async (e: ConfigurationChangeEvent) => { //>
-			if (e.affectsConfiguration(constants.extension.configKey)) {
-				await this.loadConfigurationPatterns()
-			}
-		}) //<
+		// Register event listeners using bound class methods
+		this.workspaceAdapter.onDidChangeConfiguration(this._onVsCodeConfigChange)
+
+		if (this.workspaceAdapter.workspaceFolders && this.workspaceAdapter.workspaceFolders.length > 0) {
+			const workspaceRoot = this.workspaceAdapter.workspaceFolders[0].uri
+			const globPattern = Uri.joinPath(workspaceRoot, constants.projectConfig.fileName).fsPath
+
+			this.fileWatcher = this.workspaceAdapter.createFileSystemWatcher(globPattern)
+
+			this.fileWatcher.onDidChange(this._onFocusedUxConfigChange)
+			this.fileWatcher.onDidCreate(this._onFocusedUxConfigChange)
+			this.fileWatcher.onDidDelete(this._onFocusedUxConfigChange)
+		}
+	}
+
+	// ┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
+	// │                                          EVENT HANDLERS                                          │
+	// └──────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+	private _onVsCodeConfigChange = async (e: ConfigurationChangeEvent): Promise<void> => {
+		if (e.affectsConfiguration(constants.extension.configKey)) {
+			console.log(`[${constants.extension.name}] VS Code settings changed. Refreshing explorer view.`)
+			await this.refresh()
+		}
+	}
+
+	private _onFocusedUxConfigChange = async (): Promise<void> => {
+		console.log(`[${constants.extension.name}] '.FocusedUX' file configuration changed. Refreshing explorer view.`)
+		await this.refresh()
 	}
 
 	// ┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -102,7 +131,7 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider { //>
 
 	private async loadConfigurationPatterns(): Promise<void> { //>
 		let parsedYamlConfig: ProjectYamlConfig | undefined
-		const ccpSatelliteKey = constants.projectConfig.keys.contextCherryPicker
+		const ccpKey = constants.projectConfig.keys.contextCherryPicker
 
 		if (this.workspaceAdapter.workspaceFolders && this.workspaceAdapter.workspaceFolders.length > 0) {
 			const workspaceRoot = this.workspaceAdapter.workspaceFolders[0].uri
@@ -124,53 +153,35 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider { //>
 			}
 		}
 
-		const newCoreIgnorePatterns = this.getPatternsFromSources(
-			parsedYamlConfig,
-			[ccpSatelliteKey, constants.projectConfig.keys.ignore],
-			constants.configKeys.CCP_IGNORE_PATTERNS,
-			[],
-		)
-		const newCoreDirHideAndContents = this.getPatternsFromSources(
-			parsedYamlConfig,
-			[ccpSatelliteKey, constants.projectConfig.keys.directoryContentDisplay, constants.projectConfig.keys.hideDirAndContents],
-			constants.configKeys.CCP_DIR_CONTENT_HIDE_DIR_AND_CONTENTS_GLOBS,
-			[],
-		)
-		const newCoreDirShowHideContents = this.getPatternsFromSources(
-			parsedYamlConfig,
-			[ccpSatelliteKey, constants.projectConfig.keys.directoryContentDisplay, constants.projectConfig.keys.showDirHideContents],
-			constants.configKeys.CCP_DIR_CONTENT_SHOW_DIR_HIDE_CONTENTS_GLOBS,
-			[],
-		)
-		const newOutputAlwaysHide = this.getPatternsFromSources(
-			parsedYamlConfig,
-			[ccpSatelliteKey, constants.projectConfig.keys.projectTreeDisplay, constants.projectConfig.keys.alwaysHide],
-			constants.configKeys.CCP_PROJECT_TREE_ALWAYS_HIDE_GLOBS,
-			[],
-		)
-		const newOutputShowIfSelected = this.getPatternsFromSources(
-			parsedYamlConfig,
-			[ccpSatelliteKey, constants.projectConfig.keys.projectTreeDisplay, constants.projectConfig.keys.showIfSelected],
-			constants.configKeys.CCP_PROJECT_TREE_SHOW_IF_SELECTED_GLOBS,
-			[],
-		)
-		
+		const keys = constants.projectConfig.keys
+		const cfg = constants.configKeys
+
+		const newGlobalIgnore = this.getPatternsFromSources(parsedYamlConfig, [ccpKey, keys.ignore], cfg.CCP_IGNORE_PATTERNS, [])
+		const newExplorerIgnore = this.getPatternsFromSources(parsedYamlConfig, [ccpKey, keys.context_explorer, keys.ignore], cfg.CCP_CONTEXT_EXPLORER_IGNORE_GLOBS, [])
+		const newExplorerHideChildren = this.getPatternsFromSources(parsedYamlConfig, [ccpKey, keys.context_explorer, keys.hide_children], cfg.CCP_CONTEXT_EXPLORER_HIDE_CHILDREN_GLOBS, [])
+		const newTreeAlwaysShow = this.getPatternsFromSources(parsedYamlConfig, [ccpKey, keys.project_tree, keys.always_show], cfg.CCP_PROJECT_TREE_ALWAYS_SHOW_GLOBS, [])
+		const newTreeAlwaysHide = this.getPatternsFromSources(parsedYamlConfig, [ccpKey, keys.project_tree, keys.always_hide], cfg.CCP_PROJECT_TREE_ALWAYS_HIDE_GLOBS, [])
+		const newTreeShowIfSelected = this.getPatternsFromSources(parsedYamlConfig, [ccpKey, keys.project_tree, keys.show_if_selected], cfg.CCP_PROJECT_TREE_SHOW_IF_SELECTED_GLOBS, [])
+
 		let changed = false
 
-		if (JSON.stringify(this.coreIgnorePatterns) !== JSON.stringify(newCoreIgnorePatterns)) {
-			this.coreIgnorePatterns = newCoreIgnorePatterns; changed = true
+		if (JSON.stringify(this.globalIgnoreGlobs) !== JSON.stringify(newGlobalIgnore)) {
+			this.globalIgnoreGlobs = newGlobalIgnore; changed = true
 		}
-		if (JSON.stringify(this.coreDirContentHideDirAndContentsGlobs) !== JSON.stringify(newCoreDirHideAndContents)) {
-			this.coreDirContentHideDirAndContentsGlobs = newCoreDirHideAndContents; changed = true
+		if (JSON.stringify(this.contextExplorerIgnoreGlobs) !== JSON.stringify(newExplorerIgnore)) {
+			this.contextExplorerIgnoreGlobs = newExplorerIgnore; changed = true
 		}
-		if (JSON.stringify(this.coreDirContentShowDirHideContentsGlobs) !== JSON.stringify(newCoreDirShowHideContents)) {
-			this.coreDirContentShowDirHideContentsGlobs = newCoreDirShowHideContents; changed = true
+		if (JSON.stringify(this.contextExplorerHideChildrenGlobs) !== JSON.stringify(newExplorerHideChildren)) {
+			this.contextExplorerHideChildrenGlobs = newExplorerHideChildren; changed = true
 		}
-		if (JSON.stringify(this.outputProjectTreeAlwaysHideGlobs) !== JSON.stringify(newOutputAlwaysHide)) {
-			this.outputProjectTreeAlwaysHideGlobs = newOutputAlwaysHide; changed = true
+		if (JSON.stringify(this.projectTreeAlwaysShowGlobs) !== JSON.stringify(newTreeAlwaysShow)) {
+			this.projectTreeAlwaysShowGlobs = newTreeAlwaysShow; changed = true
 		}
-		if (JSON.stringify(this.outputProjectTreeShowIfSelectedGlobs) !== JSON.stringify(newOutputShowIfSelected)) {
-			this.outputProjectTreeShowIfSelectedGlobs = newOutputShowIfSelected; changed = true
+		if (JSON.stringify(this.projectTreeAlwaysHideGlobs) !== JSON.stringify(newTreeAlwaysHide)) {
+			this.projectTreeAlwaysHideGlobs = newTreeAlwaysHide; changed = true
+		}
+		if (JSON.stringify(this.projectTreeShowIfSelectedGlobs) !== JSON.stringify(newTreeShowIfSelected)) {
+			this.projectTreeShowIfSelectedGlobs = newTreeShowIfSelected; changed = true
 		}
 
 		if (changed) {
@@ -185,28 +196,33 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider { //>
 	private isUriHiddenForProviderUi(uri: Uri): boolean { //>
 		const relativePath = this.workspaceAdapter.asRelativePath(uri, false).replace(/\\/g, '/')
 
-		if (micromatch.isMatch(relativePath, this.coreIgnorePatterns))
+		if (micromatch.isMatch(relativePath, this.globalIgnoreGlobs))
 			return true
-		if (micromatch.isMatch(relativePath, this.coreDirContentHideDirAndContentsGlobs))
+		if (micromatch.isMatch(relativePath, this.contextExplorerIgnoreGlobs))
 			return true
 		return false
 	} //<
 
 	async getChildren(element?: FileExplorerItem): Promise<FileExplorerItem[]> { //>
+		if (!this.isInitialized) {
+			await this.loadConfigurationPatterns()
+			this.isInitialized = true
+		}
+
 		if (!this.workspaceAdapter.workspaceFolders || this.workspaceAdapter.workspaceFolders.length === 0)
 			return []
-		
+
 		const children: FileExplorerItem[] = []
 		const sourceUri = element ? element.uri : this.workspaceAdapter.workspaceFolders[0].uri
 
 		if (element && element.type === 'directory') {
 			const relativeElementPath = this.workspaceAdapter.asRelativePath(element.uri, false).replace(/\\/g, '/')
 
-			if (micromatch.isMatch(relativeElementPath, this.coreDirContentShowDirHideContentsGlobs)) {
+			if (micromatch.isMatch(relativeElementPath, this.contextExplorerHideChildrenGlobs)) {
 				return []
 			}
 		}
-		
+
 		try {
 			const entries = await this.workspaceAdapter.fs.readDirectory(sourceUri)
 
@@ -219,7 +235,7 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider { //>
 				let collapsibleStateOverride: TreeItemCollapsibleState | undefined
 				const relativeChildPath = this.workspaceAdapter.asRelativePath(childUri, false).replace(/\\/g, '/')
 
-				if (type === VsCodeFileTypeEnum.Directory && micromatch.isMatch(relativeChildPath, this.coreDirContentShowDirHideContentsGlobs)) {
+				if (type === VsCodeFileTypeEnum.Directory && micromatch.isMatch(relativeChildPath, this.contextExplorerHideChildrenGlobs)) {
 					collapsibleStateOverride = TreeItemCollapsibleState.None // Directory shown, but not expandable
 				}
 				children.push(new FileExplorerItem(childUri, name, type, this.getCheckboxState(childUri) || TreeItemCheckboxState.Unchecked, undefined, collapsibleStateOverride))
@@ -228,7 +244,7 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider { //>
 			console.error(`[${constants.extension.name}] Error reading directory ${sourceUri.fsPath}:`, _error)
 			this.windowAdapter.showErrorMessage(`Error reading directory: ${(element?.label as TreeItemLabel)?.label || (element?.label as string) || sourceUri.fsPath}`)
 		}
-		
+
 		children.sort((a, b) => { //>
 			if (a.type === 'directory' && b.type === 'file')
 				return -1
@@ -240,8 +256,8 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider { //>
 
 			return labelA.localeCompare(labelB)
 		}) //<
-		
-		return children
+
+		return children 
 	} //<
 
 	getTreeItem(element: FileExplorerItem): TreeItem { //>
@@ -256,8 +272,8 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider { //>
 	} //<
 
 	async refresh(): Promise<void> { //>
-		await this.loadConfigurationPatterns() // This will fire _onDidChangeTreeData if patterns changed
-		this._onDidChangeTreeData.fire() // Explicitly fire to ensure UI refresh even if patterns didn't change
+		await this.loadConfigurationPatterns()
+		this._onDidChangeTreeData.fire()
 	} //<
 
 	// ┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -281,7 +297,7 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider { //>
 
 	updateCheckboxState(uri: Uri, state: TreeItemCheckboxState): void { //>
 		this.checkboxStates.set(uri.toString(), state)
-		this._onDidChangeTreeData.fire() // Refresh the view to show checkbox state change
+		this._onDidChangeTreeData.fire()
 	} //<
 
 	getCheckboxState(uri: Uri): TreeItemCheckboxState | undefined { //>
@@ -296,7 +312,6 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider { //>
 				try {
 					const uri = Uri.parse(uriString)
 
-					// Ensure items hidden from provider UI aren't included if they somehow got checked
 					if (!this.isUriHiddenForProviderUi(uri)) {
 						checkedUris.push(uri)
 					}
@@ -315,31 +330,32 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider { //>
 		}
 		this._onDidChangeTreeData.fire()
 	} //<
-	
+
 	// ┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
-	// │                                     NEW INTERFACE METHODS                                      │
+	// │                                     GLOB GETTERS FOR SERVICES                                    │
 	// └──────────────────────────────────────────────────────────────────────────────────────────────────┘
 	public getCoreScanIgnoreGlobs(): string[] { //>
-		return this.coreIgnorePatterns
+		return this.globalIgnoreGlobs
 	} //<
 
-	public getCoreScanDirHideAndContentsGlobs(): string[] { //>
-		return this.coreDirContentHideDirAndContentsGlobs
+	public getContextExplorerIgnoreGlobs(): string[] { //>
+		return this.contextExplorerIgnoreGlobs
 	} //<
 
-	public getCoreScanDirShowDirHideContentsGlobs(): string[] { //>
-		return this.coreDirContentShowDirHideContentsGlobs
+	public getContextExplorerHideChildrenGlobs(): string[] { //>
+		return this.contextExplorerHideChildrenGlobs
 	} //<
 
-	// ┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
-	// │                                    EXISTING INTERFACE METHODS                                    │
-	// └──────────────────────────────────────────────────────────────────────────────────────────────────┘
+	public getProjectTreeAlwaysShowGlobs(): string[] { //>
+		return this.projectTreeAlwaysShowGlobs
+	} //<
+
 	public getProjectTreeAlwaysHideGlobs(): string[] { //>
-		return this.outputProjectTreeAlwaysHideGlobs
+		return this.projectTreeAlwaysHideGlobs
 	} //<
 
 	public getProjectTreeShowIfSelectedGlobs(): string[] { //>
-		return this.outputProjectTreeShowIfSelectedGlobs
+		return this.projectTreeShowIfSelectedGlobs
 	} //<
 
 }

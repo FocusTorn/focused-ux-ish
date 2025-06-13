@@ -31,7 +31,6 @@ const focusTornBaseRules = { //>
 	'no-console': 'off',
 	'no-unused-vars': 'off', // Handled by unused-imports/no-unused-vars
 	
-    'require-resolve-not-external': 'error',
     
     // "@typescript-eslint/no-require-imports": "error",
     

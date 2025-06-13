@@ -1,67 +1,142 @@
-# Configuration for Focused UI Extension
+
+    # Configuration for Focused UI Extension
 
 ContextCherryPicker:
-  ignore:
+    
+    ignore:
+      - "**/.yalk/**"
+      - "node_modules"
+      - ".gitignore"
+      - ".vscodeignore"
+    
+    project_tree:
+        always_show:
+        # Always show these in the <project_tree> sste 
+
+        always_hide:
+        # Never show these in the <project_tree>
+
+        show_if_selected:
+        # These will only show in the <project_tree> if selected in <Context Explorer>, else hidden
+
+    context_explorer:
+        ignore:
+        # These will not be shown in the <Context Explorer>
+
+        hide_children:
+        # show this dir, but not any of its children individually in the <Context Explorer>
+
+
+
+
+
+
+
+
+# ContextCherryPicker:
+#   ignore:
   
-    # - "**/dist/**"
-    - "**/tsconfig.tsbuildinfo"
-    - "**/**/*.d.ts"
-    - "**/**/*.map"
-    - "**/*.svg"
-    - "**/*.png"
+#     - "**/dist/**"
+#     - "**/tsconfig.tsbuildinfo"
+#     - "**/**/*.d.ts"
+#     - "**/**/*.map"
+#     - "**/*.svg"
+#     - "**/*.png"
+#     - "**/*.jpg"
+#     - "**/*.jpeg"
     
-    # - ".gitignore"
-    # - ".vscodeignore"
+    
+    
+#     # - ".gitignore"
+#     # - ".vscodeignore"
     
   
-    #= STANDARD ================================================================= 
-    - "**/node_modules/**"
-    - "**/.git/**"
-    # - "**/.vscode/**"
-    - "**/.turbo/**"
-    #- TESTING ---------------------------------------------- 
-    - "coverage/"
-    # - "**/*.log"
-    #- BUILD ------------------------------------------------ 
-    # - "**/build/**"
-    # - "**/out/**"
+#     #= STANDARD ================================================================= 
+#     - "**/node_modules/**"
+#     - "**/.git/**"
+#     # - "**/.vscode/**"
+#     - "**/.turbo/**"
+#     #- TESTING ---------------------------------------------- 
+#     - "coverage/"
+#     # - "**/*.log"
+#     #- BUILD ------------------------------------------------ 
+#     # - "**/build/**"
+#     # - "**/out/**"
   
-    #= FOLDERS ================================================================== 
-    - "**/vsix_packages/**"
+#     #= FOLDERS ================================================================== 
+#     - "**/vsix_packages/**"
   
-    #= FILES ==================================================================== 
-    - ".editorconfig"
+#     #= FILES ==================================================================== 
+#     - ".editorconfig"
     
-    - ".npmrc"
-    - ".vscode-test.mjs"
-    - "CHANGELOG.md"
-    - "**/LICENSE.txt"
-    - "package-lock.json"
-    - "desktop.ini"
+#     - ".npmrc"
+#     - ".vscode-test.mjs"
+#     - "CHANGELOG.md"
+#     - "**/LICENSE.txt"
+#     - "package-lock.json"
+#     - "desktop.ini"
     
 
-  projectTreeDisplay:
-    alwaysHide: 
-    # Never show these in the <project_tree> even if checked
+#   projectTreeDisplay:
+#   # Even if QS:All is chosen, these will over ride the what is shown in <project_tree>
+  
+#     alwaysHide: 
+#     # Never show these in the <project_tree>
   
     
-    showIfSelected: 
-    # If this list has items, only checked items matching these appear in <project_tree>
+#     showIfSelected: 
+#     # These will show in the <project_tree>    these appear in <project_tree>  Only if selected items matching 
 
 
 
 
-  directoryContentDisplay:
-    showDirHideContents: 
-    # show this dir, but not its children individually in UI
-    # - "**/dynamicons/ext/assets/images"
-    # - "**/dynamicons/ext/assets/icons/*_icons"
+#   directoryContentDisplay:
+#     showDirHideContents: 
+#     # show this dir, but not its children individually in UI
+#     # - "**/dynamicons/ext/assets/images"
+#     # - "**/dynamicons/ext/assets/icons/*_icons"
     
-    hideDirAndContents: 
-    # directory and its contents are completely hidden from UI
-      # - "assets/icons"
+#     hideDirAndContents: 
+#     # directory and its contents are completely hidden from UI
+#       # - "assets/icons"
     
 
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+# ContextCherryPicker:
+    
+#     ignore:
+#     # These will not be shown in either the <project_tree> or <Context Explorer>
+    
+#     project_tree:
+#     # Regardless of the Project Structure Contents setting, these will over ride the what is shown in <project_tree>
+
+#         always_show:
+#         # Always show these in the <project_tree>
+
+#         always_hide:
+#         # Never show these in the <project_tree>
+
+#         show_if_selected:
+#         # These will only show in the <project_tree> if selected in <Context Explorer>, else hidden
+
+#     context_explorer:
+#         ignore:
+#         # These will not be shown in the <Context Explorer>
+
+#         hide_children:
+#         # show this dir, but not any of its children individually in the <Context Explorer>
 
 
     

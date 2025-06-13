@@ -38,9 +38,11 @@ import { WorkspaceAdapter } from './_vscode_adapters/Workspace.adapter.js';
 
 export class SharedServicesModule { //>
 	public static registerDependencies(container: DependencyContainer): void { //>
-		// Register Utility Services
-		container.registerSingleton<ICommonUtilsService>('ICommonUtilsService', CommonUtilsService);
-		container.registerSingleton<IFileUtilsService>('IFileUtilsService', FileUtilsService);
+
+
+        container.registerSingleton<ICommonUtilsService>('ICommonUtilsService', CommonUtilsService);
+
+        container.registerSingleton<IFileUtilsService>('IFileUtilsService', FileUtilsService);
 		container.registerSingleton<IFrontmatterUtilsService>('IFrontmatterUtilsService', FrontmatterUtilsService);
 		container.registerSingleton<IPathUtilsService>('IPathUtilsService', PathUtilsService);
 		container.registerSingleton<IQuickPickUtilsService>('IQuickPickUtilsService', QuickPickUtilsService);

@@ -13,9 +13,9 @@ import type { IFileContentProviderService, FileContentResult } from '../_interfa
 import type { FileSystemEntry } from '../_interfaces/ccp.types.ts'
 
 //= INJECTED TYPES ============================================================================================
-import type { IWorkspace, IWindow } from '@focused-ux/shared-services'
+import type { IWorkspace, IWindow, ICommonUtilsService } from '@focused-ux/shared-services' // Added ICommonUtilsService
 import { constants } from '../_config/constants.js'
-import { encode } from 'gpt-tokenizer'
+// Removed: import { encode } from 'gpt-tokenizer'
 
 //--------------------------------------------------------------------------------------------------------------<<
 
@@ -27,15 +27,18 @@ export class FileContentProviderService implements IFileContentProviderService {
 	constructor(
 		@inject('iWorkspace') private readonly _workspace: IWorkspace,
 		@inject('iWindow') private readonly _window: IWindow,
+		@inject('ICommonUtilsService') private readonly _commonUtils: ICommonUtilsService,
 	) {}
 
 	private _localEstimateTokens(text: string): number { //>
 		if (!text)
 			return 0
 		try {
-			return encode(text).length
-		} catch (error) {
-			console.warn(`${LOG_PREFIX} Error using gpt-tokenizer for local token calculation. Falling back.`, error)
+			return this._commonUtils.calculateTokens(text)
+		}
+		catch (error) {
+			// CommonUtilsService already logs errors, but we can add context here if needed
+			console.warn(`${LOG_PREFIX} Error using CommonUtilsService for local token calculation. Falling back.`, error)
 			return Math.ceil(text.length / 4) // Fallback
 		}
 	} //<
@@ -83,14 +86,14 @@ export class FileContentProviderService implements IFileContentProviderService {
 					}
 					tempFilesContentString += fileEntryString
 					processedTokensThisCall += tokensForThisFile
-				} catch (error: any) {
+				}
+				catch (error: any) {
 					this._window.showErrorMessage(`Error reading file ${uri.fsPath} for content: ${error.message}`)
 					console.error(`${LOG_PREFIX} Error reading file ${uri.fsPath}: ${error.message}`)
 				}
 			} //<
-            
-            
-		} else {  //||>
+		}
+		else { //||>
 			console.log(`${LOG_PREFIX} No file items were identified for content processing.`)
 		} //<|
 

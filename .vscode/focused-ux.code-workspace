@@ -1,0 +1,20 @@
+{
+	"folders": [
+        {
+            "name": "ROOT",
+            "path": ".."
+        },
+        {
+            "path": "../packages/context-cherry-picker-ext"
+        },
+        {
+            "path": "../packages/dynamicons"
+        },
+        {
+            "path": "../packages/shared"
+        }
+    ],
+    "settings": {
+        "typescript.tsdk": "node_modules/typescript/lib"
+    }
+}

@@ -18,10 +18,12 @@ export interface IFileExplorerDataProvider extends TreeDataProvider<FileExplorer
 	loadCheckedState: (items: Array<{ uriString: string, checkboxState: number }>) => void
 	clearAllCheckboxes: () => void
 
+	getCoreScanIgnoreGlobs: () => string[]
+	
+	getProjectTreeAlwaysShowGlobs: () => string[]
 	getProjectTreeAlwaysHideGlobs: () => string[]
 	getProjectTreeShowIfSelectedGlobs: () => string[]
 
-	getCoreScanIgnoreGlobs: () => string[]
-	getCoreScanDirHideAndContentsGlobs: () => string[]
-	getCoreScanDirShowDirHideContentsGlobs: () => string[]
+	getContextExplorerIgnoreGlobs: () => string[]
+	getContextExplorerHideChildrenGlobs: () => string[]
 } //<

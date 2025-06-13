@@ -1,6 +1,23 @@
 {
     "name": "focused-ux",
     "scripts": {
+        
+        "== CONTEXT CHERRY PICKER ============================================================================ ": "",
+        "ccb": "pnpm --filter=ccp build",
+        "ccbc": "pnpm --filter=ccp build:clean",
+        "ccbv": "pnpm --filter=ccp build:vis && node _scripts/rename_esbuild_analysis_output.js",
+        "ccp": "pnpm --filter=ccp package",
+        "ccpv": "pnpm --filter=ccp package:build",
+        "ccpc": "pnpm --filter=ccp package:clean",
+        
+        
+        
+        
+        
+        
+        
+        
+        
         "== BUILD ============================================================================================ ": "",
         "build": "turbo run build --summarize --output-logs=new-only",
         "build:clean": "pnpm run clean && pnpm run build",

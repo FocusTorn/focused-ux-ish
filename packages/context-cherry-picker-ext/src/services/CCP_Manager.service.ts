@@ -174,10 +174,11 @@ export class ContextCherryPickerManager implements IContextCherryPickerManager {
 		const projectStructureQuickSettingMode = await this.getQuickSettingState(constants.quickSettings.projectStructureContents.id) as 'all' | 'selected' | 'none';
 		console.log(`${LOG_PREFIX} Project Structure Quick Setting Mode:`, projectStructureQuickSettingMode);
 
+		// Get all configuration globs from the provider
 		const coreScanIgnoreGlobs = this._fileExplorerDataProvider.getCoreScanIgnoreGlobs();
-		const coreScanDirHideAndContentsGlobs = this._fileExplorerDataProvider.getCoreScanDirHideAndContentsGlobs();
-		const coreScanDirShowDirHideContentsGlobs = this._fileExplorerDataProvider.getCoreScanDirShowDirHideContentsGlobs();
-
+		const contextExplorerIgnoreGlobs = this._fileExplorerDataProvider.getContextExplorerIgnoreGlobs();
+		const contextExplorerHideChildrenGlobs = this._fileExplorerDataProvider.getContextExplorerHideChildrenGlobs();
+		const outputFilterAlwaysShow = this._fileExplorerDataProvider.getProjectTreeAlwaysShowGlobs();
 		const outputFilterAlwaysHide = this._fileExplorerDataProvider.getProjectTreeAlwaysHideGlobs();
 		const outputFilterShowIfSelected = this._fileExplorerDataProvider.getProjectTreeShowIfSelectedGlobs();
 
@@ -185,9 +186,10 @@ export class ContextCherryPickerManager implements IContextCherryPickerManager {
 			projectStructureQuickSettingMode,
 			initialCheckedUris,
 			this.projectRootUri,
+			// Pass the correct globs for the core scan
 			coreScanIgnoreGlobs,
-			coreScanDirHideAndContentsGlobs,
-			coreScanDirShowDirHideContentsGlobs,
+			contextExplorerIgnoreGlobs,
+			contextExplorerHideChildrenGlobs,
 		);
 		const { treeEntries, contentFileUris } = collectionResult;
 
@@ -197,6 +199,7 @@ export class ContextCherryPickerManager implements IContextCherryPickerManager {
 				treeEntries,
 				this.projectRootUri,
 				projectRootName,
+				outputFilterAlwaysShow,
 				outputFilterAlwaysHide,
 				outputFilterShowIfSelected,
 				initialCheckedUris,
