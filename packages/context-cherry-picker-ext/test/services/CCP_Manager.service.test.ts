@@ -87,12 +87,12 @@ describe('ContextCherryPickerManager (Satellite)', () => { //>
 		// Resolve the manager - it will get the mocks we just registered for its direct dependencies
 		// and the mockly-provided shared services.
 		manager = container.resolve<IContextCherryPickerManager>('IContextCherryPickerManager');
-	}); //</
+	}); //<
 	//-----------------------------------------------------------------------------------<<
 
 	it('should be defined', () => { //>
 		expect(manager).toBeInstanceOf(ContextCherryPickerManager);
-	}); //</
+	}); //<
 
 	describe('initializeViews', () => { //>
 		it('should create explorer and saved states tree views and register quick settings provider', async () => { //>
@@ -120,8 +120,8 @@ describe('ContextCherryPickerManager (Satellite)', () => { //>
 			expect(mockFileExplorerDataProvider.refresh).toHaveBeenCalled();
 			expect(mockSavedStatesDataProvider.refresh).toHaveBeenCalled();
 			expect(mockQuickSettingsDataProvider.refresh).toHaveBeenCalled();
-		}); //</
-	}); //</
+		}); //<
+	}); //<
 
 	describe('getCheckedExplorerItems', () => { //>
 		it('should call IFileExplorerDataProvider.getAllCheckedItems', () => { //>
@@ -135,8 +135,8 @@ describe('ContextCherryPickerManager (Satellite)', () => { //>
 			// Assert
 			expect(mockFileExplorerDataProvider.getAllCheckedItems).toHaveBeenCalled();
 			expect(result).toEqual(mockUris);
-		}); //</
-	}); //</
+		}); //<
+	}); //<
 
 	describe('saveCurrentCheckedState', () => { //>
 		it('should show info message if no items are checked', async () => { //>
@@ -150,7 +150,7 @@ describe('ContextCherryPickerManager (Satellite)', () => { //>
 			expect(mockVSCodeWindow.showInformationMessage).toHaveBeenCalledWith('No items are checked to save.');
 			expect(mockVSCodeWindow.showInputBox).not.toHaveBeenCalled();
 			expect(mockStorageService.saveState).not.toHaveBeenCalled();
-		}); //</
+		}); //<
 
 		it('should save state if items are checked and name is provided', async () => { //>
 			// Arrange
@@ -170,7 +170,7 @@ describe('ContextCherryPickerManager (Satellite)', () => { //>
 			]);
 			expect(mockSavedStatesDataProvider.refresh).toHaveBeenCalled();
 			expect(mockVSCodeWindow.showInformationMessage).toHaveBeenCalledWith("State 'My Test State' saved.");
-		}); //</
+		}); //<
 
 		it('should not save state if no name is provided', async () => { //>
 			// Arrange
@@ -183,8 +183,8 @@ describe('ContextCherryPickerManager (Satellite)', () => { //>
 			// Assert
 			expect(mockStorageService.saveState).not.toHaveBeenCalled();
 			expect(mockSavedStatesDataProvider.refresh).not.toHaveBeenCalled();
-		}); //</
-	}); //</
+		}); //<
+	}); //<
 	
 	// Add more tests for:
 	// - copyCheckedFilePaths
@@ -205,7 +205,7 @@ describe('ContextCherryPickerManager (Satellite)', () => { //>
 
 			// Assert
 			expect(mockVSCodeWindow.showInformationMessage).toHaveBeenCalledWith('No workspace folder open.');
-		}); //</
+		}); //<
 
 		// More detailed tests for copyContextOfCheckedItems would involve:
 		// - Mocking getQuickSettingState
@@ -215,5 +215,5 @@ describe('ContextCherryPickerManager (Satellite)', () => { //>
 		// - Mocking _fileContentProvider.getFileContents
 		// - Mocking vscode.env.clipboard.writeText
 		// - Asserting the correct messages are shown based on different outcomes
-	}); //</
+	}); //<
 });

@@ -22,6 +22,7 @@ async function main() { //>
     const isProduction = args.includes('--production');
     const enableMetafile = args.includes('--meta');
     const isWatchMode = args.includes('--watch');
+    const isLibraryBuild = args.includes('--library');
     const targetFormatArg = args.find(arg => arg.startsWith('--format='))?.split('=')[1];
     const customExternalsArg = args.find(arg => arg.startsWith('--add-externals='))?.split('=')[1];
     const customPluginsArg = args.find(arg => arg.startsWith('--add-plugins='))?.split('=')[1];
@@ -34,7 +35,9 @@ async function main() { //>
     const baseOptions = await getBaseEsbuildOptions(
         isProduction,
         enableMetafile,
-        allPluginFiles
+        allPluginFiles,
+        process.cwd(),
+        isLibraryBuild
     );
 
     const packageBuildOptions = {

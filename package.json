@@ -3,7 +3,7 @@
     "scripts": {
         "== BUILD ============================================================================================ ": "",
         "build": "turbo run build --summarize --output-logs=new-only",
-        "build:clean": "pnpm run clean && pnpm run build",
+        "build:clean": "pnpm install && pnpm run clean && pnpm run build",
         "== FINALIZE ========================================================================================= ": "",
         "pack": "mkdirp vsix_packages && turbo run package",
         "pack:clean": "pnpm run clean && mkdirp vsix_packages && turbo run package",

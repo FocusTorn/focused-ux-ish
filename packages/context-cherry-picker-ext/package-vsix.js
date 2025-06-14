@@ -68,9 +68,9 @@ async function main() { //>
 			// rimrafSync(stagingDir);
 		}
 	}
-} //</
+} //<
 
 main().catch((error) => { //>
 	console.error('Unhandled error in package-vsix.js:', error);
 	process.exit(1);
-}); //</
+}); //<

@@ -29,24 +29,24 @@ const mockConfigurationTarget = { //>
 	Global: 1,
 	Workspace: 2,
 	WorkspaceFolder: 3,
-} as const satisfies Record<keyof typeof RealConfigurationTarget, RealConfigurationTarget>; //</
+} as const satisfies Record<keyof typeof RealConfigurationTarget, RealConfigurationTarget>; //<
 const mockFileType = { //>
 	Unknown: 0,
 	File: 1,
 	Directory: 2,
 	SymbolicLink: 64,
-} as const satisfies Record<keyof typeof RealFileType, RealFileType>; //</
+} as const satisfies Record<keyof typeof RealFileType, RealFileType>; //<
 const mockExtensionKind = { //>
 	UI: 1,
 	Workspace: 2,
-} as const satisfies Record<keyof typeof RealExtensionKind, RealExtensionKind>; //</
+} as const satisfies Record<keyof typeof RealExtensionKind, RealExtensionKind>; //<
 
 export interface CCPTestSetupContext { //>
 	container: typeof container;
 	mockContext: ExtensionContext;
 	mockly: typeof mockly;
 	simulator: typeof vscodeSimulator;
-} //</
+} //<
 
 const createMockExtensionContext = (): ExtensionContext => { //>
 	const mockMemento: Memento = {
@@ -105,7 +105,7 @@ const createMockExtensionContext = (): ExtensionContext => { //>
 		outputChannelName: 'MockCCPOutput',
 		createOutputChannel: vi.fn((_name: string) => mockLogOutputChannel),
 	} as ExtensionContext;
-}; //</
+}; //<
 
 export function commonCCPTestSetup(): CCPTestSetupContext { //>
 	const context: Partial<CCPTestSetupContext> = {};
@@ -170,7 +170,7 @@ export function commonCCPTestSetup(): CCPTestSetupContext { //>
 		SharedServicesModule.registerDependencies(container);
 
 
-	}); //</
+	}); //<
 
 	return context as CCPTestSetupContext;
-} //</
+} //<

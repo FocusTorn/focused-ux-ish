@@ -1,12 +1,12 @@
 {
     "name": "focused-ux-dynamicons",
-    "version": "0.1.27",
+    "version": "0.1.33",
     "scripts": {
         "== BUILD ============================================================================================ ": "",
-        "build": "pnpm run build:types && pnpm run build:js",
+        "build": "pnpm run build:js",
         "build:clean": "pnpm run clean && pnpm run build",
         "build:types": "tsc -p tsconfig.json --pretty",
-        "build:js": "fux-build ./dist/extension.js --outfile=./dist/extension.js",
+        "build:js": "fux-build ./src/extension.ts --outfile=./dist/extension.js",
         "build:cjs": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.cjs --format=cjs --external:vscode",
         "== VALIDATE ========================================================================================= ": "",
         "check-types": "tsc --noEmit -p tsconfig.json --pretty",
@@ -14,12 +14,12 @@
         "lint:fix": "eslint . --ext .ts --fix",
         "== FINALIZE ========================================================================================= ": "",
         "package": "vsce package --no-dependencies -o ../../../vsix_packages/",
-        "vscode:prepublish": "pnpm run build && pnpm run version-bump",
+        "vscode:prepublish": "pnpm run build:clean && pnpm run version-bump",
         "publish": "vsce publish --no-dependencies",
         "== WATCH ============================================================================================ ": "",
         "watch-only": "pnpm run watch:types & pnpm run watch:js",
         "watch:types": "tsc -p tsconfig.json --watch",
-        "watch:js": "fux-build ./dist/extension.js --outfile=./dist/extension.js --watch",
+        "watch:js": "fux-build ./src/extension.ts --outfile=./dist/extension.js --watch",
         "watch:cjs": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.cjs --platform=node --format=cjs --external:vscode --external:tsyringe --external:reflect-metadata --external:@focused-ux/dynamicons-core --watch",
         "== UTILITIES ======================================================================================== ": "",
         "version-bump": "tsx ../../shared/tools/src/scripts/version_bump.ts",
@@ -187,6 +187,5 @@
         "focused",
         "ui"
     ],
-    "type": "module",
     "main": "./dist/extension.js"
 }

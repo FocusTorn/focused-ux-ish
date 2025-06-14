@@ -10,7 +10,7 @@ import process from 'process';
 
 function stripJsonComments(data) { //>
 	return data.replace(/\\"|"(?:\\"|[^"])*"|(\/\/.*|\/\*[\s\S]*?\*\/)/g, (m, g) => (g ? '' : m));
-} //</
+} //<
 
 // Resolve tsconfig.json relative to the current working directory of the package being built
 const absTsconfigPath = resolve(process.cwd(), 'tsconfig.json');
@@ -68,11 +68,11 @@ const createTsPathsPlugin = { //>
 				// For local paths, just returning the path is usually enough.
 				// console.log(`[createTsPathsPlugin] Path alias: ${args.path} -> ${absoluteResolvedPath}`);
 				return { path: absoluteResolvedPath };
-			} //</
+			} //<
 
 			return undefined; // If no path in the alias array resolved
-		}); //</
+		}); //<
 	},
-}; //</
+}; //<
 
 export default createTsPathsPlugin;

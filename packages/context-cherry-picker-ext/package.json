@@ -4,30 +4,29 @@
     "publisher": "NewRealityDesigns",
     "description": "A standalone extension for advanced context selection and formatting.",
     "repository": "https://github.com/FocusTorn/focused-ux",
-    "version": "0.1.70",
+    "version": "0.1.83",
     "engines": {
         "vscode": "^1.100.0"
     },
     "main": "./dist/extension.js",
-    "type": "module",
     "icon": "assets/cherry-logo.png",
     "sideEffects": [
         "reflect-metadata"
     ],
     "scripts": {
         "== BUILD ============================================================================================ ": "",
-        "build": "pnpm run build:types && pnpm run build:js",
+        "build": "pnpm run build:js",
         "build:clean": "pnpm run clean && pnpm run build",
         "build:types": "tsc -p tsconfig.json --pretty",
-        "build:js": "fux-build ./dist/extension.js --outfile=./dist/extension.js",
+        "build:js": "fux-build ./src/extension.ts --outfile=./dist/extension.js",
         "build:vis": "pnpm build --meta && esbuild-visualizer --metadata ./dist/metafile.json && node rename_esbuild_analysis_output.js",
         "== VALIDATE ========================================================================================= ": "",
         "lint": "pnpm eslint . --ext .ts",
         "lint:fix": "eslint . --ext .ts --fix",
         "check-types": "tsc --noEmit -p tsconfig.json",
         "== FINALIZE ========================================================================================= ": "",
-        "vscode:prepublish": "",
-        "package": "pnpm run version-bump && vsce package --no-dependencies --out vsix_packages/ ",
+        "vscode:prepublish": "pnpm run build:clean && pnpm run version-bump",
+        "package": "vsce package --no-dependencies --out ../../vsix_packages/ ",
         "package:build": "pnpm run build && pnpm package",
         "package:clean": "pnpm run build:clean && pnpm package",
         "publish": "vsce publish",
@@ -36,7 +35,7 @@
         "== WATCH ============================================================================================ ": "",
         "watch": "pnpm run watch:types & pnpm run watch:js",
         "watch:types": "tsc -p tsconfig.json --watch",
-        "watch:js": "fux-build ./dist/extension.js --outfile=./dist/extension.js --watch --meta",
+        "watch:js": "fux-build ./src/extension.ts --outfile=./dist/extension.js --watch --meta",
         "== TEST ============================================================================================= ": "",
         "test": "vitest run",
         "test:watch": "vitest watch",
@@ -54,14 +53,6 @@
         "reflect-metadata": "^0.2.2",
         "tsyringe": "^4.10.0"
     },
-    "bundledDependencies": [
-        "@focused-ux/shared-services",
-        "gpt-tokenizer",
-        "js-yaml",
-        "micromatch",
-        "reflect-metadata",
-        "tsyringe"
-    ],
     "devDependencies": {
         "@focused-ux/config-esbuild": "workspace:*",
         "@focused-ux/config-eslint": "workspace:*",

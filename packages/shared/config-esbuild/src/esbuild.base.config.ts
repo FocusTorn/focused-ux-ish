@@ -2,6 +2,7 @@
 
 import type { BuildOptions } from 'esbuild';
 import path from 'node:path';
+import * as fs from 'node:fs';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 //--------------------------------------------------------------------------------------------------------------<<
@@ -45,34 +46,52 @@ async function loadPlugins(pluginFileNames: string[]): Promise<any[]> { //>
 export async function getBaseEsbuildOptions( //>
     isProduction: boolean,
     enableMetafile: boolean,
-    pluginFileNames: string[] = ['esbuildProblemMatcher.js']
+    pluginFileNames: string[] = ['esbuildProblemMatcher.js'],
+    packageCwd: string,
+    isLibraryBuild: boolean,
 ): Promise<Partial<BuildOptions>> {
     const plugins = await loadPlugins(pluginFileNames);
-    const nodeGlobalsShimPath = resolveSrcAssetPath('node-globals.js'); 
 
-    return {
+    const findRoot = (dir: string): string => {
+        if (fs.existsSync(path.join(dir, 'pnpm-workspace.yaml'))) {
+            return dir;
+        }
+        const parentDir = path.dirname(dir);
+        if (parentDir === dir) {
+            throw new Error('Could not find project root containing pnpm-workspace.yaml');
+        }
+        return findRoot(parentDir);
+    };
+
+    const projectRoot = findRoot(packageCwd);
+
+    const baseOptions: Partial<BuildOptions> = {
         bundle: true,
         plugins,
         sourcemap: !isProduction,
         minify: isProduction,
         metafile: enableMetafile,
         sourcesContent: false,
-        resolveExtensions: ['.js'],
-        format: 'esm',
+        format: 'cjs', // Keep CommonJS output
         platform: 'node',
+        nodePaths: [path.join(projectRoot, 'node_modules')],
         logLevel: 'info',
-        inject: [nodeGlobalsShimPath], 
-        define: { 
-            'global': 'globalThis',
-        },
         external: [
             'vscode',
             'typescript',
-            'tsyringe',
-            'reflect-metadata',
         ],
         logOverride: {
             'require-resolve-not-external': 'silent',
         },
     };
+
+    if (isLibraryBuild) {
+        const pkgJsonPath = path.join(packageCwd, 'package.json');
+        const pkgJson = JSON.parse(fs.readFileSync(pkgJsonPath, 'utf-8'));
+        const dependencies = Object.keys(pkgJson.dependencies || {});
+        const peerDependencies = Object.keys(pkgJson.peerDependencies || {});
+        baseOptions.external = [...(baseOptions.external || []), ...dependencies, ...peerDependencies];
+    }
+
+    return baseOptions;
 } //</

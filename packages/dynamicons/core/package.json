@@ -6,7 +6,7 @@
         "build": "pnpm run build:assets && pnpm run build:types && pnpm run build:js",
         "build:clean": "pnpm run clean && pnpm run build",
         "build:types": "tsc -p tsconfig.json --pretty",
-        "build:js": "fux-build ./dist/index.js --outfile=./dist/index.js",
+        "build:js": "fux-build ./src/index.ts --outfile=./dist/index.js --library",
         "build:assets": "pnpm run assets:localize && pnpm run assets:build",
         "build:cjs": "esbuild ./src/index.ts --bundle --outfile=dist/index.cjs --format=cjs --platform=node --external:vscode",
         "== ASSETS =========================================================================================== ": "",
@@ -16,7 +16,7 @@
         "== WATCH ============================================================================================ ": "",
         "watch-only": "pnpm run watch:types & pnpm run watch:js",
         "watch:types": "tsc -p tsconfig.json --watch",
-        "watch:js": "fux-build ./dist/index.js --outfile=./dist/index.js --watch",
+        "watch:js": "fux-build ./src/index.ts --outfile=./dist/index.js --watch --library",
         "watch:cjs": "esbuild ./src/index.ts --bundle --outfile=dist/index.cjs --platform=node --format=cjs --external:vscode --watch",
         "== VALIDATE ========================================================================================= ": "",
         "check-types": "tsc --noEmit -p tsconfig.json --pretty",
@@ -47,7 +47,6 @@
         "tsx": "^4.20.1",
         "typescript": "^5.8.3"
     },
-    "type": "module",
     "private": true,
     "main": "./dist/index.js",
     "module": "./dist/index.js",
@@ -55,7 +54,8 @@
     "exports": {
         ".": {
             "types": "./dist/index.d.ts",
-            "import": "./dist/index.js"
+            "import": "./dist/index.js",
+            "require": "./dist/index.js"
         }
     }
 }

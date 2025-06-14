@@ -49,7 +49,7 @@ describe('ContextCherryPickerModule (Satellite)', () => { //>
 	beforeEach(() => { //>
 		// Register dependencies from the module being tested
 		ContextCherryPickerModule.registerDependencies(container);
-	}); //</
+	}); //<
 	//-----------------------------------------------------------------------------------<<
 
 	describe('registerDependencies', () => { //>
@@ -58,62 +58,62 @@ describe('ContextCherryPickerModule (Satellite)', () => { //>
 			const service2 = container.resolve<IContextCherryPickerManager>('IContextCherryPickerManager');
 			expect(service1).toBeInstanceOf(ContextCherryPickerManager);
 			expect(service1).toBe(service2);
-		}); //</
+		}); //<
 
 		it('should register IFileExplorerDataProvider as FileExplorerDataProvider singleton', () => { //>
 			const service1 = container.resolve<IFileExplorerDataProvider>('IFileExplorerDataProvider');
 			const service2 = container.resolve<IFileExplorerDataProvider>('IFileExplorerDataProvider');
 			expect(service1).toBeInstanceOf(FileExplorerDataProvider);
 			expect(service1).toBe(service2);
-		}); //</
+		}); //<
 
 		it('should register ISavedStatesDataProvider as SavedStatesDataProvider singleton', () => { //>
 			const service1 = container.resolve<ISavedStatesDataProvider>('ISavedStatesDataProvider');
 			const service2 = container.resolve<ISavedStatesDataProvider>('ISavedStatesDataProvider');
 			expect(service1).toBeInstanceOf(SavedStatesDataProvider);
 			expect(service1).toBe(service2);
-		}); //</
+		}); //<
 
 		it('should register IQuickSettingsDataProvider as QuickSettingsDataProvider singleton', () => { //>
 			const service1 = container.resolve<IQuickSettingsDataProvider>('IQuickSettingsDataProvider');
 			const service2 = container.resolve<IQuickSettingsDataProvider>('IQuickSettingsDataProvider');
 			expect(service1).toBeInstanceOf(QuickSettingsDataProvider);
 			expect(service1).toBe(service2);
-		}); //</
+		}); //<
 
 		it('should register IStorageService as StorageService singleton', () => { //>
 			const service1 = container.resolve<IStorageService>('IStorageService');
 			const service2 = container.resolve<IStorageService>('IStorageService');
 			expect(service1).toBeInstanceOf(StorageService);
 			expect(service1).toBe(service2);
-		}); //</
+		}); //<
 
 		it('should register IGoogleGenAiService as GoogleGenAiService singleton', () => { //>
 			const service1 = container.resolve<IGoogleGenAiService>('IGoogleGenAiService');
 			const service2 = container.resolve<IGoogleGenAiService>('IGoogleGenAiService');
 			expect(service1).toBeInstanceOf(GoogleGenAiService);
 			expect(service1).toBe(service2);
-		}); //</
+		}); //<
 
 		it('should register IContextDataCollectorService as ContextDataCollectorService singleton', () => { //>
 			const service1 = container.resolve<IContextDataCollectorService>('IContextDataCollectorService');
 			const service2 = container.resolve<IContextDataCollectorService>('IContextDataCollectorService');
 			expect(service1).toBeInstanceOf(ContextDataCollectorService);
 			expect(service1).toBe(service2);
-		}); //</
+		}); //<
 
 		it('should register IProjectTreeFormatterService as ProjectTreeFormatterService singleton', () => { //>
 			const service1 = container.resolve<IProjectTreeFormatterService>('IProjectTreeFormatterService');
 			const service2 = container.resolve<IProjectTreeFormatterService>('IProjectTreeFormatterService');
 			expect(service1).toBeInstanceOf(ProjectTreeFormatterService);
 			expect(service1).toBe(service2);
-		}); //</
+		}); //<
 
 		it('should register IFileContentProviderService as FileContentProviderService singleton', () => { //>
 			const service1 = container.resolve<IFileContentProviderService>('IFileContentProviderService');
 			const service2 = container.resolve<IFileContentProviderService>('IFileContentProviderService');
 			expect(service1).toBeInstanceOf(FileContentProviderService);
 			expect(service1).toBe(service2);
-		}); //</
-	}); //</
+		}); //<
+	}); //<
 });

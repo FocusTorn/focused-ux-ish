@@ -1,7 +1,7 @@
+import 'reflect-metadata';
 // ESLint & Imports -->>
 
 //= TSYRINGE ==================================================================================================
-import 'reflect-metadata'
 import { container } from 'tsyringe'
 
 //= VSCODE TYPES & MOCKED INTERNALS ===========================================================================

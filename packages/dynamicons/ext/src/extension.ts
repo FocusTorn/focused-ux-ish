@@ -1,8 +1,8 @@
+import 'reflect-metadata';
 // packages/dynamicons/ext/src/extension.ts
 // ESLint & Imports -->>
 
 //= TSYRINGE ==================================================================================================
-import 'reflect-metadata'
 import { container } from 'tsyringe'
 
 //= VSCODE TYPES & MOCKED INTERNALS ===========================================================================
