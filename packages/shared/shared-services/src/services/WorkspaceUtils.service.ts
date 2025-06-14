@@ -21,7 +21,7 @@ import type { IWorkspace } from '../_vscode_abstractions/IWorkspace.js'
 export class WorkspaceUtilsService implements IWorkspaceUtilsService { //>
 
 	constructor(
-		@inject('iWorkspace') private readonly iWorkspace: IWorkspace,
+		@inject('IWorkspace') private readonly iWorkspace: IWorkspace,
 	) {}
 
 	public getWorkspaceInfo(): WorkspaceInfo { //>

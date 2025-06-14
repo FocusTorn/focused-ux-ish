@@ -20,7 +20,7 @@ import type { ICommonUtilsService } from '../_interfaces/ICommonUtilsService.js'
 export class ShellUtilsService implements IShellUtilsService { //>
 
 	constructor(
-		@inject('iWindow') private readonly iWindow: IWindow,
+		@inject('IWindow') private readonly iWindow: IWindow,
 		@inject('ICommonUtilsService') private readonly iCommonUtils: ICommonUtilsService,
 	) {}
 

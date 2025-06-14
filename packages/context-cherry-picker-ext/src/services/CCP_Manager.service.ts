@@ -47,9 +47,9 @@ export class ContextCherryPickerManager implements IContextCherryPickerManager {
 		@inject('IContextDataCollectorService') private readonly _contextDataCollector: IContextDataCollectorService,
 		@inject('IProjectTreeFormatterService') private readonly _projectTreeFormatter: IProjectTreeFormatterService,
 		@inject('IFileContentProviderService') private readonly _fileContentProvider: IFileContentProviderService,
-		@inject('iCommands') private readonly _commands: ICommands,
-		@inject('iWindow') private readonly _window: IWindow,
-		@inject('iWorkspace') private readonly _workspace: IWorkspace,
+		@inject('ICommands') private readonly _commands: ICommands,
+		@inject('IWindow') private readonly _window: IWindow,
+		@inject('IWorkspace') private readonly _workspace: IWorkspace,
 		@inject('iPathBasename') private readonly _pathBasename: typeof nodePath.basename,
 	) {} //<
 

@@ -27,7 +27,7 @@ export class ContextDataCollectorService implements IContextDataCollectorService
 	private projectRootUri!: Uri
 
 	constructor( //>
-		@inject('iWorkspace') private readonly _workspace: IWorkspace,
+		@inject('IWorkspace') private readonly _workspace: IWorkspace,
 		@inject('iPathBasename') private readonly _pathBasename: typeof nodePath.basename,
 		@inject('iPathRelative') private readonly _pathRelative: typeof nodePath.relative,
 	) {} //<

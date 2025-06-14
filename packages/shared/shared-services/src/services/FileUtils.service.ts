@@ -40,7 +40,7 @@ import type { IWindow } from '../_vscode_abstractions/IWindow.js'
 export class FileUtilsService implements IFileUtilsService { //>
 
 	constructor(
-		@inject('iWindow') private readonly iWindow: IWindow,
+		@inject('IWindow') private readonly iWindow: IWindow,
 		@inject('ICommonUtilsService') private readonly iCommonUtils: ICommonUtilsService,
 		@inject('iPathBasename') private readonly iPathBasename: typeof nodePath.basename,
 		@inject('iPathDirname') private readonly iPathDirname: typeof nodePath.dirname,

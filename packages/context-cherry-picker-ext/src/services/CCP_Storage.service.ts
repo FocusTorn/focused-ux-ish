@@ -40,7 +40,7 @@ export class StorageService implements IStorageService { //>
 
 	constructor(
 		@inject('iContext') private readonly context: ExtensionContext,
-		@inject('iWorkspace') private readonly workspaceAdapter: IWorkspace,
+		@inject('IWorkspace') private readonly workspaceAdapter: IWorkspace,
 	) {
 		this.storageFileUri = VsCodeUriUtil.joinPath(this.context.globalStorageUri, STORAGE_FILE_NAME)
 	}

@@ -109,7 +109,7 @@ async function ensureThemeAssets(context: ExtensionContext): Promise<void> { //>
 async function regenerateAndApplyTheme(context: ExtensionContext): Promise<void> { //>
 	iconThemeGeneratorService = iconThemeGeneratorService
 	  || container.resolve<IIconThemeGeneratorService>('IIconThemeGeneratorService')
-	workspaceService = workspaceService || container.resolve<IWorkspace>('iWorkspace')
+	workspaceService = workspaceService || container.resolve<IWorkspace>('IWorkspace')
 	// const commandsService = container.resolve<ICommands>('iCommands'); // No longer needed here
 	iPathDirname = iPathDirname || container.resolve<typeof nodePath.dirname>('iPathDirname')
 
@@ -177,7 +177,7 @@ async function regenerateAndApplyTheme(context: ExtensionContext): Promise<void>
 } //<
 
 async function activateIconThemeIfNeeded(context: ExtensionContext): Promise<void> { //>
-	workspaceService = workspaceService || container.resolve<IWorkspace>('iWorkspace')
+	workspaceService = workspaceService || container.resolve<IWorkspace>('IWorkspace')
 	fileUtilsService = fileUtilsService || container.resolve<IFileUtilsService>('IFileUtilsService') // Ensure fileUtilsService is initialized
 
 	const workbenchConfig = workspaceService.getConfiguration('workbench')
@@ -219,7 +219,7 @@ export async function activate(context: ExtensionContext): Promise<void> { //>
 
 	context.subscriptions.push(
 		vscode.commands.registerCommand(COMMANDS.activateIconTheme, async () => {
-			workspaceService = workspaceService || container.resolve<IWorkspace>('iWorkspace')
+			workspaceService = workspaceService || container.resolve<IWorkspace>('IWorkspace')
 
 			const workbenchConfig = workspaceService.getConfiguration('workbench')
 

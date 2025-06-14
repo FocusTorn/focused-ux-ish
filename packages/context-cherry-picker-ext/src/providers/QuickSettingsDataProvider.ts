@@ -32,7 +32,7 @@ export class QuickSettingsDataProvider implements IQuickSettingsDataProvider { /
 
 	constructor(
 		@inject('iContext') private readonly _context: ExtensionContext, // Injected ExtensionContext
-		@inject('iWorkspace') private readonly _workspace: IWorkspace, // Injected IWorkspace
+		@inject('IWorkspace') private readonly _workspace: IWorkspace, // Injected IWorkspace
 	) { //>
 		this._extensionUri = this._context.extensionUri
 		this._settingsState.set(PROJECT_STRUCTURE_SETTING_ID, 'selected' as ProjectStructureSettingValue)

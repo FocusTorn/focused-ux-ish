@@ -25,8 +25,8 @@ const LOG_PREFIX = `[${constants.extension.nickName} - FileContentProvider]:`
 export class FileContentProviderService implements IFileContentProviderService { //>
 
 	constructor(
-		@inject('iWorkspace') private readonly _workspace: IWorkspace,
-		@inject('iWindow') private readonly _window: IWindow,
+		@inject('IWorkspace') private readonly _workspace: IWorkspace,
+		@inject('IWindow') private readonly _window: IWindow,
 		@inject('ICommonUtilsService') private readonly _commonUtils: ICommonUtilsService,
 	) {}
 

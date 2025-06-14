@@ -18,7 +18,7 @@ import type { IWindow } from '../_vscode_abstractions/IWindow.js'
 export class QuickPickUtilsService implements IQuickPickUtilsService { //>
 
 	constructor(
-		@inject('iWindow') private readonly iWindow: IWindow,
+		@inject('IWindow') private readonly iWindow: IWindow,
 	) {}
 
 	public async showQuickPickSingle<T extends QuickPickItem, K extends keyof T>( //>

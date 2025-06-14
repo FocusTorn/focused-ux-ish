@@ -48,9 +48,9 @@ export class IconActionsService implements IIconActionsService {
 
 	constructor(
 		@inject('ExtensionContext') private readonly extensionContext: ExtensionContext,
-		@inject('iWindow') private readonly iWindow: IWindow,
-		@inject('iCommands') private readonly iCommands: ICommands,
-		@inject('iWorkspace') private readonly iWorkspace: IWorkspace,
+		@inject('IWindow') private readonly iWindow: IWindow,
+		@inject('ICommands') private readonly iCommands: ICommands,
+		@inject('IWorkspace') private readonly iWorkspace: IWorkspace,
 		@inject('IPathUtilsService') private readonly iPathUtils: IPathUtilsService,
 		@inject('IQuickPickUtilsService') private readonly iQuickPickUtils: IQuickPickUtilsService,
 		@inject('ICommonUtilsService') private readonly iCommonUtils: ICommonUtilsService,

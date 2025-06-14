@@ -34,7 +34,7 @@ interface GoogleApiCountTokensSuccessResponse { //>
 export class GoogleGenAiService implements IGoogleGenAiService { //>
 
 	constructor(
-		@inject('iWorkspace') private readonly workspaceAdapter: IWorkspace,
+		@inject('IWorkspace') private readonly workspaceAdapter: IWorkspace,
 	) {}
 
 	async countTokens( //>

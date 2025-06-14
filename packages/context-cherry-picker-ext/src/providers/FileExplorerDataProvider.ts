@@ -59,8 +59,8 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider, Disp
 	private projectTreeShowIfSelectedGlobs: string[] = []
 
 	constructor(
-		@inject('iWorkspace') private readonly workspaceAdapter: IWorkspace,
-		@inject('iWindow') private readonly windowAdapter: IWindow,
+		@inject('IWorkspace') private readonly workspaceAdapter: IWorkspace,
+		@inject('IWindow') private readonly windowAdapter: IWindow,
 	) { //>
 		this.configChangeListener = this.workspaceAdapter.onDidChangeConfiguration(this._onVsCodeConfigChange)
 
