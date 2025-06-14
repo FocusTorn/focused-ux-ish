@@ -1,0 +1,27 @@
+[
+  {
+    "name": "General_Packages_src",
+    "paths": [
+      "packages\\context-cherry-picker-ext\\package.json",
+      "packages\\context-cherry-picker-ext\\src",
+      "packages\\context-cherry-picker-ext\\tsconfig.json",
+      "packages\\dynamicons\\core\\package.json",
+      "packages\\dynamicons\\core\\src\\_config",
+      "packages\\dynamicons\\core\\src\\_interfaces",
+      "packages\\dynamicons\\core\\src\\index.ts",
+      "packages\\dynamicons\\core\\src\\models",
+      "packages\\dynamicons\\core\\src\\services",
+      "packages\\dynamicons\\core\\tsconfig.json",
+      "packages\\dynamicons\\ext\\package.json",
+      "packages\\dynamicons\\ext\\src",
+      "packages\\dynamicons\\ext\\tsconfig.json",
+      "packages\\shared\\config-esbuild",
+      "packages\\shared\\config-tsc",
+      "packages\\shared\\shared-services",
+      "packages\\shared\\shared-services\\package.json",
+      "packages\\shared\\shared-services\\tsconfig.json",
+      "package.json",
+      "pnpm-workspace.yaml"
+    ]
+  }
+]

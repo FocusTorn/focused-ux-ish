@@ -1,0 +1,71 @@
+{
+    "name": "mockly-vsc",
+    "version": "1.0.2",
+    "description": "Core library for directly mocking VSCode extension in ViTest.",
+    "license": "MIT",
+    "author": "New Reality Designs",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/FocusTorn/mockly-vsc"
+    },
+    "bugs": {
+        "url": "https://github.com/FocusTorn/mockly-vsc/issues"
+    },
+    "keywords": [
+        "mock",
+        "mocking",
+        "test",
+        "typescript",
+        "javascript",
+        "library",
+        "tool"
+    ],
+    "type": "module",
+    "main": "./dist/index.cjs",
+    "module": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.js",
+            "require": "./dist/index.cjs"
+        }
+    },
+    "files": [
+        "dist",
+        "LICENSE",
+        "README.md",
+        "CHANGELOG.md"
+    ],
+    "engines": {
+        "node": ">=22.0.0"
+    },
+    "scripts": {
+        "yalc": "yalc publish --push",
+        "prepublishOnly": "npm run build",
+        "bundle": "node ./build/ESBuild/esbuildDual.config.mjs",
+        "build": "npm run Utility:Increment_Version && npm run clean && npm run bundle && npm run build:types",
+        "build:types": "tsc --emitDeclarationOnly --outDir dist",
+        "build:dev": "npm run clean && node ./esbuild.config.mjs --dev",
+        "gulp:validate": "gulp validate --silent",
+        "watch": "node ./esbuild.config.mjs --watch",
+        "lint": "eslint",
+        "tsc": "tsc --noEmit",
+        "tsc:watch": "tsc --noEmit --watch",
+        "test": "vitest run",
+        "clean": "rimraf dist && rimraf out",
+        "Utility:Increment_Version": "node src/scripts/js/bump_version_num.js",
+        "Utility:Recreate_Node": "rimraf node_modules package-lock.json && npm install",
+        "Validate": "npm run lint && tsc --noEmit",
+        "Validate:Packages": "npm run Validate:View_Excess_Dependencies && npm run Validate:Dependencies:View_Depreciated_Packages",
+        "docs:dev": "vitepress dev docs",
+        "docs:build": "vitepress build docs",
+        "docs:preview": "vitepress preview docs",
+        "clear": "powershell -Command Clear-Host",
+        "cleanNode": "npm prune; npm dedupe; npm audit fix"
+    },
+    "overrides": {
+        "esbuild": "^0.25.4"
+    },
+    "yalcSig": "0332c2a30e0a0b38a789e2150d41c6d0"
+}

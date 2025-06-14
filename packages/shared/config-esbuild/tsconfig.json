@@ -1,0 +1,20 @@
+{
+    "extends": "@focused-ux/tsconfig/tsconfig.base.json",
+    "compilerOptions": {
+        
+        "noEmit": false,
+        "emitDeclarationOnly": false,
+        
+        "outDir": "./dist",
+        "rootDir": "./src",
+        "baseUrl": ".",
+    },
+    "include": [
+        "src/**/*.ts",
+        "cli/**/*.ts"
+    ],
+    "exclude": [
+        "node_modules",
+        "dist"
+    ]
+}

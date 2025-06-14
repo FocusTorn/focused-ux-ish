@@ -1,0 +1,23 @@
+# # Files and directories to EXCLUDE from pnpm pack
+# src/
+# test/
+# coverage/
+# packed/
+# vsce_stage/
+# package-vsix.js
+# *.tsbuildinfo
+# *.log
+# # .map files are often large, exclude them from the pack if not strictly needed
+# dist/**/*.map 
+# dist/metafile.json 
+# .yalc/
+# .turbo/
+# .git/
+# .vscode/
+# tsconfig.json
+# yalc.lock
+
+# !node_modules
+# !node_modules/*
+# !node_modules/**
+# !node_modules/**/*

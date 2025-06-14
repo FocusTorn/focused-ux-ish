@@ -1,0 +1,54 @@
+{
+    "name": "@focused-ux/shared-services",
+    "version": "0.1.0",
+    "scripts": {
+        "== BUILD ============================================================================================ ": "",
+        "build": "pnpm run build:types && pnpm run build:js",
+        "build:clean": "pnpm run clean && pnpm run build",
+        "build:types": "tsc -p tsconfig.json --pretty",
+        "build:js": "fux-build ./src/index.ts --outfile=./dist/index.js --meta --library",
+        "build:vis": "pnpm build --meta && esbuild-visualizer --metadata ./dist/metafile.json && node rename_esbuild_analysis_output.js",
+        "== WATCH ============================================================================================ ": "",
+        "watch:types": "tsc -p tsconfig.json --watch",
+        "watch:js": "fux-build ./src/index.ts --outfile=./dist/index.js --watch --library",
+        "== VALIDATE ========================================================================================= ": "",
+        "check-types": "tsc --noEmit -p tsconfig.json --pretty",
+        "lint": "eslint . --ext .ts",
+        "lint:fix": "eslint . --ext .ts --fix",
+        "== UTILITIES ======================================================================================== ": "",
+        "clean": "rimraf ./dist .turbo"
+    },
+    "dependencies": {
+        "gray-matter": "^4.0.3",
+        "reflect-metadata": "^0.2.2",
+        "strip-json-comments": "^5.0.2",
+        "tsyringe": "^4.10.0"
+    },
+    "peerDependencies": {
+        "gpt-tokenizer": "^3.0.0"
+    },
+    "devDependencies": {
+        "@focused-ux/config-esbuild": "workspace:*",
+        "@focused-ux/config-eslint": "workspace:*",
+        "@focused-ux/tsconfig": "workspace:*",
+        "@types/node": "^24.0.0",
+        "@types/vscode": "^1.100.0",
+        "esbuild": "^0.25.5",
+        "esbuild-bundle-analyzer": "^0.0.1",
+        "esbuild-visualizer": "^0.7.0",
+        "gpt-tokenizer": "^3.0.0",
+        "ts-node": "^10.9.2",
+        "typescript": "^5.8.3"
+    },
+    "private": true,
+    "main": "./dist/index.js",
+    "module": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.js",
+            "require": "./dist/index.js"
+        }
+    }
+}

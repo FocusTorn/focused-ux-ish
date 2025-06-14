@@ -1,57 +1,58 @@
 {
-    "name": "focused-ui-suite",
+    "name": "focused-ux",
     "scripts": {
+        "== BUILD ============================================================================================ ": "",
+        "build": "turbo run build --summarize --output-logs=new-only",
+        "build:clean": "pnpm install && pnpm run clean && pnpm run build",
+        "== FINALIZE ========================================================================================= ": "",
+        "pack": "mkdirp vsix_packages && turbo run package",
+        "pack:clean": "pnpm run clean && mkdirp vsix_packages && turbo run package",
+        "dynamicons:doAssets": "pnpm --filter=@focused-ux/dynamicons-core run assets:build ",
+        "== WATCH ============================================================================================ ": "",
+        "watch-only": "turbo run watch-only",
+        "== VALIDATE ========================================================================================= ": "",
         "check-types": "turbo run check-types",
         "lint": "turbo run lint",
         "lint:fix": "turbo run lint:fix",
-        "tval": "turbo run check-types && turbo run lint",
-        "tfix": "turbo run check-types && turbo run lint:fix",
-        
-        
-        "build": "turbo run build",
-        "dev": "turbo run dev",
-        "eslint": "eslint \"./src/**/*.{js,jsx,ts,tsx,cjs}\"",
-        "format": "prettier --write \"**/*.{ts,tsx,md}\"",
         "validate": "node ./packages/tools/src/validate/index.js",
         "vlint": "node ./packages/tools/src/validate/index.js lint",
         "vdeps": "node ./packages/tools/src/validate/index.js deps",
         "vtsc": "node ./packages/tools/src/validate/index.js tsc",
-        
-        
-        
-        "nuke": "rimraf node_modules && pnpm store prune && echo 'Node_modules and pnpm store pruned. Run pnpm install to reinstall.'",
-        "nuke:full": "rimraf node_modules && del pnpm-lock.yaml && pnpm store prune && pnpm install",
-        
-        
-        "generate:eslint-tsconfig": "pnpm --filter @focused-ui/tools run generate:eslint-tsconfig"
+        "tsum": "cross-env NODE_NO_WARNINGS=1 pnpm exec ts-run ./packages/tools/src/scripts/node/aggregate-tsc-errors.ts",
+        "lsum": "cross-env NODE_NO_WARNINGS=1 pnpm exec ts-run ./packages/tools/src/scripts/node/aggregate-eslint-errors.ts",
+        "tval": "turbo run check-types && turbo run lint",
+        "tfix": "turbo run check-types && turbo run lint:fix",
+        "eslint": "eslint \"**/src/**/*.{js,jsx,ts,tsx,cjs}\"",
+        "== UTILITIES ======================================================================================== ": "",
+        "version-bump": "cross-env NODE_NO_WARNINGS=1 pnpm exec ts-run packages/shared/tools/src/scripts/version_bump.ts",
+        "clean": "turbo run clean --output-logs=errors-only && rimraf node_modules/.cache/turbo .turbo",
+        "nuke": "rimraf node_modules && rimraf packages/*/node_modules && pnpm store prune",
+        "nuke:full": "pnpm run clean && rimraf packages/*/node_modules && rimraf node_modules && rimraf 'pnpm-lock.yaml' && pnpm install"
     },
     "devDependencies": {
-        
-        "@antfu/eslint-config": "^4.13.2",
-        "@eslint/js": "^9.27.0",
-        "@typescript-eslint/parser": "^8.33.0",
-        "eslint": "^9.27.0",
-        "typescript": "^5.8.3",
-        "typescript-eslint": "^8.32.0",        
-        
+        "@focused-ux/config-eslint": "workspace:*",
+        "@focused-ux/tools": "workspace:*",
         "@types/node": "latest",
-        "@turbo/gen": "latest",
         "@types/vscode": "latest",
-        "@vitest/coverage-v8": "^3.1.4",
+        "@vitest/coverage-v8": "^3.2.3",
+        "cross-env": "^7.0.3",
+        "knip": "^5.60.2",
+        "mkdirp": "^3.0.1",
         "prettier": "^3.5.3",
-        "rimraf": "^6.0.1",
+        "rimraf": "^5.0.10",
         "ts-node": "^10.9.2",
         "turbo": "^2.5.4",
-        "knip": "^5.59.1"
-
-        
-        
+        "typescript": "^5.8.3"
     },
-    "version": "0.1.0",
+    "version": "0.1.1",
+    "repository": "https://github.com/FocusTorn/focused-ux",
     "private": true,
-    "packageManager": "pnpm@9.0.0",
+    "packageManager": "pnpm@10.12.1",
     "type": "module",
     "engines": {
         "node": ">=20"
+    },
+    "dependencies": {
+        "vitest": "^3.2.3"
     }
 }

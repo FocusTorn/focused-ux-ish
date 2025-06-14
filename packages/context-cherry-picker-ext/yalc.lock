@@ -1,0 +1,9 @@
+{
+  "version": "v1",
+  "packages": {
+    "mockly-vsc": {
+      "signature": "0332c2a30e0a0b38a789e2150d41c6d0",
+      "file": true
+    }
+  }
+}

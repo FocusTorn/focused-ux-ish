@@ -1,8 +1,35 @@
 packages:
-  - 'apps/*'
+  - 'packages/context-cherry-picker-ext'
   - 'packages/dynamicons/core'
   - 'packages/dynamicons/ext'
-  - 'packages/terminal-actions/core'
-  - 'packages/terminal-actions/ext'
-  - 'packages/utilities-core'
-  - 'packages/tools'
+  - 'packages/shared/config-esbuild'
+  - 'packages/shared/config-eslint'
+  - 'packages/shared/config-tsc'
+  - 'packages/shared/shared-services'
+  - 'packages/shared/tools'
+
+onlyBuiltDependencies:
+  - bun
+  - core-js
+  - esbuild
+  - puppeteer
+  - sharp
+
+
+# packages:
+#   - apps/*
+#   - packages/shared/*
+#   - packages/dynamicons/core
+#   - packages/dynamicons/ext
+#   - packages/context-cherry-picker-ext
+
+# onlyBuiltDependencies:
+#   - bun
+#   - core-js
+#   - esbuild
+#   - puppeteer
+#   - sharp
+
+
+
+

@@ -8,40 +8,25 @@ PURPOSE:
   extension's runtime IconThemeGeneratorService will use to dynamically build the
   final theme by incorporating user-specific customizations.
 
-USAGE:
-  Ensure you have ts-node and typescript installed (e.g., npm install -g ts-node typescript).
-  Run from the project root:
+USAGE (Standalone):
   npx ts-node --esm packages/dynamicons/core/src/scripts/generate_icon_manifests.ts
 
 PREQUISITES:
-  1. SVG Icons:
-     - Optimized SVG icons should be present in the following directories relative to the project root:
-       - File Icons: 'assets/icons/file_icons/'
-       - Folder Icons: 'assets/icons/folder_icons/'
-     - Naming Conventions for SVGs (expected by this script and the models):
-       - File Icons: e.g., 'my-icon.svg', 'javascript.svg', 'file.svg' (for default)
-       - Folder Icons (Closed State): e.g., 'folder-my-icon.svg', 'folder-src.svg', 'folder-basic.svg' (for default)
-       - Folder Icons (Open State): e.g., 'folder-my-icon-open.svg', 'folder-src-open.svg', 'folder-basic-open.svg' (for default)
-         (The '-open' suffix is automatically handled for folderNamesExpanded).
-     - It's recommended to run an SVG optimization script first.
-
+  1. Optimized SVG Icons: (Assumes optimize_icons.ts has run)
+     - File Icons: 'packages/dynamicons/ext/assets/icons/file_icons/'
+     - Folder Icons: 'packages/dynamicons/ext/assets/icons/folder_icons/'
   2. Model Files:
-     - The script expects the following JSON model files to define icon associations, relative to this script's directory:
-       - '../assets/file_icons.model.json'
-       - '../assets/folder_icons.model.json'
-
-  3. Helper Function:
-     - A 'readJsonFileSync' helper is expected. For this script, a simplified local version is included.
+     - '../models/file_icons.model.json'
+     - '../models/folder_icons.model.json'
+  3. Helper Function: readJsonFileSync (local version included).
 
 OUTPUT (relative to project root):
-  - 'assets/themes/base.theme.json': The primary output.
-  - 'assets/themes/dynamicons.theme.json': A direct copy of base.theme.json.
+  - 'packages/dynamicons/ext/assets/themes/base.theme.json'
+  - 'packages/dynamicons/ext/assets/themes/dynamicons.theme.json'
 
 IMPORTANT:
   - This script DELETES and RECREATES the output theme files on each run.
-  - Ensure all paths are correct relative to the project root.
 */ //<
-
 // ESLint & Imports -->>
 
 //= NODE JS ===================================================================================================
@@ -54,50 +39,58 @@ import process from 'node:process'
 import stripJsonComments from 'strip-json-comments'
 
 //= IMPLEMENTATION TYPES ======================================================================================
-import { dynamiconsConstants } from '../../../_config/dynamicons.constants.ts' // Updated import path
+import { dynamiconsConstants } from '../_config/dynamicons.constants.js'
 
 //--------------------------------------------------------------------------------------------------------------<<
 
-export function readJsonFileSync<T = any>(filePath: string, encoding: BufferEncoding = 'utf-8'): T { //>
-	const absolutePath = path.resolve(filePath)
-	const fileContent = fs.readFileSync(absolutePath, encoding)
-	const contentWithoutComments = stripJsonComments(fileContent.toString())
-	return JSON.parse(contentWithoutComments) as T
+const ansii = { //>
+	none: '\x1B[0m',
+	bold: '\x1B[1m',
+	blueLight: '\x1B[38;5;153m',
+	gold: '\x1B[38;5;179m',
+	red: '\x1B[38;5;9m',
+	yellow: '\x1B[38;5;226m',
 } //<
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-const PROJECT_ROOT = path.resolve(__dirname, '../../../../') // Adjusted path to project root
-
-const FILE_ICONS_MODEL_PATH = path.resolve(__dirname, '../assets/file_icons.model.json')
-const FOLDER_ICONS_MODEL_PATH = path.resolve(__dirname, '../assets/folder_icons.model.json')
-
-const THEMES_DIR_ABS_POSIX = path.join(PROJECT_ROOT, dynamiconsConstants.assets.themesPath).replace(/\\/g, '/')
-const ICONS_DIR_ROOT_ABS_POSIX = path.join(PROJECT_ROOT, 'assets/icons').replace(/\\/g, '/') // Assuming 'assets/icons' is standard
-
-const FILE_ICONS_DIR_ABS_POSIX = path.join(ICONS_DIR_ROOT_ABS_POSIX, 'file_icons').replace(/\\/g, '/')
-const FOLDER_ICONS_DIR_ABS_POSIX = path.join(ICONS_DIR_ROOT_ABS_POSIX, 'folder_icons').replace(/\\/g, '/')
+const MONOREPO_ROOT = path.resolve(__dirname, '../../../../../')
+const FILE_ICONS_MODEL_PATH = path.resolve(__dirname, '../models/file_icons.model.json')
+const FOLDER_ICONS_MODEL_PATH = path.resolve(__dirname, '../models/folder_icons.model.json')
+const EXT_ASSETS_DIR_ABS = path.join(MONOREPO_ROOT, 'packages/dynamicons/ext/assets')
+const OPTIMIZED_ICONS_ROOT_DIR_ABS_POSIX = path.join(EXT_ASSETS_DIR_ABS, 'icons').replace(/\\/g, '/')
+const OPTIMIZED_FILE_ICONS_DIR_ABS_POSIX = path.join(OPTIMIZED_ICONS_ROOT_DIR_ABS_POSIX, 'file_icons').replace(/\\/g, '/')
+const OPTIMIZED_FOLDER_ICONS_DIR_ABS_POSIX = path.join(OPTIMIZED_ICONS_ROOT_DIR_ABS_POSIX, 'folder_icons').replace(/\\/g, '/')
+const THEMES_OUTPUT_DIR_ABS_POSIX = path.join(EXT_ASSETS_DIR_ABS, 'themes').replace(/\\/g, '/')
 
 const BASE_THEME_FILENAME = dynamiconsConstants.defaults.baseThemeFilenameDefault
 const OUTPUT_THEME_FILENAME = dynamiconsConstants.defaults.generatedThemeFilenameDefault
+const BASE_THEME_FILE_ABS = path.join(THEMES_OUTPUT_DIR_ABS_POSIX, BASE_THEME_FILENAME)
+const OUTPUT_THEME_FILE_ABS = path.join(THEMES_OUTPUT_DIR_ABS_POSIX, OUTPUT_THEME_FILENAME)
 
-const BASE_THEME_FILE_ABS = path.join(THEMES_DIR_ABS_POSIX, BASE_THEME_FILENAME)
-const OUTPUT_THEME_FILE_ABS = path.join(THEMES_DIR_ABS_POSIX, OUTPUT_THEME_FILENAME)
+const FILE_ICON_REL_PATH = path.posix.relative(THEMES_OUTPUT_DIR_ABS_POSIX, OPTIMIZED_FILE_ICONS_DIR_ABS_POSIX)
+const FOLDER_ICON_REL_PATH = path.posix.relative(THEMES_OUTPUT_DIR_ABS_POSIX, OPTIMIZED_FOLDER_ICONS_DIR_ABS_POSIX)
 
-const FILE_ICON_REL_PATH = path.posix.relative(THEMES_DIR_ABS_POSIX, FILE_ICONS_DIR_ABS_POSIX)
-const FOLDER_ICON_REL_PATH = path.posix.relative(THEMES_DIR_ABS_POSIX, FOLDER_ICONS_DIR_ABS_POSIX)
-
-interface IconDefinition { iconPath: string }
-interface IconEntry {
+interface IconDefinition { //>
+	iconPath: string
+} //<
+interface FileIconsModel { //>
+	file: { name: string }
+	icons: IconEntry[]
+} //<
+interface FolderIconsModel { //>
+	folder: { name: string }
+	rootFolder: { name: string }
+	icons: IconEntry[]
+} //<
+interface IconEntry { //>
 	name: string
 	fileExtensions?: string[]
 	fileNames?: string[]
 	folderNames?: string[]
-}
-interface FileIconsModel { file: { name: string }, icons: IconEntry[] }
-interface FolderIconsModel { folder: { name: string }, rootFolder: { name: string }, icons: IconEntry[] }
-interface ThemeManifest {
+} //<
+interface ThemeManifest { //>
 	iconDefinitions: Record<string, IconDefinition>
 	folderNames: Record<string, string>
 	folderNamesExpanded: Record<string, string>
@@ -111,38 +104,56 @@ interface ThemeManifest {
 	languageIds: Record<string, string>
 	hidesExplorerArrows?: boolean
 	highContrast?: { fileExtensions?: Record<string, string>, fileNames?: Record<string, string> }
-}
+} //<
 
-const ansii = {
-	none: '\x1B[0m',
-	bold: '\x1B[1m',
-	blueLight: '\x1B[38;5;153m',
-	gold: '\x1B[38;5;179m',
-	red: '\x1B[38;5;9m',
-	yellow: '\x1B[38;5;226m',
-}
+export function readJsonFileSync<T = any>(filePath: string, encoding: BufferEncoding = 'utf-8'): T { //>
+	const absolutePath = path.resolve(filePath)
+	const fileContent = fs.readFileSync(absolutePath, encoding)
+	const contentWithoutComments = stripJsonComments(fileContent.toString())
 
-function generateMetadata(iconsDirAbsPosix: string, themesDirAbsPosix: string): Record<string, IconDefinition> { //>
+	return JSON.parse(contentWithoutComments) as T
+} //<
+
+function generateMetadata( //>
+	iconsDirAbsPosix: string,
+	themesDirAbsPosix: string,
+	silent: boolean = false,
+): Record<string, IconDefinition> {
 	const iconsData: Record<string, IconDefinition> = {}
+
 	try {
 		if (!fs.existsSync(iconsDirAbsPosix.replace(/\//g, path.sep))) {
-			console.warn(`│  ├─ ${ansii.yellow}WARN:${ansii.none} Icons directory does not exist: ${path.relative(PROJECT_ROOT, iconsDirAbsPosix)}. Skipping metadata generation for it.`)
+			if (!silent) {
+				console.warn(
+					`│  ├─ ${ansii.yellow}WARN:${ansii.none} Source icons directory does not exist: ${path.relative(
+						MONOREPO_ROOT,
+						iconsDirAbsPosix,
+					)}. Skipping metadata.`,
+				)
+			}
 			return iconsData
 		}
+
 		const files = fs.readdirSync(iconsDirAbsPosix.replace(/\//g, path.sep))
-		const relativePathFromThemesToIcons = path.posix.relative(themesDirAbsPosix, iconsDirAbsPosix)
+		const relativePathFromOutputThemesToOutputIcons = path.posix.relative(themesDirAbsPosix, OPTIMIZED_ICONS_ROOT_DIR_ABS_POSIX)
 
 		for (const file of files) {
-			const ext = path.extname(file).toLowerCase()
-			if (ext === '.svg') {
+			if (path.extname(file).toLowerCase() === '.svg') {
 				const name = `_${path.parse(file).name}`
-				const iconPath = path.posix.join(relativePathFromThemesToIcons, file)
+				const iconPath = path.posix.join(relativePathFromOutputThemesToOutputIcons, path.basename(iconsDirAbsPosix), file)
+
 				iconsData[name] = { iconPath }
 			}
 		}
-	}
-	catch (error) {
-		console.warn(`│  ├─ ${ansii.yellow}WARN:${ansii.none} Could not read directory ${path.relative(PROJECT_ROOT, iconsDirAbsPosix)}. Error: ${(error as Error).message}`)
+	} catch (error) {
+		if (!silent) {
+			console.warn(
+				`│  ├─ ${ansii.yellow}WARN:${ansii.none} Could not read directory ${path.relative(
+					MONOREPO_ROOT,
+					iconsDirAbsPosix,
+				)}. Error: ${(error as Error).message}`,
+			)
+		}
 	}
 	return iconsData
 } //<
@@ -152,31 +163,39 @@ function addIconDefinitionToResult( //>
 	iconModelName: string,
 	type: 'file' | 'folder',
 	isOpenVariant: boolean = false,
+	silent: boolean = false,
 ): void {
 	let iconFileNameInAssets = iconModelName
-	if (type === 'folder') {
+
+	if (type === 'folder')
 		iconFileNameInAssets = `folder-${iconModelName}`
-	}
-
-	if (isOpenVariant) {
+	if (isOpenVariant)
 		iconFileNameInAssets += dynamiconsConstants.defaults.openFolderIconSuffix
+
+	let baseNameForDefinitionKey = iconModelName
+
+	if (type === 'folder') {
+		baseNameForDefinitionKey = `folder-${iconModelName}`
 	}
 
-	const themeIconKey = `_${isOpenVariant ? `${iconModelName}${dynamiconsConstants.defaults.openFolderIconSuffix}` : iconModelName}`
+	const themeIconKey = `_${isOpenVariant ? `${baseNameForDefinitionKey}${dynamiconsConstants.defaults.openFolderIconSuffix}` : baseNameForDefinitionKey}`
+
 	const iconDirRelPath = type === 'file' ? FILE_ICON_REL_PATH : FOLDER_ICON_REL_PATH
 
 	if (!result.iconDefinitions[themeIconKey]) {
-		const iconsDirAbsPosix = type === 'file' ? FILE_ICONS_DIR_ABS_POSIX : FOLDER_ICONS_DIR_ABS_POSIX
-		const fullIconPathInAssetsPosix = path.posix.join(iconsDirAbsPosix, `${iconFileNameInAssets}.svg`)
-		
-		if (fs.existsSync(fullIconPathInAssetsPosix.replace(/\//g, path.sep))) {
+		const optimizedIconsDirAbsPosix = type === 'file' ? OPTIMIZED_FILE_ICONS_DIR_ABS_POSIX : OPTIMIZED_FOLDER_ICONS_DIR_ABS_POSIX
+		const fullIconPathInOptimizedPosix = path.posix.join(optimizedIconsDirAbsPosix, `${iconFileNameInAssets}.svg`)
+
+		if (fs.existsSync(fullIconPathInOptimizedPosix.replace(/\//g, path.sep))) {
 			result.iconDefinitions[themeIconKey] = {
 				iconPath: path.posix.join(iconDirRelPath, `${iconFileNameInAssets}.svg`),
 			}
-		}
-		else {
-			const warningPath = path.relative(PROJECT_ROOT, fullIconPathInAssetsPosix.replace(/\//g, path.sep))
-			console.warn(`│  ├─ ${ansii.yellow}WARN:${ansii.none} SVG file not found for definition '${themeIconKey}': ${warningPath}`)
+		} else if (!silent) {
+			const warningPath = path.relative(MONOREPO_ROOT, fullIconPathInOptimizedPosix.replace(/\//g, path.sep))
+
+			console.warn(
+				`│  ├─ ${ansii.yellow}WARN:${ansii.none} SVG file not found for definition '${themeIconKey}': ${warningPath}`,
+			)
 		}
 	}
 } //<
@@ -185,28 +204,36 @@ function processIconAssociations( //>
 	result: ThemeManifest,
 	iconEntry: IconEntry,
 	type: 'file' | 'folder',
+	silent: boolean = false,
 ): void {
 	const iconModelName = iconEntry.name
+
 	if (!iconModelName)
 		return
 
-	const associationKeys = type === 'file'
-		? (['fileExtensions', 'fileNames'] as const)
-		: (['folderNames'] as const)
+	const associationKeys = type === 'file' ? (['fileExtensions', 'fileNames'] as const) : (['folderNames'] as const)
 
 	for (const associationKey of associationKeys) {
 		for (const itemName of iconEntry[associationKey] || []) {
 			if (!itemName)
 				continue
 
-			const themeIconNameKey = `_${iconModelName}`
-			result[associationKey][itemName] = themeIconNameKey
-			addIconDefinitionToResult(result, iconModelName, type)
+			let definitionKeyForAssociation: string
 
-			if (associationKey === 'folderNames') {
-				const expandedThemeIconNameKey = `_${iconModelName}${dynamiconsConstants.defaults.openFolderIconSuffix}`
-				result.folderNamesExpanded[itemName] = expandedThemeIconNameKey
-				addIconDefinitionToResult(result, iconModelName, type, true)
+			if (type === 'folder') {
+				definitionKeyForAssociation = `_folder-${iconModelName}`
+			} else {
+				definitionKeyForAssociation = `_${iconModelName}`
+			}
+
+			result[associationKey][itemName] = definitionKeyForAssociation
+			addIconDefinitionToResult(result, iconModelName, type, false, silent)
+
+			if (associationKey === 'folderNames') { // This implies type === 'folder'
+				const expandedDefinitionKeyForAssociation = `${definitionKeyForAssociation}${dynamiconsConstants.defaults.openFolderIconSuffix}`
+
+				result.folderNamesExpanded[itemName] = expandedDefinitionKeyForAssociation
+				addIconDefinitionToResult(result, iconModelName, type, true, silent)
 			}
 		}
 	}
@@ -215,6 +242,7 @@ function processIconAssociations( //>
 function transformIcons( //>
 	fileIconsModel: FileIconsModel,
 	folderIconsModel: FolderIconsModel,
+	silent: boolean = false,
 ): ThemeManifest {
 	const result: ThemeManifest = {
 		iconDefinitions: {},
@@ -232,14 +260,14 @@ function transformIcons( //>
 		highContrast: { fileExtensions: {}, fileNames: {} },
 	}
 
-	addIconDefinitionToResult(result, fileIconsModel.file.name, 'file')
-	addIconDefinitionToResult(result, folderIconsModel.folder.name, 'folder')
-	addIconDefinitionToResult(result, folderIconsModel.folder.name, 'folder', true)
-	addIconDefinitionToResult(result, folderIconsModel.rootFolder.name, 'folder')
-	addIconDefinitionToResult(result, folderIconsModel.rootFolder.name, 'folder', true)
+	addIconDefinitionToResult(result, fileIconsModel.file.name, 'file', false, silent)
+	addIconDefinitionToResult(result, folderIconsModel.folder.name, 'folder', false, silent)
+	addIconDefinitionToResult(result, folderIconsModel.folder.name, 'folder', true, silent)
+	addIconDefinitionToResult(result, folderIconsModel.rootFolder.name, 'folder', false, silent)
+	addIconDefinitionToResult(result, folderIconsModel.rootFolder.name, 'folder', true, silent)
 
-	Object.assign(result.iconDefinitions, generateMetadata(FILE_ICONS_DIR_ABS_POSIX, THEMES_DIR_ABS_POSIX))
-	Object.assign(result.iconDefinitions, generateMetadata(FOLDER_ICONS_DIR_ABS_POSIX, THEMES_DIR_ABS_POSIX))
+	Object.assign(result.iconDefinitions, generateMetadata(OPTIMIZED_FILE_ICONS_DIR_ABS_POSIX, THEMES_OUTPUT_DIR_ABS_POSIX, silent))
+	Object.assign(result.iconDefinitions, generateMetadata(OPTIMIZED_FOLDER_ICONS_DIR_ABS_POSIX, THEMES_OUTPUT_DIR_ABS_POSIX, silent))
 
 	const processedFileIconNames = new Set<string>()
 	const duplicateFileIconNames = new Set<string>()
@@ -254,7 +282,7 @@ function transformIcons( //>
 			continue
 		}
 		processedFileIconNames.add(iconEntry.name)
-		processIconAssociations(result, iconEntry, 'file')
+		processIconAssociations(result, iconEntry, 'file', silent)
 	}
 
 	for (const iconEntry of folderIconsModel.icons) {
@@ -265,59 +293,76 @@ function transformIcons( //>
 			continue
 		}
 		processedFolderIconNames.add(iconEntry.name)
-		processIconAssociations(result, iconEntry, 'folder')
+		processIconAssociations(result, iconEntry, 'folder', silent)
 	}
 
-	let reportedAnyDuplicates = false
-	if (duplicateFileIconNames.size > 0) {
-		console.log(`│  ├─ ${ansii.red}WARNING:${ansii.none} Duplicated File icon model names (associations skipped after first):`)
-		Array.from(duplicateFileIconNames).forEach((name, index, array) => {
-			const prefix = index === array.length - 1 ? '│  │  └─ ' : '│  │  ├─ '
-			console.log(`${prefix}${name}`)
-		})
-		reportedAnyDuplicates = true
-	}
+	if (!silent) {
+		let reportedAnyDuplicates = false
 
-	if (duplicateFolderIconNames.size > 0) {
-		const headerPrefix = reportedAnyDuplicates ? '│  └─ ' : '│  ├─ '
-		console.log(`${headerPrefix}${ansii.red}WARNING:${ansii.none} Duplicated Folder icon model names (associations skipped after first):`)
-		Array.from(duplicateFolderIconNames).forEach((name, index, array) => {
-			const listPrefix = reportedAnyDuplicates ? '│     ' : '│  │  '
-			const itemPrefix = index === array.length - 1 ? '└─ ' : '├─ '
-			console.log(`${listPrefix}${itemPrefix}${name}`)
-		})
-		reportedAnyDuplicates = true
-	}
+		if (duplicateFileIconNames.size > 0) {
+			console.log(`│  ├─ ${ansii.red}WARNING:${ansii.none} Duplicated File icon model names (skipped after first):`)
+			Array.from(duplicateFileIconNames).forEach((name, index, array) => {
+				console.log(`${index === array.length - 1 ? '│  │  └─ ' : '│  │  ├─ '}${name}`)
+			})
+			reportedAnyDuplicates = true
+		}
+		if (duplicateFolderIconNames.size > 0) {
+			const headerPrefix = reportedAnyDuplicates ? '│  └─ ' : '│  ├─ '
 
-	if (reportedAnyDuplicates) {
-		console.log('│')
-	}
+			console.log(`${headerPrefix}${ansii.red}WARNING:${ansii.none} Duplicated Folder icon model names (skipped after first):`)
+			Array.from(duplicateFolderIconNames).forEach((name, index, array) => {
+				const listPrefix = reportedAnyDuplicates ? '│     ' : '│  │  '
 
+				console.log(`${listPrefix}${index === array.length - 1 ? '└─ ' : '├─ '}${name}`)
+			})
+			reportedAnyDuplicates = true
+		}
+		if (reportedAnyDuplicates)
+			console.log('│')
+	}
 	return result
 } //<
 
-async function main(): Promise<void> { //>
-	console.log(`\n┌─ ${ansii.bold}${ansii.blueLight}GENERATING ICON MANIFESTS FOR ${dynamiconsConstants.featureName.toUpperCase()}${ansii.none}`)
+export async function main(silent: boolean = false): Promise<boolean> { //>
+	if (!silent) {
+		console.log(
+			`\n┌─ ${ansii.bold}${ansii.blueLight}GENERATING ICON MANIFESTS FOR ${dynamiconsConstants.featureName.toUpperCase()}${ansii.none}`,
+		)
+	}
 
-	if (!fs.existsSync(THEMES_DIR_ABS_POSIX.replace(/\//g, path.sep))) {
-		console.log(`│  ├─ ${ansii.yellow}NOTE:${ansii.none} Themes directory '${path.relative(PROJECT_ROOT, THEMES_DIR_ABS_POSIX)}' does not exist. Creating it.`)
-		try {
-			fs.mkdirSync(THEMES_DIR_ABS_POSIX.replace(/\//g, path.sep), { recursive: true })
+	if (!fs.existsSync(THEMES_OUTPUT_DIR_ABS_POSIX.replace(/\//g, path.sep))) {
+		if (!silent) {
+			console.log(
+				`│  ├─ ${ansii.yellow}NOTE:${ansii.none} Themes output directory '${path.relative(
+					MONOREPO_ROOT,
+					THEMES_OUTPUT_DIR_ABS_POSIX,
+				)}' does not exist. Creating it.`,
+			)
 		}
-		catch (e) {
-			console.error(`│  └─ ${ansii.red}ERROR:${ansii.none} Could not create themes directory: ${(e as Error).message}`)
-			process.exit(1)
+		try {
+			fs.mkdirSync(THEMES_OUTPUT_DIR_ABS_POSIX.replace(/\//g, path.sep), { recursive: true })
+		} catch (e) {
+			if (!silent) {
+				console.error(`│  └─ ${ansii.red}ERROR:${ansii.none} Could not create themes directory: ${(e as Error).message}`)
+			}
+			return false
 		}
 	}
 
 	for (const file of [BASE_THEME_FILE_ABS, OUTPUT_THEME_FILE_ABS]) {
 		const platformSpecificFile = file.replace(/\//g, path.sep)
+
 		if (fs.existsSync(platformSpecificFile)) {
 			try {
 				fs.unlinkSync(platformSpecificFile)
-			}
-			catch (e) {
-				console.warn(`│  ├─ ${ansii.yellow}WARN:${ansii.none} Could not delete existing file '${path.basename(platformSpecificFile)}'. It might be in use. Error: ${(e as Error).message}`)
+			} catch (e) {
+				if (!silent) {
+					console.warn(
+						`│  ├─ ${ansii.yellow}WARN:${ansii.none} Could not delete existing file '${path.basename(
+							platformSpecificFile,
+						)}'. Error: ${(e as Error).message}`,
+					)
+				}
 			}
 		}
 	}
@@ -328,34 +373,53 @@ async function main(): Promise<void> { //>
 	try {
 		fileIconsData = readJsonFileSync<FileIconsModel>(FILE_ICONS_MODEL_PATH)
 		folderIconsData = readJsonFileSync<FolderIconsModel>(FOLDER_ICONS_MODEL_PATH)
-	}
-	catch (e) {
-		console.error(`│  └─ ${ansii.red}ERROR:${ansii.none} Could not read model files: ${(e as Error).message}`)
-		process.exit(1)
+	} catch (e) {
+		if (!silent) {
+			console.error(`│  └─ ${ansii.red}ERROR:${ansii.none} Could not read model files: ${(e as Error).message}`)
+		}
+		return false
 	}
 
-	const combinedIconsData = transformIcons(fileIconsData, folderIconsData)
+	const combinedIconsData = transformIcons(fileIconsData, folderIconsData, silent)
 
 	try {
 		fs.writeFileSync(BASE_THEME_FILE_ABS.replace(/\//g, path.sep), JSON.stringify(combinedIconsData, null, 2))
-		console.log(`│  ├─ ${ansii.gold}Generated Manifest:${ansii.none} ${path.relative(PROJECT_ROOT, BASE_THEME_FILE_ABS)}`)
-	}
-	catch (e) {
-		console.error(`│  └─ ${ansii.red}ERROR:${ansii.none} Could not write ${path.basename(BASE_THEME_FILE_ABS)}: ${(e as Error).message}`)
+		if (!silent) {
+			console.log(
+				`│  ├─ ${ansii.gold}Generated Manifest:${ansii.none} ${path.relative(MONOREPO_ROOT, BASE_THEME_FILE_ABS)}`,
+			)
+		}
+	} catch (e) {
+		if (!silent) {
+			console.error(`│  └─ ${ansii.red}ERROR:${ansii.none} Could not write ${path.basename(BASE_THEME_FILE_ABS)}: ${(e as Error).message}`)
+		}
+		return false
 	}
 
 	try {
 		fs.writeFileSync(OUTPUT_THEME_FILE_ABS.replace(/\//g, path.sep), JSON.stringify(combinedIconsData, null, 2))
-		console.log(`│  └─ ${ansii.gold}Generated Manifest:${ansii.none} ${path.relative(PROJECT_ROOT, OUTPUT_THEME_FILE_ABS)}`)
-	}
-	catch (e) {
-		console.error(`│  └─ ${ansii.red}ERROR:${ansii.none} Could not write ${path.basename(OUTPUT_THEME_FILE_ABS)}: ${(e as Error).message}`)
+		if (!silent) {
+			console.log(
+				`│  └─ ${ansii.gold}Generated Manifest:${ansii.none} ${path.relative(MONOREPO_ROOT, OUTPUT_THEME_FILE_ABS)}`,
+			)
+		}
+	} catch (e) {
+		if (!silent) {
+			console.error(`│  └─ ${ansii.red}ERROR:${ansii.none} Could not write ${path.basename(OUTPUT_THEME_FILE_ABS)}: ${(e as Error).message}`)
+		}
+		return false
 	}
 
-	console.log(`└─ ${ansii.bold}${ansii.blueLight}MANIFEST GENERATION COMPLETE${ansii.none}\n`)
+	if (!silent) {
+		console.log(`└─ ${ansii.bold}${ansii.blueLight}MANIFEST GENERATION COMPLETE${ansii.none}\n`)
+	}
+	return true
 } //<
 
-main().catch((error) => {
-	console.error('An unexpected error occurred in main:', error)
-	process.exit(1)
-})
+// Standalone execution
+if (import.meta.url === `file://${process.argv[1].replace(/\\/g, '/')}`) { //>
+	main(false).catch((error) => {
+		console.error('An unexpected error occurred in generate_icon_manifests.ts (standalone):', error)
+		process.exit(1)
+	})
+} //<

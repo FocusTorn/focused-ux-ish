@@ -1,0 +1,1199 @@
+{
+  "iconDefinitions": {
+    "_file": {
+      "iconPath": "../icons/file_icons/file.svg"
+    },
+    "_folder-basic": {
+      "iconPath": "../icons/folder_icons/folder-basic.svg"
+    },
+    "_folder-basic-open": {
+      "iconPath": "../icons/folder_icons/folder-basic-open.svg"
+    },
+    "_folder-root": {
+      "iconPath": "../icons/folder_icons/folder-root.svg"
+    },
+    "_folder-root-open": {
+      "iconPath": "../icons/folder_icons/folder-root-open.svg"
+    },
+    "_ahk-alt": {
+      "iconPath": "../icons/file_icons/ahk-alt.svg"
+    },
+    "_ahk": {
+      "iconPath": "../icons/file_icons/ahk.svg"
+    },
+    "_arduino-cli": {
+      "iconPath": "../icons/file_icons/arduino-cli.svg"
+    },
+    "_arduino-config": {
+      "iconPath": "../icons/file_icons/arduino-config.svg"
+    },
+    "_arduino-sketch": {
+      "iconPath": "../icons/file_icons/arduino-sketch.svg"
+    },
+    "_backup": {
+      "iconPath": "../icons/file_icons/backup.svg"
+    },
+    "_binary": {
+      "iconPath": "../icons/file_icons/binary.svg"
+    },
+    "_biome": {
+      "iconPath": "../icons/file_icons/biome.svg"
+    },
+    "_build-config": {
+      "iconPath": "../icons/file_icons/build-config.svg"
+    },
+    "_bun-config": {
+      "iconPath": "../icons/file_icons/bun-config.svg"
+    },
+    "_bun-lock": {
+      "iconPath": "../icons/file_icons/bun-lock.svg"
+    },
+    "_bun": {
+      "iconPath": "../icons/file_icons/bun.svg"
+    },
+    "_c": {
+      "iconPath": "../icons/file_icons/c.svg"
+    },
+    "_changelog-config": {
+      "iconPath": "../icons/file_icons/changelog-config.svg"
+    },
+    "_changelog": {
+      "iconPath": "../icons/file_icons/changelog.svg"
+    },
+    "_clang-config": {
+      "iconPath": "../icons/file_icons/clang-config.svg"
+    },
+    "_clojure": {
+      "iconPath": "../icons/file_icons/clojure.svg"
+    },
+    "_cmake-alt": {
+      "iconPath": "../icons/file_icons/cmake-alt.svg"
+    },
+    "_cmake-cache-alt": {
+      "iconPath": "../icons/file_icons/cmake-cache-alt.svg"
+    },
+    "_cmake-cache": {
+      "iconPath": "../icons/file_icons/cmake-cache.svg"
+    },
+    "_cmake-flow": {
+      "iconPath": "../icons/file_icons/cmake-flow.svg"
+    },
+    "_cmake-json": {
+      "iconPath": "../icons/file_icons/cmake-json.svg"
+    },
+    "_cmake-list": {
+      "iconPath": "../icons/file_icons/cmake-list.svg"
+    },
+    "_cmake": {
+      "iconPath": "../icons/file_icons/cmake.svg"
+    },
+    "_coderabbit": {
+      "iconPath": "../icons/file_icons/coderabbit.svg"
+    },
+    "_coffee": {
+      "iconPath": "../icons/file_icons/coffee.svg"
+    },
+    "_config": {
+      "iconPath": "../icons/file_icons/config.svg"
+    },
+    "_console": {
+      "iconPath": "../icons/file_icons/console.svg"
+    },
+    "_cpp-alt": {
+      "iconPath": "../icons/file_icons/cpp-alt.svg"
+    },
+    "_cpp": {
+      "iconPath": "../icons/file_icons/cpp.svg"
+    },
+    "_csharp": {
+      "iconPath": "../icons/file_icons/csharp.svg"
+    },
+    "_css-map": {
+      "iconPath": "../icons/file_icons/css-map.svg"
+    },
+    "_css": {
+      "iconPath": "../icons/file_icons/css.svg"
+    },
+    "_dict": {
+      "iconPath": "../icons/file_icons/dict.svg"
+    },
+    "_docker": {
+      "iconPath": "../icons/file_icons/docker.svg"
+    },
+    "_editorconfig": {
+      "iconPath": "../icons/file_icons/editorconfig.svg"
+    },
+    "_env-config": {
+      "iconPath": "../icons/file_icons/env-config.svg"
+    },
+    "_env": {
+      "iconPath": "../icons/file_icons/env.svg"
+    },
+    "_eslint": {
+      "iconPath": "../icons/file_icons/eslint.svg"
+    },
+    "_file-drawer-alt": {
+      "iconPath": "../icons/file_icons/file-drawer-alt.svg"
+    },
+    "_file-drawer": {
+      "iconPath": "../icons/file_icons/file-drawer.svg"
+    },
+    "_fthead": {
+      "iconPath": "../icons/file_icons/fthead.svg"
+    },
+    "_generator": {
+      "iconPath": "../icons/file_icons/generator.svg"
+    },
+    "_git-ignore": {
+      "iconPath": "../icons/file_icons/git-ignore.svg"
+    },
+    "_git": {
+      "iconPath": "../icons/file_icons/git.svg"
+    },
+    "_gulp": {
+      "iconPath": "../icons/file_icons/gulp.svg"
+    },
+    "_header": {
+      "iconPath": "../icons/file_icons/header.svg"
+    },
+    "_image": {
+      "iconPath": "../icons/file_icons/image.svg"
+    },
+    "_javascript-map": {
+      "iconPath": "../icons/file_icons/javascript-map.svg"
+    },
+    "_javascript": {
+      "iconPath": "../icons/file_icons/javascript.svg"
+    },
+    "_jest-config-alt": {
+      "iconPath": "../icons/file_icons/jest-config-alt.svg"
+    },
+    "_jest-config": {
+      "iconPath": "../icons/file_icons/jest-config.svg"
+    },
+    "_jest": {
+      "iconPath": "../icons/file_icons/jest.svg"
+    },
+    "_jetpack-compose": {
+      "iconPath": "../icons/file_icons/jetpack-compose.svg"
+    },
+    "_json": {
+      "iconPath": "../icons/file_icons/json.svg"
+    },
+    "_julia": {
+      "iconPath": "../icons/file_icons/julia.svg"
+    },
+    "_lang": {
+      "iconPath": "../icons/file_icons/lang.svg"
+    },
+    "_latex": {
+      "iconPath": "../icons/file_icons/latex.svg"
+    },
+    "_license": {
+      "iconPath": "../icons/file_icons/license.svg"
+    },
+    "_markdown": {
+      "iconPath": "../icons/file_icons/markdown.svg"
+    },
+    "_mocha-config": {
+      "iconPath": "../icons/file_icons/mocha-config.svg"
+    },
+    "_mocha": {
+      "iconPath": "../icons/file_icons/mocha.svg"
+    },
+    "_model": {
+      "iconPath": "../icons/file_icons/model.svg"
+    },
+    "_ninja-flow": {
+      "iconPath": "../icons/file_icons/ninja-flow.svg"
+    },
+    "_ninja-log": {
+      "iconPath": "../icons/file_icons/ninja-log.svg"
+    },
+    "_ninja": {
+      "iconPath": "../icons/file_icons/ninja.svg"
+    },
+    "_node-ignore": {
+      "iconPath": "../icons/file_icons/node-ignore.svg"
+    },
+    "_node": {
+      "iconPath": "../icons/file_icons/node.svg"
+    },
+    "_package-json": {
+      "iconPath": "../icons/file_icons/package-json.svg"
+    },
+    "_package-lock": {
+      "iconPath": "../icons/file_icons/package-lock.svg"
+    },
+    "_package-nls": {
+      "iconPath": "../icons/file_icons/package-nls.svg"
+    },
+    "_package": {
+      "iconPath": "../icons/file_icons/package.svg"
+    },
+    "_png": {
+      "iconPath": "../icons/file_icons/png.svg"
+    },
+    "_poetry-lock": {
+      "iconPath": "../icons/file_icons/poetry-lock.svg"
+    },
+    "_poetry": {
+      "iconPath": "../icons/file_icons/poetry.svg"
+    },
+    "_powershell": {
+      "iconPath": "../icons/file_icons/powershell.svg"
+    },
+    "_prettier-config": {
+      "iconPath": "../icons/file_icons/prettier-config.svg"
+    },
+    "_prettier": {
+      "iconPath": "../icons/file_icons/prettier.svg"
+    },
+    "_pycache-alt": {
+      "iconPath": "../icons/file_icons/pycache-alt.svg"
+    },
+    "_pycache": {
+      "iconPath": "../icons/file_icons/pycache.svg"
+    },
+    "_pyconfig": {
+      "iconPath": "../icons/file_icons/pyconfig.svg"
+    },
+    "_pyproject": {
+      "iconPath": "../icons/file_icons/pyproject.svg"
+    },
+    "_python-alt": {
+      "iconPath": "../icons/file_icons/python-alt.svg"
+    },
+    "_python-file": {
+      "iconPath": "../icons/file_icons/python-file.svg"
+    },
+    "_python": {
+      "iconPath": "../icons/file_icons/python.svg"
+    },
+    "_pyversion": {
+      "iconPath": "../icons/file_icons/pyversion.svg"
+    },
+    "_readme": {
+      "iconPath": "../icons/file_icons/readme.svg"
+    },
+    "_sack": {
+      "iconPath": "../icons/file_icons/sack.svg"
+    },
+    "_shell": {
+      "iconPath": "../icons/file_icons/shell.svg"
+    },
+    "_svg-alt": {
+      "iconPath": "../icons/file_icons/svg-alt.svg"
+    },
+    "_svg": {
+      "iconPath": "../icons/file_icons/svg.svg"
+    },
+    "_svgo-config": {
+      "iconPath": "../icons/file_icons/svgo-config.svg"
+    },
+    "_svgo": {
+      "iconPath": "../icons/file_icons/svgo.svg"
+    },
+    "_template": {
+      "iconPath": "../icons/file_icons/template.svg"
+    },
+    "_terminal": {
+      "iconPath": "../icons/file_icons/terminal.svg"
+    },
+    "_test-alt": {
+      "iconPath": "../icons/file_icons/test-alt.svg"
+    },
+    "_test": {
+      "iconPath": "../icons/file_icons/test.svg"
+    },
+    "_text-file": {
+      "iconPath": "../icons/file_icons/text-file.svg"
+    },
+    "_theme": {
+      "iconPath": "../icons/file_icons/theme.svg"
+    },
+    "_tsconfig-alt": {
+      "iconPath": "../icons/file_icons/tsconfig-alt.svg"
+    },
+    "_tsconfig": {
+      "iconPath": "../icons/file_icons/tsconfig.svg"
+    },
+    "_turbo-json": {
+      "iconPath": "../icons/file_icons/turbo-json.svg"
+    },
+    "_turborepo": {
+      "iconPath": "../icons/file_icons/turborepo.svg"
+    },
+    "_txt": {
+      "iconPath": "../icons/file_icons/txt.svg"
+    },
+    "_txte": {
+      "iconPath": "../icons/file_icons/txte.svg"
+    },
+    "_typescript": {
+      "iconPath": "../icons/file_icons/typescript.svg"
+    },
+    "_ulia": {
+      "iconPath": "../icons/file_icons/ulia.svg"
+    },
+    "_vite-config": {
+      "iconPath": "../icons/file_icons/vite-config.svg"
+    },
+    "_vite": {
+      "iconPath": "../icons/file_icons/vite.svg"
+    },
+    "_vscode-config": {
+      "iconPath": "../icons/file_icons/vscode-config.svg"
+    },
+    "_vscode-ignore": {
+      "iconPath": "../icons/file_icons/vscode-ignore.svg"
+    },
+    "_vscode": {
+      "iconPath": "../icons/file_icons/vscode.svg"
+    },
+    "_webpack-config": {
+      "iconPath": "../icons/file_icons/webpack-config.svg"
+    },
+    "_webpack": {
+      "iconPath": "../icons/file_icons/webpack.svg"
+    },
+    "_yaml": {
+      "iconPath": "../icons/file_icons/yaml.svg"
+    },
+    "_yarn-config": {
+      "iconPath": "../icons/file_icons/yarn-config.svg"
+    },
+    "_yarn-lock": {
+      "iconPath": "../icons/file_icons/yarn-lock.svg"
+    },
+    "_yarn": {
+      "iconPath": "../icons/file_icons/yarn.svg"
+    },
+    "_zip": {
+      "iconPath": "../icons/file_icons/zip.svg"
+    },
+    "_folder-action-arrows-open": {
+      "iconPath": "../icons/folder_icons/folder-action-arrows-open.svg"
+    },
+    "_folder-action-arrows": {
+      "iconPath": "../icons/folder_icons/folder-action-arrows.svg"
+    },
+    "_folder-arduino-open": {
+      "iconPath": "../icons/folder_icons/folder-arduino-open.svg"
+    },
+    "_folder-arduino": {
+      "iconPath": "../icons/folder_icons/folder-arduino.svg"
+    },
+    "_folder-binary-open": {
+      "iconPath": "../icons/folder_icons/folder-binary-open.svg"
+    },
+    "_folder-binary": {
+      "iconPath": "../icons/folder_icons/folder-binary.svg"
+    },
+    "_folder-book-open": {
+      "iconPath": "../icons/folder_icons/folder-book-open.svg"
+    },
+    "_folder-book": {
+      "iconPath": "../icons/folder_icons/folder-book.svg"
+    },
+    "_folder-build-open": {
+      "iconPath": "../icons/folder_icons/folder-build-open.svg"
+    },
+    "_folder-build": {
+      "iconPath": "../icons/folder_icons/folder-build.svg"
+    },
+    "_folder-c-open": {
+      "iconPath": "../icons/folder_icons/folder-c-open.svg"
+    },
+    "_folder-c": {
+      "iconPath": "../icons/folder_icons/folder-c.svg"
+    },
+    "_folder-cardboard-box-open": {
+      "iconPath": "../icons/folder_icons/folder-cardboard-box-open.svg"
+    },
+    "_folder-cardboard-box": {
+      "iconPath": "../icons/folder_icons/folder-cardboard-box.svg"
+    },
+    "_folder-cmake-open": {
+      "iconPath": "../icons/folder_icons/folder-cmake-open.svg"
+    },
+    "_folder-cmake": {
+      "iconPath": "../icons/folder_icons/folder-cmake.svg"
+    },
+    "_folder-config-open": {
+      "iconPath": "../icons/folder_icons/folder-config-open.svg"
+    },
+    "_folder-config": {
+      "iconPath": "../icons/folder_icons/folder-config.svg"
+    },
+    "_folder-core-alt-open": {
+      "iconPath": "../icons/folder_icons/folder-core-alt-open.svg"
+    },
+    "_folder-core-alt": {
+      "iconPath": "../icons/folder_icons/folder-core-alt.svg"
+    },
+    "_folder-core-open": {
+      "iconPath": "../icons/folder_icons/folder-core-open.svg"
+    },
+    "_folder-core": {
+      "iconPath": "../icons/folder_icons/folder-core.svg"
+    },
+    "_folder-cp-open": {
+      "iconPath": "../icons/folder_icons/folder-cp-open.svg"
+    },
+    "_folder-cp": {
+      "iconPath": "../icons/folder_icons/folder-cp.svg"
+    },
+    "_folder-cpp-open": {
+      "iconPath": "../icons/folder_icons/folder-cpp-open.svg"
+    },
+    "_folder-cpp": {
+      "iconPath": "../icons/folder_icons/folder-cpp.svg"
+    },
+    "_folder-dict-open": {
+      "iconPath": "../icons/folder_icons/folder-dict-open.svg"
+    },
+    "_folder-dict": {
+      "iconPath": "../icons/folder_icons/folder-dict.svg"
+    },
+    "_folder-env-open": {
+      "iconPath": "../icons/folder_icons/folder-env-open.svg"
+    },
+    "_folder-env": {
+      "iconPath": "../icons/folder_icons/folder-env.svg"
+    },
+    "_folder-eslint-open": {
+      "iconPath": "../icons/folder_icons/folder-eslint-open.svg"
+    },
+    "_folder-eslint": {
+      "iconPath": "../icons/folder_icons/folder-eslint.svg"
+    },
+    "_folder-generator-open": {
+      "iconPath": "../icons/folder_icons/folder-generator-open.svg"
+    },
+    "_folder-generator": {
+      "iconPath": "../icons/folder_icons/folder-generator.svg"
+    },
+    "_folder-git-open": {
+      "iconPath": "../icons/folder_icons/folder-git-open.svg"
+    },
+    "_folder-git": {
+      "iconPath": "../icons/folder_icons/folder-git.svg"
+    },
+    "_folder-green-arrow-open": {
+      "iconPath": "../icons/folder_icons/folder-green-arrow-open.svg"
+    },
+    "_folder-green-arrow": {
+      "iconPath": "../icons/folder_icons/folder-green-arrow.svg"
+    },
+    "_folder-gulp-open": {
+      "iconPath": "../icons/folder_icons/folder-gulp-open.svg"
+    },
+    "_folder-gulp": {
+      "iconPath": "../icons/folder_icons/folder-gulp.svg"
+    },
+    "_folder-header-open": {
+      "iconPath": "../icons/folder_icons/folder-header-open.svg"
+    },
+    "_folder-header": {
+      "iconPath": "../icons/folder_icons/folder-header.svg"
+    },
+    "_folder-helpers-open": {
+      "iconPath": "../icons/folder_icons/folder-helpers-open.svg"
+    },
+    "_folder-helpers": {
+      "iconPath": "../icons/folder_icons/folder-helpers.svg"
+    },
+    "_folder-home-open": {
+      "iconPath": "../icons/folder_icons/folder-home-open.svg"
+    },
+    "_folder-home": {
+      "iconPath": "../icons/folder_icons/folder-home.svg"
+    },
+    "_folder-icon-open": {
+      "iconPath": "../icons/folder_icons/folder-icon-open.svg"
+    },
+    "_folder-icon": {
+      "iconPath": "../icons/folder_icons/folder-icon.svg"
+    },
+    "_folder-images-open": {
+      "iconPath": "../icons/folder_icons/folder-images-open.svg"
+    },
+    "_folder-images": {
+      "iconPath": "../icons/folder_icons/folder-images.svg"
+    },
+    "_folder-javascript-open": {
+      "iconPath": "../icons/folder_icons/folder-javascript-open.svg"
+    },
+    "_folder-javascript": {
+      "iconPath": "../icons/folder_icons/folder-javascript.svg"
+    },
+    "_folder-json-open": {
+      "iconPath": "../icons/folder_icons/folder-json-open.svg"
+    },
+    "_folder-json": {
+      "iconPath": "../icons/folder_icons/folder-json.svg"
+    },
+    "_folder-klipper": {
+      "iconPath": "../icons/folder_icons/folder-klipper.svg"
+    },
+    "_folder-lib-open": {
+      "iconPath": "../icons/folder_icons/folder-lib-open.svg"
+    },
+    "_folder-lib": {
+      "iconPath": "../icons/folder_icons/folder-lib.svg"
+    },
+    "_folder-model-open": {
+      "iconPath": "../icons/folder_icons/folder-model-open.svg"
+    },
+    "_folder-model": {
+      "iconPath": "../icons/folder_icons/folder-model.svg"
+    },
+    "_folder-node-open": {
+      "iconPath": "../icons/folder_icons/folder-node-open.svg"
+    },
+    "_folder-node": {
+      "iconPath": "../icons/folder_icons/folder-node.svg"
+    },
+    "_folder-notes-open": {
+      "iconPath": "../icons/folder_icons/folder-notes-open.svg"
+    },
+    "_folder-notes": {
+      "iconPath": "../icons/folder_icons/folder-notes.svg"
+    },
+    "_folder-out-open": {
+      "iconPath": "../icons/folder_icons/folder-out-open.svg"
+    },
+    "_folder-out": {
+      "iconPath": "../icons/folder_icons/folder-out.svg"
+    },
+    "_folder-package-open": {
+      "iconPath": "../icons/folder_icons/folder-package-open.svg"
+    },
+    "_folder-package": {
+      "iconPath": "../icons/folder_icons/folder-package.svg"
+    },
+    "_folder-pi-open": {
+      "iconPath": "../icons/folder_icons/folder-pi-open.svg"
+    },
+    "_folder-pi": {
+      "iconPath": "../icons/folder_icons/folder-pi.svg"
+    },
+    "_folder-puzzle-open": {
+      "iconPath": "../icons/folder_icons/folder-puzzle-open.svg"
+    },
+    "_folder-puzzle": {
+      "iconPath": "../icons/folder_icons/folder-puzzle.svg"
+    },
+    "_folder-pycache-open": {
+      "iconPath": "../icons/folder_icons/folder-pycache-open.svg"
+    },
+    "_folder-pycache": {
+      "iconPath": "../icons/folder_icons/folder-pycache.svg"
+    },
+    "_folder-pypack-open": {
+      "iconPath": "../icons/folder_icons/folder-pypack-open.svg"
+    },
+    "_folder-pypack": {
+      "iconPath": "../icons/folder_icons/folder-pypack.svg"
+    },
+    "_folder-pyproj-open": {
+      "iconPath": "../icons/folder_icons/folder-pyproj-open.svg"
+    },
+    "_folder-pyproj": {
+      "iconPath": "../icons/folder_icons/folder-pyproj.svg"
+    },
+    "_folder-python-open": {
+      "iconPath": "../icons/folder_icons/folder-python-open.svg"
+    },
+    "_folder-python": {
+      "iconPath": "../icons/folder_icons/folder-python.svg"
+    },
+    "_folder-removed-open": {
+      "iconPath": "../icons/folder_icons/folder-removed-open.svg"
+    },
+    "_folder-removed": {
+      "iconPath": "../icons/folder_icons/folder-removed.svg"
+    },
+    "_folder-scripts-open": {
+      "iconPath": "../icons/folder_icons/folder-scripts-open.svg"
+    },
+    "_folder-scripts": {
+      "iconPath": "../icons/folder_icons/folder-scripts.svg"
+    },
+    "_folder-share-open": {
+      "iconPath": "../icons/folder_icons/folder-share-open.svg"
+    },
+    "_folder-share": {
+      "iconPath": "../icons/folder_icons/folder-share.svg"
+    },
+    "_folder-shell-open": {
+      "iconPath": "../icons/folder_icons/folder-shell-open.svg"
+    },
+    "_folder-shell": {
+      "iconPath": "../icons/folder_icons/folder-shell.svg"
+    },
+    "_folder-sketch-open": {
+      "iconPath": "../icons/folder_icons/folder-sketch-open.svg"
+    },
+    "_folder-sketch": {
+      "iconPath": "../icons/folder_icons/folder-sketch.svg"
+    },
+    "_folder-source-open": {
+      "iconPath": "../icons/folder_icons/folder-source-open.svg"
+    },
+    "_folder-source": {
+      "iconPath": "../icons/folder_icons/folder-source.svg"
+    },
+    "_folder-syntax-open": {
+      "iconPath": "../icons/folder_icons/folder-syntax-open.svg"
+    },
+    "_folder-syntax": {
+      "iconPath": "../icons/folder_icons/folder-syntax.svg"
+    },
+    "_folder-template-open": {
+      "iconPath": "../icons/folder_icons/folder-template-open.svg"
+    },
+    "_folder-template": {
+      "iconPath": "../icons/folder_icons/folder-template.svg"
+    },
+    "_folder-terminal-open": {
+      "iconPath": "../icons/folder_icons/folder-terminal-open.svg"
+    },
+    "_folder-terminal": {
+      "iconPath": "../icons/folder_icons/folder-terminal.svg"
+    },
+    "_folder-test-alt-open": {
+      "iconPath": "../icons/folder_icons/folder-test-alt-open.svg"
+    },
+    "_folder-test-alt": {
+      "iconPath": "../icons/folder_icons/folder-test-alt.svg"
+    },
+    "_folder-test-open": {
+      "iconPath": "../icons/folder_icons/folder-test-open.svg"
+    },
+    "_folder-test": {
+      "iconPath": "../icons/folder_icons/folder-test.svg"
+    },
+    "_folder-theme-open": {
+      "iconPath": "../icons/folder_icons/folder-theme-open.svg"
+    },
+    "_folder-theme": {
+      "iconPath": "../icons/folder_icons/folder-theme.svg"
+    },
+    "_folder-toolbox-open": {
+      "iconPath": "../icons/folder_icons/folder-toolbox-open.svg"
+    },
+    "_folder-toolbox": {
+      "iconPath": "../icons/folder_icons/folder-toolbox.svg"
+    },
+    "_folder-turborepo-open": {
+      "iconPath": "../icons/folder_icons/folder-turborepo-open.svg"
+    },
+    "_folder-turborepo": {
+      "iconPath": "../icons/folder_icons/folder-turborepo.svg"
+    },
+    "_folder-typescript-open": {
+      "iconPath": "../icons/folder_icons/folder-typescript-open.svg"
+    },
+    "_folder-typescript": {
+      "iconPath": "../icons/folder_icons/folder-typescript.svg"
+    },
+    "_folder-vscode-open": {
+      "iconPath": "../icons/folder_icons/folder-vscode-open.svg"
+    },
+    "_folder-vscode": {
+      "iconPath": "../icons/folder_icons/folder-vscode.svg"
+    },
+    "_folder-webpack-open": {
+      "iconPath": "../icons/folder_icons/folder-webpack-open.svg"
+    },
+    "_folder-webpack": {
+      "iconPath": "../icons/folder_icons/folder-webpack.svg"
+    },
+    "_folder-yarn-open": {
+      "iconPath": "../icons/folder_icons/folder-yarn-open.svg"
+    },
+    "_folder-yarn": {
+      "iconPath": "../icons/folder_icons/folder-yarn.svg"
+    }
+  },
+  "folderNames": {
+    "bin": "_folder-binary",
+    "build": "_folder-build",
+    "config": "_folder-config",
+    "configs": "_folder-config",
+    "configuration": "_folder-config",
+    ".arduino15": "_folder-config",
+    ".user": "_folder-config",
+    "c": "_folder-c",
+    ".logs": "_folder-book",
+    "docs": "_folder-notes",
+    "documents": "_folder-notes",
+    "documentation": "_folder-book",
+    "_assets": "_folder-cardboard-box",
+    "assets": "_folder-cardboard-box",
+    "resources": "_folder-cardboard-box",
+    "cp": "_folder-cpp",
+    "cpp": "_folder-cp",
+    "CMakeFiles": "_folder-cmake",
+    ".cmake": "_folder-cmake",
+    "core": "_folder-core-alt",
+    ".venv": "_folder-env",
+    ".eslint": "_folder-eslint",
+    "generator": "_folder-generator",
+    "generators": "_folder-generator",
+    ".git": "_folder-git",
+    ".github": "_folder-git",
+    "commands": "_folder-green-arrow",
+    "h": "_folder-header",
+    "header": "_folder-header",
+    "headers": "_folder-header",
+    "helper": "_folder-helpers",
+    "helpers": "_folder-helpers",
+    "home": "_folder-home",
+    "images": "_folder-images",
+    "pictures": "_folder-images",
+    "pics": "_folder-images",
+    "icon": "_folder-icon",
+    "icons": "_folder-icon",
+    "ico": "_folder-icon",
+    "icos": "_folder-icon",
+    "js": "_folder-javascript",
+    ".js": "_folder-javascript",
+    "_js_": "_folder-javascript",
+    "__js__": "_folder-javascript",
+    "___js___": "_folder-javascript",
+    "_js": "_folder-javascript",
+    "json": "_folder-json",
+    ".json": "_folder-json",
+    "_json_": "_folder-json",
+    "__json__": "_folder-json",
+    "___json___": "_folder-json",
+    "_json": "_folder-json",
+    "lib": "_folder-lib",
+    "library": "_folder-lib",
+    "libraries": "_folder-lib",
+    "model": "_folder-model",
+    "models": "_folder-model",
+    "node_modules": "_folder-node",
+    ".notes": "_folder-notes",
+    ".pnotes": "_folder-notes",
+    "_notes_": "_folder-notes",
+    "__notes__": "_folder-notes",
+    "___notes___": "_folder-notes",
+    "pnotes": "_folder-notes",
+    ".notesHub_projectNotes": "_folder-notes",
+    ".notesHub_remoteNotes": "_folder-notes",
+    ".notesHub_globalNotes": "_folder-notes",
+    "dist": "_folder-out",
+    "out": "_folder-out",
+    "packages": "_folder-package",
+    "pi": "_folder-pi",
+    "RPi": "_folder-pi",
+    "plugin": "_folder-puzzle",
+    "plugins": "_folder-puzzle",
+    "extension": "_folder-puzzle",
+    "extensions": "_folder-puzzle",
+    "components": "_folder-puzzle",
+    "include": "_folder-puzzle",
+    "includes": "_folder-puzzle",
+    "pycache": "_folder-pycache",
+    ".pycache": "_folder-pycache",
+    "_pycache": "_folder-pycache",
+    "__pycache__": "_folder-pycache",
+    "pytest_cache": "_folder-pycache",
+    ".pytest_cache": "_folder-pycache",
+    "_pytest_cache": "_folder-pycache",
+    "__pytest_cache__": "_folder-pycache",
+    "python": "_folder-python",
+    ".python": "_folder-python",
+    "_python": "_folder-python",
+    "__python__": "_folder-python",
+    "_removed": "_folder-removed",
+    "_X_removed": "_folder-removed",
+    "_XX_removed": "_folder-removed",
+    "_XXX_removed": "_folder-removed",
+    "removed": "_folder-removed",
+    "X_removed": "_folder-removed",
+    "XX_removed": "_folder-removed",
+    "XXX_removed": "_folder-removed",
+    "z_removed": "_folder-removed",
+    "zz_removed": "_folder-removed",
+    "zzz_removed": "_folder-removed",
+    "unused": "_folder-removed",
+    "X_unused": "_folder-removed",
+    "XX_unused": "_folder-removed",
+    "XXX_unused": "_folder-removed",
+    "_unused": "_folder-removed",
+    "_X_unused": "_folder-removed",
+    "_XX_unused": "_folder-removed",
+    "_XXX_unused": "_folder-removed",
+    ".removed": "_folder-removed",
+    "scripts": "_folder-scripts",
+    "_scripts": "_folder-scripts",
+    "sketchbook": "_folder-sketch",
+    "sh": "_folder-shell",
+    "src": "_folder-source",
+    "syntax": "_folder-syntax",
+    "test": "_folder-test-alt",
+    "tests": "_folder-test-alt",
+    "_tests": "_folder-test-alt",
+    "__tests": "_folder-test-alt",
+    "_tests_": "_folder-test-alt",
+    "__tests__": "_folder-test-alt",
+    ".vscode-test": "_folder-test-alt",
+    "template": "_folder-template",
+    "templates": "_folder-template",
+    "ps": "_folder-terminal",
+    "ps1": "_folder-terminal",
+    "powershell": "_folder-terminal",
+    "theme": "_folder-theme",
+    "themes": "_folder-theme",
+    "_utilities_": "_folder-toolbox",
+    ".turbo": "_folder-turborepo",
+    "ts": "_folder-typescript",
+    ".ts": "_folder-typescript",
+    "_ts_": "_folder-typescript",
+    "__ts__": "_folder-typescript",
+    "___ts___": "_folder-typescript",
+    "_ts": "_folder-typescript",
+    ".vscode": "_folder-vscode",
+    ".devcontainer": "_folder-webpack",
+    ".yarn": "_folder-yarn"
+  },
+  "folderNamesExpanded": {
+    "bin": "_folder-binary-open",
+    "build": "_folder-build-open",
+    "config": "_folder-config-open",
+    "configs": "_folder-config-open",
+    "configuration": "_folder-config-open",
+    ".arduino15": "_folder-config-open",
+    ".user": "_folder-config-open",
+    "c": "_folder-c-open",
+    ".logs": "_folder-book-open",
+    "docs": "_folder-notes-open",
+    "documents": "_folder-notes-open",
+    "documentation": "_folder-book-open",
+    "_assets": "_folder-cardboard-box-open",
+    "assets": "_folder-cardboard-box-open",
+    "resources": "_folder-cardboard-box-open",
+    "cp": "_folder-cpp-open",
+    "cpp": "_folder-cp-open",
+    "CMakeFiles": "_folder-cmake-open",
+    ".cmake": "_folder-cmake-open",
+    "core": "_folder-core-alt-open",
+    ".venv": "_folder-env-open",
+    ".eslint": "_folder-eslint-open",
+    "generator": "_folder-generator-open",
+    "generators": "_folder-generator-open",
+    ".git": "_folder-git-open",
+    ".github": "_folder-git-open",
+    "commands": "_folder-green-arrow-open",
+    "h": "_folder-header-open",
+    "header": "_folder-header-open",
+    "headers": "_folder-header-open",
+    "helper": "_folder-helpers-open",
+    "helpers": "_folder-helpers-open",
+    "home": "_folder-home-open",
+    "images": "_folder-images-open",
+    "pictures": "_folder-images-open",
+    "pics": "_folder-images-open",
+    "icon": "_folder-icon-open",
+    "icons": "_folder-icon-open",
+    "ico": "_folder-icon-open",
+    "icos": "_folder-icon-open",
+    "js": "_folder-javascript-open",
+    ".js": "_folder-javascript-open",
+    "_js_": "_folder-javascript-open",
+    "__js__": "_folder-javascript-open",
+    "___js___": "_folder-javascript-open",
+    "_js": "_folder-javascript-open",
+    "json": "_folder-json-open",
+    ".json": "_folder-json-open",
+    "_json_": "_folder-json-open",
+    "__json__": "_folder-json-open",
+    "___json___": "_folder-json-open",
+    "_json": "_folder-json-open",
+    "lib": "_folder-lib-open",
+    "library": "_folder-lib-open",
+    "libraries": "_folder-lib-open",
+    "model": "_folder-model-open",
+    "models": "_folder-model-open",
+    "node_modules": "_folder-node-open",
+    ".notes": "_folder-notes-open",
+    ".pnotes": "_folder-notes-open",
+    "_notes_": "_folder-notes-open",
+    "__notes__": "_folder-notes-open",
+    "___notes___": "_folder-notes-open",
+    "pnotes": "_folder-notes-open",
+    ".notesHub_projectNotes": "_folder-notes-open",
+    ".notesHub_remoteNotes": "_folder-notes-open",
+    ".notesHub_globalNotes": "_folder-notes-open",
+    "dist": "_folder-out-open",
+    "out": "_folder-out-open",
+    "packages": "_folder-package-open",
+    "pi": "_folder-pi-open",
+    "RPi": "_folder-pi-open",
+    "plugin": "_folder-puzzle-open",
+    "plugins": "_folder-puzzle-open",
+    "extension": "_folder-puzzle-open",
+    "extensions": "_folder-puzzle-open",
+    "components": "_folder-puzzle-open",
+    "include": "_folder-puzzle-open",
+    "includes": "_folder-puzzle-open",
+    "pycache": "_folder-pycache-open",
+    ".pycache": "_folder-pycache-open",
+    "_pycache": "_folder-pycache-open",
+    "__pycache__": "_folder-pycache-open",
+    "pytest_cache": "_folder-pycache-open",
+    ".pytest_cache": "_folder-pycache-open",
+    "_pytest_cache": "_folder-pycache-open",
+    "__pytest_cache__": "_folder-pycache-open",
+    "python": "_folder-python-open",
+    ".python": "_folder-python-open",
+    "_python": "_folder-python-open",
+    "__python__": "_folder-python-open",
+    "_removed": "_folder-removed-open",
+    "_X_removed": "_folder-removed-open",
+    "_XX_removed": "_folder-removed-open",
+    "_XXX_removed": "_folder-removed-open",
+    "removed": "_folder-removed-open",
+    "X_removed": "_folder-removed-open",
+    "XX_removed": "_folder-removed-open",
+    "XXX_removed": "_folder-removed-open",
+    "z_removed": "_folder-removed-open",
+    "zz_removed": "_folder-removed-open",
+    "zzz_removed": "_folder-removed-open",
+    "unused": "_folder-removed-open",
+    "X_unused": "_folder-removed-open",
+    "XX_unused": "_folder-removed-open",
+    "XXX_unused": "_folder-removed-open",
+    "_unused": "_folder-removed-open",
+    "_X_unused": "_folder-removed-open",
+    "_XX_unused": "_folder-removed-open",
+    "_XXX_unused": "_folder-removed-open",
+    ".removed": "_folder-removed-open",
+    "scripts": "_folder-scripts-open",
+    "_scripts": "_folder-scripts-open",
+    "sketchbook": "_folder-sketch-open",
+    "sh": "_folder-shell-open",
+    "src": "_folder-source-open",
+    "syntax": "_folder-syntax-open",
+    "test": "_folder-test-alt-open",
+    "tests": "_folder-test-alt-open",
+    "_tests": "_folder-test-alt-open",
+    "__tests": "_folder-test-alt-open",
+    "_tests_": "_folder-test-alt-open",
+    "__tests__": "_folder-test-alt-open",
+    ".vscode-test": "_folder-test-alt-open",
+    "template": "_folder-template-open",
+    "templates": "_folder-template-open",
+    "ps": "_folder-terminal-open",
+    "ps1": "_folder-terminal-open",
+    "powershell": "_folder-terminal-open",
+    "theme": "_folder-theme-open",
+    "themes": "_folder-theme-open",
+    "_utilities_": "_folder-toolbox-open",
+    ".turbo": "_folder-turborepo-open",
+    "ts": "_folder-typescript-open",
+    ".ts": "_folder-typescript-open",
+    "_ts_": "_folder-typescript-open",
+    "__ts__": "_folder-typescript-open",
+    "___ts___": "_folder-typescript-open",
+    "_ts": "_folder-typescript-open",
+    ".vscode": "_folder-vscode-open",
+    ".devcontainer": "_folder-webpack-open",
+    ".yarn": "_folder-yarn-open"
+  },
+  "fileExtensions": {
+    "ahk": "_ahk",
+    "ah2": "_ahk-alt",
+    "ino": "_arduino-sketch",
+    "bak": "_backup",
+    "bak2": "_backup",
+    "bak3": "_backup",
+    "bak4": "_backup",
+    "bak5": "_backup",
+    "bu": "_backup",
+    "asm": "_binary",
+    "a51": "_binary",
+    "inc": "_binary",
+    "nasm": "_binary",
+    "s": "_binary",
+    "ms": "_binary",
+    "agc": "_binary",
+    "ags": "_binary",
+    "aea": "_binary",
+    "argus": "_binary",
+    "mitigus": "_binary",
+    "binsource": "_binary",
+    "c": "_c",
+    ".clang-tidy": "_clang-config",
+    "clj": "_clojure",
+    "cljs": "_clojure",
+    "cljc": "_clojure",
+    "cmake": "_cmake",
+    "coffee": "_coffee",
+    "cson": "_coffee",
+    "iced": "_coffee",
+    "sh": "_shell",
+    "ksh": "_shell",
+    "csh": "_shell",
+    "tcsh": "_shell",
+    "zsh": "_console",
+    "bash": "_console",
+    "bat": "_terminal",
+    "cmd": "_terminal",
+    "awk": "_terminal",
+    "fish": "_terminal",
+    "exp": "_terminal",
+    "nu": "_terminal",
+    "cpp": "_cpp",
+    "h": "_header",
+    "cs": "_csharp",
+    "jpg": "_image",
+    "gif": "_image",
+    "json": "_json",
+    "js": "_javascript",
+    "mjs": "_javascript",
+    "js.map": "_javascript-map",
+    "mjs.map": "_javascript-map",
+    "cjs.map": "_javascript-map",
+    "jl": "_julia",
+    "md": "_markdown",
+    "model.js": "_model",
+    "model.json": "_model",
+    "mocha.js": "_mocha",
+    "mocha.cjs": "_mocha",
+    "mocha.mjs": "_mocha",
+    "mocha.ts": "_mocha",
+    "mocha.mts": "_mocha",
+    "png": "_png",
+    "py": "_python-file",
+    "pyc": "_python",
+    "whl": "_python",
+    "svg": "_svg",
+    "template.toml": "_template",
+    "template.js": "_template",
+    "template.ts": "_template",
+    "template.sh": "_template",
+    "template.yaml": "_template",
+    "template.json": "_template",
+    "ps1": "_terminal",
+    "psm1": "_terminal",
+    "psd1": "_terminal",
+    "ps1xml": "_terminal",
+    "psc1": "_terminal",
+    "pssc": "_terminal",
+    ".test.js": "_test",
+    ".test.ts": "_test",
+    "theme.json": "_theme",
+    "ts": "_typescript",
+    "txt": "_text-file",
+    "txtc": "_text-file",
+    "txte": "_txte",
+    "yaml": "_yaml",
+    "vite.js": "_vite",
+    "vite.ts": "_vite",
+    "vsix": "_vscode",
+    "code-workspace": "_vscode",
+    "zip": "_zip",
+    "tar": "_zip",
+    "7z": "_zip",
+    "rar": "_zip"
+  },
+  "fileNames": {
+    "arduino-cli": "_arduino-cli",
+    "sketch.yaml": "_arduino-config",
+    "biome.json": "_biome",
+    "biome.jsonc": "_biome",
+    "Makefile": "_build-config",
+    "bun.lockb": "_bun-lock",
+    "bunfig.toml": "_bun-config",
+    "changelog": "_changelog",
+    "changelog.md": "_changelog",
+    "changelog.rst": "_changelog",
+    "changelog.txt": "_changelog",
+    "changes": "_changelog",
+    "changes.md": "_changelog",
+    "changes.rst": "_changelog",
+    "changes.txt": "_changelog",
+    "changelog.config.json": "_changelog-config",
+    ".changelogrc": "_changelog-config",
+    "CMakeCache.txt": "_cmake-cache",
+    "CMakeLists.txt": "_cmake-list",
+    "CMakePresets.json": "_cmake-json",
+    "compile_commands.json": "_cmake-json",
+    ".coderabbit.yaml": "_coderabbit",
+    "commit-msg": "_console",
+    "pre-commit": "_console",
+    "pre-push": "_console",
+    "post-merge": "_console",
+    ".editorconfig": "_editorconfig",
+    ".eslintrc.json": "_eslint",
+    "eslint.config.js": "_eslint",
+    "pyvenv.cfg": "_env-config",
+    ".gitattributes": "_git",
+    ".gitignore": "_git-ignore",
+    "gulpfile.js": "_gulp",
+    "gulpfile.mjs": "_gulp",
+    "gulpfile.ts": "_gulp",
+    "gulpfile.cts": "_gulp",
+    "gulpfile.mts": "_gulp",
+    "gulpfile.babel.js": "_gulp",
+    "jest.config.js": "_jest-config",
+    "license.txt": "_license",
+    "license.md": "_license",
+    ".mocharc.js": "_mocha-config",
+    ".mocharc.json": "_mocha-config",
+    ".mocharc.yaml": "_mocha-config",
+    "build.ninja": "_ninja",
+    ".ninja_log": "_ninja-log",
+    ".ninja_deps": "_ninja-flow",
+    ".npmignore": "_node-ignore",
+    "package.json": "_package",
+    "package-lock.json": "_package-lock",
+    "package.nls.json": "_package-nls",
+    "poetry.p": "_poetry",
+    "poetry.lock": "_poetry-lock",
+    "prettier.config.js": "_prettier",
+    ".python-version": "_pyversion",
+    "pyproject.toml": "_pyconfig",
+    "requirements.txt": "_python",
+    "pipfile": "_python",
+    "manifest.in": "_python",
+    "pylintrc": "_python",
+    "py.typed": "_python",
+    "readme.md": "_readme",
+    "svgo.config.mjs": "_svgo-config",
+    "svgo.config.js": "_svgo-config",
+    "svgo.config.yaml": "_svgo-config",
+    ".vscode-test.mjs": "_test",
+    "tsconfig.json": "_tsconfig",
+    "tsconfig.test.json": "_tsconfig",
+    "turbo.json": "_turbo-json",
+    ".pnp.cjs": "_yarn",
+    ".pnp.loader.mjs": "_yarn",
+    ".yarnrc": "_yarn-config",
+    ".yarnrc.yml": "_yarn-config",
+    "yarn.lock": "_yarn-lock",
+    "vsc-extension-quickstart.md": "_vscode",
+    "settings.json": "_vscode-config",
+    "c_cpp_properties.json": "_vscode-config",
+    "tasks.json": "_vscode-config",
+    ".vscodeignore": "_vscode-ignore",
+    "webpack.config.js": "_webpack-config"
+  },
+  "file": "_file",
+  "folder": "_folder-basic",
+  "folderExpanded": "_folder-basic-open",
+  "rootFolder": "_folder-root",
+  "rootFolderExpanded": "_folder-root-open",
+  "languageIds": {},
+  "hidesExplorerArrows": true,
+  "highContrast": {
+    "fileExtensions": {},
+    "fileNames": {}
+  }
+}

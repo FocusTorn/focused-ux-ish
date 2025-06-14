@@ -1,0 +1,110 @@
+
+//  { "name": "", "fileNames": [], "fileExtensions": [] },
+
+{
+    "file": { "name": "file" },
+    "icons": [
+        { "name": "ahk", "fileExtensions": ["ahk"] },
+        { "name": "ahk-alt", "fileExtensions": ["ah2"] },
+        { "name": "arduino-cli", "fileNames": ["arduino-cli"] },
+        { "name": "arduino-config", "fileNames": ["sketch.yaml"] },
+        { "name": "arduino-sketch", "fileExtensions": ["ino"] },
+        { "name": "backup", "fileExtensions": ["bak", "bak2", "bak3", "bak4", "bak5", "bu"] },
+        { "name": "biome", "fileNames": ["biome.json", "biome.jsonc"] },
+        { "name": "binary", "fileExtensions": ["asm", "a51", "inc", "nasm", "s", "ms", "agc", "ags", "aea", "argus", "mitigus", "binsource"] },
+        { "name": "build-config", "fileNames": ["Makefile"] },
+        { "name": "bun-lock", "fileNames": ["bun.lockb"] },
+        { "name": "bun-config", "fileNames": ["bunfig.toml"] },
+        { "name": "c", "fileExtensions": ["c"] },
+        { "name": "changelog", "fileNames": ["changelog", "changelog.md", "changelog.rst", "changelog.txt", "changes", "changes.md", "changes.rst", "changes.txt"] },
+        { "name": "changelog-config", "fileNames": ["changelog.config.json", ".changelogrc"] },
+        { "name": "clang-config", "fileExtensions": [".clang-tidy"] },
+        { "name": "clojure", "fileExtensions": ["clj", "cljs", "cljc"] },
+        { "name": "cmake", "fileExtensions": ["cmake"] },
+        { "name": "cmake-cache", "fileNames": ["CMakeCache.txt"] },
+        { "name": "cmake-list", "fileNames": ["CMakeLists.txt"] },
+        { "name": "cmake-json", "fileNames": ["CMakePresets.json","compile_commands.json"] },
+        { "name": "coderabbit", "fileNames": [".coderabbit.yaml"] },
+        { "name": "coffee", "fileExtensions": ["coffee", "cson", "iced"] },
+        {
+            "name": "console",
+            "fileExtensions": ["sh", "ksh", "csh", "tcsh", "zsh", "bash", "bat", "cmd", "awk", "fish", "exp", "nu"],
+            "fileNames": ["commit-msg", "pre-commit", "pre-push", "post-merge"]
+        },
+        { "name": "cpp", "fileExtensions": ["cpp"] },
+        { "name": "header", "fileExtensions": ["h"] },
+        { "name": "csharp", "fileExtensions": ["cs"] },
+
+        { "name": "editorconfig", "fileNames": [".editorconfig"] },
+        { "name": "eslint", "fileNames": [".eslintrc.json", "eslint.config.js"] },
+        { "name": "env", "fileNames": ["pyvenv.cfg"] },
+        { "name": "env-config", "fileNames": ["pyvenv.cfg"] },
+        { "name": "git", "fileNames": [".gitattributes"] },
+        { "name": "git-ignore", "fileNames": [".gitignore"] },
+        { "name": "gulp", "fileNames": ["gulpfile.js", "gulpfile.js", "gulpfile.mjs", "gulpfile.ts", "gulpfile.cts", "gulpfile.mts", "gulpfile.babel.js"] },
+        { "name": "image", "fileExtensions": ["jpg", "gif"] },
+        { "name": "json", "fileExtensions": ["json"] },
+        { "name": "javascript", "fileExtensions": ["js", "mjs"] },
+        { "name": "javascript-map", "fileExtensions": ["js.map", "mjs.map", "cjs.map"] },
+        { "name": "jest-config", "fileNames": ["jest.config.js"] },
+        { "name": "julia", "fileExtensions": ["jl"] },
+        { "name": "license", "fileNames": ["license.txt", "license.md"] },
+        { "name": "markdown", "fileExtensions": ["md"] },
+        { "name": "model", "fileExtensions": ["model.js", "model.json"] },
+        { "name": "mocha-config", "fileNames": [".mocharc.js", ".mocharc.json", ".mocharc.yaml"] },
+        { "name": "mocha", "fileExtensions": ["mocha.js", "mocha.cjs", "mocha.mjs", "mocha.ts", "mocha.mts"] },
+
+        { "name": "ninja", "fileNames": ["build.ninja"] },
+        { "name": "ninja-log", "fileNames": [".ninja_log"] },
+        { "name": "ninja-flow", "fileNames": [".ninja_deps"] },
+
+        { "name": "node-ignore", "fileNames": [".npmignore"] },
+        { "name": "package", "fileNames": ["package.json"] },
+        { "name": "package-lock", "fileNames": ["package-lock.json"] },
+        { "name": "package-nls", "fileNames": ["package.nls.json"] },
+        { "name": "png", "fileExtensions": ["png"] },
+        { "name": "poetry", "fileNames": ["poetry.p"] },
+        { "name": "poetry-lock", "fileNames": ["poetry.lock"] },
+        { "name": "prettier", "fileNames": ["prettier.config.js"] },
+
+        { "name": "pyversion", "fileNames": [".python-version"] },
+        { "name": "pyconfig", "fileNames": ["pyproject.toml"] },
+        { "name": "python-file", "fileExtensions": ["py"] },
+        { "name": "python", "fileExtensions": ["pyc", "whl"], "fileNames": ["requirements.txt", "pipfile", "manifest.in", "pylintrc", "py.typed"] },
+        { "name": "readme", "fileNames": ["readme.md"] },
+        { "name": "shell", "fileExtensions": ["sh", "sh", "ksh", "csh", "tcsh"] },
+        { "name": "svg", "fileExtensions": ["svg"] },
+        { "name": "svgo-config", "fileNames": ["svgo.config.mjs", "svgo.config.js", "svgo.config.yaml"] },
+        { "name": "template", "fileExtensions": ["template.toml", "template.js", "template.ts", "template.sh", "template.yaml", "template.json"] },
+        { "name": "terminal", "fileExtensions": ["ps1", "psm1", "psd1", "ps1xml", "psc1", "pssc", "bat", "cmd", "awk", "fish", "exp", "nu"] },
+        { "name": "test", "fileExtensions": [".test.js", ".test.ts"], "fileNames": [".vscode-test.mjs"] },
+        { "name": "theme", "fileExtensions": ["theme.json"] },
+        { "name": "typescript", "fileExtensions": ["ts"] },
+        { "name": "tsconfig", "fileNames": ["tsconfig.json", "tsconfig.test.json"] },
+        
+        
+        
+        { "name": "turbo-json", "fileNames": ["turbo.json"] },
+        
+        
+        
+        
+        { "name": "text-file", "fileExtensions": ["txt", "txtc"] },
+        { "name": "txte", "fileExtensions": ["txte"] },
+        { "name": "yaml", "fileExtensions": ["yaml"] },
+        { "name": "yarn", "fileNames": [".pnp.cjs", ".pnp.loader.mjs"] },
+        { "name": "yarn-config", "fileNames": [".yarnrc", ".yarnrc.yml"] },
+        { "name": "yarn-lock", "fileNames": ["yarn.lock"] },
+
+        { "name": "vite", "fileExtensions": ["vite.js","vite.ts"] },
+        
+        
+        { "name": "vscode", "fileNames": ["vsc-extension-quickstart.md"], "fileExtensions": ["vsix", "code-workspace"] },
+        { "name": "vscode-config", "fileNames": ["settings.json", "c_cpp_properties.json", "tasks.json"] },
+        { "name": "vscode-ignore", "fileNames": [".vscodeignore"] },
+
+        { "name": "webpack-config", "fileNames": ["webpack.config.js"] },
+        { "name": "zip", "fileExtensions": ["zip", "tar", "7z", "rar"] }
+    ]
+}
+

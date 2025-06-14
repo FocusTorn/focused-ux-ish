@@ -10,7 +10,7 @@ const config = {
     
 	experimentalTernaries: true,
 	// requireConfig: true,
-	tabWidth: 2,
+	tabWidth: 4,
 	singleQuote: true,
     
 	proseWrap: 'preserve', // Options: "always", "never", "preserve"

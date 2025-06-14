@@ -1,0 +1,149 @@
+//cSpell:disable
+{
+    "folder": { "name": "basic" },
+    "rootFolder": { "name": "root" },
+    "icons": [
+        { "name": "arduino", "folderNames": [] },
+        { "name": "binary", "folderNames": ["bin"] },
+        { "name": "build", "folderNames": ["build"] },
+        {
+            "name": "config",
+            "folderNames": ["config", "configs", "configuration", ".arduino15", ".user"]
+        },
+        { "name": "c", "folderNames": ["c"] },
+        { "name": "book", "folderNames": [".logs", "docs", "documents", "documentation"] },
+        { "name": "cardboard-box", "folderNames": ["_assets", "assets", "resources", "assets"] },
+        { "name": "cp", "folderNames": ["cp", "cpp"] },
+        { "name": "cmake", "folderNames": ["CMakeFiles", ".cmake"] },
+        { "name": "cpp", "folderNames": ["cp"] },
+        { "name": "core-alt", "folderNames": ["core"] },
+        { "name": "env", "folderNames": [".venv"] },
+        { "name": "eslint", "folderNames": [".eslint"] },
+        { "name": "generator", "folderNames": ["generator", "generators"] },
+        { "name": "git", "folderNames": [".git", ".github"] },
+        { "name": "green-arrow", "folderNames": ["commands"] },
+        { "name": "header", "folderNames": ["h", "header", "headers"] },
+        { "name": "helpers", "folderNames": ["helper", "helpers"] },
+        { "name": "home", "folderNames": ["home"] },
+        { "name": "images", "folderNames": ["images", "pictures", "pics"] },
+        { "name": "icon", "folderNames": ["icon", "icons", "ico", "icos"] },
+        {
+            "name": "javascript",
+            "folderNames": ["js", ".js", "_js_", "__js__", "___js___", "_js"]
+        },
+        {
+            "name": "json",
+            "folderNames": ["json", ".json", "_json_", "__json__", "___json___", "_json"]
+        },
+        { "name": "lib", "folderNames": ["lib", "library", "libraries"] },
+        { "name": "model", "folderNames": ["model", "models"] },
+        { "name": "node", "folderNames": ["node_modules"] },
+        {
+            "name": "notes",
+            "folderNames": [
+                "docs",
+                "documents",
+                ".notes",
+                ".pnotes",
+                "_notes_",
+                "__notes__",
+                "___notes___",
+                "pnotes",
+                ".notesHub_projectNotes",
+                ".notesHub_remoteNotes",
+                ".notesHub_globalNotes"
+            ]
+        },
+        { "name": "out", "folderNames": ["dist", "out"] },
+        { "name": "package", "folderNames": ["packages"] },
+        { "name": "pi", "folderNames": ["pi", "RPi"] },
+        {
+            "name": "puzzle",
+            "folderNames": [
+                "plugin",
+                "plugins",
+                "extension",
+                "extensions",
+                "components",
+                "include",
+                "includes"
+            ]
+        },
+        {
+            "name": "pycache",
+            "folderNames": [
+                "pycache",
+                ".pycache",
+                "_pycache",
+                "__pycache__",
+                "pytest_cache",
+                ".pytest_cache",
+                "_pytest_cache",
+                "__pytest_cache__"
+            ]
+        },
+        { "name": "python", "folderNames": ["python", ".python", "_python", "__python__"] },
+        {
+            "name": "removed",
+            "folderNames": [
+                "_removed",
+                "_X_removed",
+                "_XX_removed",
+                "_XXX_removed",
+                "removed",
+                "X_removed",
+                "XX_removed",
+                "XXX_removed",
+                "z_removed",
+                "zz_removed",
+                "zzz_removed",
+                "unused",
+                "X_unused",
+                "XX_unused",
+                "XXX_unused",
+                "_unused",
+                "_X_unused",
+                "_XX_unused",
+                "_XXX_unused",
+                ".removed"
+            ]
+        },
+        { "name": "scripts", "folderNames": ["scripts", "_scripts"] },
+        { "name": "sketch", "folderNames": ["sketchbook"] },
+        { "name": "shell", "folderNames": ["sh"] },
+        { "name": "source", "folderNames": ["src"] },
+        { "name": "syntax", "folderNames": ["syntax"] },
+        {
+            "name": "test-alt",
+            "folderNames": [
+                "test",
+                "tests",
+                "_tests",
+                "__tests",
+                "_tests_",
+                "__tests__",
+                ".vscode-test"
+            ]
+        },
+        { "name": "template", "folderNames": ["template", "templates"] },
+        { "name": "terminal", "folderNames": ["ps", "ps1", "powershell"] },
+        { "name": "theme", "folderNames": ["theme", "themes"] },
+        { "name": "toolbox", "folderNames": ["_utilities_"] },
+
+
+
+
+        { "name": "turborepo", "folderNames": [".turbo"] },
+
+
+
+
+        {
+            "name": "typescript",
+            "folderNames": ["ts", ".ts", "_ts_", "__ts__", "___ts___", "_ts"]
+        },
+        { "name": "vscode", "folderNames": [".vscode"] },
+        { "name": "webpack", "folderNames": [".devcontainer"] },
+        { "name": "yarn", "folderNames": [".yarn"] }
+    ]
+}

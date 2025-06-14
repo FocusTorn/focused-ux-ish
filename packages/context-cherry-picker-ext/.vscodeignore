@@ -1,0 +1,54 @@
+
+#  "files": [
+#         "dist/",
+#         "assets/",
+#         "LICENSE.txt",
+#         "README.md",
+#         "CHANGELOG.md",
+#         "node_modules/"
+#     ],
+
+
+
+
+
+#= Explicitly include what MUST be in the VSIX ====================================================== 
+!package.json
+# !package.nls*.json
+!dist/**
+!assets/**
+
+!LICENSE.txt
+!README.md
+!CHANGELOG.md
+
+
+
+
+# Exclude everything
+**/*
+
+
+
+
+#= Explicitly exclude what should NOT be in the VSIX, even if covered above ========================= 
+src/**
+test/**
+coverage/**
+packed/**
+vsce_stage/**
+package-vsix.js
+*.tsbuildinfo
+*.log
+.yalc/**
+.turbo/**
+.git/**
+.vscode/** 
+tsconfig.json
+yalc.lock
+tsconfig.json
+# *.map
+
+
+
+

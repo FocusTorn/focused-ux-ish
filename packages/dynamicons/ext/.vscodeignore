@@ -1,0 +1,28 @@
+# Files to include in the extension package
+# Documentation for this format:
+# https://code.visualstudio.com/api/working-with-extensions/publishing-extension#using-.vscodeignore
+
+
+#= Exclude the following files ================================================== 
+
+
+#= Do not exclude the following files =========================================== 
+!assets
+
+!CHANGELOG.md
+!LICENSE.txt
+!README.md
+
+!package.json
+!package.nls.json
+!package.nls.*.json
+
+!dist/extension.cjs
+!dist/extension.js
+
+# **/node_modules/**/*
+
+# Exclude everything else
+**/* 
+
+

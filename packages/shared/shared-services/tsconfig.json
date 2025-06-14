@@ -1,0 +1,23 @@
+{
+    "extends": "@focused-ux/tsconfig/tsconfig.base.json",
+    "compilerOptions": {
+        
+        "declarationMap": false,
+        
+        
+        
+        //= PATH ALIASES ========================================================================
+        "baseUrl": ".",
+        "rootDir": "./src",
+        "outDir": "./dist",
+    },
+    "include": [
+        "./src/**/*.ts",
+    ],
+    "exclude": [
+        "node_modules",
+        "dist",
+        "./cli/**/*.js",
+    ]
+}
+

@@ -1,60 +1,87 @@
 {
     "$schema": "https://unpkg.com/knip@latest/schema.json",
     "entry": [
-        "src/extension.ts",
-        "gulpfile.mjs"
+        // "src/extension.ts",
+        // "gulpfile.mjs"
     ],
     "project": [
-        "src/**/*.ts",
-        "src/**/*.mts",
-        "src/**/*.js",
-        "src/**/*.mjs"
+        // "src/**/*.ts",
+        // "src/**/*.mts",
+        // "src/**/*.js",
+        // "src/**/*.mjs"
     ],
     "ignore": [
         
-        "**/*removed*/**/*",
-        "**/X_*/**/*",
-        "**/*X_*.*",
-        "**/*.bak*",
+        // "**/*removed*/**/*",
+        // "**/X_*/**/*",
+        // "**/*X_*.*",
+        // "**/*.bak*",
         
-        "node_modules/**",
-        "dist/**",
-        "out/**",
-        "build/**",
-        ".vscode-test/**",
-        "coverage/**",
-        "assets/**",
+        // "node_modules/**",
+        // "dist/**",
+        // "out/**",
+        // "build/**",
+        // ".vscode-test/**",
+        // "coverage/**",
+        // "assets/**",
 
-        "src/core/helpers/logger.ts"
+        // "src/core/helpers/logger.ts"
+        
+        
+        
+        "packages/utilities-core/src/_vscode_abstractions/index.ts",
+        
+        //= UTILITY SCRIPTS ========================================================================= 
+        "packages/tools/src/scripts/version_bump.ts",
+        
+        "packages/dynamicons/core/src/scripts/generate_icon_previews.ts",
+        "packages/dynamicons/core/src/scripts/generate_icon_manifests.ts",
+        "packages/dynamicons/core/src/scripts/optimize_icons.ts",
+        
+        
+        "packages/tools/src/scripts/node/aggregate-eslint-errors.ts",
+        "packages/tools/src/scripts/node/aggregate-tsc-errors.ts",
+        "packages/tools/src/scripts/node/validate/index.js",
+        "packages/tools/src/scripts/node/validate/helpers/eslint-validate.js",
+        "packages/tools/src/scripts/node/validate/helpers/knip-validate.js",
+        "packages/tools/src/scripts/node/validate/helpers/tsc-validate.js"
+        
+ 
         
     ],
     "ignoreDependencies": [
         //= BUILD TOOLS ============================================================================= 
-        "@types/puppeteer",   // Used in icon preview image generator
-        "@types/sharp",       // Used in icon preview image generator
+        // "@types/puppeteer",
+        // "@types/sharp",
         //= LINTING ================================================================================= 
-        "@typescript-eslint/utils",
-        "@typescript-eslint/visitor-keys",
-        "@typescript-eslint/eslint-plugin",
-        "@typescript-eslint/parser",
-        "typescript-eslint",
-        "remark-lint",
+        // "@typescript-eslint/utils",
+        // "@typescript-eslint/visitor-keys",
+        // "@typescript-eslint/eslint-plugin",
+        // "@typescript-eslint/parser",
+        // "typescript-eslint",
+        // "remark-lint",
         //= NODE RELATED ============================================================================ 
-        "npm-run-all",
-        "yalc",
+        // "npm-run-all",
+        // "yalc",
         //= TESTING ================================================================================= 
-        "@vitest/coverage-istanbul",
-        "@vitest/coverage-v8",
-        "vitest",
+        // "@vitest/coverage-istanbul",
+        // "@vitest/coverage-v8",
+        // "vitest",
         //= VSCODE ==================================================================================
-        "@vscode/test-cli",      // Native VSCode testing
-        "@vscode/test-electron"  // Native VSCode testing
+        // "@vscode/test-cli",      // Native VSCode testing
+        // "@vscode/test-electron"  // Native VSCode testing
+        
+        
+        
+        "gray-matter"   // Front matter parser for notesHub
+        
+        
     ],
     "ignoreBinaries": [
         //= BUILD TOOLS ============================================================================= 
-        "esbuild-visualizer",
+        // "esbuild-visualizer",
         //= VSCODE ==================================================================================
-        "vsce"
+        // "vsce"
     ],
     
     "typescript": {

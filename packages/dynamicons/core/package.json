@@ -1,42 +1,61 @@
 {
-    "name": "@focused-ui/dynamicons-core",
+    "name": "@focused-ux/dynamicons-core",
     "version": "0.1.0",
-    "private": true,
-    "type": "module",
-    "main": "./dist/index.js",
-    "types": "./dist/index.d.ts",
     "scripts": {
+        "== BUILD ============================================================================================ ": "",
+        "build": "pnpm run build:assets && pnpm run build:types && pnpm run build:js",
+        "build:clean": "pnpm run clean && pnpm run build",
+        "build:types": "tsc -p tsconfig.json --pretty",
+        "build:js": "fux-build ./src/index.ts --outfile=./dist/index.js --library",
+        "build:assets": "pnpm run assets:localize && pnpm run assets:build",
+        "build:cjs": "esbuild ./src/index.ts --bundle --outfile=dist/index.cjs --format=cjs --platform=node --external:vscode",
+        "== ASSETS =========================================================================================== ": "",
+        "assets:build": "tsx ./src/scripts/build_dynamicon_assets.ts",
+        "assets:localize_mid": "tsx ./src/scripts/move_source_icons.ts ",
+        "assets:localize": "tsx ./src/scripts/move_source_icons.ts ",
+        "== WATCH ============================================================================================ ": "",
+        "watch-only": "pnpm run watch:types & pnpm run watch:js",
+        "watch:types": "tsc -p tsconfig.json --watch",
+        "watch:js": "fux-build ./src/index.ts --outfile=./dist/index.js --watch --library",
+        "watch:cjs": "esbuild ./src/index.ts --bundle --outfile=dist/index.cjs --platform=node --format=cjs --external:vscode --watch",
+        "== VALIDATE ========================================================================================= ": "",
         "check-types": "tsc --noEmit -p tsconfig.json --pretty",
         "lint": "eslint . --ext .ts",
         "lint:fix": "eslint . --ext .ts --fix",
-        
-        "build": "pnpm run build:types && pnpm run build:js",
-        "build:types": "tsc -p tsconfig.json --emitDeclarationOnly",
-        "build:js": "esbuild ./src/index.ts --bundle --outfile=dist/index.js --platform=node --format=esm --external:vscode --external:tsyringe --external:reflect-metadata --external:@focused-ui/utilities-core",
-        
-        "clean:dist_assets": "rimraf ./dist/assets",
-        "optimize:icons": "ts-node ./scripts/optimize_icons.ts",
-        "generate:base_manifest": "ts-node ./scripts/generate_icon_manifests.ts",
-        "build:assets": "pnpm run clean:dist_assets && pnpm run optimize:icons && pnpm run generate:base_manifest"
+        "== UTILITIES ======================================================================================== ": "",
+        "clean": "rimraf ./dist .turbo",
+        "optimize:icons": "cross-env NODE_NO_WARNINGS=1 pnpm exec ts-run  ./src/scripts/optimize_icons.ts",
+        "generate:manifests": "cross-env NODE_NO_WARNINGS=1 pnpm exec ts-run  ./src/scripts/generate_icon_manifests.ts",
+        "generate:previews": "cross-env NODE_NO_WARNINGS=1 pnpm exec ts-run ./src/scripts/generate_icon_previews.ts"
     },
     "dependencies": {
-        "@focused-ui/utilities-core": "workspace:*",
-        "tsyringe": "^4.10.0",
-        "reflect-metadata": "^0.2.2"
+        "@focused-ux/shared-services": "workspace:*",
+        "tsyringe": "^4.10.0"
     },
     "devDependencies": {
-        "typescript": "^5.8.3",
-        "esbuild": "^0.25.4",
-        "@types/node": "^20.17.47",
+        "@focused-ux/config-esbuild": "workspace:*",
+        "@focused-ux/config-eslint": "workspace:*",
+        "@focused-ux/tsconfig": "workspace:*",
+        "@types/node": "^24.0.0",
         "@types/vscode": "^1.100.0",
+        "esbuild": "^0.25.5",
+        "puppeteer": "^24.10.0",
+        "sharp": "^0.34.2",
+        "strip-json-comments": "^5.0.2",
+        "svgo": "^3.3.2",
         "ts-node": "^10.9.2",
-        "rimraf": "^5.0.5",
-        "svgo": "^3.2.0",
-        "sharp": "^0.33.3",
-        "puppeteer": "^22.6.5",
-        "strip-json-comments": "^5.0.2"
+        "tsx": "^4.20.1",
+        "typescript": "^5.8.3"
     },
-    "peerDependencies": {
-        
+    "private": true,
+    "main": "./dist/index.js",
+    "module": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.js",
+            "require": "./dist/index.js"
+        }
     }
 }
