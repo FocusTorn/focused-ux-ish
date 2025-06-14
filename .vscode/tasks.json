@@ -17,7 +17,10 @@
 
         { "label": "Build Dynamicons Packages", //>
 			"type": "shell",
-            "command": "pnpm exec turbo run build --filter=focused-ux-dynamicons", // --filter=@focused-ux/dynamicons-core --verbosity=3
+            
+            // "command": "pnpm exec turbo run build --filter=focused-ux-dynamicons", // --filter=@focused-ux/dynamicons-core --verbosity=3
+            "command": "pnpm turbo run build --filter focused-ux-dynamicons", // --filter=@focused-ux/dynamicons-core --verbosity=3
+            
 			"problemMatcher": ["$tsc-watch", "$ts-esbuild-watch"],
 			"presentation": {
 				"reveal": "always",

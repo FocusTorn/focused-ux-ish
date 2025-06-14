@@ -47,7 +47,6 @@
 			],
 			"outFiles": [
 				"${workspaceFolder}/packages/context-cherry-picker-ext/dist/**/*.js",
-				// If CCP depends on shared-services and you need to debug into it:
 				"${workspaceFolder}/packages/shared/shared-services/dist/**/*.js" 
 			],
 			"sourceMaps": true,

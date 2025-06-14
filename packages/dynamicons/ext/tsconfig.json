@@ -7,18 +7,41 @@
 
 
         //= PATH ALIASES ========================================================================
-        "baseUrl": "../", // Points to packages/dynamicons/
-        "rootDir": "../", // Points to packages/dynamicons/
-        "outDir": "./dist", // Relative to this tsconfig.json
+        "baseUrl": ".",
+        "rootDir": "src",
+        "outDir": "./dist"
     },
      "include": [
-        "./src/**/*.ts",
+        "./src/**/*.ts"
     ],
     "exclude": [
         "node_modules",
-        "dist",
-    ],
-    
-    
+        "dist"
+    ]
 }
+    
+
+// {
+//     "extends": "@focused-ux/tsconfig/tsconfig.base.json",
+    
+//     "compilerOptions": {
+        
+//         "declarationMap": false,
+
+
+//         //= PATH ALIASES ========================================================================
+//         "baseUrl": "../", // Points to packages/dynamicons/
+//         "rootDir": "../", // Points to packages/dynamicons/
+//         "outDir": "./dist", // Relative to this tsconfig.json
+//     },
+//      "include": [
+//         "./src/**/*.ts",
+//     ],
+//     "exclude": [
+//         "node_modules",
+//         "dist",
+//     ],
+    
+    
+// }
     

@@ -5,9 +5,9 @@
         "== BUILD ============================================================================================ ": "",
         "build": "pnpm run build:types && pnpm run build:js",
         "build:clean": "pnpm run clean && pnpm run build",
-        "build:types": "tsc -p tsconfig.json",
-        "build:js": "fux-build ./src/extension.ts --outfile=./dist/extension.js",
-        "build:cjs": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.cjs --platform=node --format=cjs --external:vscode",
+        "build:types": "tsc -p tsconfig.json --pretty",
+        "build:js": "fux-build ./dist/extension.js --outfile=./dist/extension.js",
+        "build:cjs": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.cjs --format=cjs --external:vscode",
         "== VALIDATE ========================================================================================= ": "",
         "check-types": "tsc --noEmit -p tsconfig.json --pretty",
         "lint": "eslint . --ext .ts",
@@ -19,7 +19,7 @@
         "== WATCH ============================================================================================ ": "",
         "watch-only": "pnpm run watch:types & pnpm run watch:js",
         "watch:types": "tsc -p tsconfig.json --watch",
-        "watch:js": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.js --platform=node --format=esm --external:vscode --external:tsyringe --external:reflect-metadata --external:@focused-ux/dynamicons-core --watch",
+        "watch:js": "fux-build ./dist/extension.js --outfile=./dist/extension.js --watch",
         "watch:cjs": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.cjs --platform=node --format=cjs --external:vscode --external:tsyringe --external:reflect-metadata --external:@focused-ux/dynamicons-core --watch",
         "== UTILITIES ======================================================================================== ": "",
         "version-bump": "tsx ../../shared/tools/src/scripts/version_bump.ts",
@@ -188,13 +188,5 @@
         "ui"
     ],
     "type": "module",
-    "main": "./dist/extension.js",
-    "references": [
-        {
-            "path": "../core"
-        },
-        {
-            "path": "../../utilities-core"
-        }
-    ]
+    "main": "./dist/extension.js"
 }

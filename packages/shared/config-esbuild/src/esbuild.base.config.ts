@@ -57,7 +57,7 @@ export async function getBaseEsbuildOptions( //>
         minify: isProduction,
         metafile: enableMetafile,
         sourcesContent: false,
-        resolveExtensions: ['.js', '.ts'],
+        resolveExtensions: ['.js'],
         format: 'esm',
         platform: 'node',
         logLevel: 'info',
@@ -68,12 +68,11 @@ export async function getBaseEsbuildOptions( //>
         external: [
             'vscode',
             'typescript',
+            'tsyringe',
+            'reflect-metadata',
         ],
         logOverride: {
             'require-resolve-not-external': 'silent',
         },
     };
 } //</
-
-
-
