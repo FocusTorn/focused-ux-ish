@@ -1,0 +1,26 @@
+{
+    "name": "@focused-ux/tools",
+    "version": "0.1.0",
+    "private": true,
+    "type": "module",
+    "bin": {
+        "ts-run": "./cli/ts-run.js"
+    },
+    "scripts": {
+        "== BUILD ============================================================================================ ": "",
+        "build": "pnpm run build:types && pnpm run build:js",
+        "build:types": "tsc -p tsconfig.json",
+        "build:js": "esbuild ./src/index.ts --bundle --outfile=dist/index.js --platform=node --format=esm --external:vscode --external:tsyringe --external:reflect-metadata",
+        
+        "== UTILITIES ======================================================================================== ": "",
+        "clean": "rimraf ./dist .turbo"
+
+    },
+    "devDependencies": {
+        "chalk": "^5.3.0",
+        "ts-node": "^10.9.2",
+        "typescript": "^5.8.3",
+        "esbuild": "^0.25.4"
+    },
+    "dependencies": {}
+}
