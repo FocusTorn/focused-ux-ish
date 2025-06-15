@@ -4,7 +4,7 @@
     "publisher": "NewRealityDesigns",
     "description": "A standalone extension for advanced context selection and formatting.",
     "repository": "https://github.com/FocusTorn/focused-ux",
-    "version": "0.1.86",
+    "version": "0.1.88",
     "engines": {
         "vscode": "^1.100.0"
     },
@@ -208,7 +208,16 @@
                         "**/out/**",
                         "**/*.log"
                     ],
-                    "description": "Glob patterns for files/folders to completely ignore in the explorer view and processing. Overridden by .ccpConfig.yaml if present.",
+                    "description": "Glob patterns for files/folders to completely ignore in the explorer view and processing. Overridden by .FocusedUX if present.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "scope": "resource"
+                },
+                "ccp.projectTreeDisplay.alwaysShowGlobs": {
+                    "type": "array",
+                    "default": [],
+                    "description": "Glob patterns for items to ALWAYS show in the generated <project_tree>, even if they would normally be hidden by other rules. This has the highest precedence. Overridden by .FocusedUX if present.",
                     "items": {
                         "type": "string"
                     },
@@ -217,7 +226,7 @@
                 "ccp.projectTreeDisplay.alwaysHideGlobs": {
                     "type": "array",
                     "default": [],
-                    "description": "Glob patterns for items to NEVER show in the generated <project_tree>, even if checked. Overridden by .ccpConfig.yaml if present.",
+                    "description": "Glob patterns for items to NEVER show in the generated <project_tree>, even if checked. Overridden by .FocusedUX if present.",
                     "items": {
                         "type": "string"
                     },
@@ -226,7 +235,7 @@
                 "ccp.projectTreeDisplay.showIfSelectedGlobs": {
                     "type": "array",
                     "default": [],
-                    "description": "If populated, ONLY checked items matching these globs (and not in 'alwaysHideGlobs') appear in <project_tree>. If empty, all checked items (not in 'alwaysHideGlobs') are candidates. Overridden by .ccpConfig.yaml if present.",
+                    "description": "If populated, ONLY checked items matching these globs (and not in 'alwaysHideGlobs') appear in <project_tree>. If empty, all checked items (not in 'alwaysHideGlobs') are candidates. Overridden by .FocusedUX if present.",
                     "items": {
                         "type": "string"
                     },
@@ -235,7 +244,7 @@
                 "ccp.directoryContentDisplay.showDirHideContentsGlobs": {
                     "type": "array",
                     "default": [],
-                    "description": "Glob patterns for directories whose node IS visible in the UI, but contents are hidden (non-expandable). Path appears in <project_tree> if checked. Overridden by .ccpConfig.yaml if present.",
+                    "description": "Glob patterns for directories whose node IS visible in the UI, but contents are hidden (non-expandable). Path appears in <project_tree> if checked. Overridden by .FocusedUX if present.",
                     "items": {
                         "type": "string"
                     },
@@ -244,7 +253,7 @@
                 "ccp.directoryContentDisplay.hideDirAndContentsGlobs": {
                     "type": "array",
                     "default": [],
-                    "description": "Glob patterns for directories whose node AND contents are HIDDEN from the UI. Overridden by .ccpConfig.yaml if present.",
+                    "description": "Glob patterns for directories whose node AND contents are HIDDEN from the UI. Overridden by .FocusedUX if present.",
                     "items": {
                         "type": "string"
                     },

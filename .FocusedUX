@@ -1,20 +1,49 @@
-
-    # Configuration for Focused UI Extension
-
+# Configuration for Focused UI Extension
 ContextCherryPicker:
     
     ignore:
-      - "**/.yalk/**"
-      - "node_modules"
-      - ".gitignore"
-      - ".vscodeignore"
+      #= GENERAL ================================================================ 
+      - '**/node_modules'
+      - .git
+      
+      #= BUILD GENERATED ======================================================== 
+      - '**/.turbo'
+      - '**/dist'
+      - '**/tsconfig.tsbuildinfo'
+      
+      #= YALC =================================================================== 
+      - '**/.yalc'
+      - '**/yalc.lock'
+
+      #== IGNORES =============================================================== 
+      - .gitignore
+      - .vscodeignore
+
+      #= DIRECTORIES ============================================================ 
+      - _scripts
+      - assets
+      - vsix_packages
+
+      #= EXTENSIONS ============================================================= 
+      - '**/*.png'
+      - '**/*.jpg'
+      - '**/*.jpeg'
+      - '**/*.svg'
+    
+      #= FILES ================================================================== 
+      - '**/LICENSE.txt'
+      - '**/*.bak*'
+      - .editorconfig
+      
+    
     
     project_tree:
         always_show:
-        # Always show these in the <project_tree> sste 
+        # Always show these in the <project_tree>
 
         always_hide:
         # Never show these in the <project_tree>
+
 
         show_if_selected:
         # These will only show in the <project_tree> if selected in <Context Explorer>, else hidden
@@ -25,6 +54,8 @@ ContextCherryPicker:
 
         hide_children:
         # show this dir, but not any of its children individually in the <Context Explorer>
+        
+        
 
 
 

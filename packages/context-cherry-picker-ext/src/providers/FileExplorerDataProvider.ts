@@ -140,17 +140,27 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider, Disp
 			const workspaceRoot = this.workspaceAdapter.workspaceFolders[0].uri
 			const configFileUri = Uri.joinPath(workspaceRoot, constants.projectConfig.fileName)
 
+			console.log(`[${constants.extension.name}] Attempting to load config from: ${configFileUri.fsPath}`)
+
 			try {
 				const fileContents = await this.workspaceAdapter.fs.readFile(configFileUri)
 				const yamlContent = Buffer.from(fileContents).toString('utf-8')
 
+				console.log(`[${constants.extension.name}] Successfully read '${constants.projectConfig.fileName}'.`)
+
 				parsedYamlConfig = yaml.load(yamlContent) as ProjectYamlConfig
+				if (parsedYamlConfig) {
+					console.log(`[${constants.extension.name}] Parsed '${constants.projectConfig.fileName}' content:`, JSON.stringify(parsedYamlConfig, null, 2))
+				}
+				else {
+					console.log(`[${constants.extension.name}] Parsed '${constants.projectConfig.fileName}' but content is empty or invalid.`)
+				}
 			}
 			catch (_error: any) {
 				const fsError = _error as FileSystemError
 
 				if (fsError && typeof fsError.code === 'string' && fsError.code === 'FileNotFound') {
-					// console.log(`[${constants.extension.name}] No '${constants.projectConfig.fileName}' found. Using VS Code settings for all patterns.`);
+					console.log(`[${constants.extension.name}] No '${constants.projectConfig.fileName}' found. Using VS Code settings for all patterns.`)
 				}
 				else {
 					console.warn(`[${constants.extension.name}] Error reading or parsing '${constants.projectConfig.fileName}': ${(_error instanceof Error ? _error.message : String(_error))}. Falling back to VS Code settings.`)
@@ -193,7 +203,7 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider, Disp
 			this._onDidChangeTreeData.fire()
 		}
 	} //<
-
+    
 	// ┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
 	// │                                       PROVIDER INTERFACE                                         │
 	// └──────────────────────────────────────────────────────────────────────────────────────────────────┘
@@ -278,7 +288,7 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider, Disp
 	getTreeItem(element: FileExplorerItem): TreeItem { //>
 		// Type guard to handle our special status message item, which is not a FileExplorerItem instance.
 		if (!(element instanceof FileExplorerItem)) {
-			return element;
+			return element
 		}
 
 		const currentState = this.getCheckboxState(element.uri)
