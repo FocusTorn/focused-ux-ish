@@ -17,21 +17,14 @@
         {
             "label": "Build Dynamicons Packages", //>
             "type": "shell",
-
-            // "command": "pnpm exec turbo run build --filter=focused-ux-dynamicons", // --filter=@focused-ux/dynamicons-core --verbosity=3
-            "command": "pnpm turbo run build --filter focused-ux-dynamicons", // --filter=@focused-ux/dynamicons-core --verbosity=3
-
+            "command": "pnpm turbo run build --filter fux-dynamicons", // --filter=@focused-ux/dynamicons-core --verbosity=3
             "problemMatcher": ["$tsc-watch", "$ts-esbuild-watch"],
             "presentation": {
                 "panel": "shared",
                 "group": "dynamiconsPrelaunch",
                 "clear": true,
-
-                // // To open and shut
-                // "close": true
-
-                // Just dont show
-                "reveal": "never"
+                // "close": true // To open and shut
+                "reveal": "never" // Just dont show
             },
             "group": "build"
         }, //<
@@ -39,18 +32,14 @@
         {
             "label": "Build CCP Satellite Package", //> New Task
             "type": "shell",
-            "command": "pnpm exec turbo run build --filter=ccp",
+            "command": "pnpm --filter fux-context-cherry-picker exec turbo run build ",
             "problemMatcher": ["$tsc-watch", "$ts-esbuild-watch"],
             "presentation": {
                 "panel": "shared",
                 "group": "dynamiconsPrelaunch",
                 "clear": true,
-
-                // // To open and shut
-                // "close": true
-
-                // Just dont show
-                "reveal": "never"
+                // "close": true // To open and shut
+                "reveal": "never" // Just dont show
             },
             "group": "build"
         }, //<
@@ -58,7 +47,7 @@
         {
             "label": "Internal Watch Dynamicons", //>
             "type": "shell",
-            "command": "pnpm exec turbo run watch-only --filter=focused-ux-dynamicons --filter=@focused-ux/dynamicons-core  --verbosity=3",
+            "command": "pnpm exec turbo run watch-only --filter=fux-dynamicons --filter=@focused-ux/dynamicons-core  --verbosity=3",
             "isBackground": true,
             "problemMatcher": ["$tsc-watch", "$ts-esbuild-watch"],
             "presentation": {

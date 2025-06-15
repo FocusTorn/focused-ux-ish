@@ -1198,7 +1198,8 @@
     ".npmrc": "_node",
     ".turbignore": "_turborepo",
     "pnpm-lock.yaml": "_package-lock",
-    "pnpm-workspace.yaml": "_template"
+    "pnpm-workspace.yaml": "_template",
+    ".FocusedUX": "_config"
   },
   "file": "_file",
   "folder": "_folder-basic",

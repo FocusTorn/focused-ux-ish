@@ -26,10 +26,10 @@ import type * as nodePath from 'node:path'
 
 //--------------------------------------------------------------------------------------------------------------<<
 
-const LOG_PREFIX = `[${constants.extension.nickName} - CCP_Manager]:` // Uses local nickName
+const LOG_PREFIX = `[${constants.extension.nickName} - CCP_Manager]:`
 
 @singleton()
-export class ContextCherryPickerManager implements IContextCherryPickerManager { // Renamed class to avoid conflict if used in same DI scope
+export class ContextCherryPickerManager implements IContextCherryPickerManager {
 
 	private _explorerView: TreeView<FileExplorerItem> | undefined
 	private _savedStatesView: TreeView<SavedStateItem> | undefined
@@ -53,6 +53,10 @@ export class ContextCherryPickerManager implements IContextCherryPickerManager {
 		@inject('iPathBasename') private readonly _pathBasename: typeof nodePath.basename,
 	) {} //<
 
+	// ┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
+	// │                                          PUBLIC METHODS                                          │
+	// └──────────────────────────────────────────────────────────────────────────────────────────────────┘    
+    
 	public async initializeViews( //>
 		explorerViewId: string, // These will be satellite-specific IDs
 		savedStatesViewId: string,
@@ -99,10 +103,6 @@ export class ContextCherryPickerManager implements IContextCherryPickerManager {
 		await this._quickSettingsDataProvider.refresh()
 	} //<
     
-	public getCheckedExplorerItems(): Uri[] { //>
-		return this._fileExplorerDataProvider.getAllCheckedItems()
-	} //<
-
 	public async saveCurrentCheckedState(): Promise<void> { //>
 		const checkedItems = this.getCheckedExplorerItems()
 
@@ -299,7 +299,10 @@ export class ContextCherryPickerManager implements IContextCherryPickerManager {
 		return this._quickSettingsDataProvider.getSettingState(settingId)
 	} //<
     
-    
+	public getCheckedExplorerItems(): Uri[] { //>
+		return this._fileExplorerDataProvider.getAllCheckedItems()
+	} //<
+
 	/**
 	 * Displays a status message to the user using one of several UI methods.
 	 * @param type The type of notification to show:
@@ -320,10 +323,10 @@ export class ContextCherryPickerManager implements IContextCherryPickerManager {
 				this._window.showInformationMessage(message)
 				break
 			case 'drop':
-				this._setExplorerMessage(message, duration)
+				this._setDropExplorerMessage(message, duration)
 				break
 			case 'desc':
-				this._setExplorerDescription(message, duration)
+				this._setDescExplorerMessage(message, duration)
 				break
 			case 'replace':
 				this._fileExplorerDataProvider.showStatusMessage(message, duration)
@@ -334,8 +337,12 @@ export class ContextCherryPickerManager implements IContextCherryPickerManager {
 				break
 		}
 	} //<
+    
+    // ┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
+	// │                                         PRIVATE HELPERS                                          │
+	// └──────────────────────────────────────────────────────────────────────────────────────────────────┘
 
-	private _setExplorerMessage(message: string, duration?: number): void { //>
+	private _setDropExplorerMessage(message: string, duration?: number): void { //>
 		if (!this._explorerView) {
 			return
 		}
@@ -349,7 +356,7 @@ export class ContextCherryPickerManager implements IContextCherryPickerManager {
 		}
 	} //<
 
-	private _setExplorerDescription(message: string, duration?: number): void { //>
+	private _setDescExplorerMessage(message: string, duration?: number): void { //>
 		if (!this._explorerView) {
 			return
 		}

@@ -1,13 +1,9 @@
-// ESLint & Imports -->>
-
-//--------------------------------------------------------------------------------------------------------------<<
-
-const EXT_ID_PREFIX = 'ccpSatellite'
+const EXT_ID_PREFIX = 'ccp'
 
 export const constants = {
 	extension: {
 		name: 'F-UX: Context Cherry Picker',
-		nickName: 'CCP Satellite',
+		nickName: 'CCP',
 		id: `${EXT_ID_PREFIX}`,
 		configKey: `${EXT_ID_PREFIX}`,
 	},
@@ -31,7 +27,7 @@ export const constants = {
 	},
 	configKeys: {
 		CCP_IGNORE_PATTERNS: `${EXT_ID_PREFIX}.ignoreGlobs`,
-		CCP_PROJECT_TREE_ALWAYS_SHOW_GLOBS: `${EXT_ID_PREFIX}.projectTree.alwaysShowGlobs`, // Note: This specific key 'projectTree.alwaysShowGlobs' is not in package.json. If intended for user settings, it should be 'projectTreeDisplay.alwaysShowGlobs' or similar.
+		CCP_PROJECT_TREE_ALWAYS_SHOW_GLOBS: `${EXT_ID_PREFIX}.projectTree.alwaysShowGlobs`,
 		CCP_PROJECT_TREE_ALWAYS_HIDE_GLOBS: `${EXT_ID_PREFIX}.projectTreeDisplay.alwaysHideGlobs`,
 		CCP_PROJECT_TREE_SHOW_IF_SELECTED_GLOBS: `${EXT_ID_PREFIX}.projectTreeDisplay.showIfSelectedGlobs`,
 		CCP_CONTEXT_EXPLORER_IGNORE_GLOBS: `${EXT_ID_PREFIX}.directoryContentDisplay.hideDirAndContentsGlobs`,
@@ -42,9 +38,7 @@ export const constants = {
 		SAVED_STATES_KEY: `${EXT_ID_PREFIX}.savedStates`, // For Memento or globalState
 	},
 	projectConfig: {
-        
 		fileName: '.FocusedUX',
-        
 		keys: {
 			contextCherryPicker: 'ContextCherryPicker',
 			ignore: 'ignore',
@@ -53,14 +47,13 @@ export const constants = {
 			always_hide: 'always_hide',
 			show_if_selected: 'show_if_selected',
 			context_explorer: 'context_explorer',
-			// 'ignore' is also a sub-key of context_explorer for UI-only ignore
 			hide_children: 'hide_children',
 		},
 	},
 	quickSettings: {
 		projectStructureContents: {
-			id: `${EXT_ID_PREFIX}.quickSetting.projectStructureContents`,
-			// Options would be 'none', 'selected', 'all'
+			id: `${EXT_ID_PREFIX}.quickSetting.projectStructureContents`, // 'none', 'selected', 'all' 
+		
 		},
 	},
 } as const

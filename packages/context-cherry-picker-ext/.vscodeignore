@@ -47,7 +47,7 @@ package-vsix.js
 tsconfig.json
 yalc.lock
 tsconfig.json
-# *.map
+extension.js.map
 
 
 

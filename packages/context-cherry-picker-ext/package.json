@@ -1,10 +1,10 @@
 {
-    "name": "ccp",
+    "name": "fux-context-cherry-picker",
     "displayName": "F-UX: Context Cherry Picker",
     "publisher": "NewRealityDesigns",
     "description": "A standalone extension for advanced context selection and formatting.",
     "repository": "https://github.com/FocusTorn/focused-ux",
-    "version": "0.1.83",
+    "version": "0.1.86",
     "engines": {
         "vscode": "^1.100.0"
     },
@@ -92,37 +92,37 @@
     "contributes": {
         "commands": [
             {
-                "command": "ccpSatellite.saveCheckedState",
+                "command": "ccp.saveCheckedState",
                 "title": "CCP: Save Checked State",
                 "category": "Context Cherry Picker",
                 "icon": "$(save)"
             },
             {
-                "command": "ccpSatellite.refreshExplorer",
+                "command": "ccp.refreshExplorer",
                 "title": "CCP: Refresh Explorer",
                 "category": "Context Cherry Picker",
                 "icon": "$(refresh)"
             },
             {
-                "command": "ccpSatellite.deleteSavedState",
+                "command": "ccp.deleteSavedState",
                 "title": "CCP: Delete Saved State",
                 "category": "Context Cherry Picker",
                 "icon": "$(trash)"
             },
             {
-                "command": "ccpSatellite.loadSavedState",
+                "command": "ccp.loadSavedState",
                 "title": "CCP: Load Saved State",
                 "category": "Context Cherry Picker",
                 "icon": "$(bookmark)"
             },
             {
-                "command": "ccpSatellite.clearAllCheckedInExplorer",
+                "command": "ccp.clearAllCheckedInExplorer",
                 "title": "CCP: Clear All Checked Items",
                 "category": "Context Cherry Picker",
                 "icon": "$(clear-all)"
             },
             {
-                "command": "ccpSatellite.copyContextOfCheckedItems",
+                "command": "ccp.copyContextOfCheckedItems",
                 "title": "CCP: Copy Context of Checked Items",
                 "category": "Context Cherry Picker",
                 "icon": "$(clippy)"
@@ -140,19 +140,19 @@
         "views": {
             "CCP": [
                 {
-                    "id": "ccpSatellite.quickSettingsView",
+                    "id": "ccp.quickSettingsView",
                     "name": "Quick Settings",
                     "type": "webview",
                     "icon": "$(settings-gear)"
                 },
                 {
-                    "id": "ccpSatellite.explorerView",
+                    "id": "ccp.explorerView",
                     "name": "Context Explorer",
                     "type": "tree",
                     "icon": "$(files)"
                 },
                 {
-                    "id": "ccpSatellite.savedStatesView",
+                    "id": "ccp.savedStatesView",
                     "name": "Saved States",
                     "type": "tree",
                     "icon": "$(save-all)"
@@ -162,35 +162,35 @@
         "menus": {
             "view/title": [
                 {
-                    "command": "ccpSatellite.copyContextOfCheckedItems",
-                    "when": "view == ccpSatellite.explorerView",
+                    "command": "ccp.copyContextOfCheckedItems",
+                    "when": "view == ccp.explorerView",
                     "group": "navigation@1"
                 },
                 {
-                    "command": "ccpSatellite.saveCheckedState",
-                    "when": "view == ccpSatellite.explorerView",
+                    "command": "ccp.saveCheckedState",
+                    "when": "view == ccp.explorerView",
                     "group": "navigation@2"
                 },
                 {
-                    "command": "ccpSatellite.clearAllCheckedInExplorer",
-                    "when": "view == ccpSatellite.explorerView",
+                    "command": "ccp.clearAllCheckedInExplorer",
+                    "when": "view == ccp.explorerView",
                     "group": "navigation@3"
                 },
                 {
-                    "command": "ccpSatellite.refreshExplorer",
-                    "when": "view == ccpSatellite.explorerView",
+                    "command": "ccp.refreshExplorer",
+                    "when": "view == ccp.explorerView",
                     "group": "navigation@4"
                 }
             ],
             "view/item/context": [
                 {
-                    "command": "ccpSatellite.loadSavedState",
-                    "when": "view == ccpSatellite.savedStatesView && viewItem == savedStateEntry",
+                    "command": "ccp.loadSavedState",
+                    "when": "view == ccp.savedStatesView && viewItem == savedStateEntry",
                     "group": "inline@1"
                 },
                 {
-                    "command": "ccpSatellite.deleteSavedState",
-                    "when": "view == ccpSatellite.savedStatesView && viewItem == savedStateEntry",
+                    "command": "ccp.deleteSavedState",
+                    "when": "view == ccp.savedStatesView && viewItem == savedStateEntry",
                     "group": "inline@2"
                 }
             ]
@@ -198,7 +198,7 @@
         "configuration": {
             "title": "Context Cherry Picker Satellite",
             "properties": {
-                "ccpSatellite.ignoreGlobs": {
+                "ccp.ignoreGlobs": {
                     "type": "array",
                     "default": [
                         "**/node_modules/**",
@@ -208,49 +208,49 @@
                         "**/out/**",
                         "**/*.log"
                     ],
-                    "description": "Glob patterns for files/folders to completely ignore in the explorer view and processing. Overridden by .ccpSatelliteConfig.yaml if present.",
+                    "description": "Glob patterns for files/folders to completely ignore in the explorer view and processing. Overridden by .ccpConfig.yaml if present.",
                     "items": {
                         "type": "string"
                     },
                     "scope": "resource"
                 },
-                "ccpSatellite.projectTreeDisplay.alwaysHideGlobs": {
+                "ccp.projectTreeDisplay.alwaysHideGlobs": {
                     "type": "array",
                     "default": [],
-                    "description": "Glob patterns for items to NEVER show in the generated <project_tree>, even if checked. Overridden by .ccpSatelliteConfig.yaml if present.",
+                    "description": "Glob patterns for items to NEVER show in the generated <project_tree>, even if checked. Overridden by .ccpConfig.yaml if present.",
                     "items": {
                         "type": "string"
                     },
                     "scope": "resource"
                 },
-                "ccpSatellite.projectTreeDisplay.showIfSelectedGlobs": {
+                "ccp.projectTreeDisplay.showIfSelectedGlobs": {
                     "type": "array",
                     "default": [],
-                    "description": "If populated, ONLY checked items matching these globs (and not in 'alwaysHideGlobs') appear in <project_tree>. If empty, all checked items (not in 'alwaysHideGlobs') are candidates. Overridden by .ccpSatelliteConfig.yaml if present.",
+                    "description": "If populated, ONLY checked items matching these globs (and not in 'alwaysHideGlobs') appear in <project_tree>. If empty, all checked items (not in 'alwaysHideGlobs') are candidates. Overridden by .ccpConfig.yaml if present.",
                     "items": {
                         "type": "string"
                     },
                     "scope": "resource"
                 },
-                "ccpSatellite.directoryContentDisplay.showDirHideContentsGlobs": {
+                "ccp.directoryContentDisplay.showDirHideContentsGlobs": {
                     "type": "array",
                     "default": [],
-                    "description": "Glob patterns for directories whose node IS visible in the UI, but contents are hidden (non-expandable). Path appears in <project_tree> if checked. Overridden by .ccpSatelliteConfig.yaml if present.",
+                    "description": "Glob patterns for directories whose node IS visible in the UI, but contents are hidden (non-expandable). Path appears in <project_tree> if checked. Overridden by .ccpConfig.yaml if present.",
                     "items": {
                         "type": "string"
                     },
                     "scope": "resource"
                 },
-                "ccpSatellite.directoryContentDisplay.hideDirAndContentsGlobs": {
+                "ccp.directoryContentDisplay.hideDirAndContentsGlobs": {
                     "type": "array",
                     "default": [],
-                    "description": "Glob patterns for directories whose node AND contents are HIDDEN from the UI. Overridden by .ccpSatelliteConfig.yaml if present.",
+                    "description": "Glob patterns for directories whose node AND contents are HIDDEN from the UI. Overridden by .ccpConfig.yaml if present.",
                     "items": {
                         "type": "string"
                     },
                     "scope": "resource"
                 },
-                "ccpSatellite.google.apiKey": {
+                "ccp.google.apiKey": {
                     "type": "string",
                     "default": "",
                     "description": "API Key for Google Generative AI services (e.g., for token counting).",

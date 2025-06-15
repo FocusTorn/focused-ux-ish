@@ -1,7 +1,7 @@
-import 'reflect-metadata';
 // ESLint & Imports -->>
 
 //= TSYRINGE ==================================================================================================
+import 'reflect-metadata'
 import { container } from 'tsyringe'
 
 //= VSCODE TYPES & MOCKED INTERNALS ===========================================================================
@@ -13,12 +13,14 @@ import { registerCCP_Dependencies } from './injection.js'
 import type { IContextCherryPickerManager } from './_interfaces/IContextCherryPickerManager.ts'
 import { constants } from './_config/constants.js'
 import type { SavedStateItem } from './models/SavedStateItem.ts'
-import type { IFileExplorerDataProvider } from './_interfaces/IFileExplorerDataProvider.ts' // For dispose
+import type { IFileExplorerDataProvider } from './_interfaces/IFileExplorerDataProvider.ts'
 
 //--------------------------------------------------------------------------------------------------------------<<
 
-// Store disposables that need to be cleaned up on deactivation
-const extensionDisposables: Disposable[] = [];
+const extensionDisposables: Disposable[] = []
+
+// TODO Implement Add, Remove and Replace to the saved state.
+
 
 export async function activate(context: ExtensionContext): Promise<void> { //>
 	console.log(`[${constants.extension.name}] Activating...`)
@@ -26,11 +28,10 @@ export async function activate(context: ExtensionContext): Promise<void> { //>
 	registerCCP_Dependencies(context)
 
 	const ccpManager = container.resolve<IContextCherryPickerManager>('IContextCherryPickerManager')
-	const fileExplorerDataProvider = container.resolve<IFileExplorerDataProvider>('IFileExplorerDataProvider');
+	const fileExplorerDataProvider = container.resolve<IFileExplorerDataProvider>('IFileExplorerDataProvider')
 
-	// Add the provider to disposables if it implements Disposable
 	if (typeof (fileExplorerDataProvider as any).dispose === 'function') {
-		extensionDisposables.push(fileExplorerDataProvider as unknown as Disposable);
+		extensionDisposables.push(fileExplorerDataProvider as unknown as Disposable)
 	}
 
 	try {
@@ -40,7 +41,8 @@ export async function activate(context: ExtensionContext): Promise<void> { //>
 			constants.views.contextCherryPicker.quickSettings,
 		)
 		console.log(`[${constants.extension.name}] Views initialized.`)
-	} catch (error) {
+	}
+	catch (error) {
 		console.error(`[${constants.extension.name}] Error initializing views:`, error)
 		vscode.window.showErrorMessage(`[${constants.extension.name}] Failed to initialize views. See console for details.`)
 	}
@@ -72,8 +74,8 @@ export async function activate(context: ExtensionContext): Promise<void> { //>
 		),
 	]
 
-	context.subscriptions.push(...commandDisposables);
-	extensionDisposables.push(...commandDisposables); // Also add command disposables to our local list
+	context.subscriptions.push(...commandDisposables)
+	extensionDisposables.push(...commandDisposables)
 
 	console.log(`[${constants.extension.name}] Activated and commands registered.`)
 } //<
@@ -82,11 +84,12 @@ export function deactivate(): void { //>
 	console.log(`[${constants.extension.name}] Deactivating...`)
 	for (const disposable of extensionDisposables) {
 		try {
-			disposable.dispose();
-		} catch (e) {
-			console.error(`[${constants.extension.name}] Error disposing resource:`, e);
+			disposable.dispose()
+		}
+		catch (e) {
+			console.error(`[${constants.extension.name}] Error disposing resource:`, e)
 		}
 	}
-	extensionDisposables.length = 0; // Clear the array
+	extensionDisposables.length = 0
 	console.log(`[${constants.extension.name}] Deactivated and resources disposed.`)
 } //<

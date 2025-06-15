@@ -1,7 +1,7 @@
 export const dynamiconsConstants = { //>
 	featureName: 'Dynamicons',
 	packageNameCore: '@focused-ux/dynamicons-core',
-	packageNameExt: 'focused-ux-dynamicons',
+	packageNameExt: 'fux-dynamicons',
 	configPrefix: 'dynamicons',
 	iconThemeId: 'dynamicons-theme',
 	commands: {
