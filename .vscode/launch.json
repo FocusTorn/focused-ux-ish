@@ -33,6 +33,11 @@
 			],
 			"sourceMaps": true,
             "preLaunchTask": "Build Dynamicons Packages"
+            
+            
+            
+            
+            
 		}, //<
         
         { "name": "Context Cherry Picker", //>

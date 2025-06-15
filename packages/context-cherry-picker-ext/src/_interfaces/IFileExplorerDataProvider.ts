@@ -26,4 +26,7 @@ export interface IFileExplorerDataProvider extends TreeDataProvider<FileExplorer
 
 	getContextExplorerIgnoreGlobs: () => string[]
 	getContextExplorerHideChildrenGlobs: () => string[]
+	
+	showStatusMessage: (message: string, duration: number) => void
+
 } //<

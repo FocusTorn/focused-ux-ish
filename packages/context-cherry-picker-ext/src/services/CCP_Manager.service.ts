@@ -122,11 +122,19 @@ export class ContextCherryPickerManager implements IContextCherryPickerManager {
 			await this._storageService.saveState(stateName, itemsToSave)
 			this._savedStatesDataProvider.refresh()
             
-            
+			// // Toast message
 			// this._window.showInformationMessage(`State '${stateName}' saved.`);
-			// this._setExplorerMessage(`$(save) State '${stateName}' saved.`, 5000)
-            this._setExplorerDescription(`$(save) State '${stateName}' saved.`, 5000);
             
+			// // Drop down bar under the title
+			// this._setExplorerMessage(`💾 State '${stateName}' saved.`, 5000)🏷️
+            
+			// // Dim text next to the title
+			// this._setExplorerDescription(`$(save) State '${stateName}' saved.`, 5000)
+            
+			// // Replace the tree for a bit with the status message
+			// this._fileExplorerDataProvider.showStatusMessage(`$(save) State '${stateName}' saved.`, 5000);
+            
+            this.showStatusMessage('drop', `💾 State '${stateName}' saved.`)
 		}
 	} //<
 
@@ -143,6 +151,7 @@ export class ContextCherryPickerManager implements IContextCherryPickerManager {
 
 	public async refreshExplorerView(): Promise<void> { //>
 		await this._fileExplorerDataProvider.refresh()
+
 	} //<
 
 	public async deleteSavedState(stateItem: SavedStateItem): Promise<void> { //>
@@ -280,8 +289,9 @@ export class ContextCherryPickerManager implements IContextCherryPickerManager {
 		}
 		else {
 			await vscode.env.clipboard.writeText(finalOutput)
-			// this._window.showInformationMessage(`Context (approx. ${totalTokens} tokens) copied.`);
-			this._setExplorerMessage(`Context copied (~${totalTokens} tokens)`, 5000)
+            
+            this.showStatusMessage('drop', `📋 Context copied (~${totalTokens} tokens)`, 1000)
+
 		}
 	} //<
 
@@ -289,44 +299,68 @@ export class ContextCherryPickerManager implements IContextCherryPickerManager {
 		return this._quickSettingsDataProvider.getSettingState(settingId)
 	} //<
     
+    
+	/**
+	 * Displays a status message to the user using one of several UI methods.
+	 * @param type The type of notification to show:
+	 * - 'vsc': A standard VS Code information pop-up message.
+	 * - 'drop': A message that appears below the view title.
+	 * - 'desc': A message that appears next to the view title.
+	 * - 'replace': Temporarily replaces the tree view's content with the message.
+	 * @param message The message content to display.
+	 * @param duration The time in milliseconds to display the message. Not applicable for 'vsc'.
+	 */    
+	public showStatusMessage( //>
+		type: 'vsc' | 'drop' | 'desc' | 'replace',
+		message: string,
+		duration: number = 1250,
+	): void {
+		switch (type) {
+			case 'vsc':
+				this._window.showInformationMessage(message)
+				break
+			case 'drop':
+				this._setExplorerMessage(message, duration)
+				break
+			case 'desc':
+				this._setExplorerDescription(message, duration)
+				break
+			case 'replace':
+				this._fileExplorerDataProvider.showStatusMessage(message, duration)
+				break
+			default:
+				// Fallback to the most prominent type
+				this._window.showInformationMessage(message)
+				break
+		}
+	} //<
+
 	private _setExplorerMessage(message: string, duration?: number): void { //>
 		if (!this._explorerView) {
 			return
 		}
-
-		// Set the temporary message
 		this._explorerView.message = message
-
-		// If a duration is provided, set a timer to clear the message
 		if (duration) {
 			setTimeout(() => {
-				// Check if the view still exists and if the message hasn't been changed
-				// by another call in the meantime.
 				if (this._explorerView && this._explorerView.message === message) {
-					this._explorerView.message = undefined // Or set a default message
+					this._explorerView.message = undefined
 				}
 			}, duration)
 		}
 	} //<
-    
-    private _setExplorerDescription(message: string, duration?: number): void { //>
+
+	private _setExplorerDescription(message: string, duration?: number): void { //>
 		if (!this._explorerView) {
-			return;
+			return
 		}
-
-		// Set the temporary description
-		this._explorerView.description = message;
-
-		// If a duration is provided, set a timer to clear it
+		this._explorerView.description = message
 		if (duration) {
 			setTimeout(() => {
 				if (this._explorerView && this._explorerView.description === message) {
-					this._explorerView.description = ''; // Revert to empty
+					this._explorerView.description = ''
 				}
-			}, duration);
+			}, duration)
 		}
 	} //<
-    
-    
     
 }

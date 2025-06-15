@@ -4,8 +4,9 @@
 import { inject, injectable } from 'tsyringe'
 
 //= VSCODE TYPES & MOCKED INTERNALS ===========================================================================
-import { EventEmitter, FileType as VsCodeFileTypeEnum, TreeItemCheckboxState, Uri, TreeItemCollapsibleState } from 'vscode'
-import type { Event, TreeItem, TreeItemLabel, FileSystemError, ConfigurationChangeEvent, FileSystemWatcher, Disposable } from 'vscode' // Added Disposable
+import { EventEmitter, FileType as VsCodeFileTypeEnum, TreeItemCheckboxState, Uri, TreeItemCollapsibleState, ThemeIcon } from 'vscode'
+import type { Event, TreeItemLabel, FileSystemError, ConfigurationChangeEvent, FileSystemWatcher, Disposable } from 'vscode'
+import { TreeItem } from 'vscode'
 
 //= NODE JS ===================================================================================================
 import { Buffer } from 'node:buffer'
@@ -48,7 +49,7 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider, Disp
 	private checkboxStates: Map<string, TreeItemCheckboxState> = new Map()
 	private fileWatcher: FileSystemWatcher | undefined
 	private isInitialized = false
-	private configChangeListener: Disposable | undefined;
+	private configChangeListener: Disposable | undefined
 
 	// Configuration properties
 	private globalIgnoreGlobs: string[] = []
@@ -110,7 +111,8 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider, Disp
 			for (const key of yamlPath) {
 				if (currentLevel && typeof currentLevel === 'object' && Object.prototype.hasOwnProperty.call(currentLevel, key)) {
 					currentLevel = currentLevel[key]
-				} else {
+				}
+				else {
 					currentLevel = undefined
 					break
 				}
@@ -122,7 +124,8 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider, Disp
 
 		if (patterns !== undefined) {
 			return patterns
-		} else {
+		}
+		else {
 			const vsCodePatterns = this.workspaceAdapter.getConfiguration(constants.extension.configKey).get<string[]>(vscodeSettingKey.substring(constants.extension.configKey.length + 1))
 
 			return vsCodePatterns || defaultValue
@@ -142,12 +145,14 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider, Disp
 				const yamlContent = Buffer.from(fileContents).toString('utf-8')
 
 				parsedYamlConfig = yaml.load(yamlContent) as ProjectYamlConfig
-			} catch (_error: any) {
+			}
+			catch (_error: any) {
 				const fsError = _error as FileSystemError
 
 				if (fsError && typeof fsError.code === 'string' && fsError.code === 'FileNotFound') {
 					// console.log(`[${constants.extension.name}] No '${constants.projectConfig.fileName}' found. Using VS Code settings for all patterns.`);
-				} else {
+				}
+				else {
 					console.warn(`[${constants.extension.name}] Error reading or parsing '${constants.projectConfig.fileName}': ${(_error instanceof Error ? _error.message : String(_error))}. Falling back to VS Code settings.`)
 				}
 			}
@@ -204,6 +209,15 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider, Disp
 	} //<
 
 	async getChildren(element?: FileExplorerItem): Promise<FileExplorerItem[]> { //>
+		// If a status message is active, show only that.
+		if (!element && this._statusMessage) {
+			const statusItem = new TreeItem(this._statusMessage, TreeItemCollapsibleState.None)
+
+			// The ThemeIcon constructor is what correctly renders the Codicon
+			statusItem.iconPath = new ThemeIcon('check') // Use a generic icon or pass one in
+			return [statusItem as FileExplorerItem] // Cast to satisfy the return type
+		}
+
 		if (!this.isInitialized) {
 			await this.loadConfigurationPatterns()
 			this.isInitialized = true
@@ -240,7 +254,8 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider, Disp
 				}
 				children.push(new FileExplorerItem(childUri, name, type, this.getCheckboxState(childUri) || TreeItemCheckboxState.Unchecked, undefined, collapsibleStateOverride))
 			}
-		} catch (_error: any) {
+		}
+		catch (_error: any) {
 			console.error(`[${constants.extension.name}] Error reading directory ${sourceUri.fsPath}:`, _error)
 			this.windowAdapter.showErrorMessage(`Error reading directory: ${(element?.label as TreeItemLabel)?.label || (element?.label as string) || sourceUri.fsPath}`)
 		}
@@ -261,6 +276,11 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider, Disp
 	} //<
 
 	getTreeItem(element: FileExplorerItem): TreeItem { //>
+		// Type guard to handle our special status message item, which is not a FileExplorerItem instance.
+		if (!(element instanceof FileExplorerItem)) {
+			return element;
+		}
+
 		const currentState = this.getCheckboxState(element.uri)
 
 		element.checkboxState = currentState === undefined ? TreeItemCheckboxState.Unchecked : currentState
@@ -270,7 +290,7 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider, Disp
 		}
 		return element
 	} //<
-
+    
 	async refresh(): Promise<void> { //>
 		await this.loadConfigurationPatterns() // Ensure patterns are reloaded
 		this._onDidChangeTreeData.fire()
@@ -315,7 +335,8 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider, Disp
 					if (!this.isUriHiddenForProviderUi(uri)) {
 						checkedUris.push(uri)
 					}
-				} catch (_error: any) {
+				}
+				catch (_error: any) {
 					console.error(`[${constants.extension.name}] Error parsing URI string in getAllCheckedItems: ${uriString}`, _error)
 				}
 			}
@@ -364,14 +385,28 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider, Disp
 	// └──────────────────────────────────────────────────────────────────────────────────────────────────┘
 
 	public dispose(): void { //>
-		this._onDidChangeTreeData.dispose();
+		this._onDidChangeTreeData.dispose()
 		if (this.fileWatcher) {
-			this.fileWatcher.dispose();
+			this.fileWatcher.dispose()
 		}
 		if (this.configChangeListener) {
-			this.configChangeListener.dispose();
+			this.configChangeListener.dispose()
 		}
-		console.log(`[${constants.extension.name}] FileExplorerDataProvider disposed.`);
+		console.log(`[${constants.extension.name}] FileExplorerDataProvider disposed.`)
+	} //<
+    
+	private _statusMessage: string | undefined
+
+	public showStatusMessage(message: string, duration: number): void { //>
+		this._statusMessage = message
+		this._onDidChangeTreeData.fire()
+
+		setTimeout(() => {
+			if (this._statusMessage === message) {
+				this._statusMessage = undefined
+				this._onDidChangeTreeData.fire()
+			}
+		}, duration)
 	} //<
 
 }
