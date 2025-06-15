@@ -1,54 +1,46 @@
 
-#  "files": [
-#         "dist/",
-#         "assets/",
-#         "LICENSE.txt",
-#         "README.md",
-#         "CHANGELOG.md",
-#         "node_modules/"
-#     ],
+# # Exclude everything
+# **/*
+
+
+# #= Explicitly include what MUST be in the VSIX ====================================================== 
+# !package.json
+# # !package.nls*.json
+# !dist/**
+# !assets/**
+
+# !LICENSE.txt
+# !README.md
+# !CHANGELOG.md
+
+# # src/**
+# # test/**
+# # coverage/**
+# # packed/**
+# # vsce_stage/**
+# # package-vsix.js
+# # *.tsbuildinfo
+# # *.log
+# # .yalc/**
+# # .turbo/**
+# # .git/**
+# # .vscode/** 
+# # tsconfig.json
+# # yalc.lock
+# # tsconfig.json
+# # extension.js.map
 
 
 
+# 1. Ignore all files by default. This is the base rule.
 
-
-#= Explicitly include what MUST be in the VSIX ====================================================== 
-!package.json
-# !package.nls*.json
-!dist/**
+# 2. Re-include the directories and root files necessary for the extension to run.
+# The '!' character negates the previous **/* rule for these specific patterns.
+!dist/extension.js
 !assets/**
-
+!package.json
 !LICENSE.txt
 !README.md
 !CHANGELOG.md
 
-
-
-
-# Exclude everything
 **/*
-
-
-
-
-#= Explicitly exclude what should NOT be in the VSIX, even if covered above ========================= 
-src/**
-test/**
-coverage/**
-packed/**
-vsce_stage/**
-package-vsix.js
-*.tsbuildinfo
-*.log
-.yalc/**
-.turbo/**
-.git/**
-.vscode/** 
-tsconfig.json
-yalc.lock
-tsconfig.json
-extension.js.map
-
-
-
-
