@@ -3,9 +3,6 @@
 //= TSYRINGE ==================================================================================================
 import { inject, injectable } from 'tsyringe'
 
-//= MISC ======================================================================================================
-import { encode } from 'gpt-tokenizer'
-
 //= IMPLEMENTATION TYPES ======================================================================================
 import type { ICommonUtilsService } from '../_interfaces/ICommonUtilsService.js'
 
@@ -41,21 +38,4 @@ export class CommonUtilsService implements ICommonUtilsService { //>
 		}
 	} //<
 
-	public calculateTokens( //>
-		text: string,
-	): number {
-		if (!text) {
-			return 0
-		}
-		try {
-			return encode(text).length
-		} catch (error) {
-			console.error(
-				'[CommonUtilsService] Error using gpt-tokenizer for local token calculation:',
-				error,
-			)
-			return Math.ceil(text.length / 4)
-		}
-	} //<
-
-} // <
+}

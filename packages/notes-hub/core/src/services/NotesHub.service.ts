@@ -42,9 +42,9 @@ import { INotesHubItem } from 'src/_interfaces/INotesHubItem.js'
 
 const ALLOWED_EXTENSIONS_NOTES_HUB = ['.md', '.txt', '.txte']
 
-interface ConfirmMessageItem extends MessageItem {
+interface ConfirmMessageItem extends MessageItem { //>
 	choice: string
-}
+} //<
 
 @injectable()
 export class NotesHubService implements INotesHubService {
@@ -53,10 +53,10 @@ export class NotesHubService implements INotesHubService {
 	private remoteNotesProvider?: RemoteNotesDataProvider
 	private globalNotesProvider?: GlobalNotesDataProvider
 	private disposables: Disposable[] = []
-    private configPrefix: string = 'nh' // Default prefix
-    private commandPrefix: string = 'nh' // Default prefix
+    private configPrefix: string = 'nh'
+    private commandPrefix: string = 'nh'
 
-	constructor(
+	constructor( //>
 		@inject('ExtensionContext') private readonly iContext: ExtensionContext,
 		@inject('IWindow') private readonly iWindow: IWindow,
 		@inject('IWorkspace') private readonly iWorkspace: IWorkspace,
@@ -78,9 +78,10 @@ export class NotesHubService implements INotesHubService {
 		@inject('iFspRename') private readonly iFspRename: typeof fspRenameType,
 		@inject('iFspCopyFile') private readonly iFspCopyFile: typeof fspCopyFileType,
 		@inject('vscodeFileType') private readonly iFileTypeEnum: typeof VsCodeFileTypeEnum,
-	) {}
+	) {} //<
 
-	public async initializeNotesHub(configPrefix: string = 'nh', commandPrefix: string = 'nh'): Promise<void> {
+	public async initializeNotesHub( //>
+        configPrefix: string = 'nh', commandPrefix: string = 'nh'): Promise<void> {
         this.configPrefix = configPrefix
         this.commandPrefix = commandPrefix
 
@@ -128,24 +129,24 @@ export class NotesHubService implements INotesHubService {
 			}
 		})
 		this.disposables.push(configWatcher)
-	}
+	} //<
 
-	private disposeProviders(): void {
+	private disposeProviders(): void { //>
 		this.projectNotesProvider?.dispose()
 		this.remoteNotesProvider?.dispose()
 		this.globalNotesProvider?.dispose()
 		this.projectNotesProvider = undefined
 		this.remoteNotesProvider = undefined
 		this.globalNotesProvider = undefined
-	}
+	} //<
 
-	public dispose(): void {
+	public dispose(): void { //>
 		this.disposeProviders()
 		this.disposables.forEach(d => d.dispose())
 		this.disposables = []
-	}
+	} //<
 
-	public getNotesHubConfig(): {
+	public getNotesHubConfig(): { //>
 		projectNotesPath: string
 		remoteNotesPath: string
 		globalNotesPath: string
@@ -168,10 +169,14 @@ export class NotesHubService implements INotesHubService {
 					else if (primaryName || workspaceName) {
 						projectDirName = primaryName || workspaceName!
 					}
-					configuredPath = this.iPathJoin(this.iOsHomedir(), '.fux-notes', 'project', projectDirName)
+                    
+					configuredPath = this.iPathJoin(this.iOsHomedir(), '.fux_note-hub', 'project', projectDirName)
+                    
 				}
 				else {
-					configuredPath = this.iPathJoin(this.iOsHomedir(), '.fux-notes', defaultSubPath)
+                    
+					configuredPath = this.iPathJoin(this.iOsHomedir(), '.fux_note-hub', defaultSubPath)
+                    
 				}
 			}
 			else if (configuredPath.startsWith('~')) {
@@ -200,9 +205,10 @@ export class NotesHubService implements INotesHubService {
 			isRemoteNotesEnabled,
 			isGlobalNotesEnabled,
 		}
-	}
+	} //<
 
-	public async getProviderForNote(item: INotesHubItem): Promise<INotesHubDataProvider | undefined> {
+	public async getProviderForNote(
+        item: INotesHubItem): Promise<INotesHubDataProvider | undefined> {
 		const config = this.getNotesHubConfig()
 		const sanitizedFilePath = this.iPathUtils.santizePath(item.filePath)
 
@@ -217,9 +223,9 @@ export class NotesHubService implements INotesHubService {
 		}
 		this.iCommonUtils.errMsg(`Could not determine provider for item: ${item.filePath}`)
 		return undefined
-	}
+	} //<
 
-	public refreshProviders(
+	public refreshProviders( //>
 		providersToRefresh?: 'project' | 'remote' | 'global' | 'all' | Array<'project' | 'remote' | 'global'>,
 	): void {
 		const targets = Array.isArray(providersToRefresh)
@@ -235,9 +241,10 @@ export class NotesHubService implements INotesHubService {
 				case 'global': this.globalNotesProvider?.refresh(); break
 			}
 		}
-	}
+	} //<
 
-	public async revealNotesHubItem(provider: INotesHubDataProvider, item: INotesHubItem, select: boolean = false): Promise<void> {
+	public async revealNotesHubItem( //>
+        provider: INotesHubDataProvider, item: INotesHubItem, select: boolean = false): Promise<void> {
 		try {
 			if (!provider.treeView) {
 				this.iCommonUtils.errMsg(`Tree view not found for provider: ${provider.providerName}`)
@@ -256,9 +263,10 @@ export class NotesHubService implements INotesHubService {
 		catch (error) {
 			this.iCommonUtils.errMsg('Error revealing item in Notes Hub', error)
 		}
-	}
+	} //<
 
-	public async openNote(noteItem: INotesHubItem): Promise<void> {
+	public async openNote( //>
+        noteItem: INotesHubItem): Promise<void> {
 		if (!noteItem?.resourceUri) {
 			this.iCommonUtils.errMsg('Could not open note: Invalid resource URI.')
 			return
@@ -270,9 +278,10 @@ export class NotesHubService implements INotesHubService {
 		catch (error) {
 			this.iCommonUtils.errMsg(`Failed to open note: ${typeof noteItem.label === 'string' ? noteItem.label : noteItem.label?.label}`, error)
 		}
-	}
+	} //<
 
-	public async renameItem(item: INotesHubItem): Promise<void> {
+	public async renameItem( //>
+        item: INotesHubItem): Promise<void> {
 		const oldUri = item?.resourceUri
 		if (!oldUri) {
 			this.iCommonUtils.errMsg('Cannot rename item: Invalid URI.')
@@ -313,9 +322,10 @@ export class NotesHubService implements INotesHubService {
 		catch (error) {
 			this.iCommonUtils.errMsg(`Failed to rename item '${oldName}'`, error)
 		}
-	}
+	} //<
 
-	public async addFrontmatter(noteItem: INotesHubItem): Promise<void> {
+	public async addFrontmatter( //>
+        noteItem: INotesHubItem): Promise<void> {
 		if (!noteItem?.resourceUri || noteItem.isDirectory) {
 			this.iCommonUtils.errMsg('Cannot add frontmatter: Invalid item or not a file.')
 			return
@@ -340,9 +350,10 @@ export class NotesHubService implements INotesHubService {
 		catch (error) {
 			this.iCommonUtils.errMsg('Error adding frontmatter', error)
 		}
-	}
+	} //<
 
-	public async openNotePreview(noteItem: INotesHubItem): Promise<void> {
+	public async openNotePreview( //>
+        noteItem: INotesHubItem): Promise<void> {
 		if (!noteItem?.resourceUri || noteItem.isDirectory) {
 			this.iCommonUtils.errMsg('Cannot open preview: Invalid item or not a file.')
 			return
@@ -353,9 +364,10 @@ export class NotesHubService implements INotesHubService {
 		catch (error) {
 			this.iCommonUtils.errMsg('Failed to open note preview.', error)
 		}
-	}
+	} //<
 
-	public async deleteItem(item: INotesHubItem): Promise<void> {
+	public async deleteItem( //>
+        item: INotesHubItem): Promise<void> {
 		const resourceUri = item?.resourceUri
 		if (!resourceUri) {
 			this.iCommonUtils.errMsg('Could not delete item: Invalid resource URI.')
@@ -375,9 +387,10 @@ export class NotesHubService implements INotesHubService {
 		catch (error) {
 			this.iCommonUtils.errMsg(`Failed to delete item '${itemName}'`, error)
 		}
-	}
+	} //<
 
-	public async copyItem(item: INotesHubItem): Promise<void> {
+	public async copyItem( //>
+        item: INotesHubItem): Promise<void> {
 		if (!item?.resourceUri) {
 			this.iCommonUtils.errMsg('Cannot copy item: Invalid item or URI.')
 			return
@@ -386,9 +399,10 @@ export class NotesHubService implements INotesHubService {
 		await this.iContext.globalState.update(`${this.configPrefix}.${notesHubConstants.storageKeys.OPERATION}`, 'copy')
 		VsCodeCommands.executeCommand('setContext', `${this.configPrefix}.${notesHubConstants.contextKeys.CAN_PASTE}`, true)
 		this.iWindow.showInformationMessage(`'${item.fileName}' copied.`)
-	}
+	} //<
 
-	public async cutItem(item: INotesHubItem): Promise<void> {
+	public async cutItem( //>
+        item: INotesHubItem): Promise<void> {
 		if (!item?.resourceUri) {
 			this.iCommonUtils.errMsg('Cannot cut item: Invalid item or URI.')
 			return
@@ -397,9 +411,10 @@ export class NotesHubService implements INotesHubService {
 		await this.iContext.globalState.update(`${this.configPrefix}.${notesHubConstants.storageKeys.OPERATION}`, 'cut')
 		VsCodeCommands.executeCommand('setContext', `${this.configPrefix}.${notesHubConstants.contextKeys.CAN_PASTE}`, true)
 		this.iWindow.showInformationMessage(`'${item.fileName}' cut.`)
-	}
+	} //<
 
-	public async pasteItem(targetFolderItem: INotesHubItem): Promise<void> {
+	public async pasteItem( //>
+        targetFolderItem: INotesHubItem): Promise<void> {
 		if (!targetFolderItem?.isDirectory || !targetFolderItem.resourceUri) {
 			this.iCommonUtils.errMsg('Cannot paste item: Target is not a valid folder.')
 			return
@@ -468,9 +483,10 @@ export class NotesHubService implements INotesHubService {
 		catch (err) {
 			this.iCommonUtils.errMsg(`Failed to ${operationName.toLowerCase()} item`, err)
 		}
-	}
+	} //<
 
-	public async newNoteInFolder(targetFolderItem: INotesHubItem): Promise<void> {
+	public async newNoteInFolder( //>
+        targetFolderItem: INotesHubItem): Promise<void> {
 		if (!targetFolderItem?.isDirectory || !targetFolderItem.resourceUri) {
 			this.iCommonUtils.errMsg('This command can only be used on a valid folder.')
 			return
@@ -503,9 +519,10 @@ export class NotesHubService implements INotesHubService {
 		catch (error) {
 			this.iCommonUtils.errMsg('Failed to create new note', error)
 		}
-	}
+	} //<
 
-	public async newFolderInFolder(targetFolderItem: INotesHubItem): Promise<void> {
+	public async newFolderInFolder( //>
+        targetFolderItem: INotesHubItem): Promise<void> {
 		if (!targetFolderItem?.isDirectory || !targetFolderItem.resourceUri) {
 			this.iCommonUtils.errMsg('This command can only be used on a valid folder.')
 			return
@@ -542,9 +559,9 @@ export class NotesHubService implements INotesHubService {
 		catch (error) {
 			this.iCommonUtils.errMsg(`Failed to create folder '${newFolderName}'`, error)
 		}
-	}
+	} //<
 
-	public async newNoteAtRoot(providerName: 'project' | 'remote' | 'global'): Promise<void> {
+	public async newNoteAtRoot(providerName: 'project' | 'remote' | 'global'): Promise<void> { //>
 		const provider = this.getProviderInstance(providerName)
 		if (!provider) {
 			this.iCommonUtils.errMsg(`Notes Hub provider '${providerName}' is not enabled or available.`)
@@ -552,9 +569,9 @@ export class NotesHubService implements INotesHubService {
 		}
 		const rootItem = new NotesHubItem(this.iPathBasename(provider.notesDir), provider.notesDir, true)
 		await this.newNoteInFolder(rootItem)
-	}
+	} //<
 
-	public async newFolderAtRoot(providerName: 'project' | 'remote' | 'global'): Promise<void> {
+	public async newFolderAtRoot(providerName: 'project' | 'remote' | 'global'): Promise<void> { //>
 		const provider = this.getProviderInstance(providerName)
 		if (!provider) {
 			this.iCommonUtils.errMsg(`Notes Hub provider '${providerName}' is not enabled or available.`)
@@ -562,18 +579,18 @@ export class NotesHubService implements INotesHubService {
 		}
 		const rootItem = new NotesHubItem(this.iPathBasename(provider.notesDir), provider.notesDir, true)
 		await this.newFolderInFolder(rootItem)
-	}
+	} //<
 
-	private getProviderInstance(providerName: 'project' | 'remote' | 'global'): INotesHubDataProvider | undefined {
+	private getProviderInstance(providerName: 'project' | 'remote' | 'global'): INotesHubDataProvider | undefined { //>
 		switch (providerName) {
 			case 'project': return this.projectNotesProvider
 			case 'remote': return this.remoteNotesProvider
 			case 'global': return this.globalNotesProvider
 			default: return undefined
 		}
-	}
+	} //<
 
-	private async createDirectoryIfNeeded(dirPath: string): Promise<void> {
+	private async createDirectoryIfNeeded(dirPath: string): Promise<void> { //>
 		try {
 			const uri = Uri.file(this.iPathUtils.santizePath(dirPath))
 			try {
@@ -592,22 +609,22 @@ export class NotesHubService implements INotesHubService {
 		catch (error) {
 			this.iCommonUtils.errMsg(`Failed to ensure directory exists: ${dirPath}`, error)
 		}
-	}
+	} //<
 
-	private async confirmAction(message: string, confirmActionTitle: string = 'Confirm'): Promise<boolean> {
+	private async confirmAction(message: string, confirmActionTitle: string = 'Confirm'): Promise<boolean> { //>
 		const items: ConfirmMessageItem[] = [
 			{ title: confirmActionTitle, choice: 'confirm' },
 			{ title: 'Cancel', choice: 'cancel', isCloseAffordance: true },
 		]
 		const result = await this.iWindow.showWarningMessage(message, { modal: true }, ...items)
 		return result?.choice === 'confirm'
-	}
+	} //<
 
-	private async confirmOverwrite(itemName: string): Promise<boolean> {
+	private async confirmOverwrite(itemName: string): Promise<boolean> { //>
 		return this.confirmAction(`'${itemName}' already exists. Overwrite?`, 'Overwrite')
-	}
+	} //<
 
-	private async getNewFileNameWithExtension(
+	private async getNewFileNameWithExtension( //>
 		promptValue: string = 'NewNote',
 		prompt: string = 'Enter the new name (extension will be added if missing):',
 		defaultExtension: string = '.md',
@@ -642,9 +659,9 @@ export class NotesHubService implements INotesHubService {
 			}
 		}
 		return { newName: newFileName, newExtension: fileExtension }
-	}
+	} //<
 
-	private async fileExists(filePath: string): Promise<boolean> {
+	private async fileExists(filePath: string): Promise<boolean> { //>
 		try {
 			await this.iFspAccess(this.iPathUtils.santizePath(filePath), fsConstants.F_OK)
 			return true
@@ -652,5 +669,5 @@ export class NotesHubService implements INotesHubService {
 		catch {
 			return false
 		}
-	}
+	} //<
 }

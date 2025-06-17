@@ -19,14 +19,17 @@ import * as yaml from 'js-yaml'
 import type { IFileExplorerDataProvider } from '../_interfaces/IFileExplorerDataProvider.ts'
 import { FileExplorerItem } from '../models/FileExplorerItem.js'
 import { constants } from '../_config/constants.js'
+import type { FileGroupsConfig } from '../_interfaces/ccp.types.ts'
 
 //= INJECTED TYPES ============================================================================================
 import type { IWorkspace, IWindow } from '@focused-ux/shared-services'
+import type { IQuickSettingsDataProvider } from '../_interfaces/IQuickSettingsDataProvider.ts'
 
 //--------------------------------------------------------------------------------------------------------------<<
 
 interface ProjectYamlConfig { //>
 	ContextCherryPicker?: {
+		file_groups?: FileGroupsConfig
 		ignore?: string[]
 		project_tree?: {
 			always_show?: string[]
@@ -41,7 +44,7 @@ interface ProjectYamlConfig { //>
 } //<
 
 @injectable()
-export class FileExplorerDataProvider implements IFileExplorerDataProvider, Disposable { //> // Added Disposable
+export class FileExplorerDataProvider implements IFileExplorerDataProvider, Disposable { //>
 
 	private _onDidChangeTreeData: EventEmitter<FileExplorerItem | undefined | null | void> = new EventEmitter<FileExplorerItem | undefined | null | void>()
 	readonly onDidChangeTreeData: Event<FileExplorerItem | undefined | null | void> = this._onDidChangeTreeData.event
@@ -52,6 +55,7 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider, Disp
 	private configChangeListener: Disposable | undefined
 
 	// Configuration properties
+	private fileGroupsConfig: FileGroupsConfig | undefined
 	private globalIgnoreGlobs: string[] = []
 	private contextExplorerIgnoreGlobs: string[] = []
 	private contextExplorerHideChildrenGlobs: string[] = []
@@ -62,6 +66,7 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider, Disp
 	constructor(
 		@inject('IWorkspace') private readonly workspaceAdapter: IWorkspace,
 		@inject('IWindow') private readonly windowAdapter: IWindow,
+		@inject('IQuickSettingsDataProvider') private readonly quickSettingsProvider: IQuickSettingsDataProvider,
 	) { //>
 		this.configChangeListener = this.workspaceAdapter.onDidChangeConfiguration(this._onVsCodeConfigChange)
 
@@ -140,36 +145,26 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider, Disp
 			const workspaceRoot = this.workspaceAdapter.workspaceFolders[0].uri
 			const configFileUri = Uri.joinPath(workspaceRoot, constants.projectConfig.fileName)
 
-			console.log(`[${constants.extension.name}] Attempting to load config from: ${configFileUri.fsPath}`)
-
 			try {
 				const fileContents = await this.workspaceAdapter.fs.readFile(configFileUri)
 				const yamlContent = Buffer.from(fileContents).toString('utf-8')
-
-				console.log(`[${constants.extension.name}] Successfully read '${constants.projectConfig.fileName}'.`)
-
 				parsedYamlConfig = yaml.load(yamlContent) as ProjectYamlConfig
-				if (parsedYamlConfig) {
-					console.log(`[${constants.extension.name}] Parsed '${constants.projectConfig.fileName}' content:`, JSON.stringify(parsedYamlConfig, null, 2))
-				}
-				else {
-					console.log(`[${constants.extension.name}] Parsed '${constants.projectConfig.fileName}' but content is empty or invalid.`)
-				}
 			}
 			catch (_error: any) {
 				const fsError = _error as FileSystemError
-
 				if (fsError && typeof fsError.code === 'string' && fsError.code === 'FileNotFound') {
-					console.log(`[${constants.extension.name}] No '${constants.projectConfig.fileName}' found. Using VS Code settings for all patterns.`)
+					// This is fine, we'll just use VS Code settings.
 				}
 				else {
-					console.warn(`[${constants.extension.name}] Error reading or parsing '${constants.projectConfig.fileName}': ${(_error instanceof Error ? _error.message : String(_error))}. Falling back to VS Code settings.`)
+					console.warn(`[${constants.extension.name}] Error reading or parsing '${constants.projectConfig.fileName}': ${(_error instanceof Error ? _error.message : String(_error))}.`)
 				}
 			}
 		}
 
 		const keys = constants.projectConfig.keys
 		const cfg = constants.configKeys
+
+		this.fileGroupsConfig = parsedYamlConfig?.ContextCherryPicker?.file_groups
 
 		const newGlobalIgnore = this.getPatternsFromSources(parsedYamlConfig, [ccpKey, keys.ignore], cfg.CCP_IGNORE_PATTERNS, [])
 		const newExplorerIgnore = this.getPatternsFromSources(parsedYamlConfig, [ccpKey, keys.context_explorer, keys.ignore], cfg.CCP_CONTEXT_EXPLORER_IGNORE_GLOBS, [])
@@ -178,54 +173,49 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider, Disp
 		const newTreeAlwaysHide = this.getPatternsFromSources(parsedYamlConfig, [ccpKey, keys.project_tree, keys.always_hide], cfg.CCP_PROJECT_TREE_ALWAYS_HIDE_GLOBS, [])
 		const newTreeShowIfSelected = this.getPatternsFromSources(parsedYamlConfig, [ccpKey, keys.project_tree, keys.show_if_selected], cfg.CCP_PROJECT_TREE_SHOW_IF_SELECTED_GLOBS, [])
 
-		let changed = false
-
-		if (JSON.stringify(this.globalIgnoreGlobs) !== JSON.stringify(newGlobalIgnore)) {
-			this.globalIgnoreGlobs = newGlobalIgnore; changed = true
-		}
-		if (JSON.stringify(this.contextExplorerIgnoreGlobs) !== JSON.stringify(newExplorerIgnore)) {
-			this.contextExplorerIgnoreGlobs = newExplorerIgnore; changed = true
-		}
-		if (JSON.stringify(this.contextExplorerHideChildrenGlobs) !== JSON.stringify(newExplorerHideChildren)) {
-			this.contextExplorerHideChildrenGlobs = newExplorerHideChildren; changed = true
-		}
-		if (JSON.stringify(this.projectTreeAlwaysShowGlobs) !== JSON.stringify(newTreeAlwaysShow)) {
-			this.projectTreeAlwaysShowGlobs = newTreeAlwaysShow; changed = true
-		}
-		if (JSON.stringify(this.projectTreeAlwaysHideGlobs) !== JSON.stringify(newTreeAlwaysHide)) {
-			this.projectTreeAlwaysHideGlobs = newTreeAlwaysHide; changed = true
-		}
-		if (JSON.stringify(this.projectTreeShowIfSelectedGlobs) !== JSON.stringify(newTreeShowIfSelected)) {
-			this.projectTreeShowIfSelectedGlobs = newTreeShowIfSelected; changed = true
-		}
-
-		if (changed && this.isInitialized) { // Only fire if initialized to avoid premature refresh
-			this._onDidChangeTreeData.fire()
-		}
+		this.globalIgnoreGlobs = newGlobalIgnore
+		this.contextExplorerIgnoreGlobs = newExplorerIgnore
+		this.contextExplorerHideChildrenGlobs = newExplorerHideChildren
+		this.projectTreeAlwaysShowGlobs = newTreeAlwaysShow
+		this.projectTreeAlwaysHideGlobs = newTreeAlwaysHide
+		this.projectTreeShowIfSelectedGlobs = newTreeShowIfSelected
 	} //<
-    
+
 	// ┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
 	// │                                       PROVIDER INTERFACE                                         │
 	// └──────────────────────────────────────────────────────────────────────────────────────────────────┘
 
-	private isUriHiddenForProviderUi(uri: Uri): boolean { //>
+	private async isUriHiddenForProviderUi(uri: Uri): Promise<boolean> { //>
 		const relativePath = this.workspaceAdapter.asRelativePath(uri, false).replace(/\\/g, '/')
 
 		if (micromatch.isMatch(relativePath, this.globalIgnoreGlobs))
 			return true
 		if (micromatch.isMatch(relativePath, this.contextExplorerIgnoreGlobs))
 			return true
+
+		if (this.fileGroupsConfig) {
+			for (const groupName in this.fileGroupsConfig) {
+				const group = this.fileGroupsConfig[groupName]
+				const settingId = `${constants.quickSettings.fileGroupVisibility.idPrefix}.${groupName}`
+				const isVisible = await this.quickSettingsProvider.getSettingState(settingId)
+
+				if (isVisible === false) { // If the toggle is OFF
+					const patterns = group.items || []
+					if (micromatch.isMatch(relativePath, patterns)) {
+						return true // Hide it
+					}
+				}
+			}
+		}
+
 		return false
 	} //<
 
 	async getChildren(element?: FileExplorerItem): Promise<FileExplorerItem[]> { //>
-		// If a status message is active, show only that.
 		if (!element && this._statusMessage) {
 			const statusItem = new TreeItem(this._statusMessage, TreeItemCollapsibleState.None)
-
-			// The ThemeIcon constructor is what correctly renders the Codicon
-			statusItem.iconPath = new ThemeIcon('check') // Use a generic icon or pass one in
-			return [statusItem as FileExplorerItem] // Cast to satisfy the return type
+			statusItem.iconPath = new ThemeIcon('check')
+			return [statusItem as FileExplorerItem]
 		}
 
 		if (!this.isInitialized) {
@@ -241,7 +231,6 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider, Disp
 
 		if (element && element.type === 'directory') {
 			const relativeElementPath = this.workspaceAdapter.asRelativePath(element.uri, false).replace(/\\/g, '/')
-
 			if (micromatch.isMatch(relativeElementPath, this.contextExplorerHideChildrenGlobs)) {
 				return []
 			}
@@ -249,12 +238,12 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider, Disp
 
 		try {
 			const entries = await this.workspaceAdapter.fs.readDirectory(sourceUri)
-
-			for (const [name, type] of entries) {
+			const promises = entries.map(async ([name, type]) => {
 				const childUri = Uri.joinPath(sourceUri, name)
 
-				if (this.isUriHiddenForProviderUi(childUri))
-					continue
+				if (await this.isUriHiddenForProviderUi(childUri)) {
+					return null
+				}
 
 				let collapsibleStateOverride: TreeItemCollapsibleState | undefined
 				const relativeChildPath = this.workspaceAdapter.asRelativePath(childUri, false).replace(/\\/g, '/')
@@ -262,8 +251,12 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider, Disp
 				if (type === VsCodeFileTypeEnum.Directory && micromatch.isMatch(relativeChildPath, this.contextExplorerHideChildrenGlobs)) {
 					collapsibleStateOverride = TreeItemCollapsibleState.None
 				}
-				children.push(new FileExplorerItem(childUri, name, type, this.getCheckboxState(childUri) || TreeItemCheckboxState.Unchecked, undefined, collapsibleStateOverride))
-			}
+				return new FileExplorerItem(childUri, name, type, this.getCheckboxState(childUri) || TreeItemCheckboxState.Unchecked, undefined, collapsibleStateOverride)
+			})
+
+			const resolvedChildren = (await Promise.all(promises)).filter(item => item !== null) as FileExplorerItem[]
+
+			children.push(...resolvedChildren)
 		}
 		catch (_error: any) {
 			console.error(`[${constants.extension.name}] Error reading directory ${sourceUri.fsPath}:`, _error)
@@ -286,13 +279,11 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider, Disp
 	} //<
 
 	getTreeItem(element: FileExplorerItem): TreeItem { //>
-		// Type guard to handle our special status message item, which is not a FileExplorerItem instance.
 		if (!(element instanceof FileExplorerItem)) {
 			return element
 		}
 
 		const currentState = this.getCheckboxState(element.uri)
-
 		element.checkboxState = currentState === undefined ? TreeItemCheckboxState.Unchecked : currentState
 
 		if (element.collapsibleState === undefined) {
@@ -300,9 +291,9 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider, Disp
 		}
 		return element
 	} //<
-    
+
 	async refresh(): Promise<void> { //>
-		await this.loadConfigurationPatterns() // Ensure patterns are reloaded
+		await this.loadConfigurationPatterns()
 		this._onDidChangeTreeData.fire()
 	} //<
 
@@ -327,7 +318,7 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider, Disp
 
 	updateCheckboxState(uri: Uri, state: TreeItemCheckboxState): void { //>
 		this.checkboxStates.set(uri.toString(), state)
-		this._onDidChangeTreeData.fire() // Fire for individual updates too
+		this._onDidChangeTreeData.fire()
 	} //<
 
 	getCheckboxState(uri: Uri): TreeItemCheckboxState | undefined { //>
@@ -341,10 +332,7 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider, Disp
 			if (state === TreeItemCheckboxState.Checked) {
 				try {
 					const uri = Uri.parse(uriString)
-
-					if (!this.isUriHiddenForProviderUi(uri)) {
-						checkedUris.push(uri)
-					}
+					checkedUris.push(uri)
 				}
 				catch (_error: any) {
 					console.error(`[${constants.extension.name}] Error parsing URI string in getAllCheckedItems: ${uriString}`, _error)
@@ -367,27 +355,31 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider, Disp
 	// └──────────────────────────────────────────────────────────────────────────────────────────────────┘
 
 	public getCoreScanIgnoreGlobs(): string[] { //>
-		return [...this.globalIgnoreGlobs] // Return a copy
+		return [...this.globalIgnoreGlobs]
 	} //<
 
 	public getContextExplorerIgnoreGlobs(): string[] { //>
-		return [...this.contextExplorerIgnoreGlobs] // Return a copy
+		return [...this.contextExplorerIgnoreGlobs]
 	} //<
 
 	public getContextExplorerHideChildrenGlobs(): string[] { //>
-		return [...this.contextExplorerHideChildrenGlobs] // Return a copy
+		return [...this.contextExplorerHideChildrenGlobs]
 	} //<
 
 	public getProjectTreeAlwaysShowGlobs(): string[] { //>
-		return [...this.projectTreeAlwaysShowGlobs] // Return a copy
+		return [...this.projectTreeAlwaysShowGlobs]
 	} //<
 
 	public getProjectTreeAlwaysHideGlobs(): string[] { //>
-		return [...this.projectTreeAlwaysHideGlobs] // Return a copy
+		return [...this.projectTreeAlwaysHideGlobs]
 	} //<
 
 	public getProjectTreeShowIfSelectedGlobs(): string[] { //>
-		return [...this.projectTreeShowIfSelectedGlobs] // Return a copy
+		return [...this.projectTreeShowIfSelectedGlobs]
+	} //<
+
+	public getFileGroupsConfig(): FileGroupsConfig | undefined { //>
+		return this.fileGroupsConfig
 	} //<
 
 	// ┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -404,7 +396,7 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider, Disp
 		}
 		console.log(`[${constants.extension.name}] FileExplorerDataProvider disposed.`)
 	} //<
-    
+
 	private _statusMessage: string | undefined
 
 	public showStatusMessage(message: string, duration: number): void { //>

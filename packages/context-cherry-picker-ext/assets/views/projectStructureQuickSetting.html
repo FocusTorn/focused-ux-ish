@@ -28,7 +28,7 @@
             width: 100%;
             box-sizing: border-box;
         }
-        .option-button {
+        .option-button, .toggle-button {
             flex: 1;
             padding: 0px 5px;
             line-height: calc(var(--vscode-font-size) * 1.5);
@@ -42,21 +42,21 @@
             margin-right: -1px; 
             position: relative;
         }
-        .option-button:first-child {
+        .option-button:first-child, .toggle-button:first-child {
              border-top-left-radius: 3px;
              border-bottom-left-radius: 3px;
         }
-        .option-button:last-child {
+        .option-button:last-child, .toggle-button:last-child {
             margin-right: 0;
             border-top-right-radius: 3px;
             border-bottom-right-radius: 3px;
         }
-        .option-button.selected {
+        .option-button.selected, .toggle-button.selected {
             background-color: var(--vscode-button-background, #0E639C);
             color: var(--vscode-button-foreground, #FFFFFF);
             z-index: 1;
         }
-        .option-button:hover:not(.selected) {
+        .option-button:hover:not(.selected), .toggle-button:hover:not(.selected) {
             background-color: var(--vscode-button-secondaryHoverBackground, #4D5054);
         }
     </style>
@@ -64,11 +64,18 @@
 <body>
     <div class="quick-setting-group">
         <div class="quick-setting-title">Project Structure Contents</div>
-        <!-- Placeholders for dynamic class assignment -->
         <div class="options-container" data-setting-group-id="${PROJECT_STRUCTURE_SETTING_ID}">
             <div class="option-button ${currentProjectStructureStateSelected.none}" data-setting-id="${PROJECT_STRUCTURE_SETTING_ID}" data-value="none">None</div>
             <div class="option-button ${currentProjectStructureStateSelected.selected}" data-setting-id="${PROJECT_STRUCTURE_SETTING_ID}" data-value="selected">Selected</div>
             <div class="option-button ${currentProjectStructureStateSelected.all}" data-setting-id="${PROJECT_STRUCTURE_SETTING_ID}" data-value="all">All</div>
+        </div>
+    </div>
+
+    <div class="quick-setting-group">
+        <div class="quick-setting-title">Toggle File Group Visibility</div>
+        <div class="options-container" data-setting-group-id="file-group-toggles">
+            <!-- Buttons will be dynamically inserted here by the provider -->
+            ${fileGroupButtonsHtml}
         </div>
     </div>
 
@@ -103,29 +110,63 @@
             });
         }
 
+        function handleToggleButtonClick(event) {
+            const button = event.currentTarget;
+            const settingId = button.dataset.settingId;
+
+            if (!settingId) {
+                console.error('Toggle button is missing data-setting-id', button);
+                return;
+            }
+
+            button.classList.toggle('selected');
+            const isSelected = button.classList.contains('selected');
+
+            vscode.postMessage({
+                command: 'updateSetting',
+                settingId: settingId,
+                value: isSelected
+            });
+        }
+
         document.querySelectorAll('.option-button').forEach(button => {
             button.addEventListener('click', handleOptionButtonClick);
+        });
+
+        document.querySelectorAll('.toggle-button').forEach(button => {
+            button.addEventListener('click', handleToggleButtonClick);
         });
 
         window.addEventListener('message', event => {
             const message = event.data; 
             switch (message.command) {
-                case 'settingUpdated':
+                case 'settingUpdated': {
                     const { settingId, value } = message;
-                    const buttonToSelect = document.querySelector(`.option-button[data-setting-id="\${settingId}"][data-value="\${value}"]`);
+                    const buttonToSelect = document.querySelector(`.option-button[data-setting-id="\${settingId}"][data-value="\${value}"], .toggle-button[data-setting-id="\${settingId}"]`);
                     
                     if (buttonToSelect) {
                         const parentContainer = buttonToSelect.closest('.options-container');
                         if (parentContainer) {
-                            parentContainer.querySelectorAll('.option-button').forEach(btn => {
-                                if (btn.dataset.settingId === settingId) {
-                                    btn.classList.remove('selected');
+                            if (buttonToSelect.classList.contains('toggle-button')) {
+                                // Handle toggle button state
+                                if (value) {
+                                    buttonToSelect.classList.add('selected');
+                                } else {
+                                    buttonToSelect.classList.remove('selected');
                                 }
-                            });
-                            buttonToSelect.classList.add('selected');
+                            } else {
+                                // Handle radio button state
+                                parentContainer.querySelectorAll('.option-button').forEach(btn => {
+                                    if (btn.dataset.settingId === settingId) {
+                                        btn.classList.remove('selected');
+                                    }
+                                });
+                                buttonToSelect.classList.add('selected');
+                            }
                         }
                     }
                     break;
+                }
             }
         });
     </script>

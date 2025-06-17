@@ -69,8 +69,8 @@ export abstract class BaseNotesDataProvider implements INotesHubDataProvider, Tr
 		protected readonly iFrontmatterUtils: IFrontmatterUtilsService,
 		protected readonly iPathUtils: IPathUtilsService,
 	) {
-		if (this.providerName === 'project' && this.notesDir.includes('.fux-notes')) {
-			this.addDirToGitignore('.fux-notes')
+		if (this.providerName === 'project' && this.notesDir.includes('.fux_note-hub')) {
+			this.addDirToGitignore('.fux_note-hub')
 		}
 
 		this.fileWatcher = this.iWorkspace.createFileSystemWatcher(
@@ -113,12 +113,26 @@ export abstract class BaseNotesDataProvider implements INotesHubDataProvider, Tr
 		this.treeView?.dispose()
 	}
 
-	public getParent(element: NotesHubItem): ProviderResult<NotesHubItem> {
+	      
+public getParent(element: NotesHubItem): ProviderResult<NotesHubItem> { //>
 		if (!element.parentUri) {
 			return undefined
 		}
-		return undefined
-	}
+
+		const parentPath = this.iPathUtils.santizePath(element.parentUri.fsPath)
+		const rootPath = this.iPathUtils.santizePath(this.notesDir)
+
+		if (parentPath === rootPath) {
+			// This item's parent is the root directory of this provider.
+			// The root item is virtual and has no parent itself.
+			return new NotesHubItem(basename(this.notesDir), this.notesDir, true)
+		}
+
+		// For any other nested item, we can resolve its parent from the filesystem.
+		return this.getNotesHubItem(element.parentUri)
+	}//<
+
+    
 
 	public async getTreeItem(element: NotesHubItem): Promise<TreeItem> {
 		if (element.isDirectory) {
@@ -222,7 +236,7 @@ export abstract class BaseNotesDataProvider implements INotesHubDataProvider, Tr
 		}
 	}
 
-	public async handleDrop(
+	public async handleDrop( //>
 		target: NotesHubItem | undefined,
 		dataTransfer: DataTransfer,
 		token: CancellationToken,
@@ -278,21 +292,21 @@ export abstract class BaseNotesDataProvider implements INotesHubDataProvider, Tr
 		catch (err) {
 			this.iCommonUtils.errMsg(`Failed to move item '${sourceName}'`, err)
 		}
-	}
+	} //<
 
-	private sortItems(a: NotesHubItem, b: NotesHubItem): number {
+	private sortItems(a: NotesHubItem, b: NotesHubItem): number { //>
 		const aIsDir = a.isDirectory ? 0 : 1
 		const bIsDir = b.isDirectory ? 0 : 1
 		const aLabel = typeof a.label === 'string' ? a.label : a.label?.label || ''
 		const bLabel = typeof b.label === 'string' ? b.label : b.label?.label || ''
 		return aIsDir - bIsDir || aLabel.localeCompare(bLabel)
-	}
+	} //<
 
-	private isExtensionValid(filePath: string): boolean {
+	private isExtensionValid(filePath: string): boolean { //>
 		return ALLOWED_EXTENSIONS.includes(extname(filePath).toLowerCase())
-	}
+	} //<
 
-	private async fileExists(filePath: string): Promise<boolean> {
+	private async fileExists(filePath: string): Promise<boolean> { //>
 		try {
 			await fspAccess(this.iPathUtils.santizePath(filePath), fsConstants.F_OK)
 			return true
@@ -300,15 +314,15 @@ export abstract class BaseNotesDataProvider implements INotesHubDataProvider, Tr
 		catch {
 			return false
 		}
-	}
+	} //<
 
-	private async confirmOverwrite(itemName: string): Promise<boolean> {
+	private async confirmOverwrite(itemName: string): Promise<boolean> { //>
 		const message = `'${itemName}' already exists. Overwrite?`
 		const result = await this.iWindow.showInformationMessage(message, { modal: true }, 'Overwrite')
 		return result === 'Overwrite'
-	}
+	} //<
 
-	private async addDirToGitignore(dirToIgnore: string): Promise<void> {
+	private async addDirToGitignore(dirToIgnore: string): Promise<void> { //>
 		const workspaceFolder = this.iWorkspace.workspaceFolders?.[0]
 		if (!workspaceFolder) {
 			return
@@ -338,10 +352,10 @@ export abstract class BaseNotesDataProvider implements INotesHubDataProvider, Tr
 		catch (error) {
 			this.iCommonUtils.errMsg(`Failed to update .gitignore for ${dirToIgnore}`, error)
 		}
-	}
+	} //<
 
-	protected santizePath(uncleanPath: string): string {
+	protected santizePath(uncleanPath: string): string { //>
 		const normalPath = normalize(uncleanPath)
 		return normalPath.replace(/\\/g, '/')
-	}
+	} //<
 }

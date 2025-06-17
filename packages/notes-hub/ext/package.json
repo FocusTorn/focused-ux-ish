@@ -4,12 +4,12 @@
     "publisher": "NewRealityDesigns",
     "description": "A flexible note-taking system integrated into VS Code's file explorer.",
     "repository": "https://github.com/FocusTorn/focused-ux",
-    "version": "0.1.0",
+    "version": "0.1.13",
     "engines": {
         "vscode": "^1.100.0"
     },
     "main": "./dist/extension.js",
-    "icon": "assets/hub-icon.svg",
+    "icon": "assets/hub-logo.png",
     "sideEffects": [
         "reflect-metadata"
     ],
@@ -25,7 +25,7 @@
         "check-types": "tsc --noEmit -p tsconfig.json",
         "== FINALIZE ========================================================================================= ": "",
         "vscode:prepublish": "pnpm run build:clean && pnpm run version-bump",
-        "package": "vsce package --no-dependencies --out ../../vsix_packages/ ",
+        "package": "vsce package --no-dependencies --out ../../../vsix_packages/ ",
         "publish": "vsce publish",
         "== WATCH ============================================================================================ ": "",
         "watch": "pnpm run watch:types & pnpm run watch:js",
@@ -33,7 +33,7 @@
         "watch:js": "fux-build ./src/extension.ts --outfile=./dist/extension.js --watch",
         "== UTILITIES ======================================================================================== ": "",
         "clean": "rimraf ./dist .turbo",
-        "version-bump": "tsx ./../shared/tools/src/scripts/version_bump.ts"
+        "version-bump": "tsx ./../../shared/tools/src/scripts/version_bump.ts"
     },
     "dependencies": {
         "@focused-ux/notes-hub-core": "workspace:*",
@@ -45,6 +45,7 @@
         "@focused-ux/config-esbuild": "workspace:*",
         "@focused-ux/config-eslint": "workspace:*",
         "@focused-ux/tsconfig": "workspace:*",
+        "@focused-ux/tools": "workspace:*",
         "@types/node": "latest",
         "@types/vscode": "^1.100.0",
         "esbuild": "^0.25.5",
@@ -303,19 +304,19 @@
                 "nh.projectNotesPath": {
                     "type": "string",
                     "default": "",
-                    "description": "Path to project-specific notes directory. If empty, defaults to '~/.fux-notes/project/[workspaceName]'. Supports '~' for home directory.",
+                    "description": "Path to project-specific notes directory. If empty, defaults to '~/.fux_note-hub/project/[workspaceName]'. Supports '~' for home directory.",
                     "scope": "resource"
                 },
                 "nh.remoteNotesPath": {
                     "type": "string",
                     "default": "",
-                    "description": "Path to remote notes directory. If empty, defaults to '~/.fux-notes/remote'. Supports '~' for home directory.",
+                    "description": "Path to remote notes directory. If empty, defaults to '~/.fux_note-hub/remote'. Supports '~' for home directory.",
                     "scope": "machine"
                 },
                 "nh.globalNotesPath": {
                     "type": "string",
                     "default": "",
-                    "description": "Path to global notes directory. If empty, defaults to '~/.fux-notes/global'. Supports '~' for home directory.",
+                    "description": "Path to global notes directory. If empty, defaults to '~/.fux_note-hub/global'. Supports '~' for home directory.",
                     "scope": "machine"
                 }
             }

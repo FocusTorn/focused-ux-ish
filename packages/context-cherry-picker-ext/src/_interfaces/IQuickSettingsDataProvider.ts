@@ -1,11 +1,13 @@
 // ESLint & Imports -->>
 
 //= VSCODE TYPES & MOCKED INTERNALS ===========================================================================
-import type { WebviewViewProvider, WebviewView, WebviewViewResolveContext, CancellationToken } from 'vscode'
+import type { WebviewViewProvider, WebviewView, WebviewViewResolveContext, CancellationToken, Event } from 'vscode'
 
 //--------------------------------------------------------------------------------------------------------------<<
 
 export interface IQuickSettingsDataProvider extends WebviewViewProvider { //>
+	onDidUpdateSetting: Event<{ settingId: string, value: any }>
+
 	resolveWebviewView: (
 		webviewView: WebviewView,
 		context: WebviewViewResolveContext,

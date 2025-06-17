@@ -50,5 +50,6 @@ packages/assets
 
 
 
+
 # Ignored by F-UX Notes Hub
-/.fux-notes/
+/.fux_note-hub/

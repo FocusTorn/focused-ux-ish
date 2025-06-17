@@ -69,7 +69,6 @@ export class ContextCherryPickerManager implements IContextCherryPickerManager {
 		})
 		this._context.subscriptions.push(this._explorerView)
 
-		// Enable Markdown rendering for the message property by setting the description.
 		this._explorerView.description = ' '
 
 		this._explorerView.onDidChangeCheckboxState(
@@ -98,6 +97,13 @@ export class ContextCherryPickerManager implements IContextCherryPickerManager {
 
 		this._context.subscriptions.push(quickSettingsDisposable)
 
+		// Listen for setting updates from the quick settings view
+		this._quickSettingsDataProvider.onDidUpdateSetting(async ({ settingId }) => {
+			if (settingId.startsWith(constants.quickSettings.fileGroupVisibility.idPrefix)) {
+				await this.refreshExplorerView()
+			}
+		})
+
 		await this._fileExplorerDataProvider.refresh()
 		this._savedStatesDataProvider.refresh()
 		await this._quickSettingsDataProvider.refresh()
@@ -122,19 +128,7 @@ export class ContextCherryPickerManager implements IContextCherryPickerManager {
 			await this._storageService.saveState(stateName, itemsToSave)
 			this._savedStatesDataProvider.refresh()
             
-			// // Toast message
-			// this._window.showInformationMessage(`State '${stateName}' saved.`);
-            
-			// // Drop down bar under the title
-			// this._setExplorerMessage(`💾 State '${stateName}' saved.`, 5000)🏷️
-            
-			// // Dim text next to the title
-			// this._setExplorerDescription(`$(save) State '${stateName}' saved.`, 5000)
-            
-			// // Replace the tree for a bit with the status message
-			// this._fileExplorerDataProvider.showStatusMessage(`$(save) State '${stateName}' saved.`, 5000);
-            
-            this.showStatusMessage('drop', `💾 State '${stateName}' saved.`)
+			this.showStatusMessage('drop', `💾 State '${stateName}' saved.`)
 		}
 	} //<
 
@@ -151,7 +145,6 @@ export class ContextCherryPickerManager implements IContextCherryPickerManager {
 
 	public async refreshExplorerView(): Promise<void> { //>
 		await this._fileExplorerDataProvider.refresh()
-
 	} //<
 
 	public async deleteSavedState(stateItem: SavedStateItem): Promise<void> { //>
@@ -200,25 +193,41 @@ export class ContextCherryPickerManager implements IContextCherryPickerManager {
 		let totalTokens = 0
 		const maxTokens = 500000 // This could be a setting
 
-		// Use local constants for quick setting ID
 		const projectStructureQuickSettingMode = await this.getQuickSettingState(constants.quickSettings.projectStructureContents.id) as 'all' | 'selected' | 'none'
 
 		console.log(`${LOG_PREFIX} Project Structure Quick Setting Mode:`, projectStructureQuickSettingMode)
 
-		// Get all configuration globs from the provider
-		const coreScanIgnoreGlobs = this._fileExplorerDataProvider.getCoreScanIgnoreGlobs()
+		// Get static configuration globs from the provider
+		const staticCoreIgnores = this._fileExplorerDataProvider.getCoreScanIgnoreGlobs()
 		const contextExplorerIgnoreGlobs = this._fileExplorerDataProvider.getContextExplorerIgnoreGlobs()
 		const contextExplorerHideChildrenGlobs = this._fileExplorerDataProvider.getContextExplorerHideChildrenGlobs()
 		const outputFilterAlwaysShow = this._fileExplorerDataProvider.getProjectTreeAlwaysShowGlobs()
 		const outputFilterAlwaysHide = this._fileExplorerDataProvider.getProjectTreeAlwaysHideGlobs()
 		const outputFilterShowIfSelected = this._fileExplorerDataProvider.getProjectTreeShowIfSelectedGlobs()
 
+		// Build dynamic ignore list from file group toggles
+		const dynamicIgnoreGlobs: string[] = []
+		const fileGroups = this._fileExplorerDataProvider.getFileGroupsConfig()
+
+		if (fileGroups) {
+			for (const groupName in fileGroups) {
+				const settingId = `${constants.quickSettings.fileGroupVisibility.idPrefix}.${groupName}`
+				const isVisible = await this.getQuickSettingState(settingId)
+
+				if (isVisible === false) { // If toggle is off, add its patterns to the ignore list
+					dynamicIgnoreGlobs.push(...(fileGroups[groupName].items || []))
+				}
+			}
+		}
+
+		// Combine static and dynamic ignores for the content scan
+		const finalCoreScanIgnores = [...staticCoreIgnores, ...dynamicIgnoreGlobs]
+
 		const collectionResult = await this._contextDataCollector.collectContextData(
 			projectStructureQuickSettingMode,
 			initialCheckedUris,
 			this.projectRootUri,
-			// Pass the correct globs for the core scan
-			coreScanIgnoreGlobs,
+			finalCoreScanIgnores,
 			contextExplorerIgnoreGlobs,
 			contextExplorerHideChildrenGlobs,
 		)
@@ -240,7 +249,7 @@ export class ContextCherryPickerManager implements IContextCherryPickerManager {
 
 		const fileContentResult = await this._fileContentProvider.getFileContents(
 			contentFileUris,
-			treeEntries, // Pass the collected entries which include FileSystemEntry
+			treeEntries,
 			maxTokens,
 			totalTokens,
 		)
@@ -290,8 +299,7 @@ export class ContextCherryPickerManager implements IContextCherryPickerManager {
 		else {
 			await vscode.env.clipboard.writeText(finalOutput)
             
-            this.showStatusMessage('drop', `📋 Context copied (~${totalTokens} tokens)`, 1000)
-
+			this.showStatusMessage('drop', `📋 Context copied (~${totalTokens} tokens)`, 1000)
 		}
 	} //<
 
@@ -302,17 +310,7 @@ export class ContextCherryPickerManager implements IContextCherryPickerManager {
 	public getCheckedExplorerItems(): Uri[] { //>
 		return this._fileExplorerDataProvider.getAllCheckedItems()
 	} //<
-
-	/**
-	 * Displays a status message to the user using one of several UI methods.
-	 * @param type The type of notification to show:
-	 * - 'vsc': A standard VS Code information pop-up message.
-	 * - 'drop': A message that appears below the view title.
-	 * - 'desc': A message that appears next to the view title.
-	 * - 'replace': Temporarily replaces the tree view's content with the message.
-	 * @param message The message content to display.
-	 * @param duration The time in milliseconds to display the message. Not applicable for 'vsc'.
-	 */    
+    
 	public showStatusMessage( //>
 		type: 'vsc' | 'drop' | 'desc' | 'replace',
 		message: string,
@@ -332,13 +330,12 @@ export class ContextCherryPickerManager implements IContextCherryPickerManager {
 				this._fileExplorerDataProvider.showStatusMessage(message, duration)
 				break
 			default:
-				// Fallback to the most prominent type
 				this._window.showInformationMessage(message)
 				break
 		}
 	} //<
     
-    // ┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
+	// ┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
 	// │                                         PRIVATE HELPERS                                          │
 	// └──────────────────────────────────────────────────────────────────────────────────────────────────┘
 

@@ -9,13 +9,13 @@ import { inject, injectable } from 'tsyringe'
 import type { Uri } from 'vscode'
 
 //= IMPLEMENTATION TYPES ======================================================================================
-import type { IFileContentProviderService, FileContentResult } from '../_interfaces/IFileContentProviderService.ts'
+import type { FileContentResult, IFileContentProviderService } from '../_interfaces/IFileContentProviderService.ts'
 import type { FileSystemEntry } from '../_interfaces/ccp.types.ts'
 
 //= INJECTED TYPES ============================================================================================
-import type { IWorkspace, IWindow, ICommonUtilsService } from '@focused-ux/shared-services' // Added ICommonUtilsService
+import type { IWindow, IWorkspace } from '@focused-ux/shared-services'
+import type { ITokenizerService } from '@focused-ux/shared-services/services/Tokenizer.service.js'
 import { constants } from '../_config/constants.js'
-// Removed: import { encode } from 'gpt-tokenizer'
 
 //--------------------------------------------------------------------------------------------------------------<<
 
@@ -27,20 +27,11 @@ export class FileContentProviderService implements IFileContentProviderService {
 	constructor(
 		@inject('IWorkspace') private readonly _workspace: IWorkspace,
 		@inject('IWindow') private readonly _window: IWindow,
-		@inject('ICommonUtilsService') private readonly _commonUtils: ICommonUtilsService,
+		@inject('ITokenizerService') private readonly _tokenizer: ITokenizerService,
 	) {}
 
 	private _localEstimateTokens(text: string): number { //>
-		if (!text)
-			return 0
-		try {
-			return this._commonUtils.calculateTokens(text)
-		}
-		catch (error) {
-			// CommonUtilsService already logs errors, but we can add context here if needed
-			console.warn(`${LOG_PREFIX} Error using CommonUtilsService for local token calculation. Falling back.`, error)
-			return Math.ceil(text.length / 4) // Fallback
-		}
+		return this._tokenizer.calculateTokens(text)
 	} //<
 
 	public async getFileContents( //>

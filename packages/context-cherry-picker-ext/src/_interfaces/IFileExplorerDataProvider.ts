@@ -5,6 +5,7 @@ import type { Event, TreeDataProvider, TreeItemCheckboxState, Uri } from 'vscode
 
 //= IMPLEMENTATION TYPES ======================================================================================
 import type { FileExplorerItem } from '../models/FileExplorerItem.ts'
+import type { FileGroupsConfig } from './ccp.types.ts'
 
 //--------------------------------------------------------------------------------------------------------------<<
 
@@ -27,6 +28,8 @@ export interface IFileExplorerDataProvider extends TreeDataProvider<FileExplorer
 	getContextExplorerIgnoreGlobs: () => string[]
 	getContextExplorerHideChildrenGlobs: () => string[]
 	
+	getFileGroupsConfig: () => FileGroupsConfig | undefined
+
 	showStatusMessage: (message: string, duration: number) => void
 
 } //<

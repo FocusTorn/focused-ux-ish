@@ -4,7 +4,7 @@
     "publisher": "NewRealityDesigns",
     "description": "A standalone extension for advanced context selection and formatting.",
     "repository": "https://github.com/FocusTorn/focused-ux",
-    "version": "0.1.98",
+    "version": "0.1.102",
     "engines": {
         "vscode": "^1.100.0"
     },
@@ -14,10 +14,8 @@
         "reflect-metadata"
     ],
     "scripts": {
-        
-        "builder": "pnpm run build:types && pnpm run build:js",
         "== BUILD ============================================================================================ ": "",
-        "build": "turbo run builder",
+        "build": "pnpm run build:types && pnpm run build:js",
         "build:clean": "pnpm run clean && pnpm run build",
         "build:types": "tsc -p tsconfig.json --pretty",
         "build:js": "fux-build ./src/extension.ts --outfile=./dist/extension.js",
@@ -49,7 +47,6 @@
     },
     "dependencies": {
         "@focused-ux/shared-services": "workspace:*",
-        "gpt-tokenizer": "^3.0.0",
         "js-yaml": "^4.1.0",
         "micromatch": "^4.0.8",
         "reflect-metadata": "^0.2.2",

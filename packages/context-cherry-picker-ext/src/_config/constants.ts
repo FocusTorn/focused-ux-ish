@@ -41,6 +41,9 @@ export const constants = {
 		fileName: '.FocusedUX',
 		keys: {
 			contextCherryPicker: 'ContextCherryPicker',
+			file_groups: 'file_groups',
+			initially_visible: 'initially_visible',
+			items: 'items',
 			ignore: 'ignore',
 			project_tree: 'project_tree',
 			always_show: 'always_show',
@@ -52,8 +55,10 @@ export const constants = {
 	},
 	quickSettings: {
 		projectStructureContents: {
-			id: `${EXT_ID_PREFIX}.quickSetting.projectStructureContents`, // 'none', 'selected', 'all' 
-		
+			id: `${EXT_ID_PREFIX}.quickSetting.projectStructureContents`, // 'none', 'selected', 'all'
+		},
+		fileGroupVisibility: {
+			idPrefix: `${EXT_ID_PREFIX}.quickSetting.fileGroupVisibility`, // e.g., ccp.quickSetting.fileGroupVisibility.build
 		},
 	},
 } as const

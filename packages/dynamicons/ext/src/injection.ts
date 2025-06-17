@@ -9,16 +9,31 @@ import type { ExtensionContext } from 'vscode'
 //= IMPLEMENTATIONS ===========================================================================================
 import type { IIconActionsService, IIconThemeGeneratorService } from '@focused-ux/dynamicons-core'
 import { IconActionsService, IconThemeGeneratorService } from '@focused-ux/dynamicons-core'
-import { SharedServicesModule } from '@focused-ux/shared-services'
+import {
+	CommonUtilsService,
+	FileUtilsService,
+	PathUtilsService,
+	SharedServicesModule,
+} from '@focused-ux/shared-services'
+import type {
+	ICommonUtilsService,
+	IFileUtilsService,
+	IPathUtilsService,
+} from '@focused-ux/shared-services'
 
 //--------------------------------------------------------------------------------------------------------------<<
 
 export function registerDynamiconsDependencies(context: ExtensionContext): void { //>
-	// Register all common dependencies (services, adapters, node/vscode primitives)
-	// This is now an idempotent operation.
+	// 1. Register low-level adapters and primitives.
 	SharedServicesModule.registerDependencies(container, context)
 
-	// Register Dynamicons-specific services
+	// 2. Register the specific high-level shared services needed by this package.
+	//    (Adjust this list based on the actual dependencies of the core services)
+	container.registerSingleton<ICommonUtilsService>('ICommonUtilsService', CommonUtilsService)
+	container.registerSingleton<IFileUtilsService>('IFileUtilsService', FileUtilsService)
+	container.registerSingleton<IPathUtilsService>('IPathUtilsService', PathUtilsService)
+
+	// 3. Register Dynamicons-specific services.
 	container.register<IIconActionsService>(
 		'IIconActionsService',
 		{ useClass: IconActionsService },

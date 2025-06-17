@@ -1,6 +1,7 @@
 {
     "name": "@focused-ux/shared-services",
     "version": "0.1.0",
+    "sideEffects": false,
     "scripts": {
         "== BUILD ============================================================================================ ": "",
         "build": "pnpm run build:types && pnpm run build:js",
@@ -19,13 +20,11 @@
         "clean": "rimraf ./dist .turbo"
     },
     "dependencies": {
+        "gpt-tokenizer": "^3.0.0",
         "gray-matter": "^4.0.3",
         "reflect-metadata": "^0.2.2",
         "strip-json-comments": "^5.0.2",
         "tsyringe": "^4.10.0"
-    },
-    "peerDependencies": {
-        "gpt-tokenizer": "^3.0.0"
     },
     "devDependencies": {
         "@focused-ux/config-esbuild": "workspace:*",
@@ -36,7 +35,6 @@
         "esbuild": "^0.25.5",
         "esbuild-bundle-analyzer": "^0.0.1",
         "esbuild-visualizer": "^0.7.0",
-        "gpt-tokenizer": "^3.0.0",
         "ts-node": "^10.9.2",
         "typescript": "^5.8.3"
     },
@@ -47,8 +45,11 @@
     "exports": {
         ".": {
             "types": "./dist/index.d.ts",
-            "import": "./dist/index.js",
-            "require": "./dist/index.js"
+            "import": "./dist/index.js"
+        },
+        "./services/Tokenizer.service.js": {
+            "types": "./dist/services/Tokenizer.service.d.ts",
+            "import": "./dist/services/Tokenizer.service.js"
         }
     }
 }

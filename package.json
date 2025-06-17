@@ -14,7 +14,10 @@
         "check-types": "turbo run check-types",
         "lint": "turbo run lint",
         "lint:fix": "turbo run lint:fix",
+        
+        
         "validate": "node ./packages/tools/src/validate/index.js",
+        
         "vlint": "node ./packages/tools/src/validate/index.js lint",
         "vdeps": "node ./packages/tools/src/validate/index.js deps",
         "vtsc": "node ./packages/tools/src/validate/index.js tsc",

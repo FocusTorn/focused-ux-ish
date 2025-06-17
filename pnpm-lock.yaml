@@ -275,6 +275,9 @@ importers:
       '@focused-ux/config-eslint':
         specifier: workspace:*
         version: link:../../shared/config-eslint
+      '@focused-ux/tools':
+        specifier: workspace:*
+        version: link:../../shared/tools
       '@focused-ux/tsconfig':
         specifier: workspace:*
         version: link:../../shared/config-tsc

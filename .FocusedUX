@@ -1,41 +1,65 @@
-# Configuration for Focused UI Extension
+# ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+# │                             Configuration for Focused UI Extension                             │
+# └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
 ContextCherryPicker:
     
+    file_groups:
+        build:
+            initially_visible: false 
+            items:
+                - '**/.turbo'
+                - '**/dist'
+                - '**/tsconfig.tsbuildinfo'
+          
+        test:
+            initially_visible: false 
+            items:
+                - '**/test'
+        
+        ignores:
+            initially_visible: false 
+            items:
+                - '**/.gitignore'
+                - '**/.vscodeignore'
+                - '**/.npmignore'
+    
     ignore:
-      #= GENERAL ================================================================ 
-      - '**/node_modules'
-      - .git
-      
-      #= BUILD GENERATED ======================================================== 
-      - '**/.turbo'
-      - '**/dist'
-      - '**/tsconfig.tsbuildinfo'
-      
-      #= YALC =================================================================== 
-      - '**/.yalc'
-      - '**/yalc.lock'
-
-      #== IGNORES =============================================================== 
-      - .gitignore
-      - .vscodeignore
-
-      #= DIRECTORIES ============================================================ 
-      - _scripts
-      - assets
-      - vsix_packages
-
-      #= EXTENSIONS ============================================================= 
-      - '**/*.png'
-      - '**/*.jpg'
-      - '**/*.jpeg'
-      - '**/*.svg'
     
-      #= FILES ================================================================== 
-      - '**/LICENSE.txt'
-      - '**/*.bak*'
-      - .editorconfig
-      
+        # - '**/.turbo'
+        # - '**/dist'
+        # - '**/tsconfig.tsbuildinfo'
+        # - '**/test'
+        # - '**/.gitignore'
+        # - '**/.vscodeignore'
+        # - '**/.npmignore'
     
+    
+        #= GENERAL ================================================================ 
+        - '**/node_modules'
+        - .git
+        
+        #= YALC =================================================================== 
+        - '**/.yalc'
+        - '**/yalc.lock'
+
+        #= DIRECTORIES ============================================================ 
+        # - _scripts
+        - assets
+        - vsix_packages
+
+        #= EXTENSIONS ============================================================= 
+        - '**/*.png'
+        - '**/*.jpg'
+        - '**/*.jpeg'
+        - '**/*.svg'
+        
+        #= FILES ================================================================== 
+        - '**/LICENSE.txt'
+        - '**/*.bak*'
+        - .editorconfig
+        
+        
     
     project_tree:
         always_show:
@@ -43,7 +67,6 @@ ContextCherryPicker:
 
         always_hide:
         # Never show these in the <project_tree>
-
 
         show_if_selected:
         # These will only show in the <project_tree> if selected in <Context Explorer>, else hidden
@@ -131,6 +154,3 @@ ContextCherryPicker:
 #     # directory and its contents are completely hidden from UI
 #       # - "assets/icons"
     
-
-
-

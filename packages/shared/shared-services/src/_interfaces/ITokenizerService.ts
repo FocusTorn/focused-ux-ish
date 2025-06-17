@@ -2,7 +2,6 @@
 
 //--------------------------------------------------------------------------------------------------------------<<
 
-export interface ICommonUtilsService { //>
-	delay: (ms: number) => Promise<void>
-	errMsg: (msg: string, err?: any) => void
+export interface ITokenizerService { //>
+	calculateTokens: (text: string) => number
 } //<
