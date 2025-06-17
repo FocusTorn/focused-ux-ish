@@ -43,6 +43,7 @@ async function loadPlugins(pluginFileNames: string[]): Promise<any[]> { //>
     return loadedPlugins.filter(Boolean);
 } //</
 
+      
 export async function getBaseEsbuildOptions( //>
     isProduction: boolean,
     enableMetafile: boolean,
@@ -64,6 +65,9 @@ export async function getBaseEsbuildOptions( //>
     };
 
     const projectRoot = findRoot(packageCwd);
+    const pkgJsonPath = path.join(packageCwd, 'package.json');
+    const pkgJson = JSON.parse(fs.readFileSync(pkgJsonPath, 'utf-8'));
+    const packageType = pkgJson.type || 'commonjs';
 
     const baseOptions: Partial<BuildOptions> = {
         bundle: true,
@@ -72,7 +76,7 @@ export async function getBaseEsbuildOptions( //>
         minify: isProduction,
         metafile: enableMetafile,
         sourcesContent: false,
-        format: 'cjs', // Keep CommonJS output
+        format: packageType === 'module' ? 'esm' : 'cjs',
         platform: 'node',
         nodePaths: [path.join(projectRoot, 'node_modules')],
         logLevel: 'info',
@@ -86,8 +90,6 @@ export async function getBaseEsbuildOptions( //>
     };
 
     if (isLibraryBuild) {
-        const pkgJsonPath = path.join(packageCwd, 'package.json');
-        const pkgJson = JSON.parse(fs.readFileSync(pkgJsonPath, 'utf-8'));
         const dependencies = Object.keys(pkgJson.dependencies || {});
         const peerDependencies = Object.keys(pkgJson.peerDependencies || {});
         baseOptions.external = [...(baseOptions.external || []), ...dependencies, ...peerDependencies];
@@ -95,3 +97,60 @@ export async function getBaseEsbuildOptions( //>
 
     return baseOptions;
 } //</
+
+    
+
+// export async function getBaseEsbuildOptions( //>
+//     isProduction: boolean,
+//     enableMetafile: boolean,
+//     pluginFileNames: string[] = ['esbuildProblemMatcher.js'],
+//     packageCwd: string,
+//     isLibraryBuild: boolean,
+// ): Promise<Partial<BuildOptions>> {
+//     const plugins = await loadPlugins(pluginFileNames);
+
+//     const findRoot = (dir: string): string => {
+//         if (fs.existsSync(path.join(dir, 'pnpm-workspace.yaml'))) {
+//             return dir;
+//         }
+//         const parentDir = path.dirname(dir);
+//         if (parentDir === dir) {
+//             throw new Error('Could not find project root containing pnpm-workspace.yaml');
+//         }
+//         return findRoot(parentDir);
+//     };
+
+//     const projectRoot = findRoot(packageCwd);
+
+//     const baseOptions: Partial<BuildOptions> = {
+//         bundle: true,
+//         plugins,
+//         sourcemap: !isProduction,
+//         minify: isProduction,
+//         metafile: enableMetafile,
+//         sourcesContent: false,
+//         format: 'cjs', // Keep CommonJS output
+//         platform: 'node',
+//         nodePaths: [path.join(projectRoot, 'node_modules')],
+//         logLevel: 'info',
+//         external: [
+//             'vscode',
+//             'typescript',
+//         ],
+//         logOverride: {
+//             'require-resolve-not-external': 'silent',
+//         },
+//     };
+
+//     if (isLibraryBuild) {
+//         const pkgJsonPath = path.join(packageCwd, 'package.json');
+//         const pkgJson = JSON.parse(fs.readFileSync(pkgJsonPath, 'utf-8'));
+//         const dependencies = Object.keys(pkgJson.dependencies || {});
+//         const peerDependencies = Object.keys(pkgJson.peerDependencies || {});
+//         baseOptions.external = [...(baseOptions.external || []), ...dependencies, ...peerDependencies];
+//     }
+
+//     return baseOptions;
+// } //</
+
+

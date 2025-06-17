@@ -1,12 +1,20 @@
 packages:
-  - 'packages/context-cherry-picker-ext'
-  - 'packages/dynamicons/core'
-  - 'packages/dynamicons/ext'
+  
   - 'packages/shared/config-esbuild'
   - 'packages/shared/config-eslint'
   - 'packages/shared/config-tsc'
   - 'packages/shared/shared-services'
   - 'packages/shared/tools'
+  
+  - 'packages/context-cherry-picker-ext'
+  - 'packages/dynamicons/core'
+  - 'packages/dynamicons/ext'
+  - 'packages/notes-hub/core'
+  - 'packages/notes-hub/ext'
+  
+  # - 'packages/*'
+
+
 
 onlyBuiltDependencies:
   - bun

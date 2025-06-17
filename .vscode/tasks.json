@@ -44,6 +44,22 @@
             "group": "build"
         }, //<
 
+        
+        {
+            "label": "Build Notes Hub",
+            "type": "shell",
+            "command": "pnpm --filter fux-notes-hub exec turbo run build ",
+            "problemMatcher": ["$tsc-watch", "$ts-esbuild-watch"],
+            "presentation": {
+                "panel": "shared",
+                "group": "dynamiconsPrelaunch",
+                "clear": true,
+                // "close": true // To open and shut
+                "reveal": "never" // Just dont show
+            },
+            "group": "build"
+        }, //<
+
         {
             "label": "Internal Watch Dynamicons", //>
             "type": "shell",

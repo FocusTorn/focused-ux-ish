@@ -49,3 +49,6 @@ packages/assets
 
 
 
+
+# Ignored by F-UX Notes Hub
+/.fux-notes/

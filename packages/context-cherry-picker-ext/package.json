@@ -14,8 +14,10 @@
         "reflect-metadata"
     ],
     "scripts": {
+        
+        "builder": "pnpm run build:types && pnpm run build:js",
         "== BUILD ============================================================================================ ": "",
-        "build": "pnpm run build:js",
+        "build": "turbo run builder",
         "build:clean": "pnpm run clean && pnpm run build",
         "build:types": "tsc -p tsconfig.json --pretty",
         "build:js": "fux-build ./src/extension.ts --outfile=./dist/extension.js",

@@ -860,12 +860,7 @@
     "_ts": "_folder-typescript",
     ".vscode": "_folder-vscode",
     ".devcontainer": "_folder-webpack",
-    ".yarn": "_folder-yarn",
-    "dynamicons": "_folder-puzzle",
-    "_config": "_folder-config",
-    "shared": "_folder-toolbox",
-    "ext": "_folder-green-arrow",
-    "vsix_packages": "_folder-vscode"
+    ".yarn": "_folder-yarn"
   },
   "folderNamesExpanded": {
     "bin": "_folder-binary-open",
@@ -1009,12 +1004,7 @@
     "_ts": "_folder-typescript-open",
     ".vscode": "_folder-vscode-open",
     ".devcontainer": "_folder-webpack-open",
-    ".yarn": "_folder-yarn-open",
-    "dynamicons": "_folder-puzzle-open",
-    "_config": "_folder-config-open",
-    "shared": "_folder-toolbox-open",
-    "ext": "_folder-green-arrow-open",
-    "vsix_packages": "_folder-vscode-open"
+    ".yarn": "_folder-yarn-open"
   },
   "fileExtensions": {
     "ahk": "_ahk",
@@ -1193,13 +1183,7 @@
     "c_cpp_properties.json": "_vscode-config",
     "tasks.json": "_vscode-config",
     ".vscodeignore": "_vscode-ignore",
-    "webpack.config.js": "_webpack-config",
-    ".FocusedUI": "_config",
-    ".npmrc": "_node",
-    ".turbignore": "_turborepo",
-    "pnpm-lock.yaml": "_package-lock",
-    "pnpm-workspace.yaml": "_template",
-    ".FocusedUX": "_config"
+    "webpack.config.js": "_webpack-config"
   },
   "file": "_file",
   "folder": "_folder-basic",
@@ -1207,7 +1191,7 @@
   "rootFolder": "_folder-root",
   "rootFolderExpanded": "_folder-root-open",
   "languageIds": {},
-  "hidesExplorerArrows": false,
+  "hidesExplorerArrows": true,
   "highContrast": {
     "fileExtensions": {},
     "fileNames": {}

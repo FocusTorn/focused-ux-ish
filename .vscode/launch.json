@@ -58,6 +58,23 @@
             "preLaunchTask": "Build CCP Satellite Package" // New preLaunchTask
 		}, //<
         
+        { "name": "Note Hub", //>
+			"type": "extensionHost",
+			"request": "launch",
+			"args": [
+                "--profile=Clean",
+				"--extensionDevelopmentPath=${workspaceFolder}/packages/notes-hub/ext",
+				"${workspaceFolder}" 
+			],
+			"outFiles": [
+				"${workspaceFolder}/packages/notes-hub/ext/dist/**/*.js",
+				"${workspaceFolder}/packages/shared/shared-services/dist/**/*.js" 
+			],
+			"sourceMaps": true,
+            "preLaunchTask": "Build Notes Hub"
+		}, //<
+        
+        
         
         // { "name": "Dynamicons", //>
 		// 	"type": "extensionHost",

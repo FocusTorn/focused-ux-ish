@@ -1,0 +1,324 @@
+{
+    "name": "fux-notes-hub",
+    "displayName": "F-UX: Notes Hub",
+    "publisher": "NewRealityDesigns",
+    "description": "A flexible note-taking system integrated into VS Code's file explorer.",
+    "repository": "https://github.com/FocusTorn/focused-ux",
+    "version": "0.1.0",
+    "engines": {
+        "vscode": "^1.100.0"
+    },
+    "main": "./dist/extension.js",
+    "icon": "assets/hub-icon.svg",
+    "sideEffects": [
+        "reflect-metadata"
+    ],
+    "scripts": {
+        "== BUILD ============================================================================================ ": "",
+        "build": "pnpm run build:js",
+        "build:clean": "pnpm run clean && pnpm run build",
+        "build:types": "tsc -p tsconfig.json --pretty",
+        "build:js": "fux-build ./src/extension.ts --outfile=./dist/extension.js",
+        "== VALIDATE ========================================================================================= ": "",
+        "lint": "pnpm eslint . --ext .ts",
+        "lint:fix": "eslint . --ext .ts --fix",
+        "check-types": "tsc --noEmit -p tsconfig.json",
+        "== FINALIZE ========================================================================================= ": "",
+        "vscode:prepublish": "pnpm run build:clean && pnpm run version-bump",
+        "package": "vsce package --no-dependencies --out ../../vsix_packages/ ",
+        "publish": "vsce publish",
+        "== WATCH ============================================================================================ ": "",
+        "watch": "pnpm run watch:types & pnpm run watch:js",
+        "watch:types": "tsc -p tsconfig.json --watch",
+        "watch:js": "fux-build ./src/extension.ts --outfile=./dist/extension.js --watch",
+        "== UTILITIES ======================================================================================== ": "",
+        "clean": "rimraf ./dist .turbo",
+        "version-bump": "tsx ./../shared/tools/src/scripts/version_bump.ts"
+    },
+    "dependencies": {
+        "@focused-ux/notes-hub-core": "workspace:*",
+        "@focused-ux/shared-services": "workspace:*",
+        "reflect-metadata": "^0.2.2",
+        "tsyringe": "^4.10.0"
+    },
+    "devDependencies": {
+        "@focused-ux/config-esbuild": "workspace:*",
+        "@focused-ux/config-eslint": "workspace:*",
+        "@focused-ux/tsconfig": "workspace:*",
+        "@types/node": "latest",
+        "@types/vscode": "^1.100.0",
+        "esbuild": "^0.25.5",
+        "typescript": "^5.8.3"
+    },
+    "activationEvents": [
+        "onStartupFinished"
+    ],
+    "categories": [
+        "Other"
+    ],
+    "keywords": [
+        "notes",
+        "notebook",
+        "markdown",
+        "developer tools",
+        "focused ux"
+    ],
+    "contributes": {
+        "commands": [
+            {
+                "command": "nh.newProjectFolder",
+                "title": "Notes Hub: New Project Folder",
+                "category": "Notes Hub",
+                "icon": "$(new-folder)"
+            },
+            {
+                "command": "nh.newRemoteFolder",
+                "title": "Notes Hub: New Remote Folder",
+                "category": "Notes Hub",
+                "icon": "$(new-folder)"
+            },
+            {
+                "command": "nh.newGlobalFolder",
+                "title": "Notes Hub: New Global Folder",
+                "category": "Notes Hub",
+                "icon": "$(new-folder)"
+            },
+            {
+                "command": "nh.newProjectNote",
+                "title": "Notes Hub: New Project Note",
+                "category": "Notes Hub",
+                "icon": "$(new-file)"
+            },
+            {
+                "command": "nh.newRemoteNote",
+                "title": "Notes Hub: New Remote Note",
+                "category": "Notes Hub",
+                "icon": "$(new-file)"
+            },
+            {
+                "command": "nh.newGlobalNote",
+                "title": "Notes Hub: New Global Note",
+                "category": "Notes Hub",
+                "icon": "$(new-file)"
+            },
+            {
+                "command": "nh.newNestedNote",
+                "title": "Notes Hub: New Nested Note",
+                "category": "Notes Hub",
+                "icon": "$(new-file)"
+            },
+            {
+                "command": "nh.newNestedFolder",
+                "title": "Notes Hub: New Nested Folder",
+                "category": "Notes Hub",
+                "icon": "$(new-folder)"
+            },
+            {
+                "command": "nh.openNote",
+                "title": "Notes Hub: Open Note",
+                "category": "Notes Hub",
+                "icon": "$(edit)"
+            },
+            {
+                "command": "nh.openNotePreview",
+                "title": "Notes Hub: Open Note Preview",
+                "category": "Notes Hub",
+                "icon": "$(open-preview)"
+            },
+            {
+                "command": "nh.addFrontmatter",
+                "title": "Notes Hub: Add Frontmatter",
+                "category": "Notes Hub",
+                "icon": "$(list-unordered)"
+            },
+            {
+                "command": "nh.copyItem",
+                "title": "Notes Hub: Copy Item",
+                "category": "Notes Hub",
+                "icon": "$(copy)"
+            },
+            {
+                "command": "nh.cutItem",
+                "title": "Notes Hub: Cut Item",
+                "category": "Notes Hub"
+            },
+            {
+                "command": "nh.pasteItem",
+                "title": "Notes Hub: Paste Item",
+                "category": "Notes Hub"
+            },
+            {
+                "command": "nh.renameItem",
+                "title": "Notes Hub: Rename Item",
+                "category": "Notes Hub"
+            },
+            {
+                "command": "nh.deleteItem",
+                "title": "Notes Hub: Delete Item",
+                "category": "Notes Hub",
+                "icon": "$(trash)"
+            }
+        ],
+        "viewsContainers": {
+            "activitybar": [
+                {
+                    "id": "notesHub",
+                    "title": "Notes Hub",
+                    "icon": "assets/hub-icon.svg"
+                }
+            ]
+        },
+        "views": {
+            "notesHub": [
+                {
+                    "id": "nh.projectNotesView",
+                    "name": "Project Notes",
+                    "type": "tree",
+                    "when": "config.nh.enableProjectNotes != false",
+                    "icon": "$(project)"
+                },
+                {
+                    "id": "nh.remoteNotesView",
+                    "name": "Remote Notes",
+                    "type": "tree",
+                    "when": "config.nh.enableRemoteNotes",
+                    "icon": "$(remote-explorer)"
+                },
+                {
+                    "id": "nh.globalNotesView",
+                    "name": "Global Notes",
+                    "type": "tree",
+                    "when": "config.nh.enableGlobalNotes",
+                    "icon": "$(globe)"
+                }
+            ]
+        },
+        "menus": {
+            "view/title": [
+                {
+                    "command": "nh.newProjectNote",
+                    "when": "view == 'nh.projectNotesView'",
+                    "group": "navigation@1"
+                },
+                {
+                    "command": "nh.newProjectFolder",
+                    "when": "view == 'nh.projectNotesView'",
+                    "group": "navigation@2"
+                },
+                {
+                    "command": "nh.newRemoteNote",
+                    "when": "view == 'nh.remoteNotesView'",
+                    "group": "navigation@1"
+                },
+                {
+                    "command": "nh.newRemoteFolder",
+                    "when": "view == 'nh.remoteNotesView'",
+                    "group": "navigation@2"
+                },
+                {
+                    "command": "nh.newGlobalNote",
+                    "when": "view == 'nh.globalNotesView'",
+                    "group": "navigation@1"
+                },
+                {
+                    "command": "nh.newGlobalFolder",
+                    "when": "view == 'nh.globalNotesView'",
+                    "group": "navigation@2"
+                }
+            ],
+            "view/item/context": [
+                {
+                    "command": "nh.openNote",
+                    "when": "viewItem == 'notesHubFileItem'",
+                    "group": "inline@1"
+                },
+                {
+                    "command": "nh.openNotePreview",
+                    "when": "viewItem == 'notesHubFileItem'",
+                    "group": "inline@2"
+                },
+                {
+                    "command": "nh.deleteItem",
+                    "when": "viewItem == 'notesHubFileItem' || viewItem == 'notesHubFolderItem'",
+                    "group": "inline@4"
+                },
+                {
+                    "command": "nh.newNestedNote",
+                    "when": "viewItem == 'notesHubFolderItem'",
+                    "group": "1_actions"
+                },
+                {
+                    "command": "nh.newNestedFolder",
+                    "when": "viewItem == 'notesHubFolderItem'",
+                    "group": "1_actions"
+                },
+                {
+                    "command": "nh.copyItem",
+                    "when": "viewItem == 'notesHubFileItem' || viewItem == 'notesHubFolderItem'",
+                    "group": "2_clipboard"
+                },
+                {
+                    "command": "nh.cutItem",
+                    "when": "viewItem == 'notesHubFileItem' || viewItem == 'notesHubFolderItem'",
+                    "group": "2_clipboard"
+                },
+                {
+                    "command": "nh.pasteItem",
+                    "when": "viewItem == 'notesHubFolderItem' && config.nh.canPaste",
+                    "group": "2_clipboard"
+                },
+                {
+                    "command": "nh.addFrontmatter",
+                    "when": "viewItem == 'notesHubFileItem'",
+                    "group": "3_modification"
+                },
+                {
+                    "command": "nh.renameItem",
+                    "when": "viewItem == 'notesHubFileItem' || viewItem == 'notesHubFolderItem'",
+                    "group": "3_modification"
+                }
+            ]
+        },
+        "configuration": {
+            "title": "Notes Hub",
+            "properties": {
+                "nh.enableProjectNotes": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable the Project Notes view.",
+                    "scope": "resource"
+                },
+                "nh.enableRemoteNotes": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable the Remote Notes view.",
+                    "scope": "resource"
+                },
+                "nh.enableGlobalNotes": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable the Global Notes view.",
+                    "scope": "resource"
+                },
+                "nh.projectNotesPath": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Path to project-specific notes directory. If empty, defaults to '~/.fux-notes/project/[workspaceName]'. Supports '~' for home directory.",
+                    "scope": "resource"
+                },
+                "nh.remoteNotesPath": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Path to remote notes directory. If empty, defaults to '~/.fux-notes/remote'. Supports '~' for home directory.",
+                    "scope": "machine"
+                },
+                "nh.globalNotesPath": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Path to global notes directory. If empty, defaults to '~/.fux-notes/global'. Supports '~' for home directory.",
+                    "scope": "machine"
+                }
+            }
+        }
+    }
+}

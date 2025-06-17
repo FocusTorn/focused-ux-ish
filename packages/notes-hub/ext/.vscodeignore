@@ -1,0 +1,13 @@
+# 1. Ignore all files by default.
+**/*
+
+# 2. Re-include ONLY the specific files and folders needed for the VSIX package.
+!/dist/extension.js
+!/assets/**
+!/package.json
+!/LICENSE.txt
+!/README.md
+!/CHANGELOG.md
+
+# 3. Also ignore any build artifacts that might be at the root.
+*.tsbuildinfo
