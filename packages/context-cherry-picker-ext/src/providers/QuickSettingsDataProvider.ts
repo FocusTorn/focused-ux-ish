@@ -33,6 +33,7 @@ interface FileGroupsConfig { //>
 interface ProjectYamlConfig { //>
 	ContextCherryPicker?: {
 		file_groups?: FileGroupsConfig
+		default_project_structure?: ('none' | 'selected' | 'all' | 'NONE' | 'SELECTED' | 'ALL')[]
 	}
 } //<
 
@@ -44,18 +45,35 @@ export class QuickSettingsDataProvider implements IQuickSettingsDataProvider { /
 	private _settingsState: Map<string, any> = new Map()
 	private _onDidUpdateSetting = new vscode.EventEmitter<{ settingId: string, value: any }>()
 	public readonly onDidUpdateSetting: Event<{ settingId: string, value: any }> = this._onDidUpdateSetting.event
+	private _initializationPromise: Promise<void>
 
 	constructor( //>
 		@inject('iContext') private readonly _context: ExtensionContext, // Injected ExtensionContext
 		@inject('IWorkspace') private readonly _workspace: IWorkspace, // Injected IWorkspace
 	) {
 		this._extensionUri = this._context.extensionUri
-		this._settingsState.set(PROJECT_STRUCTURE_SETTING_ID, 'selected' as ProjectStructureSettingValue)
-		this._initializeFileGroupStates()
+		this._initializationPromise = this._initializeStatesFromConfig()
 	} //<
 
-	private async _initializeFileGroupStates(): Promise<void> { //>
-		const fileGroups = await this._getFileGroupsFromConfig()
+	private async _initializeStatesFromConfig(): Promise<void> { //>
+		const config = await this._getProjectConfig()
+		const ccpConfig = config?.ContextCherryPicker
+
+		// Handle Project Structure setting
+		let projectStructureValue: ProjectStructureSettingValue = 'all' // New default
+		const validValues: ProjectStructureSettingValue[] = ['none', 'selected', 'all']
+
+		if (ccpConfig?.default_project_structure && Array.isArray(ccpConfig.default_project_structure) && ccpConfig.default_project_structure.length > 0) {
+			const configValue = ccpConfig.default_project_structure[0]?.toLowerCase() as ProjectStructureSettingValue
+
+			if (validValues.includes(configValue)) {
+				projectStructureValue = configValue
+			}
+		}
+		this._settingsState.set(PROJECT_STRUCTURE_SETTING_ID, projectStructureValue)
+
+		// Handle File Groups
+		const fileGroups = ccpConfig?.file_groups
 
 		if (fileGroups) {
 			for (const groupName in fileGroups) {
@@ -70,7 +88,7 @@ export class QuickSettingsDataProvider implements IQuickSettingsDataProvider { /
 		}
 	} //<
 
-	private async _getFileGroupsFromConfig(): Promise<FileGroupsConfig | undefined> { //>
+	private async _getProjectConfig(): Promise<ProjectYamlConfig | undefined> { //>
 		if (this._workspace.workspaceFolders && this._workspace.workspaceFolders.length > 0) {
 			const workspaceRoot = this._workspace.workspaceFolders[0].uri
 			const configFileUri = vscode.Uri.joinPath(workspaceRoot, constants.projectConfig.fileName)
@@ -80,12 +98,12 @@ export class QuickSettingsDataProvider implements IQuickSettingsDataProvider { /
 				const yamlContent = Buffer.from(fileContents).toString('utf-8')
 				const parsedConfig = yaml.load(yamlContent) as ProjectYamlConfig
 
-				return parsedConfig?.ContextCherryPicker?.file_groups
+				return parsedConfig
 			}
 			catch (error) {
 				// File not found is expected, other errors should be logged.
 				if (!(error instanceof vscode.FileSystemError && error.code === 'FileNotFound')) {
-					console.error(`[${constants.extension.nickName}] Error reading .FocusedUX for file groups:`, error)
+					console.error(`[${constants.extension.nickName}] Error reading .FocusedUX config:`, error)
 				}
 			}
 		}
@@ -106,23 +124,26 @@ export class QuickSettingsDataProvider implements IQuickSettingsDataProvider { /
 			],
 		}
 
-		// Re-initialize states in case config changed while view was hidden
-		await this._initializeFileGroupStates()
+		// Await the initial or any ongoing initialization
+		await this._initializationPromise
 		webviewView.webview.html = await this._getHtmlForWebview(webviewView.webview)
 
-		webviewView.webview.onDidReceiveMessage(async (message) => { //>
+		webviewView.webview.onDidReceiveMessage(async (message) => {
 			switch (message.command) {
 				case 'updateSetting':
 					if (message.settingId && message.value !== undefined) {
 						await this.updateSettingState(message.settingId, message.value)
 					}
 			}
-		}) //<
+		})
 	} //<
 
 	public async refresh(): Promise<void> { //>
+		// Always re-run initialization logic on refresh.
+		this._initializationPromise = this._initializeStatesFromConfig()
+		await this._initializationPromise
+
 		if (this._view) {
-			await this._initializeFileGroupStates()
 			this._view.webview.html = await this._getHtmlForWebview(this._view.webview)
 		}
 	} //<
@@ -131,16 +152,17 @@ export class QuickSettingsDataProvider implements IQuickSettingsDataProvider { /
 		this._settingsState.set(settingId, newState)
 		this._onDidUpdateSetting.fire({ settingId, value: newState })
 
-		if (this._view) { //>
+		if (this._view) {
 			this._view.webview.postMessage({
 				command: 'settingUpdated',
 				settingId,
 				value: newState,
 			})
-		} //<
+		}
 	} //<
 
 	public async getSettingState(settingId: string): Promise<any> { //>
+		await this._initializationPromise
 		return this._settingsState.get(settingId)
 	} //<
 
@@ -148,11 +170,12 @@ export class QuickSettingsDataProvider implements IQuickSettingsDataProvider { /
 		const nonce = getNonce()
 		const currentProjectStructureState = (this._settingsState.get(
 			PROJECT_STRUCTURE_SETTING_ID,
-		) || 'selected') as ProjectStructureSettingValue
+		) || 'all') as ProjectStructureSettingValue // Default to 'all' for rendering
 
 		const viewHtmlUri = vscode.Uri.joinPath(this._extensionUri, 'assets', 'views', 'projectStructureQuickSetting.html')
 
-		const fileGroups = await this._getFileGroupsFromConfig()
+		const config = await this._getProjectConfig()
+		const fileGroups = config?.ContextCherryPicker?.file_groups
 		let fileGroupButtonsHtml = ''
 
 		if (fileGroups) {

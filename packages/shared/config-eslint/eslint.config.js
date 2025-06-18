@@ -29,12 +29,12 @@ const focusTornBaseRules = { //>
 	'license-header/header': 'off',
 	'license/unknown': 'off',
 	'no-console': 'off',
-	'no-unused-vars': 'off', // Handled by unused-imports/no-unused-vars
-	
-    
-    // "@typescript-eslint/no-require-imports": "error",
-    
-    
+	'no-unused-vars': 'off',
+
+	// 'style/brace-style': 'off'
+
+	// "@typescript-eslint/no-require-imports": "error",
+
 	'antfu/curly': 'off',
 	'style/indent': ['error', 'tab'],
 	'style/no-mixed-spaces-and-tabs': ['error', 'smart-tabs'],
@@ -54,29 +54,32 @@ const focusTornBaseRules = { //>
 	'style/max-statements-per-line': 'off',
 	'style/no-tabs': 'off',
 	'style/spaced-comment': 'off',
-    
+
 	// 'style/lines-between-class-members': 'off',
 	// 'style/lines-between-class-members': ['error', ''],
-    
+
 	'style/padding-line-between-statements': ['error',
-        
+
 		// { "blankLine": "always", "prev": "*", "next": ["enum", "interface", "type"] },
-        
+
 		// { "blankLine": "always", "prev": "*", "next": ["enum", "interface", "type"] },
-        
+
 		{ blankLine: 'always', prev: '*', next: ['const', 'let', 'var'] },
 		{ blankLine: 'always', prev: ['const', 'let', 'var'], next: '*' },
 		{ blankLine: 'any', prev: ['const', 'let', 'var'], next: ['const', 'let', 'var'] },
-        
+
 	],
 
-	'unused-imports/no-unused-imports': 'warn', // Changed from 'off' to 'warn'
-	'unused-imports/no-unused-vars': ['warn', { //>
+	'unused-imports/no-unused-vars': ['error', { //>
 		vars: 'all',
 		varsIgnorePattern: '^_',
+		caughtErrors: 'all',
+		caughtErrorsIgnorePattern: '^_',
 		args: 'after-used',
 		argsIgnorePattern: '^_',
 	}], //<
+
+	// @typescript-eslint/no-unused-vars': ['warn', { caughtErrors: 'none' }]
 
 } //<
 
@@ -99,8 +102,6 @@ export default combine(
 		'**/*_____X*.*',
 		'**/*_____X*/*.*',
 
-		// Remove tsconfig.eslint.json from ignores if it was there
-		// 'tsconfig.eslint.json',
 	] }, //<
 
 	comments(),
@@ -117,13 +118,9 @@ export default combine(
 	}), //<
 	typescript({ //>
 		stylistic: true,
-		// tsconfigPath: "tsconfig.eslint.json", // REMOVED
-		// tsconfigRootDir: projectRoot, // REMOVED
-		// By removing tsconfigPath, @typescript-eslint/parser will look for tsconfig.json
-		// in the CWD (i.e., each package directory when run via Turbo).
-		project: true, // This tells the parser to find the closest tsconfig.json
+		project: true,
 		overrides: {
-			'ts/no-unused-vars': 'off',
+			'ts/no-unused-vars': 'off', //['warn', { caughtErrors: 'none' }],
 		},
 	}), //<
 

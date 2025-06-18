@@ -4,6 +4,10 @@
 
 ContextCherryPicker:
     
+    default_project_structure:
+        - None
+    
+    
     file_groups:
         build:
             initially_visible: false 
@@ -11,29 +15,45 @@ ContextCherryPicker:
                 - '**/.turbo'
                 - '**/dist'
                 - '**/tsconfig.tsbuildinfo'
-          
         test:
-            initially_visible: false 
+            initially_visible: false
             items:
                 - '**/test'
-        
+                - "**/coverage"
+                - '.vscode-test.mjs'
         ignores:
-            initially_visible: false 
+            initially_visible: false
             items:
                 - '**/.gitignore'
                 - '**/.vscodeignore'
                 - '**/.npmignore'
-    
+                - '.turbignore'
+        config:
+            initially_visible: false
+            items:
+                - '**/.editorconfig'
+                - '**/.FocusedUX'
+                - '**/.npmrc'
+                - '**/eslint.config.js'
+                - '**/knip.json'
+                - '**/prettier.config.js'
+                - '**/svgo.config.mjs'
+                - '**/vitest.config.ts'
+        documents:
+            initially_visible: false
+            items:
+                - '**/LICENSE.*'
+                - '**/README.*'
+        locks:
+            initially_visible: false
+            items:
+                - 'pnpm-lock.yaml'
+                
+                 
+                
+            
+                
     ignore:
-    
-        # - '**/.turbo'
-        # - '**/dist'
-        # - '**/tsconfig.tsbuildinfo'
-        # - '**/test'
-        # - '**/.gitignore'
-        # - '**/.vscodeignore'
-        # - '**/.npmignore'
-    
     
         #= GENERAL ================================================================ 
         - '**/node_modules'
@@ -44,7 +64,6 @@ ContextCherryPicker:
         - '**/yalc.lock'
 
         #= DIRECTORIES ============================================================ 
-        # - _scripts
         - assets
         - vsix_packages
 
@@ -55,9 +74,8 @@ ContextCherryPicker:
         - '**/*.svg'
         
         #= FILES ================================================================== 
-        - '**/LICENSE.txt'
+        
         - '**/*.bak*'
-        - .editorconfig
         
         
     

@@ -7,9 +7,11 @@ import { inject, injectable } from 'tsyringe'
 import { EventEmitter, FileType as VsCodeFileTypeEnum, TreeItemCheckboxState, Uri, TreeItemCollapsibleState, ThemeIcon } from 'vscode'
 import type { Event, TreeItemLabel, FileSystemError, ConfigurationChangeEvent, FileSystemWatcher, Disposable } from 'vscode'
 import { TreeItem } from 'vscode'
+import * as vscode from 'vscode'
 
 //= NODE JS ===================================================================================================
 import { Buffer } from 'node:buffer'
+import { TextDecoder } from 'node:util'
 
 //= MISC ======================================================================================================
 import micromatch from 'micromatch'
@@ -24,8 +26,12 @@ import type { FileGroupsConfig } from '../_interfaces/ccp.types.ts'
 //= INJECTED TYPES ============================================================================================
 import type { IWorkspace, IWindow } from '@focused-ux/shared-services'
 import type { IQuickSettingsDataProvider } from '../_interfaces/IQuickSettingsDataProvider.ts'
+import type { ITokenizerService } from '@focused-ux/shared-services/services/Tokenizer.service.js'
 
 //--------------------------------------------------------------------------------------------------------------<<
+
+const LARGE_FILE_TOKEN_THRESHOLD = 500_000
+const LARGE_FILE_SIZE_THRESHOLD_BYTES = 500 * 1024 // 500 KB, a more conservative threshold
 
 interface ProjectYamlConfig { //>
 	ContextCherryPicker?: {
@@ -50,6 +56,7 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider, Disp
 	readonly onDidChangeTreeData: Event<FileExplorerItem | undefined | null | void> = this._onDidChangeTreeData.event
 
 	private checkboxStates: Map<string, TreeItemCheckboxState> = new Map()
+	private tokenCountCache: Map<string, 'loading' | number> = new Map()
 	private fileWatcher: FileSystemWatcher | undefined
 	private isInitialized = false
 	private configChangeListener: Disposable | undefined
@@ -63,11 +70,12 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider, Disp
 	private projectTreeAlwaysHideGlobs: string[] = []
 	private projectTreeShowIfSelectedGlobs: string[] = []
 
-	constructor(
+	constructor( //>
 		@inject('IWorkspace') private readonly workspaceAdapter: IWorkspace,
 		@inject('IWindow') private readonly windowAdapter: IWindow,
 		@inject('IQuickSettingsDataProvider') private readonly quickSettingsProvider: IQuickSettingsDataProvider,
-	) { //>
+		@inject('ITokenizerService') private readonly tokenizerService: ITokenizerService,
+	) {
 		this.configChangeListener = this.workspaceAdapter.onDidChangeConfiguration(this._onVsCodeConfigChange)
 
 		if (this.workspaceAdapter.workspaceFolders && this.workspaceAdapter.workspaceFolders.length > 0) {
@@ -95,9 +103,10 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider, Disp
 
 	private _onFocusedUxConfigChange = async (): Promise<void> => { //>
 		console.log(`[${constants.extension.name}] '.FocusedUX' file configuration changed. Refreshing explorer view.`)
+		await this.quickSettingsProvider.refresh()
 		await this.refresh()
 	} //<
-
+    
 	// ┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
 	// │                                     CONFIGURATION HANDLING                                       │
 	// └──────────────────────────────────────────────────────────────────────────────────────────────────┘
@@ -148,10 +157,12 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider, Disp
 			try {
 				const fileContents = await this.workspaceAdapter.fs.readFile(configFileUri)
 				const yamlContent = Buffer.from(fileContents).toString('utf-8')
+
 				parsedYamlConfig = yaml.load(yamlContent) as ProjectYamlConfig
 			}
 			catch (_error: any) {
 				const fsError = _error as FileSystemError
+
 				if (fsError && typeof fsError.code === 'string' && fsError.code === 'FileNotFound') {
 					// This is fine, we'll just use VS Code settings.
 				}
@@ -201,6 +212,7 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider, Disp
 
 				if (isVisible === false) { // If the toggle is OFF
 					const patterns = group.items || []
+
 					if (micromatch.isMatch(relativePath, patterns)) {
 						return true // Hide it
 					}
@@ -214,6 +226,7 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider, Disp
 	async getChildren(element?: FileExplorerItem): Promise<FileExplorerItem[]> { //>
 		if (!element && this._statusMessage) {
 			const statusItem = new TreeItem(this._statusMessage, TreeItemCollapsibleState.None)
+
 			statusItem.iconPath = new ThemeIcon('check')
 			return [statusItem as FileExplorerItem]
 		}
@@ -231,6 +244,7 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider, Disp
 
 		if (element && element.type === 'directory') {
 			const relativeElementPath = this.workspaceAdapter.asRelativePath(element.uri, false).replace(/\\/g, '/')
+
 			if (micromatch.isMatch(relativeElementPath, this.contextExplorerHideChildrenGlobs)) {
 				return []
 			}
@@ -263,7 +277,7 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider, Disp
 			this.windowAdapter.showErrorMessage(`Error reading directory: ${(element?.label as TreeItemLabel)?.label || (element?.label as string) || sourceUri.fsPath}`)
 		}
 
-		children.sort((a, b) => { //>
+		children.sort((a, b) => {
 			if (a.type === 'directory' && b.type === 'file')
 				return -1
 			if (a.type === 'file' && b.type === 'directory')
@@ -273,26 +287,65 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider, Disp
 			const labelB = typeof b.label === 'string' ? b.label : (b.label as TreeItemLabel)?.label || ''
 
 			return labelA.localeCompare(labelB)
-		}) //<
+		})
 
 		return children
 	} //<
 
-	getTreeItem(element: FileExplorerItem): TreeItem { //>
-		if (!(element instanceof FileExplorerItem)) {
+	getTreeItem(element: FileExplorerItem): TreeItem | Thenable<TreeItem> { //>
+		return (async () => {
+			if (!(element instanceof FileExplorerItem)) {
+				return element
+			}
+
+			// If the item is about to be hidden by the new filter settings,
+			// return it as-is without starting a token count.
+			if (await this.isUriHiddenForProviderUi(element.uri)) {
+				return element
+			}
+
+			const uriString = element.uri.fsPath
+			const currentState = this.getCheckboxState(element.uri)
+
+			element.checkboxState = currentState === undefined ? TreeItemCheckboxState.Unchecked : currentState
+
+			if (element.collapsibleState === undefined) {
+				element.collapsibleState = element.type === 'directory' ? TreeItemCollapsibleState.Collapsed : TreeItemCollapsibleState.None
+			}
+
+			const cacheState = this.tokenCountCache.get(uriString)
+
+			if (typeof cacheState === 'number') {
+				element.description = `(tokens: ${this._formatTokenCount(cacheState)})`
+			}
+			else { // 'loading' or undefined
+				element.description = `(tokens: --)`
+				if (cacheState === undefined) { // Only start calculation if it's not already 'loading'
+					this.tokenCountCache.set(uriString, 'loading')
+					// Fire-and-forget the async calculation
+					;(async () => {
+						let finalCount: number
+
+						try {
+							finalCount = await this._calculateTokenCount(element.uri)
+						}
+						catch (error) {
+							console.error(`[${constants.extension.name}] Error calculating token count for ${element.uri.fsPath}:`, error)
+							finalCount = -1
+						}
+						this.tokenCountCache.set(uriString, finalCount)
+						// Explicitly fire an update for this specific item now that its data has changed.
+						this._onDidChangeTreeData.fire(element)
+					})()
+				}
+			}
+
 			return element
-		}
-
-		const currentState = this.getCheckboxState(element.uri)
-		element.checkboxState = currentState === undefined ? TreeItemCheckboxState.Unchecked : currentState
-
-		if (element.collapsibleState === undefined) {
-			element.collapsibleState = element.type === 'directory' ? TreeItemCollapsibleState.Collapsed : TreeItemCollapsibleState.None
-		}
-		return element
+		})()
 	} //<
 
 	async refresh(): Promise<void> { //>
+		this.tokenCountCache.clear()
 		await this.loadConfigurationPatterns()
 		this._onDidChangeTreeData.fire()
 	} //<
@@ -332,6 +385,7 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider, Disp
 			if (state === TreeItemCheckboxState.Checked) {
 				try {
 					const uri = Uri.parse(uriString)
+
 					checkedUris.push(uri)
 				}
 				catch (_error: any) {
@@ -409,6 +463,76 @@ export class FileExplorerDataProvider implements IFileExplorerDataProvider, Disp
 				this._onDidChangeTreeData.fire()
 			}
 		}, duration)
+	} //<
+
+	// ┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
+	// │                                       TOKEN COUNTING HELPERS                                     │
+	// └──────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+	private _formatTokenCount(count: number): string { //>
+		if (count === Infinity) {
+			return `>${(LARGE_FILE_TOKEN_THRESHOLD / 1000).toFixed(0)}k`
+		}
+		if (count < 0)
+			return 'err'
+		if (count < 1000) {
+			return count.toString()
+		}
+		return `${(count / 1000).toFixed(1)}k`
+	} //<
+
+	private async _calculateTokenCount(uri: Uri): Promise<number> { //>
+		try {
+			const stat = await this.workspaceAdapter.fs.stat(uri)
+
+			if (stat.type === vscode.FileType.File) {
+				if (stat.size > LARGE_FILE_SIZE_THRESHOLD_BYTES) {
+					console.log(`[${constants.extension.name}] Skipping token calculation for large file (size > ${LARGE_FILE_SIZE_THRESHOLD_BYTES}B): ${uri.fsPath}`)
+					return Infinity // Signal that the file is too large
+				}
+
+				const content = await this.workspaceAdapter.fs.readFile(uri)
+				const text = new TextDecoder().decode(content)
+
+				console.log(`[${constants.extension.name}] START GPT tokenizing: ${uri.fsPath}`)
+
+				const tokenCount = this.tokenizerService.calculateTokens(text)
+
+				console.log(`[${constants.extension.name}] END GPT tokenizing: ${uri.fsPath}`)
+				return tokenCount
+			}
+			else if (stat.type === vscode.FileType.Directory) {
+				let totalTokens = 0
+				const entries = await this.workspaceAdapter.fs.readDirectory(uri)
+				const promises = entries.map(async ([name]) => {
+					const childUri = Uri.joinPath(uri, name)
+
+					if (await this.isUriHiddenForProviderUi(childUri)) {
+						return 0 // Don't count hidden children
+					}
+
+					// Check cache first for children to optimize
+					const cached = this.tokenCountCache.get(childUri.fsPath)
+
+					if (typeof cached === 'number') {
+						return cached
+					}
+					return this._calculateTokenCount(childUri)
+				})
+				const counts = await Promise.all(promises)
+
+				if (counts.includes(Infinity)) {
+					return Infinity // Propagate "too large" signal up
+				}
+
+				totalTokens = counts.reduce((sum, count) => sum + count, 0)
+				return totalTokens
+			}
+		}
+		catch (_e) {
+			return 0
+		}
+		return 0
 	} //<
 
 }

@@ -178,7 +178,10 @@ export class ContextCherryPickerManager implements IContextCherryPickerManager {
 	public async copyContextOfCheckedItems(): Promise<void> { //>
 		console.log(`${LOG_PREFIX} copyContextOfCheckedItems called.`)
 
-		const initialCheckedUris = this.getCheckedExplorerItems()
+		const allCheckedUris = this.getCheckedExplorerItems()
+		const initialCheckedUris = this._pruneRedundantUris(allCheckedUris)
+
+		console.log(`${LOG_PREFIX} Total checked items: ${allCheckedUris.length}, after pruning: ${initialCheckedUris.length}`)
 
 		const workspaceFolders = this._workspace.workspaceFolders
 
@@ -302,7 +305,7 @@ export class ContextCherryPickerManager implements IContextCherryPickerManager {
 			this.showStatusMessage('drop', `📋 Context copied (~${totalTokens} tokens)`, 1000)
 		}
 	} //<
-
+    
 	public async getQuickSettingState(settingId: string): Promise<any> { //>
 		return this._quickSettingsDataProvider.getSettingState(settingId)
 	} //<
@@ -365,6 +368,29 @@ export class ContextCherryPickerManager implements IContextCherryPickerManager {
 				}
 			}, duration)
 		}
+	} //<
+          
+	private _pruneRedundantUris(uris: Uri[]): Uri[] { //>
+		if (uris.length <= 1) {
+			return uris
+		}
+
+		const paths = uris.map(u => u.fsPath.replace(/\\/g, '/'))
+		const uriMap = new Map(paths.map((p, i) => [p, uris[i]]))
+
+		const prunedPaths = paths.filter((pathA) => {
+			// Keep pathA if there is no *other* pathB in the list
+			// where pathA is a descendant of pathB.
+			return !paths.some((pathB) => {
+				if (pathA === pathB) {
+					return false // Not a descendant of itself
+				}
+				// Check if pathA starts with pathB and a path separator
+				return pathA.startsWith(`${pathB}/`)
+			})
+		})
+
+		return prunedPaths.map(p => uriMap.get(p)!)
 	} //<
     
 }

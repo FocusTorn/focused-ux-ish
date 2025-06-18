@@ -12,18 +12,20 @@
         "build:clean": "pnpm run clean && pnpm run build",
         "build:types": "tsc -p tsconfig.json",
         "build:js": "fux-build ./src/index.ts --outfile=./dist/index.js",
-        
         "== UTILITIES ======================================================================================== ": "",
         "clean": "rimraf ./dist .turbo"
     },
     "devDependencies": {
-        "@focused-ux/tsconfig": "workspace:*",
-        "@focused-ux/config-eslint": "workspace:*",
         "@focused-ux/config-esbuild": "workspace:*",
+        "@focused-ux/config-eslint": "workspace:*",
+        "@focused-ux/tsconfig": "workspace:*",
         "chalk": "^5.4.1",
+        "esbuild": "^0.25.5",
         "ts-node": "^10.9.2",
-        "typescript": "^5.8.3",
-        "esbuild": "^0.25.5"
+        "typescript": "^5.8.3"
     },
-    "dependencies": {}
+    "dependencies": {
+        "@typescript-eslint/eslint-plugin": "^8.34.1",
+        "@typescript-eslint/parser": "^8.34.1"
+    }
 }

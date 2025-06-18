@@ -25,12 +25,14 @@
         }
         .options-container {
             display: flex;
+            flex-wrap: wrap; /* Allow items to wrap to the next line */
+            gap: 4px; /* Use gap for consistent spacing */
             width: 100%;
             box-sizing: border-box;
         }
         .option-button, .toggle-button {
-            flex: 1;
-            padding: 0px 5px;
+            flex: 1 1 auto; /* Allow growing and shrinking, with an auto basis */
+            padding: 0px 12px; /* Increased horizontal padding */
             line-height: calc(var(--vscode-font-size) * 1.5);
             font-size: calc(var(--vscode-font-size) * 0.85);
             text-align: center;
@@ -39,18 +41,10 @@
             background-color: var(--vscode-button-secondaryBackground, #3A3D41);
             color: var(--vscode-button-secondaryForeground, #FFFFFF);
             border: 1px solid var(--vscode-button-border, transparent);
-            margin-right: -1px; 
+            border-radius: 3px; /* Apply radius to all buttons */
             position: relative;
         }
-        .option-button:first-child, .toggle-button:first-child {
-             border-top-left-radius: 3px;
-             border-bottom-left-radius: 3px;
-        }
-        .option-button:last-child, .toggle-button:last-child {
-            margin-right: 0;
-            border-top-right-radius: 3px;
-            border-bottom-right-radius: 3px;
-        }
+        
         .option-button.selected, .toggle-button.selected {
             background-color: var(--vscode-button-background, #0E639C);
             color: var(--vscode-button-foreground, #FFFFFF);

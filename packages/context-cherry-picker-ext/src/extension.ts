@@ -20,7 +20,7 @@ import type { IFileExplorerDataProvider } from './_interfaces/IFileExplorerDataP
 const extensionDisposables: Disposable[] = []
 
 // TODO Implement Add, Remove and Replace to the saved state.
-
+// FIX Animation is only an elipsis
 
 export async function activate(context: ExtensionContext): Promise<void> { //>
 	console.log(`[${constants.extension.name}] Activating...`)
