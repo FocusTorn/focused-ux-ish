@@ -7,6 +7,12 @@ import { inject, singleton } from 'tsyringe'
 import type { ExtensionContext, TreeView, Uri } from 'vscode'
 import * as vscode from 'vscode' // For vscode.env.clipboard, vscode.TreeItemCheckboxState etc.
 
+//= NODE JS ===================================================================================================
+import { Buffer } from 'node:buffer'
+
+//= MISC ======================================================================================================
+import * as yaml from 'js-yaml'
+
 //= IMPLEMENTATION TYPES ======================================================================================
 import type { IContextCherryPickerManager } from '../_interfaces/IContextCherryPickerManager.ts'
 import type { IFileExplorerDataProvider } from '../_interfaces/IFileExplorerDataProvider.ts'
@@ -72,7 +78,7 @@ export class ContextCherryPickerManager implements IContextCherryPickerManager {
 		this._explorerView.description = ' '
 
 		this._explorerView.onDidChangeCheckboxState(
-			(e: vscode.TreeCheckboxChangeEvent<FileExplorerItem>) => { //>
+			(e: vscode.TreeCheckboxChangeEvent<FileExplorerItem>) => {
 				if (e.items && e.items.length > 0) {
 					for (const [item, state] of e.items) {
 						if (item.uri) {
@@ -80,7 +86,7 @@ export class ContextCherryPickerManager implements IContextCherryPickerManager {
 						}
 					}
 				}
-			}, //<
+			},
 			null,
 			this._context.subscriptions,
 		)
@@ -127,8 +133,10 @@ export class ContextCherryPickerManager implements IContextCherryPickerManager {
 
 			await this._storageService.saveState(stateName, itemsToSave)
 			this._savedStatesDataProvider.refresh()
-            
-			this.showStatusMessage('drop', `💾 State '${stateName}' saved.`)
+
+			const messageDuration = await this._getMessageDuration()
+
+			this.showStatusMessage('drop', `💾 State '${stateName}' saved.`, messageDuration)
 		}
 	} //<
 
@@ -301,11 +309,13 @@ export class ContextCherryPickerManager implements IContextCherryPickerManager {
 		}
 		else {
 			await vscode.env.clipboard.writeText(finalOutput)
-            
-			this.showStatusMessage('drop', `📋 Context copied (~${totalTokens} tokens)`, 1000)
+
+			const messageDuration = await this._getMessageDuration()
+
+			this.showStatusMessage('drop', `📋 Context copied (~${totalTokens} tokens)`, messageDuration)
 		}
 	} //<
-    
+
 	public async getQuickSettingState(settingId: string): Promise<any> { //>
 		return this._quickSettingsDataProvider.getSettingState(settingId)
 	} //<
@@ -317,20 +327,22 @@ export class ContextCherryPickerManager implements IContextCherryPickerManager {
 	public showStatusMessage( //>
 		type: 'vsc' | 'drop' | 'desc' | 'replace',
 		message: string,
-		duration: number = 1250,
+		duration?: number,
 	): void {
+		const finalDuration = duration ?? 1250
+
 		switch (type) {
 			case 'vsc':
 				this._window.showInformationMessage(message)
 				break
 			case 'drop':
-				this._setDropExplorerMessage(message, duration)
+				this._setDropExplorerMessage(message, finalDuration)
 				break
 			case 'desc':
-				this._setDescExplorerMessage(message, duration)
+				this._setDescExplorerMessage(message, finalDuration)
 				break
 			case 'replace':
-				this._fileExplorerDataProvider.showStatusMessage(message, duration)
+				this._fileExplorerDataProvider.showStatusMessage(message, finalDuration)
 				break
 			default:
 				this._window.showInformationMessage(message)
@@ -342,34 +354,6 @@ export class ContextCherryPickerManager implements IContextCherryPickerManager {
 	// │                                         PRIVATE HELPERS                                          │
 	// └──────────────────────────────────────────────────────────────────────────────────────────────────┘
 
-	private _setDropExplorerMessage(message: string, duration?: number): void { //>
-		if (!this._explorerView) {
-			return
-		}
-		this._explorerView.message = message
-		if (duration) {
-			setTimeout(() => {
-				if (this._explorerView && this._explorerView.message === message) {
-					this._explorerView.message = undefined
-				}
-			}, duration)
-		}
-	} //<
-
-	private _setDescExplorerMessage(message: string, duration?: number): void { //>
-		if (!this._explorerView) {
-			return
-		}
-		this._explorerView.description = message
-		if (duration) {
-			setTimeout(() => {
-				if (this._explorerView && this._explorerView.description === message) {
-					this._explorerView.description = ''
-				}
-			}, duration)
-		}
-	} //<
-          
 	private _pruneRedundantUris(uris: Uri[]): Uri[] { //>
 		if (uris.length <= 1) {
 			return uris
@@ -391,6 +375,68 @@ export class ContextCherryPickerManager implements IContextCherryPickerManager {
 		})
 
 		return prunedPaths.map(p => uriMap.get(p)!)
+	} //<
+
+	private _setDropExplorerMessage(message: string, duration: number): void { //>
+		if (!this._explorerView) {
+			return
+		}
+		this._explorerView.message = message
+		setTimeout(() => {
+			if (this._explorerView && this._explorerView.message === message) {
+				this._explorerView.message = undefined
+			}
+		}, duration)
+	} //<
+
+	private _setDescExplorerMessage(message: string, duration: number): void { //>
+		if (!this._explorerView) {
+			return
+		}
+		this._explorerView.description = message
+		setTimeout(() => {
+			if (this._explorerView && this._explorerView.description === message) {
+				this._explorerView.description = ''
+			}
+		}, duration)
+	} //<
+	
+    private async _getMessageDuration(): Promise<number> { //>
+		const ccpKey = constants.projectConfig.keys.contextCherryPicker
+		const settingsKey = constants.projectConfig.keys.settings
+		const durationKey = constants.projectConfig.keys.message_show_seconds
+		const defaultValue = 1.5 // Default duration in seconds
+
+		if (this._workspace.workspaceFolders && this._workspace.workspaceFolders.length > 0) {
+			const workspaceRoot = this._workspace.workspaceFolders[0].uri
+			const configFileUri = vscode.Uri.joinPath(workspaceRoot, constants.projectConfig.fileName)
+
+			try {
+				const fileContents = await this._workspace.fs.readFile(configFileUri)
+				const config = yaml.load(Buffer.from(fileContents).toString('utf-8')) as any
+
+				let durationFromConfig: unknown = config?.[ccpKey]?.[settingsKey]?.[durationKey]
+
+				if (Array.isArray(durationFromConfig)) {
+					durationFromConfig = durationFromConfig[0]
+				}
+
+				if (typeof durationFromConfig === 'string' || typeof durationFromConfig === 'number') {
+					const parsedDuration = Number(durationFromConfig)
+
+					if (!Number.isNaN(parsedDuration) && parsedDuration > 0) {
+						return parsedDuration * 1000
+					}
+				}
+			}
+			catch (error) {
+				if (!(error instanceof vscode.FileSystemError && error.code === 'FileNotFound')) {
+					console.error(`${LOG_PREFIX} Error reading .FocusedUX for message duration:`, error)
+				}
+			}
+		}
+
+		return defaultValue * 1000
 	} //<
     
 }

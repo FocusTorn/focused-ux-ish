@@ -20,6 +20,6 @@ export interface IContextCherryPickerManager { //>
 	copyContextOfCheckedItems: () => Promise<void>
 	getQuickSettingState: (settingId: string) => Promise<any>
 
-	showStatusMessage: (type: 'vsc' | 'drop' | 'desc' | 'replace', message: string, duration?: number,) => void
+	showStatusMessage: (type: 'vsc' | 'drop' | 'desc' | 'replace', message: string, duration?: number) => void
 
 } //<

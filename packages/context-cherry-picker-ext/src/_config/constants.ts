@@ -39,7 +39,7 @@ export const constants = {
 	},
 	projectConfig: {
 		fileName: '.FocusedUX',
-		keys: {
+        keys: {
 			contextCherryPicker: 'ContextCherryPicker',
 			file_groups: 'file_groups',
 			initially_visible: 'initially_visible',
@@ -51,6 +51,9 @@ export const constants = {
 			show_if_selected: 'show_if_selected',
 			context_explorer: 'context_explorer',
 			hide_children: 'hide_children',
+			settings: 'settings',
+			message_show_seconds: 'message_show_seconds',
+			default_project_structure_contents: 'default_project_structure_contents',
 		},
 	},
 	quickSettings: {

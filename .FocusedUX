@@ -3,14 +3,17 @@
 # └────────────────────────────────────────────────────────────────────────────────────────────────┘
 
 ContextCherryPicker:
-    
-    default_project_structure:
-        - None
-    
-    
+    #==========================================================================================================
+    settings:
+        message_show_seconds:
+            - 1.5
+        default_project_structure:
+            - All
+
+    #==========================================================================================================
     file_groups:
         build:
-            initially_visible: false 
+            initially_visible: false
             items:
                 - '**/.turbo'
                 - '**/dist'
@@ -19,7 +22,7 @@ ContextCherryPicker:
             initially_visible: false
             items:
                 - '**/test'
-                - "**/coverage"
+                - '**/coverage'
                 - '.vscode-test.mjs'
         ignores:
             initially_visible: false
@@ -48,37 +51,31 @@ ContextCherryPicker:
             initially_visible: false
             items:
                 - 'pnpm-lock.yaml'
-                
-                 
-                
-            
-                
+
+    #==========================================================================================================
     ignore:
-    
-        #= GENERAL ================================================================ 
+        #= GENERAL ================================================================
         - '**/node_modules'
         - .git
-        
-        #= YALC =================================================================== 
+
+        #= YALC ===================================================================
         - '**/.yalc'
         - '**/yalc.lock'
 
-        #= DIRECTORIES ============================================================ 
+        #= DIRECTORIES ============================================================
         - assets
         - vsix_packages
 
-        #= EXTENSIONS ============================================================= 
+        #= EXTENSIONS =============================================================
         - '**/*.png'
         - '**/*.jpg'
         - '**/*.jpeg'
         - '**/*.svg'
-        
-        #= FILES ================================================================== 
-        
+
+        #= FILES ==================================================================
         - '**/*.bak*'
-        
-        
-    
+
+    #==========================================================================================================
     project_tree:
         always_show:
         # Always show these in the <project_tree>
@@ -89,25 +86,16 @@ ContextCherryPicker:
         show_if_selected:
         # These will only show in the <project_tree> if selected in <Context Explorer>, else hidden
 
+    #==========================================================================================================
     context_explorer:
         ignore:
         # These will not be shown in the <Context Explorer>
 
         hide_children:
         # show this dir, but not any of its children individually in the <Context Explorer>
-        
-        
-
-
-
-
-
-
-
-
 # ContextCherryPicker:
 #   ignore:
-  
+
 #     - "**/dist/**"
 #     - "**/tsconfig.tsbuildinfo"
 #     - "**/**/*.d.ts"
@@ -116,59 +104,50 @@ ContextCherryPicker:
 #     - "**/*.png"
 #     - "**/*.jpg"
 #     - "**/*.jpeg"
-    
-    
-    
+
 #     # - ".gitignore"
 #     # - ".vscodeignore"
-    
-  
-#     #= STANDARD ================================================================= 
+
+#     #= STANDARD =================================================================
 #     - "**/node_modules/**"
 #     - "**/.git/**"
 #     # - "**/.vscode/**"
 #     - "**/.turbo/**"
-#     #- TESTING ---------------------------------------------- 
+#     #- TESTING ----------------------------------------------
 #     - "coverage/"
 #     # - "**/*.log"
-#     #- BUILD ------------------------------------------------ 
+#     #- BUILD ------------------------------------------------
 #     # - "**/build/**"
 #     # - "**/out/**"
-  
-#     #= FOLDERS ================================================================== 
+
+#     #= FOLDERS ==================================================================
 #     - "**/vsix_packages/**"
-  
-#     #= FILES ==================================================================== 
+
+#     #= FILES ====================================================================
 #     - ".editorconfig"
-    
+
 #     - ".npmrc"
 #     - ".vscode-test.mjs"
 #     - "CHANGELOG.md"
 #     - "**/LICENSE.txt"
 #     - "package-lock.json"
 #     - "desktop.ini"
-    
 
 #   projectTreeDisplay:
 #   # Even if QS:All is chosen, these will over ride the what is shown in <project_tree>
-  
-#     alwaysHide: 
+
+#     alwaysHide:
 #     # Never show these in the <project_tree>
-  
-    
-#     showIfSelected: 
-#     # These will show in the <project_tree>    these appear in <project_tree>  Only if selected items matching 
 
-
-
+#     showIfSelected:
+#     # These will show in the <project_tree>    these appear in <project_tree>  Only if selected items matching
 
 #   directoryContentDisplay:
-#     showDirHideContents: 
+#     showDirHideContents:
 #     # show this dir, but not its children individually in UI
 #     # - "**/dynamicons/ext/assets/images"
 #     # - "**/dynamicons/ext/assets/icons/*_icons"
-    
-#     hideDirAndContents: 
+
+#     hideDirAndContents:
 #     # directory and its contents are completely hidden from UI
 #       # - "assets/icons"
-    

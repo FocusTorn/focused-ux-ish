@@ -33,7 +33,9 @@ interface FileGroupsConfig { //>
 interface ProjectYamlConfig { //>
 	ContextCherryPicker?: {
 		file_groups?: FileGroupsConfig
-		default_project_structure?: ('none' | 'selected' | 'all' | 'NONE' | 'SELECTED' | 'ALL')[]
+		settings?: {
+			default_project_structure_contents?: (string)[]
+		}
 	}
 } //<
 
@@ -62,9 +64,10 @@ export class QuickSettingsDataProvider implements IQuickSettingsDataProvider { /
 		// Handle Project Structure setting
 		let projectStructureValue: ProjectStructureSettingValue = 'all' // New default
 		const validValues: ProjectStructureSettingValue[] = ['none', 'selected', 'all']
+		const defaultValueFromConfig = ccpConfig?.settings?.default_project_structure_contents
 
-		if (ccpConfig?.default_project_structure && Array.isArray(ccpConfig.default_project_structure) && ccpConfig.default_project_structure.length > 0) {
-			const configValue = ccpConfig.default_project_structure[0]?.toLowerCase() as ProjectStructureSettingValue
+		if (defaultValueFromConfig && Array.isArray(defaultValueFromConfig) && defaultValueFromConfig.length > 0) {
+			const configValue = defaultValueFromConfig[0]?.toLowerCase() as ProjectStructureSettingValue
 
 			if (validValues.includes(configValue)) {
 				projectStructureValue = configValue

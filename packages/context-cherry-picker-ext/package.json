@@ -4,7 +4,7 @@
     "publisher": "NewRealityDesigns",
     "description": "A standalone extension for advanced context selection and formatting.",
     "repository": "https://github.com/FocusTorn/focused-ux",
-    "version": "0.1.104",
+    "version": "0.1.105",
     "engines": {
         "vscode": "^1.100.0"
     },
