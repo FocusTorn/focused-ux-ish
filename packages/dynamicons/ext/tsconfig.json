@@ -4,6 +4,7 @@
     "compilerOptions": {
         
         "declarationMap": false,
+        "pretty": true,
 
 
         //= PATH ALIASES ========================================================================

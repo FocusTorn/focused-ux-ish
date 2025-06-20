@@ -81,7 +81,8 @@ const ansii = { //>
 async function createDirectory(directoryPath: string, silent: boolean = false): Promise<void> { //>
 	try {
 		await fsPromises.mkdir(directoryPath, { recursive: true })
-	} catch (err: any) {
+	}
+	catch (err: any) {
 		if (err.code !== 'EEXIST') {
 			if (!silent)
 				console.error(`│  └─ ${ansii.red}ERROR:${ansii.none} creating directory ${path.relative(MONOREPO_ROOT, directoryPath)}:`, err)
@@ -101,7 +102,8 @@ async function convertSvgToPng( //>
 			.resize(size, size)
 			.png()
 			.toFile(outputPngPath)
-	} catch (error) {
+	}
+	catch (error) {
 		if (!silent)
 			console.error(`│     └─ ${ansii.red}ERROR:${ansii.none} converting ${path.basename(svgFilePath)} to PNG at ${path.relative(MONOREPO_ROOT, outputPngPath)}:`, error)
 		throw error
@@ -164,7 +166,8 @@ async function convertSvgsToPngs( //>
 			)
 		}
 		return true
-	} catch (error) {
+	}
+	catch (error) {
 		if (!silent) {
 			console.error(
 				`│     └─ ${ansii.red}ERROR:${ansii.none} during SVG to PNG conversion for ${path.relative(MONOREPO_ROOT, svgIconsDirAbs)}:`,
@@ -205,12 +208,14 @@ function generateHtmlContent( //>
 	try {
 		if (fs.existsSync(pngIconsDirAbs)) {
 			files = fs.readdirSync(pngIconsDirAbs).filter(f => f.endsWith('.png'))
-		} else if (!silent) {
+		}
+		else if (!silent) {
 			console.warn(
 				`│     └─ ${ansii.yellow}WARN:${ansii.none} PNG directory not found for HTML generation: ${path.relative(MONOREPO_ROOT, pngIconsDirAbs)}`,
 			)
 		}
-	} catch (error) {
+	}
+	catch (error) {
 		if (!silent) {
 			console.error(
 				`│     └─ ${ansii.red}ERROR:${ansii.none} reading PNG directory ${path.relative(MONOREPO_ROOT, pngIconsDirAbs)}:`,
@@ -239,13 +244,15 @@ function generateHtmlContent( //>
 	htmlContent += `</tr></thead><tbody>`
 	if (files.length === 0) {
 		htmlContent += `<tr><td colspan="${columns * 2}">No PNG icons found in ${path.relative(MONOREPO_ROOT, pngIconsDirAbs)}</td></tr>`
-	} else {
+	}
+	else {
 		for (let i = 0; i < files.length; i += columns) {
 			htmlContent += '<tr>'
 			for (let j = 0; j < columns; j++) {
 				if (i + j < files.length) {
 					htmlContent += generateIconCellHtml(pageTitleType, pngIconsDirAbs, files[i + j])
-				} else {
+				}
+				else {
 					htmlContent += '<td></td><td></td>'
 				}
 			}
@@ -295,7 +302,8 @@ async function generateHtmlAndScreenshot( //>
 				)
 			}
 			return true
-		} else {
+		}
+		else {
 			if (!silent) {
 				console.warn(
 					`│  │  └─ ${ansii.yellow}WARN:${ansii.none} Could not find .container for screenshot: ${pageTitleType}`,
@@ -303,7 +311,8 @@ async function generateHtmlAndScreenshot( //>
 			}
 			return false
 		}
-	} catch (error) {
+	}
+	catch (error) {
 		if (!silent) {
 			console.error(
 				`│  │  └─ ${ansii.red}ERROR:${ansii.none} in generateHtmlAndScreenshot for ${pageTitleType}:`,
@@ -334,7 +343,8 @@ export async function main( //>
 		await createDirectory(FINAL_IMAGE_OUTPUT_DIR_ABS, silent)
 		if (!silent)
 			console.log(`│  └─ ${ansii.green}Success:${ansii.none} Temporary directories prepared.`)
-	} catch (error) {
+	}
+	catch (error) {
 		if (!silent)
 			console.error(`│  └─ ${ansii.red}ERROR:${ansii.none} Preparing temporary directories:`, error)
 		return false
@@ -392,11 +402,13 @@ export async function main( //>
 			if (!await generateHtmlAndScreenshot(page, 'Folder_Open', FOLDER_OPEN_ICONS_PNG_DIR_ABS, HTML_OUTPUT_DIR_ABS, FINAL_IMAGE_OUTPUT_DIR_ABS, true, '│  ├─', silent))
 				success = false
 		}
-	} catch (error) {
+	}
+	catch (error) {
 		if (!silent)
 			console.error(`│  └─ ${ansii.red}ERROR:${ansii.none} Puppeteer process failed:`, error)
 		success = false
-	} finally {
+	}
+	finally {
 		if (browser)
 			await browser.close()
 	}
@@ -408,7 +420,8 @@ export async function main( //>
 			await fsPromises.rm(PNG_TEMP_ROOT_DIR_ABS, { recursive: true, force: true })
 			if (!silent)
 				console.log(`│  └─ ${ansii.green}Success:${ansii.none} Temporary files cleaned up.`)
-		} catch (error) {
+		}
+		catch (error) {
 			if (!silent)
 				console.error(`│  └─ ${ansii.red}ERROR:${ansii.none} cleaning temporary files:`, error)
 			// Do not mark overall success as false for cleanup failure

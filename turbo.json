@@ -9,9 +9,7 @@
         "build:clean": {
             "cache": false,
             "dependsOn": ["^build:clean"],
-            "outputs": [
-                "dist/**"
-            ],
+            "outputs": ["dist/**"],
             "inputs": [
                 "src/**",
                 "cli/**",
@@ -22,36 +20,24 @@
             ]
         },
         "lint": {
-            "dependsOn": [
-                "^lint"
-            ]
-        }, 
+            "dependsOn": ["^lint"]
+        },
         "lint:fix": {
-            "dependsOn": [
-                "^lint:fix"
-            ]
+            "dependsOn": ["^lint:fix"]
         },
         "package": {
-            "dependsOn": [
-                "^build"
-            ]
+            "dependsOn": ["^build"]
         },
         "package:Clean": {
             "cache": false,
-            "dependsOn": [
-                "^build"
-            ]
+            "dependsOn": ["^build"]
         },
         "check-types": {
-            "dependsOn": [
-                "^check-types"
-            ]
+            "dependsOn": ["^check-types"]
         },
         "build": {
             "dependsOn": ["^build"],
-            "outputs": [
-                "dist/**"
-            ],
+            "outputs": ["dist/**"],
             "inputs": [
                 "src/**",
                 "cli/**",
@@ -61,116 +47,13 @@
                 "!**/.turbo/**"
             ]
         },
-        
-        
         "build:assets": {
-            "dependsOn": [
-                "^build:assets"
-            ],
-            "outputs": [
-                "dist/assets/**"
-            ]
+            "dependsOn": ["^build:assets"],
+            "outputs": ["dist/assets/**"]
         },
-        
         "watch-only": {
             "cache": false,
             "persistent": true
         }
     }
 }
-
-
-// {
-//     "$schema": "./node_modules/turbo/schema.json", // "$schema": "https://turborepo.org/schema.json",
-//     "globalDependencies": ["pnpm-lock.yaml"],  // "extends": ["//"],
-//     "globalEnv": [],
-//     "tasks": {
-//         "clean": {
-//             "cache": false
-//         },
-//         "lint": {
-//             "dependsOn": [
-//                 "^lint"
-//             ]
-//         }, 
-//         "lint:fix": {
-//             "dependsOn": [
-//                 "^lint:fix"
-//             ]
-//         },
-//         "package": {
-//             "dependsOn": [
-//                 "^build"
-//             ]
-//         },
-//         "check-types": {
-//             "dependsOn": [
-//                 "^check-types"
-//             ]
-//         },
-//         // "build": {
-//         //     "dependsOn": [
-//         //         "^build"
-//         //     ],
-//         //     "outputs": [
-//         //         "dist/**",
-//         //         "tsconfig.tsbuildinfo"
-//         //     ],
-//         //     "inputs": [
-//         //         "src/**",
-//         //         "cli/**",      // Keep if any package uses it
-//         //         "assets/**",   // Keep if any package uses it
-//         //         "package.json",
-//         //         "tsconfig.json",
-//         //         "!**/tsconfig.tsbuildinfo", // Explicitly exclude from inputs
-//         //         "!**/.turbo/**"             // Explicitly exclude .turbo dir from inputs
-//         //     ]
-//         // },
-        
-        
-//         //  "build": {
-//         //     "dependsOn": ["^build"],
-//         //     "outputs": [
-//         //         "dist/**",
-//         //         "tsconfig.tsbuildinfo"
-//         //     ],
-//         //     "inputs": [
-//         //         "src/**",
-//         //         "cli/**",
-//         //         "assets/**",
-//         //         "package.json",
-//         //         "tsconfig.json",
-//         //         "!**/.turbo/**"
-//         //     ]
-//         // },
-        
-//         "build": {
-//         "dependsOn": ["^build"],
-//         "outputs": [
-//             "dist/**"
-//         ],
-//         "inputs": [
-//             "src/**",
-//             "cli/**",
-//             "package.json",
-//             "tsconfig.json",
-//             "!**/.turbo/**"
-//         ]
-//     },
-        
-        
-//         "build:assets": {
-//             "dependsOn": [
-//                 "^build:assets"
-//             ],
-//             "outputs": [
-//                 "dist/assets/**"
-//             ]
-//         },
-        
-//         "watch-only": {
-//             "cache": false,
-//             "persistent": true
-//         }
-//     }
-// }

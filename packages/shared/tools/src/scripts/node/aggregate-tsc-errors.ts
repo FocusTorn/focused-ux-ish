@@ -4,6 +4,7 @@
 import readline from 'node:readline'
 import process from 'node:process'
 import { spawn } from 'node:child_process'
+import path from 'node:path'
 
 //= MISC ======================================================================================================
 import chalk from 'chalk'
@@ -20,13 +21,26 @@ interface AggregatedError { //>
 
 const aggregatedErrors: AggregatedError[] = []
 const packagesReportedByTurboAsFailing = new Set<string>()
-let activePackageContext: string | null = null // Stores the full package name from turbo
-let activeShortenedPackageContext: string | null = null // Stores the shortened package name
+const packageRootPathMap = new Map<string, string>()
 
-const packagePrefixRegex = /^(?<fullPkgName>[^:]+):check-types:\s*(?<restOfLine>.*)/
-const tscIndividualErrorRegex = /^(?!Found\s+\d+\s+error)(.+?)\((\d+),(\d+)\):\s*error\s*TS\d+:\s*(.*)/
-const tscErrorSummaryRegex = /^Found\s\d+\serror/
+let activeFullPackageContext: string | null = null
+let activeShortenedPackageContext: string | null = null
+
+const packagePrefixRegex = /^(?<fullPkgName>[^:]+):check-types:(\s*(?<restOfLine>.*))?$/
+const packageCwdRegex = /^>\s*(?<pkgNameVer>[@\w/-]+(?:@[\w.-]+)?)\s+[\w:]+\s+(?<cwdPath>.+)$/
+const tscIndividualErrorRegex = /^(?!Found\s+\d+\s+errors?)(?<filePath>.*?):(?<line>\d+):(?<column>\d+)\s+-\s+(?<errorType>error|warning)\s+(?<errorCode>TS\d+):\s+(?<message>.*)/i
+const tscErrorSummaryRegex = /^Found\s\d+\serrors?/
 const turboPackageErrorRegex = /ERROR: command finished with error/
+
+function stripAnsiCodes(str: string): string { //>
+	if (!str)
+		return ''
+
+	const ansiRegexPattern = `[${String.fromCharCode(0x1B)}${String.fromCharCode(0x9B)}]\\[[()#;?]?[0-9]{1,4}(?:;[0-9]{0,4})*[0-9A-ORZcf-nqry=><]`
+	const ansiRegex = new RegExp(ansiRegexPattern, 'g')
+
+	return str.replace(ansiRegex, '')
+} //<
 
 function shortenPackageName(fullPackageName: string): string { //>
 	if (fullPackageName.startsWith('@focused-ux/')) {
@@ -35,91 +49,115 @@ function shortenPackageName(fullPackageName: string): string { //>
 	return fullPackageName
 } //<
 
-function cleanFilePath(filePath: string, fullPkgNameFromTurboLine: string | null): string { //>
-	let cleaned = filePath.trim()
+function cleanFilePath(absolutePathFromTool: string, monorepoRoot: string): string { //>
+	const normalizedPath = path.normalize(absolutePathFromTool).replace(/\\/g, '/')
+	const normalizedMonorepoPackagesPath = path.normalize(path.join(monorepoRoot, 'packages')).replace(/\\/g, '/')
 
-	if (fullPkgNameFromTurboLine) {
-		const prefixesToRemove = [
-			`${fullPkgNameFromTurboLine}:build: `,
-			`${fullPkgNameFromTurboLine}:check-types: `,
-			`${fullPkgNameFromTurboLine}: `,
-		]
-
-		for (const prefix of prefixesToRemove) {
-			if (cleaned.startsWith(prefix)) {
-				cleaned = cleaned.substring(prefix.length)
-				break
-			}
-		}
+	if (normalizedPath.startsWith(`${normalizedMonorepoPackagesPath}/`)) {
+		return normalizedPath.substring((`${normalizedMonorepoPackagesPath}/`).length)
 	}
 
-	const genericBuildPrefixMatch = cleaned.match(/^[^:]+:(?:build|check-types):\s*(.*)/)
+	const normalizedMonorepoRoot = path.normalize(monorepoRoot).replace(/\\/g, '/')
 
-	if (genericBuildPrefixMatch && genericBuildPrefixMatch[1]) {
-		cleaned = genericBuildPrefixMatch[1]
+	if (normalizedPath.startsWith(`${normalizedMonorepoRoot}/`)) {
+		return normalizedPath.substring((`${normalizedMonorepoRoot}/`).length)
 	}
-	return cleaned.trim()
+	return absolutePathFromTool
 } //<
 
 function processLine(line: string): void { //>
-	const trimmedLine = line.trim()
-	let contentToParse = trimmedLine
-	let currentFullPkgNameFromTurbo: string | null = null
+	const originalLineForDebug = line
+	const lineCleanedOfAnsi = stripAnsiCodes(originalLineForDebug)
+	const baseTrimmedLine = lineCleanedOfAnsi.trim()
 
-	const packagePrefixMatch = trimmedLine.match(packagePrefixRegex)
+	let contentToParse = baseTrimmedLine
+	let lineHadPackagePrefix = false
+
+	const packagePrefixMatch = baseTrimmedLine.match(packagePrefixRegex)
 
 	if (packagePrefixMatch?.groups?.fullPkgName) {
-		currentFullPkgNameFromTurbo = packagePrefixMatch.groups.fullPkgName
-		activePackageContext = currentFullPkgNameFromTurbo
-		activeShortenedPackageContext = shortenPackageName(currentFullPkgNameFromTurbo)
+		lineHadPackagePrefix = true
+
+		const newFullPkgName = packagePrefixMatch.groups.fullPkgName
+
+		activeFullPackageContext = newFullPkgName
+		activeShortenedPackageContext = shortenPackageName(activeFullPackageContext)
 		contentToParse = (packagePrefixMatch.groups.restOfLine ?? '').trim()
 	}
 
-	const currentPkgForError = activeShortenedPackageContext
-	const fullPkgNameForCleaning = activePackageContext
+	const currentPkgFullNameKey = activeFullPackageContext
+	const currentPkgShortNameForError = activeShortenedPackageContext
+	const monorepoRoot = process.cwd()
 
-	if (!currentPkgForError) {
+	const cwdMatch = baseTrimmedLine.match(packageCwdRegex)
+
+	if (cwdMatch) {
+		const pkgNameWithVersion = cwdMatch.groups?.pkgNameVer?.trim()
+		const capturedCwd = cwdMatch.groups?.cwdPath?.trim()
+
+		if (pkgNameWithVersion && capturedCwd) {
+			const normalizedPkgNameKeyForMap = pkgNameWithVersion.replace(/@[\w.-]+$/, '')
+
+			packageRootPathMap.set(normalizedPkgNameKeyForMap, capturedCwd)
+			return
+		}
+	}
+
+	if (!currentPkgFullNameKey || !currentPkgShortNameForError) {
 		return
 	}
 
-	if (turboPackageErrorRegex.test(trimmedLine)) {
-		packagesReportedByTurboAsFailing.add(currentPkgForError)
+	if (lineHadPackagePrefix && contentToParse === '') {
+		return
+	}
+
+	if (turboPackageErrorRegex.test(baseTrimmedLine)) {
+		packagesReportedByTurboAsFailing.add(currentPkgShortNameForError)
 		return
 	}
 
 	const individualErrorMatch = contentToParse.match(tscIndividualErrorRegex)
 
-	if (individualErrorMatch) {
-		const rawFilePath = individualErrorMatch[1]
-		const lineNumber = individualErrorMatch[2]
-		const contextNameToCleanPathWith = currentFullPkgNameFromTurbo || fullPkgNameForCleaning
-		const finalCleanFilePath = cleanFilePath(rawFilePath, contextNameToCleanPathWith)
+	if (individualErrorMatch?.groups) {
+		const { filePath: tscPathReportedByTool, line: lineNumber } = individualErrorMatch.groups
+		const pkgRootAbs = packageRootPathMap.get(currentPkgFullNameKey)
+		let canonicalFilePath: string
+
+		if (pkgRootAbs) {
+			const absoluteTscErrorPath = path.resolve(pkgRootAbs, tscPathReportedByTool.trim())
+
+			canonicalFilePath = cleanFilePath(absoluteTscErrorPath, monorepoRoot)
+		}
+		else {
+			canonicalFilePath = `[CWD_MISSING]/${tscPathReportedByTool.trim().replace(/\\/g, '/')}`
+		}
 
 		const existingErrorEntry = aggregatedErrors.find(
-			e => e.packageName === currentPkgForError && e.filePath === finalCleanFilePath,
+			e => e.packageName === currentPkgShortNameForError && e.filePath === canonicalFilePath,
 		)
 
 		if (existingErrorEntry) {
 			existingErrorEntry.errorCountInFile++
-		} else {
+		}
+		else {
 			aggregatedErrors.push({
-				packageName: currentPkgForError,
-				fullPackageNameForDisplay: currentFullPkgNameFromTurbo || fullPkgNameForCleaning || currentPkgForError,
-				filePath: finalCleanFilePath,
+				packageName: currentPkgShortNameForError,
+				fullPackageNameForDisplay: currentPkgFullNameKey,
+				filePath: canonicalFilePath,
 				firstLineNumber: lineNumber.trim(),
 				errorCountInFile: 1,
 			})
 		}
-		packagesReportedByTurboAsFailing.delete(currentPkgForError)
+		packagesReportedByTurboAsFailing.delete(currentPkgShortNameForError)
 		return
 	}
 
 	if (tscErrorSummaryRegex.test(contentToParse)) {
-		const summaryErrorCountMatch = contentToParse.match(/^Found (\d+) error/)
+		const summaryErrorCountMatch = contentToParse.match(/^Found (\d+) errors?/)
 
 		if (summaryErrorCountMatch && Number.parseInt(summaryErrorCountMatch[1], 10) > 0) {
-			if (!aggregatedErrors.some(err => err.packageName === currentPkgForError)) {
-				packagesReportedByTurboAsFailing.add(currentPkgForError)
+			if (!aggregatedErrors.some(err => err.packageName === currentPkgShortNameForError)) {
+				packagesReportedByTurboAsFailing.add(currentPkgShortNameForError)
 			}
 		}
 	}
@@ -128,9 +166,12 @@ function processLine(line: string): void { //>
 function reportResults(): void { //>
 	packagesReportedByTurboAsFailing.forEach((pkgName) => {
 		if (!aggregatedErrors.some(err => err.packageName === pkgName)) {
+			const existingEntry = aggregatedErrors.find(e => e.packageName === pkgName)
+			const fullPkgNameToDisplay = existingEntry ? existingEntry.fullPackageNameForDisplay : pkgName
+
 			aggregatedErrors.push({
-				packageName: pkgName, // This is the shortened name
-				fullPackageNameForDisplay: pkgName, // Fallback if no full name was captured
+				packageName: pkgName,
+				fullPackageNameForDisplay: fullPkgNameToDisplay,
 				filePath: 'Type errors found (check package logs for details)',
 				firstLineNumber: '',
 				errorCountInFile: 1,
@@ -165,20 +206,10 @@ function reportResults(): void { //>
 			'╚══════════════════════════════════════════════════════════════════════════════════════════════════════╝',
 		),
 	)
-    
-	// packages/tools/scripts/node/aggregate-tsc-errors.ts
-	// pnpm run eslint packages/tools/scripts/node/aggregate-tsc-errors.ts
-    
-	// const errorsHeaderTitle = 'Errors'
+
 	const packageHeaderTitle = 'Package'
-	// const fileHeaderTitle = 'File'
 	const columnSeparator = '  '
-
-	// --- Column Width Calculations ---
-	// Width for the "Errors" column content (e.g., " Errors" or "      1")
 	const errorsColumnContentWidth = 4
-
-	// Determine the maximum width needed for the "Package" column content
 	let maxPackageNameActualLength = 0
 
 	aggregatedErrors.forEach((err) => {
@@ -187,28 +218,8 @@ function reportResults(): void { //>
 		}
 	})
 
-	// The display width for the package column is the max of its title or the longest data
 	const packageColumnContentWidth = Math.max(packageHeaderTitle.length, maxPackageNameActualLength)
 
-	// // Header Construction ----------------------------------->>
-
-	// const errorsHeaderString = ` ${errorsHeaderTitle}` // Results in " Errors" (length 7)
-	// const packageTitleString = packageHeaderTitle     // "Package" (length 7)
-	// // Calculate the padding spaces needed *after* the "Package" title to fill the package column
-	// const paddingForPackageHeader = ' '.repeat(packageColumnContentWidth - packageTitleString.length)
-
-	// const headerLine =
-	// 	chalk.yellow(errorsHeaderString) +
-	// 	columnSeparator +
-	// 	chalk.yellow(packageTitleString) +
-	// 	chalk.yellow(paddingForPackageHeader) + // Apply chalk to padding for consistent coloring
-	// 	columnSeparator +
-	// 	chalk.yellow(fileHeaderTitle)
-	// console.log(headerLine)
-
-	// //---------------------------------------------------------------------------<<
-
-	// --- Data Rows ---
 	aggregatedErrors.sort((a, b) => {
 		if (a.packageName !== b.packageName)
 			return a.packageName.localeCompare(b.packageName)
@@ -245,7 +256,7 @@ function reportResults(): void { //>
 // │                                        Main execution                                        │
 // └──────────────────────────────────────────────────────────────────────────────────────────────┘
 
-const turboArgs = ['run', 'check-types', '--continue']
+const turboArgs = ['run', 'check-types', '--continue', '--no-cache', '--force']
 const turboProcess = spawn('pnpm', ['exec', 'turbo', ...turboArgs], {
 	shell: true,
 	env: {
@@ -255,16 +266,37 @@ const turboProcess = spawn('pnpm', ['exec', 'turbo', ...turboArgs], {
 	},
 })
 
-const rl = readline.createInterface({ //>
+const rlStdout = readline.createInterface({
 	input: turboProcess.stdout,
 	terminal: false,
-}) //<
+})
 
-turboProcess.stderr.on('data', (_data) => { //>
-}) //<
+const rlStderr = readline.createInterface({
+	input: turboProcess.stderr,
+	terminal: false,
+})
 
-rl.on('line', processLine)
-rl.on('close', reportResults)
+rlStdout.on('line', processLine)
+rlStderr.on('line', processLine)
+
+let stdoutClosed = false
+let stderrClosed = false
+
+function checkAndReport() {
+	if (stdoutClosed && stderrClosed) {
+		reportResults()
+	}
+}
+
+rlStdout.on('close', () => {
+	stdoutClosed = true
+	checkAndReport()
+})
+
+rlStderr.on('close', () => {
+	stderrClosed = true
+	checkAndReport()
+})
 
 turboProcess.on('error', (err) => { //>
 	console.error(chalk.redBright.bold('Failed to start turbo process.'), err)
@@ -272,18 +304,22 @@ turboProcess.on('error', (err) => { //>
 }) //<
 
 turboProcess.on('close', (code) => { //>
+	if (!stdoutClosed) {
+		stdoutClosed = true
+	}
+	if (!stderrClosed) {
+		stderrClosed = true
+	}
+	checkAndReport()
+
 	if (code !== 0 && aggregatedErrors.length === 0 && packagesReportedByTurboAsFailing.size === 0) {
 		console.error(
 			chalk.redBright.bold(
 				`\nTurbo process exited with code ${code}, and no specific TSC errors were aggregated.`,
 			),
 		)
-		console.error(
-			chalk.redBright.bold(
-				'This might indicate an issue with the turbo command or workspace configuration.',
-			),
-		)
-		if (aggregatedErrors.length === 0)
+		if (process.exitCode === undefined) {
 			process.exit(code || 1)
+		}
 	}
 }) //<

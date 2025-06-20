@@ -58,7 +58,8 @@ async function run(): Promise<void> { //>
 			console.log(`    ${ansii.dim}- ${optResult.artboardFilesRemoved} Artboard SVG files removed from source.${ansii.none}`)
 		if (optResult.pngFilesRemoved > 0)
 			console.log(`    ${ansii.dim}- ${optResult.pngFilesRemoved} PNG files removed from source.${ansii.none}`)
-	} else {
+	}
+	else {
 		console.log(`    ${ansii.dim}- No unwanted Artboard SVGs or PNGs found in source to remove.${ansii.none}`)
 	}
 
@@ -80,7 +81,8 @@ async function run(): Promise<void> { //>
 				console.log(formatOptimizationDetailLine(detail, 'file', index + 1, optResult.fileOptimizationDetails.length, maxFilePrefixAndNameLength))
 			})
 			anyIconsOptimizedThisStep = true
-		} else {
+		}
+		else {
 			console.log(`        No file SVG files to optimize in ${optResult.sourceIconDirRelative}`)
 		}
 	}
@@ -101,14 +103,16 @@ async function run(): Promise<void> { //>
 				console.log(formatOptimizationDetailLine(detail, 'folder', index + 1, optResult.folderOptimizationDetails.length, maxFolderPrefixAndNameLength))
 			})
 			anyIconsOptimizedThisStep = true
-		} else {
+		}
+		else {
 			console.log(`        No folder SVG files to optimize in ${optResult.sourceIconDirRelative}`)
 		}
 	}
 
 	if (anyIconsOptimizedThisStep) {
 		console.log(`    ${ansii.green}✓ Icons optimized successfully.${ansii.none}`)
-	} else {
+	}
+	else {
 		console.log(`    ${ansii.blueLight}✓ No icons processed for optimization based on argument '${arg}'.${ansii.none}`)
 	}
 
@@ -122,11 +126,13 @@ async function run(): Promise<void> { //>
 
 		if (manifestsSuccess) {
 			console.log(`  ${ansii.green}✓ Icon manifests generated successfully.${ansii.none}`)
-		} else {
+		}
+		else {
 			console.error(`  ${ansii.red}✗ Error generating icon manifests.${ansii.none}`)
 			overallSuccess = false
 		}
-	} else {
+	}
+	else {
 		console.log(`\n${ansii.blueLight}[Step ${stepCounter++}: Generating Icon Manifests (Skipped - No relevant icon types processed)]${ansii.none}`)
 	}
 
@@ -135,9 +141,11 @@ async function run(): Promise<void> { //>
 
 	if (arg === 'all' && (optResult.filesFoundForOptimization > 0 || optResult.foldersFoundForOptimization > 0)) {
 		previewTypeToRun = 'all'
-	} else if (arg === 'file' && optResult.filesFoundForOptimization > 0) {
+	}
+	else if (arg === 'file' && optResult.filesFoundForOptimization > 0) {
 		previewTypeToRun = 'file'
-	} else if (arg === 'folder' && optResult.foldersFoundForOptimization > 0) {
+	}
+	else if (arg === 'folder' && optResult.foldersFoundForOptimization > 0) {
 		previewTypeToRun = 'folder'
 	}
 
@@ -148,11 +156,13 @@ async function run(): Promise<void> { //>
 
 		if (previewsSuccess) {
 			console.log(`  ${ansii.green}✓ Icon previews generated successfully.${ansii.none}`)
-		} else {
+		}
+		else {
 			console.error(`  ${ansii.red}✗ Error generating icon previews.${ansii.none}`)
 			overallSuccess = false
 		}
-	} else {
+	}
+	else {
 		console.log(`\n${ansii.blueLight}[Step ${stepCounter++}: Generating Icon Previews (Skipped - No relevant icons found/optimized for '${arg}')]${ansii.none}`)
 	}
 
@@ -160,7 +170,8 @@ async function run(): Promise<void> { //>
 	if (!overallSuccess) {
 		console.log(`\n${ansii.red}${ansii.bold}DYNAMICONS ASSET BUILD COMPLETED WITH ERRORS. Review logs.${ansii.none}\n`)
 		process.exit(1)
-	} else {
+	}
+	else {
 		console.log(`\n${ansii.green}${ansii.bold}DYNAMICONS ASSET BUILD COMPLETED SUCCESSFULLY!${ansii.none}\n`)
 	}
 } //<

@@ -16,7 +16,6 @@
     },
     "devDependencies": {
         "@focused-ux/tsconfig": "workspace:*",
-        "@focused-ux/config-eslint": "workspace:*",
         "typescript": "^5.8.3"
     },
     "private": true,

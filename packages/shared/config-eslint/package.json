@@ -3,16 +3,19 @@
     "version": "0.1.0",
     "type": "module",
     "private": true,
-    "main": "eslint.config.js",
     "devDependencies": {
         "@antfu/eslint-config": "^4.14.1",
         "@eslint/js": "^9.28.0",
-        
-        
         "@seahax/eslint-plugin-wrap": "^0.6.7",
-        "@typescript-eslint/parser": "^8.34.0",
+        "@typescript-eslint/parser": "^8.34.1",
         "eslint": "^9.28.0",
         "eslint-plugin-import": "^2.31.0",
         "typescript-eslint": "^8.34.0"
+    },
+    "exports": {
+        ".": "./eslint.config.js"
+    },
+    "dependencies": {
+        "chalk": "^5.4.1"
     }
 }

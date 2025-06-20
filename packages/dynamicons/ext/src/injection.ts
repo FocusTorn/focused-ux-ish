@@ -13,12 +13,14 @@ import {
 	CommonUtilsService,
 	FileUtilsService,
 	PathUtilsService,
+	QuickPickUtilsService,
 	SharedServicesModule,
 } from '@focused-ux/shared-services'
 import type {
 	ICommonUtilsService,
 	IFileUtilsService,
 	IPathUtilsService,
+    IQuickPickUtilsService,
 } from '@focused-ux/shared-services'
 
 //--------------------------------------------------------------------------------------------------------------<<
@@ -32,6 +34,7 @@ export function registerDynamiconsDependencies(context: ExtensionContext): void 
 	container.registerSingleton<ICommonUtilsService>('ICommonUtilsService', CommonUtilsService)
 	container.registerSingleton<IFileUtilsService>('IFileUtilsService', FileUtilsService)
 	container.registerSingleton<IPathUtilsService>('IPathUtilsService', PathUtilsService)
+	container.registerSingleton<IQuickPickUtilsService>('IQuickPickUtilsService', QuickPickUtilsService)
 
 	// 3. Register Dynamicons-specific services.
 	container.register<IIconActionsService>(

@@ -8,11 +8,8 @@
         "build:types": "tsc -p tsconfig.json --pretty",
         "build:js": "fux-build ./src/index.ts --outfile=./dist/index.js --library",
         "build:vis": "pnpm build --meta && esbuild-visualizer --metadata ./dist/metafile.json && node rename_esbuild_analysis_output.js",
-        
         "== VALIDATE ========================================================================================= ": "",
         "check-types": "tsc --noEmit -p tsconfig.json --pretty",
-        "lint": "eslint . --ext .ts",
-        "lint:fix": "eslint . --ext .ts --fix",
         "== UTILITIES ======================================================================================== ": "",
         "clean": "rimraf ./dist .turbo"
     },
@@ -25,7 +22,6 @@
     },
     "devDependencies": {
         "@focused-ux/config-esbuild": "workspace:*",
-        "@focused-ux/config-eslint": "workspace:*",
         "@focused-ux/tsconfig": "workspace:*",
         "@types/node": "^24.0.0",
         "@types/vscode": "^1.100.0",

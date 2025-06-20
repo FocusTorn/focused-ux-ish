@@ -36,7 +36,23 @@
         "outDir": "./dist"
     },
     "include": [
-        "src/**/*.ts"
+        "src/**/*.ts",
+        "src/**/*.tsx",
+        "src/**/*.js",
+        "src/**/*.jsx",
+        "src/**/*.mts",
+        "src/**/*.mjs",
+        "src/**/*.cts",
+        "src/**/*.cjs",
+        
+        "**/_scripts/**/*.ts",
+        "**/_scripts/**/*.tsx",
+        "**/_scripts/**/*.js",
+        "**/_scripts/**/*.jsx",
+        "**/_scripts/**/*.mts",
+        "**/_scripts/**/*.mjs",
+        "**/_scripts/**/*.cts",
+        "**/_scripts/**/*.cjs"
     ],
     "exclude": [
         "node_modules",

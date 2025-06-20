@@ -1,4 +1,4 @@
-import 'reflect-metadata';
+import 'reflect-metadata'
 // packages/dynamicons/ext/src/extension.ts
 // ESLint & Imports -->>
 
@@ -76,7 +76,8 @@ async function ensureThemeAssets(context: ExtensionContext): Promise<void> { //>
 
 	try {
 		await fileUtilsService.iFspAccess(themesDir)
-	} catch {
+	}
+	catch {
 		await fileUtilsService.iFspMkdir(themesDir, { recursive: true })
 	}
 
@@ -89,7 +90,8 @@ async function ensureThemeAssets(context: ExtensionContext): Promise<void> { //>
 
 	try {
 		await fileUtilsService.iFspAccess(baseThemePath)
-	} catch {
+	}
+	catch {
 		await fileUtilsService.iFspWriteFile(baseThemePath, JSON.stringify(defaultBaseManifest, null, 2))
 		vscode.window.showInformationMessage(
 			`${dynamiconsConstants.featureName}: Created default base theme at ${baseThemePath}. Consider generating a full one.`,
@@ -98,7 +100,8 @@ async function ensureThemeAssets(context: ExtensionContext): Promise<void> { //>
 
 	try {
 		await fileUtilsService.iFspAccess(generatedThemePath)
-	} catch {
+	}
+	catch {
 		// If generated theme doesn't exist, regenerate it.
 		// regenerateAndApplyTheme will be called during activation anyway if needed.
 		// For robustness, we can call it here too.
@@ -161,15 +164,18 @@ async function regenerateAndApplyTheme(context: ExtensionContext): Promise<void>
                     );
                 }
                 */
-			} else {
+			}
+			else {
 				console.log(`[${EXT_NAME}] Theme file updated, but ${ICON_THEME_ID} is not the active theme. No UI refresh attempted.`)
 			}
-		} else {
+		}
+		else {
 			vscode.window.showErrorMessage(
 				`${dynamiconsConstants.featureName}: Failed to generate icon theme manifest.`,
 			)
 		}
-	} catch (error: any) {
+	}
+	catch (error: any) {
 		vscode.window.showErrorMessage(
 			`${dynamiconsConstants.featureName}: Error regenerating theme: ${error.message}`,
 		)
@@ -198,7 +204,8 @@ async function activateIconThemeIfNeeded(context: ExtensionContext): Promise<voi
 			if (choice === 'Activate') {
 				await workbenchConfig.update('iconTheme', ICON_THEME_ID, vscode.ConfigurationTarget.Global)
 			}
-		} catch {
+		}
+		catch {
 			// Theme file doesn't exist or other access error, do nothing.
 			// It will be generated on first full activation or config change.
 		}
@@ -227,11 +234,15 @@ export async function activate(context: ExtensionContext): Promise<void> { //>
 			vscode.window.showInformationMessage(`"${ICON_THEME_ID}" icon theme activated.`)
 		}),
 
-		vscode.commands.registerCommand(COMMANDS.assignIcon, (uri?: Uri) =>
-			iconActionsService.assignIconToResource(uri)),
+		vscode.commands.registerCommand(COMMANDS.assignIcon, (uri?: Uri, uris?: Uri[]) => {
+			const finalUris = uris && uris.length > 0 ? uris : (uri ? [uri] : [])
+			iconActionsService.assignIconToResource(finalUris)
+		}),
 
-		vscode.commands.registerCommand(COMMANDS.revertIcon, (uri?: Uri) =>
-			iconActionsService.revertIconAssignment(uri)),
+		vscode.commands.registerCommand(COMMANDS.revertIcon, (uri?: Uri, uris?: Uri[]) => {
+			const finalUris = uris && uris.length > 0 ? uris : (uri ? [uri] : [])
+			iconActionsService.revertIconAssignment(finalUris)
+		}),
 
 		vscode.commands.registerCommand(COMMANDS.toggleExplorerArrows, () =>
 			iconActionsService.toggleExplorerArrows()),
@@ -263,6 +274,7 @@ export async function activate(context: ExtensionContext): Promise<void> { //>
 		}),
 	)
 } //<
+
 
 export function deactivate(): void { //>
 	console.log(`[${EXT_NAME}] Deactivated.`)

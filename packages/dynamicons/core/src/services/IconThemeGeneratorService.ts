@@ -88,7 +88,8 @@ export class IconThemeGeneratorService implements IIconThemeGeneratorService {
 						}
 					}
 				}
-			} catch (error) {
+			}
+			catch (error) {
 				this.iCommonUtils.errMsg(`[IconThemeGeneratorService] Error accessing user icons directory '${userIconsAbsPath}':`, error)
 			}
 		}
@@ -103,11 +104,13 @@ export class IconThemeGeneratorService implements IIconThemeGeneratorService {
 					if (fileNameOrExt.includes('.')) {
 						manifest.fileNames = manifest.fileNames || {}
 						manifest.fileNames[fileNameOrExt] = value
-					} else {
+					}
+					else {
 						manifest.fileExtensions = manifest.fileExtensions || {}
 						manifest.fileExtensions[fileNameOrExt] = value
 					}
-				} else if (key.startsWith(dynamiconsConstants.associationKeyPrefixes.folder)) {
+				}
+				else if (key.startsWith(dynamiconsConstants.associationKeyPrefixes.folder)) {
 					const folderName = key.substring(dynamiconsConstants.associationKeyPrefixes.folder.length).trim()
 
 					manifest.folderNames = manifest.folderNames || {}
@@ -120,20 +123,24 @@ export class IconThemeGeneratorService implements IIconThemeGeneratorService {
 						const baseName = value.substring(dynamiconsConstants.defaults.iconThemeNamePrefix.length)
 
 						openDefinitionKey = `${dynamiconsConstants.defaults.iconThemeNamePrefix}${baseName}${dynamiconsConstants.defaults.openFolderIconSuffix}`
-					} else if (value.startsWith(dynamiconsConstants.defaults.userIconDefinitionPrefix)) {
+					}
+					else if (value.startsWith(dynamiconsConstants.defaults.userIconDefinitionPrefix)) {
 						const baseName = value.substring(dynamiconsConstants.defaults.userIconDefinitionPrefix.length)
 
 						openDefinitionKey = `${dynamiconsConstants.defaults.userIconDefinitionPrefix}${baseName}${dynamiconsConstants.defaults.openFolderIconSuffix}`
-					} else {
+					}
+					else {
 						openDefinitionKey = `${value}${dynamiconsConstants.defaults.openFolderIconSuffix}`
 					}
 
 					if (manifest.iconDefinitions[openDefinitionKey]) {
 						manifest.folderNamesExpanded[folderName] = openDefinitionKey
-					} else {
+					}
+					else {
 						manifest.folderNamesExpanded[folderName] = value
 					}
-				} else if (key.startsWith(dynamiconsConstants.associationKeyPrefixes.language)) {
+				}
+				else if (key.startsWith(dynamiconsConstants.associationKeyPrefixes.language)) {
 					const langId = key.substring(dynamiconsConstants.associationKeyPrefixes.language.length).trim()
 
 					manifest.languageIds = manifest.languageIds || {}
@@ -144,7 +151,8 @@ export class IconThemeGeneratorService implements IIconThemeGeneratorService {
 
 		if (hideExplorerArrows !== null && hideExplorerArrows !== undefined) {
 			manifest.hidesExplorerArrows = hideExplorerArrows
-		} else {
+		}
+		else {
 			delete manifest.hidesExplorerArrows
 		}
 
@@ -156,7 +164,8 @@ export class IconThemeGeneratorService implements IIconThemeGeneratorService {
 			const manifestJsonString = JSON.stringify(manifest, null, 2)
 
 			await this.iFileUtils.iFspWriteFile(outputPath, manifestJsonString, 'utf-8')
-		} catch (error) {
+		}
+		catch (error) {
 			this.iCommonUtils.errMsg(`[IconThemeGeneratorService] Failed to write icon theme manifest to ${outputPath}:`, error)
 			throw error
 		}

@@ -145,7 +145,8 @@ function generateMetadata( //>
 				iconsData[name] = { iconPath }
 			}
 		}
-	} catch (error) {
+	}
+	catch (error) {
 		if (!silent) {
 			console.warn(
 				`│  ├─ ${ansii.yellow}WARN:${ansii.none} Could not read directory ${path.relative(
@@ -190,7 +191,8 @@ function addIconDefinitionToResult( //>
 			result.iconDefinitions[themeIconKey] = {
 				iconPath: path.posix.join(iconDirRelPath, `${iconFileNameInAssets}.svg`),
 			}
-		} else if (!silent) {
+		}
+		else if (!silent) {
 			const warningPath = path.relative(MONOREPO_ROOT, fullIconPathInOptimizedPosix.replace(/\//g, path.sep))
 
 			console.warn(
@@ -222,7 +224,8 @@ function processIconAssociations( //>
 
 			if (type === 'folder') {
 				definitionKeyForAssociation = `_folder-${iconModelName}`
-			} else {
+			}
+			else {
 				definitionKeyForAssociation = `_${iconModelName}`
 			}
 
@@ -341,7 +344,8 @@ export async function main(silent: boolean = false): Promise<boolean> { //>
 		}
 		try {
 			fs.mkdirSync(THEMES_OUTPUT_DIR_ABS_POSIX.replace(/\//g, path.sep), { recursive: true })
-		} catch (e) {
+		}
+		catch (e) {
 			if (!silent) {
 				console.error(`│  └─ ${ansii.red}ERROR:${ansii.none} Could not create themes directory: ${(e as Error).message}`)
 			}
@@ -355,7 +359,8 @@ export async function main(silent: boolean = false): Promise<boolean> { //>
 		if (fs.existsSync(platformSpecificFile)) {
 			try {
 				fs.unlinkSync(platformSpecificFile)
-			} catch (e) {
+			}
+			catch (e) {
 				if (!silent) {
 					console.warn(
 						`│  ├─ ${ansii.yellow}WARN:${ansii.none} Could not delete existing file '${path.basename(
@@ -373,7 +378,8 @@ export async function main(silent: boolean = false): Promise<boolean> { //>
 	try {
 		fileIconsData = readJsonFileSync<FileIconsModel>(FILE_ICONS_MODEL_PATH)
 		folderIconsData = readJsonFileSync<FolderIconsModel>(FOLDER_ICONS_MODEL_PATH)
-	} catch (e) {
+	}
+	catch (e) {
 		if (!silent) {
 			console.error(`│  └─ ${ansii.red}ERROR:${ansii.none} Could not read model files: ${(e as Error).message}`)
 		}
@@ -389,7 +395,8 @@ export async function main(silent: boolean = false): Promise<boolean> { //>
 				`│  ├─ ${ansii.gold}Generated Manifest:${ansii.none} ${path.relative(MONOREPO_ROOT, BASE_THEME_FILE_ABS)}`,
 			)
 		}
-	} catch (e) {
+	}
+	catch (e) {
 		if (!silent) {
 			console.error(`│  └─ ${ansii.red}ERROR:${ansii.none} Could not write ${path.basename(BASE_THEME_FILE_ABS)}: ${(e as Error).message}`)
 		}
@@ -403,7 +410,8 @@ export async function main(silent: boolean = false): Promise<boolean> { //>
 				`│  └─ ${ansii.gold}Generated Manifest:${ansii.none} ${path.relative(MONOREPO_ROOT, OUTPUT_THEME_FILE_ABS)}`,
 			)
 		}
-	} catch (e) {
+	}
+	catch (e) {
 		if (!silent) {
 			console.error(`│  └─ ${ansii.red}ERROR:${ansii.none} Could not write ${path.basename(OUTPUT_THEME_FILE_ABS)}: ${(e as Error).message}`)
 		}

@@ -7,7 +7,7 @@ import type { Uri } from 'vscode'
 
 export interface IIconActionsService {
 	assignIconToResource: (
-		resourceUri: Uri | undefined,
+		resourceUris: Uri[],
 		iconTypeScope?: 'file' | 'folder' | 'language'
 	) => Promise<void>
 
@@ -27,7 +27,7 @@ export interface IIconActionsService {
 	) => Promise<void>
 
 	revertIconAssignment: (
-		resourceUri: Uri | undefined
+		resourceUris: Uri[]
 	) => Promise<void>
 
 	toggleExplorerArrows: () => Promise<void>

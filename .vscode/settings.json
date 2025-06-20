@@ -2,11 +2,7 @@
     "typescript.tsdk": "node_modules/typescript/lib",
     "editor.formatOnSave": false,
     "eslint.useFlatConfig": true,
-    "eslint.workingDirectories": [
-        {
-            "mode": "auto"
-        }
-    ],
+    "eslint.workingDirectories": ["./"],
     "search.exclude": {
         "**/node_modules": true,
         "**/.turbo": true,
@@ -14,8 +10,8 @@
         "**/coverage": true
     },
     "files.exclude": {
-        // "**/node_modules": true,
-        // "**/.turbo": true,
+        "**/node_modules": true,
+        "**/.turbo": true
         // "**/dist": true,
         // "**/coverage": true
     }

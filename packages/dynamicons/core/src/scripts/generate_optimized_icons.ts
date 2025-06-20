@@ -75,7 +75,8 @@ async function optimizeSvg(filePath: string, outputPath: string): Promise<void> 
 		exec(`svgo -i "${filePath}" -o "${outputPath}"`, (error) => {
 			if (error) {
 				reject(error)
-			} else {
+			}
+			else {
 				resolve()
 			}
 		})
@@ -192,7 +193,8 @@ async function optimizeIconsInDirectory( //>
 				if (!keepOriginal) {
 					try {
 						await fsPromises.unlink(filePath)
-					} catch (err) {
+					}
+					catch (err) {
 						if (!silent)
 							console.error(`Error deleting original file ${filePath}:`, err)
 					}
@@ -201,7 +203,8 @@ async function optimizeIconsInDirectory( //>
 		)
 
 		await Promise.all(optimizationPromises)
-	} catch (err) {
+	}
+	catch (err) {
 		if (!silent) {
 			console.error(`Error optimizing ${type} icons in ${path.relative(MONOREPO_ROOT, sourceDirAbs)}:`, err)
 		}
@@ -238,20 +241,24 @@ async function removeUnwantedFilesFromSource( //>
 			if (file.startsWith('Artboard') && file.endsWith('.svg')) {
 				try {
 					await fsPromises.unlink(filePath); artboardFilesRemoved++
-				} catch (err) {
+				}
+				catch (err) {
 					if (!silent)
 						console.error(`Error removing ${file}:`, err)
 				}
-			} else if (file.endsWith('.png')) {
+			}
+			else if (file.endsWith('.png')) {
 				try {
 					await fsPromises.unlink(filePath); pngFilesRemoved++
-				} catch (err) {
+				}
+				catch (err) {
 					if (!silent)
 						console.error(`Error removing ${file}:`, err)
 				}
 			}
 		}
-	} catch (err) {
+	}
+	catch (err) {
 		if (!silent)
 			console.error(`Error reading directory for cleanup: ${path.relative(MONOREPO_ROOT, sourceDirAbs)}`, err)
 	}
@@ -279,7 +286,8 @@ export async function main( //>
 				console.log(`│    └── ${removedCounts.artboardFilesRemoved} Artboard SVG files removed from source.`)
 			if (removedCounts.pngFilesRemoved > 0)
 				console.log(`│    └── ${removedCounts.pngFilesRemoved} PNG files removed from source.`)
-		} else {
+		}
+		else {
 			console.log(`│    └── No unwanted Artboard SVGs or PNGs found in source to remove.`)
 		}
 	}

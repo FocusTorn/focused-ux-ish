@@ -24,13 +24,15 @@ async function manageIconFiles() {
 					await fs.unlink(filePath)
 					console.log(`Deleted PNG: ${filePath}`)
 					pngDeletedCount++
-				} catch (err) {
+				}
+				catch (err) {
 					console.error(`Error deleting PNG file ${filePath}:`, err)
 				}
 			}
 		}
 		console.log(`${pngDeletedCount} PNG file(s) processed for deletion.`)
-	} catch (err) {
+	}
+	catch (err) {
 		console.error(`Error reading source directory ${sourceDirectory} for PNG deletion:`, err)
 		// If we can't read the source, we probably shouldn't proceed.
 		return
@@ -43,7 +45,8 @@ async function manageIconFiles() {
 		try {
 			await fs.mkdir(destinationDirectory, { recursive: true })
 			console.log(`Ensured destination directory exists: ${destinationDirectory}`)
-		} catch (mkdirErr) {
+		}
+		catch (mkdirErr) {
 			console.error(`Error creating destination directory ${destinationDirectory}:`, mkdirErr)
 			console.log('Cannot proceed with moving SVG files.')
 			return
@@ -61,7 +64,8 @@ async function manageIconFiles() {
 					await fs.rename(sourceFilePath, destinationFilePath)
 					console.log(`Moved SVG: ${sourceFilePath} -> ${destinationFilePath}`)
 					svgMovedCount++
-				} catch (err) {
+				}
+				catch (err) {
 					console.error(`Error moving SVG file ${sourceFilePath} to ${destinationFilePath}:`, err)
 					// Attempt to copy and then delete if rename fails (e.g., cross-device move, though unlikely here)
 					// For simplicity, this example doesn't implement a copy-then-delete fallback for rename.
@@ -69,7 +73,8 @@ async function manageIconFiles() {
 			}
 		}
 		console.log(`${svgMovedCount} SVG file(s) moved.`)
-	} catch (err) {
+	}
+	catch (err) {
 		console.error(`Error reading source directory ${sourceDirectory} for SVG moving:`, err)
 	}
 

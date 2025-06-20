@@ -71,10 +71,12 @@ export class IconActionsService implements IIconActionsService {
 
 			if (stat.isDirectory()) {
 				return this.iPathBasename(resourceUri.fsPath)
-			} else if (stat.isFile()) {
+			}
+			else if (stat.isFile()) {
 				return this.iPathBasename(resourceUri.fsPath)
 			}
-		} catch (error) {
+		}
+		catch (error) {
 			this.iCommonUtils.errMsg(`Error getting resource stats for ${resourceUri.fsPath}`, error)
 		}
 		return undefined
@@ -114,10 +116,12 @@ export class IconActionsService implements IIconActionsService {
 				// This path is typically for operations that don't return the full mappings object but signal a change.
 				console.log(`[Dynamicons Update Debug] updateFn returned boolean 'true'. Assuming direct config update by updateFn or manual refresh needed.`)
 				// this.iWindow.showInformationMessage('Configuration updated. Theme will refresh automatically.')
-			} else {
+			}
+			else {
 				console.log(`[Dynamicons Update Debug] updateFn returned boolean 'false'. No changes to persist.`)
 			}
-		} else if (typeof newMappingsResult === 'object') {
+		}
+		else if (typeof newMappingsResult === 'object') {
 			// This path is taken by revertIconAssignment.
 			// newMappingsResult should be the `mutableMappingsCopy` object, now modified by updateFn.
 			console.log(`[Dynamicons Update Debug] updateFn returned mappings object.`)
@@ -128,7 +132,8 @@ export class IconActionsService implements IIconActionsService {
 				console.warn(`[Dynamicons Update Debug] WARNING: Mappings object after updateFn is identical to original. No update will likely occur or is needed.`)
 				// If no message was shown by updateFn (e.g. "No custom assignment found"), show a generic one.
 				// This part might need refinement based on whether updateFn already showed a message.
-			} else {
+			}
+			else {
 				console.log(`[Dynamicons Update Debug] Mappings object IS different. Proceeding with config.update.`)
 			}
 
@@ -137,7 +142,8 @@ export class IconActionsService implements IIconActionsService {
 				await config.update(this.CUSTOM_MAPPINGS_KEY, newMappingsResult, this.vscodeConfigTarget.Global)
 				console.log(`[Dynamicons Update Debug] config.update call completed for key: ${this.CUSTOM_MAPPINGS_KEY}. Check settings.json.`)
 				// The success message like "Icon assignment reverted" is shown by the calling method (revertIconAssignment)
-			} catch (error: any) {
+			}
+			catch (error: any) {
 				console.error(`[Dynamicons Update Debug] Error during config.update:`, error)
 				this.iWindow.showErrorMessage(`Failed to update icon mappings: ${error.message || 'Unknown error'}`)
 			}
@@ -162,12 +168,14 @@ export class IconActionsService implements IIconActionsService {
 					if (iconKind === 'user') {
 						// User-defined icons use the _user_ prefix
 						iconDefinitionKey = `${dynamiconsConstants.defaults.userIconDefinitionPrefix}${iconNameWithoutExt}`
-					} else if (iconKind === 'folder') {
+					}
+					else if (iconKind === 'folder') {
 						// Built-in folder icons (e.g., "folder-src.svg") should have definition keys like "_folder-src"
 						// The iconNameWithoutExt here would be "folder-src" or "folder-basic"
 						// Filter already ensures we don't process "-open.svg" variants here for base assignment
 						iconDefinitionKey = `_${iconNameWithoutExt}`
-					} else { // 'file'
+					}
+					else { // 'file'
 						// Built-in file icons (e.g., "javascript.svg") should have definition keys like "_javascript"
 						// The iconNameWithoutExt here would be "javascript"
 						iconDefinitionKey = `_${iconNameWithoutExt}`
@@ -181,7 +189,8 @@ export class IconActionsService implements IIconActionsService {
 					})
 				}
 			}
-		} catch (error: any) {
+		}
+		catch (error: any) {
 			if (error.code !== 'ENOENT') { // Ignore if directory simply doesn't exist (e.g., user dir not set)
 				this.iCommonUtils.errMsg(`Error reading icon directory ${directoryUri.fsPath}`, error)
 			}
@@ -230,12 +239,14 @@ export class IconActionsService implements IIconActionsService {
 
 				await this.iFspStat(userIconsDirUri.fsPath) // Check if dir exists
 				userIconOptions = await this.getIconOptionsFromDirectory(userIconsDirUri, 'user')
-			} catch (error: any) {
+			}
+			catch (error: any) {
 				if (error.code === 'ENOENT') {
 					this.iWindow.showWarningMessage(
 						`User icons directory not found: ${userIconsDirSetting}. Please check the '${this.EXTENSION_CONFIG_PREFIX}.${this.USER_ICONS_DIR_KEY}' setting.`,
 					)
-				} else {
+				}
+				else {
 					this.iCommonUtils.errMsg(`Error accessing user icons directory: ${userIconsDirSetting}`, error)
 				}
 			}
@@ -286,37 +297,52 @@ export class IconActionsService implements IIconActionsService {
 	} //<
 
 	public async assignIconToResource( //>
-		resourceUri: VsCodeUri | undefined,
+		resourceUris: VsCodeUri[],
 		iconTypeScope?: IconAssociationType,
 	): Promise<void> {
-		if (!resourceUri) {
+		if (!resourceUris || resourceUris.length === 0) {
 			this.iWindow.showWarningMessage('No file or folder selected.')
 			return
 		}
 
-		const resourceName = await this.getResourceName(resourceUri)
+		// Determine if we are dealing with files or folders, and check for mixed types.
+		let isFileMode = false
+		let isFolderMode = false
+		const resourceStats = await Promise.all(resourceUris.map(async (uri) => {
+			try {
+				return { uri, stat: await this.iFspStat(uri.fsPath) }
+			}
+			catch (error) {
+				this.iCommonUtils.errMsg(`Could not get stats for ${uri.fsPath}`, error)
+				return { uri, stat: null }
+			}
+		}))
 
-		if (!resourceName) {
-			this.iWindow.showErrorMessage('Could not determine the name of the selected resource.')
+		for (const { stat } of resourceStats) {
+			if (!stat)
+				continue // Skip items we couldn't get stats for
+			if (stat.isFile())
+				isFileMode = true
+			if (stat.isDirectory())
+				isFolderMode = true
+		}
+
+		if (isFileMode && isFolderMode) {
+			this.iWindow.showErrorMessage('Cannot assign icons to a mix of files and folders. Please select only files or only folders.')
 			return
 		}
 
-		let typeToAssign = iconTypeScope
-
-		if (!typeToAssign) {
-			try {
-				const stat = await this.iFspStat(resourceUri.fsPath)
-
-				typeToAssign = stat.isDirectory() ? 'folder' : 'file'
-			} catch (error) {
-				this.iCommonUtils.errMsg(`Could not determine type of resource: ${resourceUri.fsPath}`, error)
-				return
-			}
+		// If selection is empty after filtering out stat errors, exit.
+		if (!isFileMode && !isFolderMode) {
+			this.iWindow.showErrorMessage('Could not determine the type of the selected resources.')
+			return
 		}
-		if (typeToAssign === 'language') { // Language ID assignment not fully fleshed out here, focusing on file/folder
-			this.iWindow.showWarningMessage(
-				'Language icon assignment via this command is not yet fully supported.',
-			)
+
+		const typeToAssign = isFileMode ? 'file' : 'folder'
+
+		// If iconTypeScope is provided, it should match our determined type.
+		if (iconTypeScope && iconTypeScope !== typeToAssign) {
+			this.iWindow.showWarningMessage(`Selection type (${typeToAssign}) does not match the required scope (${iconTypeScope}).`)
 			return
 		}
 
@@ -326,77 +352,88 @@ export class IconActionsService implements IIconActionsService {
 			return // User cancelled
 		}
 
-		await this.updateCustomIconMappings(undefined, async (mappings) => {
-			const associationKey = this.getAssociationKey(resourceName, typeToAssign as IconAssociationType)
+		const resourceNames = resourceStats
+			.filter(rs => rs.stat !== null)
+			.map(rs => this.iPathBasename(rs.uri.fsPath))
 
-			mappings[associationKey] = iconNameKey
+		if (resourceNames.length === 0) {
+			this.iWindow.showErrorMessage('Could not determine the names of the selected resources.')
+			return
+		}
+
+		await this.updateCustomIconMappings(undefined, async (mappings) => {
+			for (const resourceName of resourceNames) {
+				const associationKey = this.getAssociationKey(resourceName, typeToAssign)
+
+				mappings[associationKey] = iconNameKey
+			}
 			return mappings // Return the modified mappings object
 		})
-		// this.iWindow.showInformationMessage(
-		// 	`Icon '${iconNameKey.replace(dynamiconsConstants.defaults.iconThemeNamePrefix, '').replace(
-		// 		dynamiconsConstants.defaults.userIconDefinitionPrefix,
-		// 		'user:',
-		// 	)}' assigned to ${typeToAssign} '${resourceName}'. Applying theme changes...`,
-		// )
 	} //<
-
-	public async revertIconAssignment(resourceUri: VsCodeUri | undefined): Promise<void> { //>
-		if (!resourceUri) {
+	
+	public async revertIconAssignment(resourceUris: VsCodeUri[]): Promise<void> { //>
+		if (!resourceUris || resourceUris.length === 0) {
 			this.iWindow.showWarningMessage('No file or folder selected.')
 			return
 		}
 
-		const resourceName = await this.getResourceName(resourceUri)
+		// Determine if we are dealing with files or folders, and check for mixed types.
+		let isFileMode = false
+		let isFolderMode = false
+		const resourceStats = await Promise.all(resourceUris.map(async (uri) => {
+			try {
+				return { uri, stat: await this.iFspStat(uri.fsPath) }
+			}
+			catch (error) {
+				this.iCommonUtils.errMsg(`Could not get stats for ${uri.fsPath}`, error)
+				return { uri, stat: null }
+			}
+		}))
 
-		if (!resourceName) {
-			this.iWindow.showErrorMessage('Could not determine the name of the selected resource.')
+		for (const { stat } of resourceStats) {
+			if (!stat)
+				continue // Skip items we couldn't get stats for
+			if (stat.isFile())
+				isFileMode = true
+			if (stat.isDirectory())
+				isFolderMode = true
+		}
+
+		if (isFileMode && isFolderMode) {
+			this.iWindow.showErrorMessage('Cannot revert icons for a mix of files and folders. Please select only files or only folders.')
+			return
+		}
+
+		const resourceNames = resourceStats
+			.filter(rs => rs.stat !== null)
+			.map(rs => this.iPathBasename(rs.uri.fsPath))
+
+		if (resourceNames.length === 0) {
+			this.iWindow.showErrorMessage('Could not determine the names of the selected resources.')
 			return
 		}
 
 		let changeMade = false
 
 		await this.updateCustomIconMappings(undefined, async (mappings) => {
-			let found = false
-			let actualType: 'file' | 'folder' | undefined
+			let anyFound = false
+			const typeToRevert: IconAssociationType = isFileMode ? 'file' : 'folder'
 
-			try {
-				const stat = await this.iFspStat(resourceUri.fsPath)
-
-				actualType = stat.isDirectory() ? 'folder' : 'file'
-
-				// eslint-disable-next-line unused-imports/no-unused-vars
-			} catch (_statError) {
-
-			}
-
-			const typesToTry: IconAssociationType[] = actualType
-				? [actualType]
-				: ['file', 'folder']
-
-			for (const type of typesToTry) {
-				const associationKey = this.getAssociationKey(resourceName, type)
+			for (const resourceName of resourceNames) {
+				const associationKey = this.getAssociationKey(resourceName, typeToRevert)
 
 				if (Object.prototype.hasOwnProperty.call(mappings, associationKey)) {
 					delete mappings[associationKey]
-					found = true
-					break
+					anyFound = true
 				}
 			}
 
-			if (!found) {
-				const langAssociationKey = this.getAssociationKey(resourceName, 'language')
-
-				if (Object.prototype.hasOwnProperty.call(mappings, langAssociationKey)) {
-					delete mappings[langAssociationKey]
-					found = true
-				}
-			}
-
-			if (found) {
+			if (anyFound) {
 				changeMade = true
 				return mappings // Return the modified mappings to be persisted
-			} else {
-				this.iWindow.showInformationMessage(`No custom icon assignment found for '${resourceName}'.`)
+			}
+			else {
+				this.iWindow.showInformationMessage('No custom icon assignments found for the selected items.')
 				return false // Signal no changes to persist
 			}
 		})
@@ -407,7 +444,7 @@ export class IconActionsService implements IIconActionsService {
 			// )
 		}
 	} //<
-
+    
 	public async toggleExplorerArrows(): Promise<void> { //>
 		const config = this.iWorkspace.getConfiguration(this.EXTENSION_CONFIG_PREFIX)
 		const currentSetting = config.get<boolean | null>(this.HIDE_ARROWS_KEY)
@@ -416,7 +453,8 @@ export class IconActionsService implements IIconActionsService {
 		if (currentSetting === null || currentSetting === undefined) {
 			// If not explicitly set, default to hiding them first, then toggle
 			newSetting = true // Default action is to hide if unset
-		} else {
+		}
+		else {
 			newSetting = !currentSetting
 		}
 		await config.update(this.HIDE_ARROWS_KEY, newSetting, this.vscodeConfigTarget.Global)
