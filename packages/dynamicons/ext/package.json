@@ -1,26 +1,25 @@
 {
     "name": "fux-dynamicons",
-    "version": "0.1.36",
+    "displayName": "F-UX: Dynamicons",
+    "description": "A dynamic and customizable icon theme for a focused user experience.",
+    "publisher": "NewRealityDesigns",
+    "repository": "https://github.com/FocusTorn/focused-ux",
+    "version": "0.1.38",
     "scripts": {
         "== BUILD ============================================================================================ ": "",
-        "build": "pnpm run build:js",
+        "build": "pnpm run build:types && pnpm run build:js",
         "build:clean": "pnpm run clean && pnpm run build",
         "build:types": "tsc -p tsconfig.json --pretty",
         "build:js": "fux-build ./src/extension.ts --outfile=./dist/extension.js",
-        "build:cjs": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.cjs --format=cjs --external:vscode",
         "== VALIDATE ========================================================================================= ": "",
         "check-types": "tsc --noEmit -p tsconfig.json --pretty",
         "lint": "eslint . --ext .ts",
         "lint:fix": "eslint . --ext .ts --fix",
         "== FINALIZE ========================================================================================= ": "",
-        "package": "vsce package --no-dependencies -o ../../../vsix_packages/",
-        "vscode:prepublish": "pnpm run build:clean && pnpm run version-bump",
+        "package": "pnpm run build && pnpm run version-bump && vsce package --no-dependencies --out ../../../vsix_packages/ ",
+        "package:clean": "pnpm run build:clean && pnpm run version-bump && vsce package --no-dependencies --out ../../../vsix_packages/ ",
+
         "publish": "vsce publish --no-dependencies",
-        "== WATCH ============================================================================================ ": "",
-        "watch-only": "pnpm run watch:types & pnpm run watch:js",
-        "watch:types": "tsc -p tsconfig.json --watch",
-        "watch:js": "fux-build ./src/extension.ts --outfile=./dist/extension.js --watch",
-        "watch:cjs": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.cjs --platform=node --format=cjs --external:vscode --external:tsyringe --external:reflect-metadata --external:@focused-ux/dynamicons-core --watch",
         "== UTILITIES ======================================================================================== ": "",
         "version-bump": "tsx ../../shared/tools/src/scripts/version_bump.ts",
         "clean": "rimraf ./dist .turbo"
@@ -45,6 +44,27 @@
         "typescript": "^5.8.3"
     },
     "icon": "assets/logo.jpeg",
+    "categories": [
+        "Themes"
+    ],
+    "keywords": [
+        "icon theme",
+        "theme",
+        "icons",
+        "dynamicons",
+        "focused ux"
+    ],
+    "private": true,
+    "main": "./dist/extension.js",
+    "sideEffects": [
+        "reflect-metadata"
+    ],
+    "engines": {
+        "vscode": "^1.100.0"
+    },
+    "activationEvents": [
+        "onStartupFinished"
+    ],
     "contributes": {
         "themes": [
             {
@@ -164,28 +184,5 @@
                 }
             }
         }
-    },
-    "displayName": "F-UX: Dynamicons",
-    "publisher": "NewRealityDesigns",
-    "description": "A dynamic and customizable icon theme for a focused user experience.",
-    "repository": "https://github.com/FocusTorn/focused-ux",
-    "private": true,
-    "engines": {
-        "vscode": "^1.100.0"
-    },
-    "activationEvents": [
-        "onStartupFinished"
-    ],
-    "categories": [
-        "Themes"
-    ],
-    "keywords": [
-        "icon theme",
-        "theme",
-        "icons",
-        "dynamicons",
-        "focused",
-        "ui"
-    ],
-    "main": "./dist/extension.js"
+    }
 }

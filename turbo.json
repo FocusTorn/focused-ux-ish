@@ -6,6 +6,21 @@
         "clean": {
             "cache": false
         },
+        "build:clean": {
+            "cache": false,
+            "dependsOn": ["^build:clean"],
+            "outputs": [
+                "dist/**"
+            ],
+            "inputs": [
+                "src/**",
+                "cli/**",
+                "assets/**",
+                "package.json",
+                "tsconfig.json",
+                "!**/.turbo/**"
+            ]
+        },
         "lint": {
             "dependsOn": [
                 "^lint"
@@ -17,6 +32,12 @@
             ]
         },
         "package": {
+            "dependsOn": [
+                "^build"
+            ]
+        },
+        "package:Clean": {
+            "cache": false,
             "dependsOn": [
                 "^build"
             ]
@@ -40,6 +61,8 @@
                 "!**/.turbo/**"
             ]
         },
+        
+        
         "build:assets": {
             "dependsOn": [
                 "^build:assets"

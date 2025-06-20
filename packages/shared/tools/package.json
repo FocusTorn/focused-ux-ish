@@ -1,19 +1,9 @@
 {
     "name": "@focused-ux/tools",
     "version": "0.1.0",
-    "private": true,
-    "type": "module",
-    "bin": {
-        "ts-run": "./cli/ts-run.js"
-    },
     "scripts": {
-        "== BUILD ============================================================================================ ": "",
-        "build": "pnpm run build:types && pnpm run build:js",
-        "build:clean": "pnpm run clean && pnpm run build",
-        "build:types": "tsc -p tsconfig.json",
-        "build:js": "fux-build ./src/index.ts --outfile=./dist/index.js",
-        "== UTILITIES ======================================================================================== ": "",
-        "clean": "rimraf ./dist .turbo"
+        "== VALIDATE ========================================================================================= ": "",
+        "check-types": "tsc -p tsconfig.json --pretty"
     },
     "devDependencies": {
         "@focused-ux/config-esbuild": "workspace:*",
@@ -27,5 +17,7 @@
     "dependencies": {
         "@typescript-eslint/eslint-plugin": "^8.34.1",
         "@typescript-eslint/parser": "^8.34.1"
-    }
+    },
+    "private": true,
+    "type": "module"
 }

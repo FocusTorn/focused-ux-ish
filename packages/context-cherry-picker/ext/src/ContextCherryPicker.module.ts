@@ -1,0 +1,53 @@
+// ESLint & Imports -->>
+
+//= TSYRINGE ==================================================================================================
+import type { container as globalContainerType } from 'tsyringe'
+import { container as globalContainer } from 'tsyringe' // Or pass as arg if preferred
+
+//= IMPLEMENTATION TYPES ======================================================================================
+import {
+	// Interfaces
+	type IContextCherryPickerManager,
+	type IFileExplorerDataProvider,
+	type ISavedStatesDataProvider,
+	type IQuickSettingsDataProvider,
+	type IStorageService,
+	type IGoogleGenAiService,
+	type IContextDataCollectorService,
+	type IProjectTreeFormatterService,
+	type IFileContentProviderService,
+	// Services
+	ContextCherryPickerManager,
+	StorageService,
+	GoogleGenAiService,
+	ContextDataCollectorService,
+	ProjectTreeFormatterService,
+	FileContentProviderService,
+	// Providers
+	FileExplorerDataProvider,
+	SavedStatesDataProvider,
+	QuickSettingsDataProvider,
+} from '@focused-ux/context-cherry-picker-core'
+
+//--------------------------------------------------------------------------------------------------------------<<
+
+export class ContextCherryPickerModule { //>
+
+	public static registerDependencies( //>
+		container: typeof globalContainerType = globalContainer,
+	): void {
+		// Services
+		container.registerSingleton<IStorageService>('IStorageService', StorageService)
+		container.registerSingleton<IGoogleGenAiService>('IGoogleGenAiService', GoogleGenAiService)
+		container.registerSingleton<IContextDataCollectorService>('IContextDataCollectorService', ContextDataCollectorService)
+		container.registerSingleton<IProjectTreeFormatterService>('IProjectTreeFormatterService', ProjectTreeFormatterService)
+		container.registerSingleton<IFileContentProviderService>('IFileContentProviderService', FileContentProviderService)
+		container.registerSingleton<IContextCherryPickerManager>('IContextCherryPickerManager', ContextCherryPickerManager)
+
+		// Providers
+		container.registerSingleton<IFileExplorerDataProvider>('IFileExplorerDataProvider', FileExplorerDataProvider)
+		container.registerSingleton<ISavedStatesDataProvider>('ISavedStatesDataProvider', SavedStatesDataProvider)
+		container.registerSingleton<IQuickSettingsDataProvider>('IQuickSettingsDataProvider', QuickSettingsDataProvider)
+	} //<
+
+}

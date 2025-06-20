@@ -14,6 +14,7 @@ interface PackageJson {
 	[key: string]: any // Allow other properties
 }
 
+// The script determines the target package.json from its current working directory.
 const packageJsonPath = path.join(process.cwd(), 'package.json')
 
 try {
@@ -38,6 +39,6 @@ try {
 
 	console.log(`Version updated to ${packageJson.version}`)
 } catch (error) {
-	console.error('Error bumping version:', error instanceof Error ? error.message : String(error))
+	console.error(`Error bumping version for ${packageJsonPath}:`, error instanceof Error ? error.message : String(error))
 	process.exit(1)
 }

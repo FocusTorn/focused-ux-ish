@@ -1,0 +1,4 @@
+ "== WATCH ============================================================================================ ": "",
+        "watch": "pnpm run watch:types & pnpm run watch:js",
+        "watch:types": "tsc -p tsconfig.json --watch",
+        "watch:js": "fux-build ./src/extension.ts --outfile=./dist/extension.js --watch",

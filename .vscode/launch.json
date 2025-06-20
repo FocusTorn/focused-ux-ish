@@ -45,7 +45,7 @@
 			"request": "launch",
 			"args": [
                 "--profile=Clean",
-				"--extensionDevelopmentPath=${workspaceFolder}/packages/context-cherry-picker-ext",
+				"--extensionDevelopmentPath=${workspaceFolder}/packages/context-cherry-picker/ext",
 				// Workspace to open in the new EH window. Can be the root or the extension's own folder for focused testing.
 				// Using root for now, as CCP often operates on the whole workspace.
 				"${workspaceFolder}" 
@@ -57,6 +57,26 @@
 			"sourceMaps": true,
             "preLaunchTask": "Build CCP Satellite Package" // New preLaunchTask
 		}, //<
+        
+        { "name": "Ghost Writer", //>
+			"type": "extensionHost",
+			"request": "launch",
+			"args": [
+                "--profile=Clean",
+				"--extensionDevelopmentPath=${workspaceFolder}/packages/ghost-writer/ext",
+				// Workspace to open in the new EH window. Can be the root or the extension's own folder for focused testing.
+				// Using root for now, as CCP often operates on the whole workspace.
+				"${workspaceFolder}" 
+			],
+			"outFiles": [
+				"${workspaceFolder}/packages/ghost-writer/ext/dist/**/*.js",
+				"${workspaceFolder}/packages/shared/shared-services/dist/**/*.js" 
+			],
+			"sourceMaps": true,
+            "preLaunchTask": "Build Ghost Writer" // New preLaunchTask
+		}, //<
+        
+        
         
         { "name": "Note Hub", //>
 			"type": "extensionHost",

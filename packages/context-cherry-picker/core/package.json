@@ -1,0 +1,49 @@
+{
+    "name": "@focused-ux/context-cherry-picker-core",
+    "version": "0.1.0",
+    
+    "scripts": {
+        "== VALIDATE ========================================================================================= ": "",
+        "lint": "pnpm eslint . --ext .ts",
+        "lint:fix": "eslint . --ext .ts --fix",
+        "check-types": "tsc --noEmit -p tsconfig.json",
+        
+        "== BUILD ============================================================================================ ": "",
+        "build": "pnpm run build:types && pnpm run build:js",
+        "build:clean": "pnpm run clean && pnpm run build",
+        "build:js": "fux-build ./src/index.ts --outfile=./dist/index.js --library",
+        "build:types": "tsc -p tsconfig.json --pretty",
+        
+        "== UTILITIES ======================================================================================== ": "",
+        "clean": "rimraf ./dist .turbo"
+    },
+    "dependencies": {
+        "@focused-ux/shared-services": "workspace:*",
+        "js-yaml": "^4.1.0",
+        "micromatch": "^4.0.8",
+        "reflect-metadata": "^0.2.2",
+        "tsyringe": "^4.10.0"
+    },
+    "devDependencies": {
+        "@focused-ux/config-esbuild": "workspace:*",
+        "@focused-ux/config-eslint": "workspace:*",
+        "@focused-ux/tsconfig": "workspace:*",
+        "@types/js-yaml": "^4.0.9",
+        "@types/micromatch": "^4.0.9",
+        "@types/node": "latest",
+        "@types/vscode": "^1.100.0",
+        "esbuild": "^0.25.5",
+        "typescript": "^5.8.3"
+    },
+    "private": true,
+    "type": "module",
+    "main": "./dist/index.js",
+    "module": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.js"
+        }
+    }
+}

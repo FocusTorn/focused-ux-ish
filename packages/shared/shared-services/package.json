@@ -1,17 +1,14 @@
 {
     "name": "@focused-ux/shared-services",
     "version": "0.1.0",
-    "sideEffects": false,
     "scripts": {
         "== BUILD ============================================================================================ ": "",
         "build": "pnpm run build:types && pnpm run build:js",
         "build:clean": "pnpm run clean && pnpm run build",
         "build:types": "tsc -p tsconfig.json --pretty",
-        "build:js": "fux-build ./src/index.ts --outfile=./dist/index.js --meta --library",
+        "build:js": "fux-build ./src/index.ts --outfile=./dist/index.js --library",
         "build:vis": "pnpm build --meta && esbuild-visualizer --metadata ./dist/metafile.json && node rename_esbuild_analysis_output.js",
-        "== WATCH ============================================================================================ ": "",
-        "watch:types": "tsc -p tsconfig.json --watch",
-        "watch:js": "fux-build ./src/index.ts --outfile=./dist/index.js --watch --library",
+        
         "== VALIDATE ========================================================================================= ": "",
         "check-types": "tsc --noEmit -p tsconfig.json --pretty",
         "lint": "eslint . --ext .ts",
@@ -39,6 +36,7 @@
         "typescript": "^5.8.3"
     },
     "private": true,
+    "sideEffects": false,
     "main": "./dist/index.js",
     "module": "./dist/index.js",
     "types": "./dist/index.d.ts",

@@ -1,8 +1,7 @@
 {
     "version": "2.0.0",
     "tasks": [
-        {
-            "label": "npm: build - monorepo", //>
+        { "label": "npm: build - monorepo", //>
             "type": "npm",
             "script": "build",
             "problemMatcher": ["$tsc-watch", "$ts-esbuild-watch"],
@@ -14,8 +13,7 @@
             "detail": "Runs 'pnpm run build' (turbo run build) for the entire monorepo."
         }, //<
 
-        {
-            "label": "Build Dynamicons Packages", //>
+        { "label": "Build Dynamicons Packages", //>
             "type": "shell",
             "command": "pnpm turbo run build --filter fux-dynamicons", // --filter=@focused-ux/dynamicons-core --verbosity=3
             "problemMatcher": ["$tsc-watch", "$ts-esbuild-watch"],
@@ -29,8 +27,7 @@
             "group": "build"
         }, //<
 
-        {
-            "label": "Build CCP Satellite Package", //> New Task
+        { "label": "Build CCP Satellite Package", //>
             "type": "shell",
             "command": "pnpm --filter fux-context-cherry-picker exec turbo run build ",
             "problemMatcher": ["$tsc-watch", "$ts-esbuild-watch"],
@@ -44,9 +41,7 @@
             "group": "build"
         }, //<
 
-        
-        {
-            "label": "Build Notes Hub",
+        { "label": "Build Notes Hub", //>
             "type": "shell",
             "command": "pnpm --filter fux-notes-hub exec turbo run build ",
             "problemMatcher": ["$tsc-watch", "$ts-esbuild-watch"],
@@ -60,8 +55,25 @@
             "group": "build"
         }, //<
 
-        {
-            "label": "Internal Watch Dynamicons", //>
+        { "label": "Build Ghost Writer", //>
+            "type": "shell",
+            "command": "pnpm --filter fux-ghost-writer exec turbo run build ",
+            "problemMatcher": ["$tsc-watch", "$ts-esbuild-watch"],
+            "presentation": {
+                "panel": "shared",
+                "group": "dynamiconsPrelaunch",
+                "clear": true,
+                // "close": true // To open and shut
+                "reveal": "never" // Just dont show
+            },
+            "group": "build"
+        }, //<
+        
+        
+        
+        
+        
+        { "label": "Internal Watch Dynamicons", //>
             "type": "shell",
             "command": "pnpm exec turbo run watch-only --filter=fux-dynamicons --filter=@focused-ux/dynamicons-core  --verbosity=3",
             "isBackground": true,
@@ -74,8 +86,7 @@
             "group": "build"
         }, //<
 
-        {
-            "label": "Prelaunch: Dynamicons", //>
+        { "label": "Prelaunch: Dynamicons", //>
             "dependsOrder": "sequence",
             "dependsOn": ["Build Dynamicons Packages", "Internal Watch Dynamicons"],
             "group": {
@@ -85,8 +96,7 @@
             "problemMatcher": []
         }, //<
 
-        {
-            "label": "tsc", //>
+        { "label": "tsc", //>
             "type": "shell",
             "command": "tsc",
             "args": ["--noEmit"],

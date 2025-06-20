@@ -6,9 +6,16 @@ packages:
   - 'packages/shared/shared-services'
   - 'packages/shared/tools'
   
-  - 'packages/context-cherry-picker-ext'
+  - 'packages/autoterm/core'
+  - 'packages/autoterm/ext'
+  - 'packages/chrono-copy/core'
+  - 'packages/chrono-copy/ext'
+  - 'packages/context-cherry-picker/core'
+  - 'packages/context-cherry-picker/ext'
   - 'packages/dynamicons/core'
   - 'packages/dynamicons/ext'
+  - 'packages/ghost-writer/core'
+  - 'packages/ghost-writer/ext'
   - 'packages/notes-hub/core'
   - 'packages/notes-hub/ext'
   
@@ -37,7 +44,3 @@ onlyBuiltDependencies:
 #   - esbuild
 #   - puppeteer
 #   - sharp
-
-
-
-

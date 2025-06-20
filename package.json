@@ -3,10 +3,10 @@
     "scripts": {
         "== BUILD ============================================================================================ ": "",
         "build": "turbo run build --summarize --output-logs=new-only",
-        "build:clean": "pnpm install && pnpm run clean && pnpm run build",
+        "build:clean": "pnpm install && turbo run run clean && turbo run run build",
         "== FINALIZE ========================================================================================= ": "",
-        "pack": "mkdirp vsix_packages && turbo run package",
-        "pack:clean": "pnpm run clean && mkdirp vsix_packages && turbo run package",
+        "package": "mkdirp vsix_packages && turbo run package --output-logs=new-only",
+        "package:clean": "turbo run clean && mkdirp vsix_packages && turbo run package",
         "dynamicons:doAssets": "pnpm --filter=@focused-ux/dynamicons-core run assets:build ",
         "== WATCH ============================================================================================ ": "",
         "watch-only": "turbo run watch-only",
@@ -14,10 +14,7 @@
         "check-types": "turbo run check-types",
         "lint": "turbo run lint",
         "lint:fix": "turbo run lint:fix",
-        
-        
         "validate": "node ./packages/tools/src/validate/index.js",
-        
         "vlint": "node ./packages/tools/src/validate/index.js lint",
         "vdeps": "node ./packages/tools/src/validate/index.js deps",
         "vtsc": "node ./packages/tools/src/validate/index.js tsc",
@@ -27,7 +24,7 @@
         "tfix": "turbo run check-types && turbo run lint:fix",
         "eslint": "eslint \"**/src/**/*.{js,jsx,ts,tsx,cjs}\"",
         "== UTILITIES ======================================================================================== ": "",
-        "version-bump": "cross-env NODE_NO_WARNINGS=1 pnpm exec ts-run packages/shared/tools/src/scripts/version_bump.ts",
+        "version-bump": "tsx packages/shared/tools/src/scripts/version_bump.ts",
         "clean": "turbo run clean --output-logs=errors-only && rimraf node_modules/.cache/turbo .turbo",
         "nuke": "rimraf node_modules && rimraf packages/*/node_modules && pnpm store prune",
         "nuke:full": "pnpm run clean && rimraf packages/*/node_modules && rimraf node_modules && rimraf 'pnpm-lock.yaml' && pnpm install"
@@ -41,13 +38,14 @@
         "cross-env": "^7.0.3",
         "knip": "^5.60.2",
         "mkdirp": "^3.0.1",
+        "plop": "^4.0.1",
         "prettier": "^3.5.3",
         "rimraf": "^5.0.10",
         "ts-node": "^10.9.2",
         "turbo": "^2.5.4",
         "typescript": "^5.8.3"
     },
-    "version": "0.1.1",
+    "version": "0.1.2",
     "repository": "https://github.com/FocusTorn/focused-ux",
     "private": true,
     "packageManager": "pnpm@10.12.1",

@@ -1,18 +1,10 @@
 {
     "name": "fux-notes-hub",
     "displayName": "F-UX: Notes Hub",
-    "publisher": "NewRealityDesigns",
     "description": "A flexible note-taking system integrated into VS Code's file explorer.",
+    "publisher": "NewRealityDesigns",
     "repository": "https://github.com/FocusTorn/focused-ux",
-    "version": "0.1.13",
-    "engines": {
-        "vscode": "^1.100.0"
-    },
-    "main": "./dist/extension.js",
-    "icon": "assets/hub-logo.png",
-    "sideEffects": [
-        "reflect-metadata"
-    ],
+    "version": "0.1.22",
     "scripts": {
         "== BUILD ============================================================================================ ": "",
         "build": "pnpm run build:js",
@@ -24,13 +16,9 @@
         "lint:fix": "eslint . --ext .ts --fix",
         "check-types": "tsc --noEmit -p tsconfig.json",
         "== FINALIZE ========================================================================================= ": "",
-        "vscode:prepublish": "pnpm run build:clean && pnpm run version-bump",
-        "package": "vsce package --no-dependencies --out ../../../vsix_packages/ ",
-        "publish": "vsce publish",
-        "== WATCH ============================================================================================ ": "",
-        "watch": "pnpm run watch:types & pnpm run watch:js",
-        "watch:types": "tsc -p tsconfig.json --watch",
-        "watch:js": "fux-build ./src/extension.ts --outfile=./dist/extension.js --watch",
+        "package": "pnpm run build && pnpm run version-bump && vsce package --no-dependencies --out ../../../vsix_packages/ ",
+        "package:clean": "pnpm run build:clean && pnpm run version-bump && vsce package --no-dependencies --out ../../../vsix_packages/ ",
+        "publish": "vsce publish --no-dependencies",
         "== UTILITIES ======================================================================================== ": "",
         "clean": "rimraf ./dist .turbo",
         "version-bump": "tsx ./../../shared/tools/src/scripts/version_bump.ts"
@@ -51,9 +39,7 @@
         "esbuild": "^0.25.5",
         "typescript": "^5.8.3"
     },
-    "activationEvents": [
-        "onStartupFinished"
-    ],
+    "icon": "assets/hub-logo.png",
     "categories": [
         "Other"
     ],
@@ -63,6 +49,17 @@
         "markdown",
         "developer tools",
         "focused ux"
+    ],
+    "private": true,
+    "main": "./dist/extension.js",
+    "sideEffects": [
+        "reflect-metadata"
+    ],
+    "engines": {
+        "vscode": "^1.100.0"
+    },
+    "activationEvents": [
+        "onStartupFinished"
     ],
     "contributes": {
         "commands": [

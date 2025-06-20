@@ -1,26 +1,19 @@
 {
     "name": "@focused-ux/notes-hub-core",
     "version": "0.1.0",
-    "private": true,
-    "type": "module",
-    "main": "./dist/index.js",
-    "module": "./dist/index.js",
-    "types": "./dist/index.d.ts",
-    "scripts": {
 
-        "== BUILD ============================================================================================ ": "",
-        "build": "pnpm run build:js",
-        "build:clean": "pnpm run clean && pnpm run build",
-        "build:types": "tsc -p tsconfig.json --pretty",
-        "build:js": "fux-build ./src/index.ts --outfile=./dist/index.js --library",
-        "== WATCH ============================================================================================ ": "",
-        "watch": "pnpm run watch:types & pnpm run watch:js",
-        "watch:types": "tsc -p tsconfig.json --watch",
-        "watch:js": "fux-build ./src/index.ts --outfile=./dist/index.js --watch --library",
+    "scripts": {
         "== VALIDATE ========================================================================================= ": "",
-        "check-types": "tsc --noEmit -p tsconfig.json --pretty",
-        "lint": "eslint . --ext .ts",
+        "lint": "pnpm eslint . --ext .ts",
         "lint:fix": "eslint . --ext .ts --fix",
+        "check-types": "tsc --noEmit -p tsconfig.json",
+        
+        "== BUILD ============================================================================================ ": "",
+        "build": "pnpm run build:types && pnpm run build:js",
+        "build:clean": "pnpm run clean && pnpm run build",
+        "build:js": "fux-build ./src/index.ts --outfile=./dist/index.js --library",
+        "build:types": "tsc -p tsconfig.json --pretty",
+        
         "== UTILITIES ======================================================================================== ": "",
         "clean": "rimraf ./dist .turbo"
     },
@@ -37,6 +30,11 @@
         "esbuild": "^0.25.5",
         "typescript": "^5.8.3"
     },
+    "private": true,
+    "type": "module",
+    "main": "./dist/index.js",
+    "module": "./dist/index.js",
+    "types": "./dist/index.d.ts",
     "exports": {
         ".": {
             "types": "./dist/index.d.ts",

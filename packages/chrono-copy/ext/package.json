@@ -1,0 +1,81 @@
+{
+    "version": "0.1.13",
+    "name": "fux-chrono-copy",
+    "displayName": "F-UX: Chrono Copy",
+    "description": "Create versioned backups of files.",
+    "publisher": "NewRealityDesigns",
+    "repository": "https://github.com/FocusTorn/focused-ux",
+    "categories": [
+        "Other"
+    ],
+    "keywords": [
+        "backup",
+        "file",
+        "copy",
+        "versioning",
+        "snapshot",
+        "developer tools",
+        "focused ux"
+    ],
+    "scripts": {
+        "== VALIDATE ========================================================================================= ": "",
+        "check-types": "tsc --noEmit -p tsconfig.json --pretty",
+        "lint": "eslint . --ext .ts",
+        "lint:fix": "eslint . --ext .ts --fix",
+        "== BUILD ============================================================================================ ": "",
+        "build": "pnpm run build:types && pnpm run build:js",
+        "build:clean": "pnpm run clean && pnpm run build",
+        "build:js": "fux-build ./src/extension.ts --outfile=./dist/extension.js",
+        "build:types": "tsc -p tsconfig.json --pretty",
+        "== FINALIZE ========================================================================================= ": "",
+        "package": "pnpm run build && pnpm run version-bump && vsce package --no-dependencies --out ../../../vsix_packages/ ",
+        "package:clean": "pnpm run build:clean && pnpm run version-bump && vsce package --no-dependencies --out ../../../vsix_packages/ ",
+        "publish": "vsce publish",
+        "== UTILITIES ======================================================================================== ": "",
+        "clean": "rimraf ./dist .turbo",
+        "version-bump": "tsx ./../../shared/tools/src/scripts/version_bump.ts"
+    },
+    "dependencies": {
+        "@focused-ux/chrono-copy-core": "workspace:*",
+        "@focused-ux/shared-services": "workspace:*",
+        "reflect-metadata": "^0.2.2",
+        "tsyringe": "^4.10.0"
+    },
+    "devDependencies": {
+        "@focused-ux/config-esbuild": "workspace:*",
+        "@focused-ux/config-eslint": "workspace:*",
+        "@focused-ux/tsconfig": "workspace:*",
+        "@types/node": "latest",
+        "@types/vscode": "^1.100.0",
+        "typescript": "^5.8.3"
+    },
+    "private": true,
+    "main": "./dist/extension.js",
+    "sideEffects": [
+        "reflect-metadata"
+    ],
+    "engines": {
+        "vscode": "^1.100.0"
+    },
+    "activationEvents": [
+        "onCommand:fux-chronocopy.createBackup"
+    ],
+    "contributes": {
+        "commands": [
+            {
+                "command": "fux-chronocopy.createBackup",
+                "title": "F-UX CC: Create File Backup",
+                "category": "F-UX: Chronocopy"
+            }
+        ],
+        "menus": {
+            "explorer/context": [
+                {
+                    "command": "fux-chronocopy.createBackup",
+                    "when": "resourceUri",
+                    "group": "9_cutcopypaste@0"
+                }
+            ]
+        }
+    }
+}

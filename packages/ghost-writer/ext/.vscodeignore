@@ -1,0 +1,19 @@
+
+
+#= Do not exclude the following files =========================================== 
+!assets
+
+!CHANGELOG.md
+!LICENSE.txt
+!README.md
+
+!package.json
+!package.nls.json
+!package.nls.*.json
+
+!dist/extension.cjs
+!dist/extension.js
+
+
+**/*
+

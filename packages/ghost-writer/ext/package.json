@@ -1,0 +1,122 @@
+{
+    "name": "fux-ghost-writer",
+    "displayName": "F-UX: Ghost Writer",
+    "description": "Dynamically generate frequently used code.",
+    "publisher": "NewRealityDesigns",
+    "repository": "https://github.com/FocusTorn/focused-ux",
+    "version": "0.1.12",
+    "scripts": {
+        "== BUILD ============================================================================================ ": "",
+        "build": "pnpm run build:js",
+        "build:clean": "pnpm run clean && pnpm run build",
+        "build:types": "tsc -p tsconfig.json --pretty",
+        "build:js": "fux-build ./src/extension.ts --outfile=./dist/extension.js",
+        "== VALIDATE ========================================================================================= ": "",
+        "lint": "pnpm eslint . --ext .ts",
+        "lint:fix": "eslint . --ext .ts --fix",
+        "check-types": "tsc --noEmit -p tsconfig.json",
+        "== FINALIZE ========================================================================================= ": "",
+        "package": "pnpm run build && pnpm run version-bump && vsce package --no-dependencies --out ../../../vsix_packages/ ",
+        "package:clean": "pnpm run build:clean && pnpm run version-bump && vsce package --no-dependencies --out ../../../vsix_packages/ ",
+        "publish": "vsce publish --no-dependencies",
+        "== UTILITIES ======================================================================================== ": "",
+        "clean": "rimraf ./dist .turbo",
+        "version-bump": "tsx ./../../shared/tools/src/scripts/version_bump.ts"
+    },
+    "dependencies": {
+        "@focused-ux/ghost-writer-core": "workspace:*",
+        "@focused-ux/shared-services": "workspace:*",
+        "reflect-metadata": "^0.2.2",
+        "tsyringe": "^4.10.0"
+    },
+    "devDependencies": {
+        "@focused-ux/config-esbuild": "workspace:*",
+        "@focused-ux/config-eslint": "workspace:*",
+        "@focused-ux/tsconfig": "workspace:*",
+        "@focused-ux/tools": "workspace:*",
+        "@types/node": "latest",
+        "@types/vscode": "^1.100.0",
+        "esbuild": "^0.25.5",
+        "typescript": "^5.8.3"
+    },
+    "icon": "./assets/logo3.png",
+    "categories": [
+        "Programming Languages",
+        "Snippets"
+    ],
+    "keywords": [
+        "import",
+        "code generation",
+        "automation",
+        "logging",
+        "console",
+        "debug",
+        "snippet",
+        "clipboard",
+        "developer tools",
+        "focused ux"
+    ],
+    "main": "./dist/extension.js",
+    "engines": {
+        "vscode": "^1.100.0"
+    },
+    "sideEffects": [
+        "reflect-metadata"
+    ],
+    "activationEvents": [
+        "onCommand:fux-ghost-writer.storeCodeFragment",
+        "onCommand:fux-ghost-writer.logSelectedVariable"
+    ],
+    "contributes": {
+        "commands": [
+            {
+                "command": "fux-ghost-writer.storeCodeFragment",
+                "title": "F-UX GW: Store Code Fragment",
+                "category": "F-UX: Ghost Writer"
+            },
+            {
+                "command": "fux-ghost-writer.insertImportStatement",
+                "title": "F-UX GW: Insert Import Statement",
+                "category": "F-UX: Ghost Writer"
+            },
+            {
+                "command": "fux-ghost-writer.logSelectedVariable",
+                "title": "F-UX GW: Log Selected Variable",
+                "category": "F-UX: Ghost Writer"
+            }
+        ],
+        "menus": {
+            "editor/context": [
+                {
+                    "command": "fux-ghost-writer.storeCodeFragment",
+                    "when": "editorHasSelection",
+                    "group": "1_modification"
+                },
+                {
+                    "command": "fux-ghost-writer.insertImportStatement",
+                    "group": "1_modification"
+                },
+                {
+                    "command": "fux-ghost-writer.logSelectedVariable",
+                    "when": "editorHasSelection",
+                    "group": "2_debug"
+                }
+            ]
+        },
+        "configuration": {
+            "title": "F-UX: Ghost Writer",
+            "properties": {
+                "fux-ghost-writer.consoleLogger.includeClassName": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Include the enclosing class name in the log message."
+                },
+                "fux-ghost-writer.consoleLogger.includeFunctionName": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Include the enclosing function name in the log message."
+                }
+            }
+        }
+    }
+}
