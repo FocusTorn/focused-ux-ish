@@ -5,6 +5,7 @@
     "file": { "name": "file" },
     "icons": [
         { "name": "ahk", "fileExtensions": ["ahk"] },
+        { "name": "ahk", "fileExtensions": ["ahk"] },
         { "name": "ahk-alt", "fileExtensions": ["ah2"] },
         { "name": "arduino-cli", "fileNames": ["arduino-cli"] },
         { "name": "arduino-config", "fileNames": ["sketch.yaml"] },

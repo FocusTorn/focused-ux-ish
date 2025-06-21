@@ -323,8 +323,72 @@ function transformIcons( //>
 		if (reportedAnyDuplicates)
 			console.log('│')
 	}
+
 	return result
 } //<
+
+function checkForOrphanedIcons( //>
+	fileIconsModel: FileIconsModel,
+	folderIconsModel: FolderIconsModel,
+	silent: boolean,
+) {
+	// 1. Compile all valid icon names from models
+	const modelIconNames = new Set<string>()
+
+	fileIconsModel.icons.forEach((icon) => {
+		if (icon.name)
+			modelIconNames.add(icon.name)
+	})
+	folderIconsModel.icons.forEach((icon) => {
+		if (icon.name)
+			modelIconNames.add(icon.name)
+	})
+	// Also add the default file/folder/rootFolder icons
+	if (fileIconsModel.file.name)
+		modelIconNames.add(fileIconsModel.file.name)
+	if (folderIconsModel.folder.name)
+		modelIconNames.add(folderIconsModel.folder.name)
+	if (folderIconsModel.rootFolder.name)
+		modelIconNames.add(folderIconsModel.rootFolder.name)
+
+	const orphanedIcons: string[] = []
+	const iconDirs = [
+		{ path: OPTIMIZED_FILE_ICONS_DIR_ABS_POSIX, type: 'file' as const },
+		{ path: OPTIMIZED_FOLDER_ICONS_DIR_ABS_POSIX, type: 'folder' as const },
+	]
+
+	for (const dirInfo of iconDirs) {
+		if (!fs.existsSync(dirInfo.path.replace(/\//g, path.sep))) {
+			continue
+		}
+		const assetFiles = fs.readdirSync(dirInfo.path.replace(/\//g, path.sep))
+
+		for (const assetFile of assetFiles) {
+			if (!assetFile.endsWith('.svg'))
+				continue
+			if (assetFile.endsWith('-alt.svg'))
+				continue // Ignore alternate icons
+
+			let baseName = assetFile.replace(/\.svg$/, '')
+
+			if (dirInfo.type === 'folder') {
+				baseName = baseName.replace(/^folder-/, '').replace(/-open$/, '')
+			}
+
+			if (!modelIconNames.has(baseName)) {
+				orphanedIcons.push(path.join(path.basename(dirInfo.path), assetFile))
+			}
+		}
+	}
+
+	if (orphanedIcons.length > 0 && !silent) {
+		console.log(`│  ├─ ${ansii.red}WARNING:${ansii.none} Found ${orphanedIcons.length} orphaned icon(s) in assets not defined in any model:`)
+		orphanedIcons.forEach((orphan, index, array) => {
+			console.log(`${index === array.length - 1 ? '│  │  └─ ' : '│  │  ├─ '}${orphan}`)
+		})
+		console.log('│')
+	}
+}
 
 export async function main(silent: boolean = false): Promise<boolean> { //>
 	if (!silent) {
@@ -385,6 +449,8 @@ export async function main(silent: boolean = false): Promise<boolean> { //>
 		}
 		return false
 	}
+
+	checkForOrphanedIcons(fileIconsData, folderIconsData, silent)
 
 	const combinedIconsData = transformIcons(fileIconsData, folderIconsData, silent)
 

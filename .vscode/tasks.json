@@ -1,21 +1,20 @@
 {
     "version": "2.0.0",
     "tasks": [
+        
         { "label": "npm: build - monorepo", //>
             "type": "npm",
             "script": "build",
             "problemMatcher": ["$tsc-watch", "$ts-esbuild-watch"],
-
             "group": {
                 "kind": "build",
                 "isDefault": true
             },
-            "detail": "Runs 'pnpm run build' (turbo run build) for the entire monorepo."
         }, //<
 
         { "label": "Build Dynamicons Packages", //>
             "type": "shell",
-            "command": "pnpm turbo run build --filter fux-dynamicons", // --filter=@focused-ux/dynamicons-core --verbosity=3
+            "command": "pnpm turbo run build --output-logs=new-only --filter fux-dynamicons", // --filter=@focused-ux/dynamicons-core --verbosity=3
             "problemMatcher": ["$tsc-watch", "$ts-esbuild-watch"],
             "presentation": {
                 "panel": "shared",
@@ -29,7 +28,7 @@
 
         { "label": "Build CCP Satellite Package", //>
             "type": "shell",
-            "command": "pnpm --filter fux-context-cherry-picker exec turbo run build ",
+            "command": "turbo run build --output-logs=new-only --filter=fux-context-cherry-picker",
             "problemMatcher": ["$tsc-watch", "$ts-esbuild-watch"],
             "presentation": {
                 "panel": "shared",
@@ -43,7 +42,7 @@
 
         { "label": "Build Notes Hub", //>
             "type": "shell",
-            "command": "pnpm --filter fux-notes-hub exec turbo run build ",
+            "command": "turbo run build --output-logs=new-only --filter=fux-notes-hub",
             "problemMatcher": ["$tsc-watch", "$ts-esbuild-watch"],
             "presentation": {
                 "panel": "shared",
@@ -57,7 +56,22 @@
 
         { "label": "Build Ghost Writer", //>
             "type": "shell",
-            "command": "pnpm --filter fux-ghost-writer exec turbo run build ",
+            "command": "pnpm turbo run build --output-logs=new-only --filter=fux-ghost-writer",
+            "problemMatcher": ["$tsc-watch", "$ts-esbuild-watch"],
+            "presentation": {
+                "panel": "shared",
+                "group": "dynamiconsPrelaunch",
+                "clear": true,
+                // "close": true // To open and shut
+                "reveal": "never" // Just dont show
+            },
+            "group": "build"
+        }, //<
+        
+        
+        { "label": "Build Autoterm", //>
+            "type": "shell",
+            "command": "pnpm turbo run build --output-logs=new-only --filter=fux-autoterm",
             "problemMatcher": ["$tsc-watch", "$ts-esbuild-watch"],
             "presentation": {
                 "panel": "shared",
@@ -73,41 +87,43 @@
         
         
         
-        { "label": "Internal Watch Dynamicons", //>
-            "type": "shell",
-            "command": "pnpm exec turbo run watch-only --filter=fux-dynamicons --filter=@focused-ux/dynamicons-core  --verbosity=3",
-            "isBackground": true,
-            "problemMatcher": ["$tsc-watch", "$ts-esbuild-watch"],
-            "presentation": {
-                "reveal": "silent",
-                "panel": "shared",
-                "group": "dynamiconsPrelaunch"
-            },
-            "group": "build"
-        }, //<
+        
+        
+        // { "label": "Internal Watch Dynamicons", //>
+        //     "type": "shell",
+        //     "command": "pnpm exec turbo run watch-only --filter=fux-dynamicons --filter=@focused-ux/dynamicons-core  --verbosity=3",
+        //     "isBackground": true,
+        //     "problemMatcher": ["$tsc-watch", "$ts-esbuild-watch"],
+        //     "presentation": {
+        //         "reveal": "silent",
+        //         "panel": "shared",
+        //         "group": "dynamiconsPrelaunch"
+        //     },
+        //     "group": "build"
+        // }, //<
 
-        { "label": "Prelaunch: Dynamicons", //>
-            "dependsOrder": "sequence",
-            "dependsOn": ["Build Dynamicons Packages", "Internal Watch Dynamicons"],
-            "group": {
-                "kind": "build",
-                "isDefault": false
-            },
-            "problemMatcher": []
-        }, //<
+        // { "label": "Prelaunch: Dynamicons", //>
+        //     "dependsOrder": "sequence",
+        //     "dependsOn": ["Build Dynamicons Packages", "Internal Watch Dynamicons"],
+        //     "group": {
+        //         "kind": "build",
+        //         "isDefault": false
+        //     },
+        //     "problemMatcher": []
+        // }, //<
 
-        { "label": "tsc", //>
-            "type": "shell",
-            "command": "tsc",
-            "args": ["--noEmit"],
-            "presentation": {
-                "reveal": "never",
-                "echo": false,
-                "focus": false,
-                "panel": "dedicated"
-            },
-            "problemMatcher": "$tsc-watch"
-        } //<
+        // { "label": "tsc", //>
+        //     "type": "shell",
+        //     "command": "tsc",
+        //     "args": ["--noEmit"],
+        //     "presentation": {
+        //         "reveal": "never",
+        //         "echo": false,
+        //         "focus": false,
+        //         "panel": "dedicated"
+        //     },
+        //     "problemMatcher": "$tsc-watch"
+        // } //<
 
         // { "label": "watch",  //> ["npm: watch:tsc", "npm: watch:esbuild"] // "transfer_package_json"
         //     "dependsOn": ["npm: watch:tsc", "npm: watch:esbuild"],

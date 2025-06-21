@@ -4,7 +4,7 @@
     "description": "Automate terminal actions like changing directories.",
     "publisher": "NewRealityDesigns",
     "repository": "https://github.com/FocusTorn/focused-ux",
-    "version": "0.1.10",
+    "version": "0.1.11",
     "scripts": {
         "== VALIDATE ========================================================================================= ": "",
         "check-types": "tsc --noEmit -p tsconfig.json --pretty",
@@ -57,7 +57,9 @@
         "vscode": "^1.100.0"
     },
     "activationEvents": [
-        "onCommand:fux-autoterm.updateTerminalPath"
+        "onStartupFinished"
+
+
     ],
     "contributes": {
         "commands": [

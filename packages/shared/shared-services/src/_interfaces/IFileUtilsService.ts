@@ -12,6 +12,7 @@ export interface IFileUtilsService { //>
 	createFileBackup: (fileUri: Uri) => Promise<void>
 	readJsonFileSync: <T = any>(filePath: string, encoding?: BufferEncoding) => T | undefined
 	readJsonFileAsync: <T = any>(filePath: string, encoding?: BufferEncoding) => Promise<T | undefined>
+	formatFileSize: (bytes: number) => string
 	iFspWriteFile: (
 		path: import('node:fs').PathLike | import('node:fs/promises').FileHandle,
 		data: string | Uint8Array,

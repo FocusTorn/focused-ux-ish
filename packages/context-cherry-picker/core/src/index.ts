@@ -6,7 +6,6 @@ export type { IFileContentProviderService, FileContentResult } from './_interfac
 export type { IFileExplorerDataProvider } from './_interfaces/IFileExplorerDataProvider.js'
 export type { IFileExplorerItem } from './_interfaces/IFileExplorerItem.js'
 export type { IGoogleGenAiService, IGoogleGenAiCountTokensResult } from './_interfaces/IGoogleGenAiService.js'
-export type { IProjectTreeFormatterService } from './_interfaces/IProjectTreeFormatterService.js'
 export type { IQuickSettingsDataProvider } from './_interfaces/IQuickSettingsDataProvider.js'
 export type { ISavedStateItem } from './_interfaces/ISavedStateItem.js'
 export type { ISavedStatesDataProvider } from './_interfaces/ISavedStatesDataProvider.js'
@@ -27,7 +26,6 @@ export { StorageService } from './services/CCP_Storage.service.js'
 export { ContextDataCollectorService } from './services/ContextDataCollector.service.js'
 export { FileContentProviderService } from './services/FileContentProvider.service.js'
 export { GoogleGenAiService } from './services/GoogleGenAi.service.js'
-export { ProjectTreeFormatterService } from './services/ProjectTreeFormatter.service.js'
 
 // Constants
 export { constants as ccpConstants } from './_config/constants.js'

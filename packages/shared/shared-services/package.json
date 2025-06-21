@@ -6,7 +6,7 @@
         "build": "pnpm run build:types && pnpm run build:js",
         "build:clean": "pnpm run clean && pnpm run build",
         "build:types": "tsc -p tsconfig.json --pretty",
-        "build:js": "fux-build ./src/index.ts --outfile=./dist/index.js --library",
+        "build:js": "fux-build ./src/index.ts --outfile=./dist/index.js --library && fux-build ./src/node.ts --outfile=./dist/node.js --library",
         "build:vis": "pnpm build --meta && esbuild-visualizer --metadata ./dist/metafile.json && node rename_esbuild_analysis_output.js",
         "== VALIDATE ========================================================================================= ": "",
         "check-types": "tsc --noEmit -p tsconfig.json --pretty",
@@ -40,6 +40,10 @@
         ".": {
             "types": "./dist/index.d.ts",
             "import": "./dist/index.js"
+        },
+        "./node": {
+            "types": "./dist/node.d.ts",
+            "import": "./dist/node.js"
         },
         "./services/Tokenizer.service.js": {
             "types": "./dist/services/Tokenizer.service.d.ts",

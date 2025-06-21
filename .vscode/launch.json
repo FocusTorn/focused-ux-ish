@@ -76,8 +76,6 @@
             "preLaunchTask": "Build Ghost Writer" // New preLaunchTask
 		}, //<
         
-        
-        
         { "name": "Note Hub", //>
 			"type": "extensionHost",
 			"request": "launch",
@@ -93,40 +91,29 @@
 			"sourceMaps": true,
             "preLaunchTask": "Build Notes Hub"
 		}, //<
+
+        
+        { "name": "Autoterm", //>
+			"type": "extensionHost",
+			"request": "launch",
+			"args": [
+                "--profile=Clean",
+				"--extensionDevelopmentPath=${workspaceFolder}/packages/autoterm/ext",
+				"${workspaceFolder}" 
+			],
+			"outFiles": [
+				"${workspaceFolder}/packages/autoterm/ext/dist/**/*.js",
+                "${workspaceFolder}/packages/shared/shared-services/dist/**/*.js" 
+
+			],
+			"sourceMaps": true,
+            "preLaunchTask": "Build Autoterm"
+		}, //<
         
         
         
-        // { "name": "Dynamicons", //>
-		// 	"type": "extensionHost",
-		// 	"request": "launch",
-		// 	"args": [
-        //         "--profile=Clean",
-		// 		"--extensionDevelopmentPath=${workspaceFolder}/packages/dynamicons/ext",
-		// 		"${workspaceFolder}/packages/dynamicons/ext" // "${workspaceFolder} // for root
-		// 	],
-		// 	"outFiles": [
-		// 		"${workspaceFolder}/packages/dynamicons/ext/dist/**/*.js",
-		// 		"${workspaceFolder}/packages/dynamicons/core/dist/**/*.js"
-		// 	],
-		// 	"sourceMaps": true,
-		// 	"preLaunchTask": "Watch Dynamicons Packages"
-		// }, //<
- 
-
-
-        // { "name": "ES: Debug", //>
-		// 	"type": "extensionHost",
-		// 	"request": "launch",
-		// 	"args": [
-		// 		"--profile=Clean",
-		// 		"--extensionDevelopmentPath=${workspaceFolder}",
-		// 		"${workspaceFolder}"
-		// 	],
-		// 	"sourceMaps": true,
-		// 	"preLaunchTask": "${defaultBuildTask}"
-		// } //<
-
-
+        
+        
 
 	]
 }

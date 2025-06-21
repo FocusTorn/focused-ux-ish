@@ -2,15 +2,24 @@
 
 //= NODE JS ===================================================================================================
 import process from 'node:process'
-// Import path for relative path calculation if needed
+import fs from 'node:fs/promises'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 
 //= IMPLEMENTATIONS ===========================================================================================
 import type { OptimizationDetail, OptimizeIconsResult } from './generate_optimized_icons.js'
 import { main as optimizeIconsMain } from './generate_optimized_icons.js'
 import { main as generateManifestsMain } from './generate_icon_manifests.js'
 import { main as generatePreviewsMain } from './generate_icon_previews.js'
+import { TreeFormatterService, type TreeFormatterNode } from '@focused-ux/shared-services/node'
 
 //--------------------------------------------------------------------------------------------------------------<<
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+const EXTERNAL_ICONS_SOURCE_DIR = 'D:/_dev/!Projects/focused-ux/icons'
+const INTERNAL_ICONS_DEST_DIR = path.resolve(__dirname, '../icons')
 
 const ansii = { //>
 	none: '\x1B[0m',
@@ -22,148 +31,183 @@ const ansii = { //>
 	red: '\x1B[31m',
 	dim: '\x1B[2m',
 	yellow: '\x1B[33m',
+	purple: '\x1B[38;5;141m',
 } //<
 
-function formatOptimizationDetailLine( //>
-	detail: OptimizationDetail,
-	type: 'file' | 'folder',
-	currentCount: number,
-	totalCount: number,
-	maxPrefixAndNameLength: number,
-): string {
-	const countStr = `${String(currentCount).padStart(String(totalCount).length, ' ')} of ${totalCount}`
-	const descriptionPrefix = `        ${countStr} ${type}: `
-	const descriptionText = `${detail.fileName}`
-	const currentPrefixAndNameLength = descriptionPrefix.length + descriptionText.length
-	
-	const statsPart = `( ${String(detail.originalSize).padStart(6)} -> ${String(detail.optimizedSize).padStart(6)} | ${String(detail.reduction).padStart(6)} | ${detail.percentage.padStart(5)}% )`
+async function localizeNewIcons(): Promise<boolean> { //>
+	console.log(`\n${ansii.blueLight}[Step 1: Checking for New Icons...]${ansii.none}`)
 
-	const paddingNeeded = Math.max(1, (maxPrefixAndNameLength - currentPrefixAndNameLength) + 2)
-	
-	return `${descriptionPrefix}${descriptionText}${' '.repeat(paddingNeeded)}${statsPart}`
+	let sourceFiles
+
+	try {
+		sourceFiles = await fs.readdir(EXTERNAL_ICONS_SOURCE_DIR)
+	}
+	catch (error: any) {
+		if (error.code === 'ENOENT') {
+			console.log(`    ${ansii.dim}- External source directory not found, skipping localization: ${EXTERNAL_ICONS_SOURCE_DIR}${ansii.none}`)
+			return true // Not a failure, just nothing to do. Allow build to continue with existing icons.
+		}
+		console.error(`    ${ansii.red}✗ Error reading external source directory: ${error.message}${ansii.none}`)
+		return false // A real error occurred, fail the build.
+	}
+
+	const svgFilesToMove = sourceFiles.filter(file => file.toLowerCase().endsWith('.svg'))
+
+	if (svgFilesToMove.length === 0) {
+		console.log(`    ${ansii.green}✓ No new SVG icons found in external source.${ansii.none}`)
+		return true // Nothing to move, but the rest of the build should proceed.
+	}
+
+	console.log(`    ${ansii.yellow}- Found ${svgFilesToMove.length} new SVG icon(s). Moving to internal source...${ansii.none}`)
+	await fs.mkdir(INTERNAL_ICONS_DEST_DIR, { recursive: true })
+
+	let movedCount = 0
+
+	for (const file of svgFilesToMove) {
+		const sourcePath = path.join(EXTERNAL_ICONS_SOURCE_DIR, file)
+		const destPath = path.join(INTERNAL_ICONS_DEST_DIR, file)
+
+		try {
+			await fs.rename(sourcePath, destPath)
+			movedCount++
+		}
+		catch (err) {
+			console.error(`    ${ansii.red}✗ Failed to move ${file}: ${(err as Error).message}${ansii.none}`)
+		}
+	}
+
+	console.log(`    ${ansii.green}✓ Successfully moved ${movedCount} of ${svgFilesToMove.length} icons.${ansii.none}`)
+	return true
+} //<
+
+function formatOptimizationResults(result: OptimizeIconsResult, treeFormatter: TreeFormatterService): string { //>
+	const rootNode: TreeFormatterNode = { label: 'Optimization Results' }
+	const children: TreeFormatterNode[] = []
+
+	const createDetailNode = (detail: OptimizationDetail, type: 'file' | 'folder'): TreeFormatterNode => {
+		const statsPart = `( ${String(detail.originalSize).padStart(6)} -> ${String(detail.optimizedSize).padStart(6)} | ${String(detail.reduction).padStart(6)} | ${detail.percentage.padStart(5)}% )`
+
+		return {
+			label: `${type}: ${detail.fileName}`,
+			details: statsPart,
+		}
+	}
+
+	if (result.filesAttempted) {
+		const fileNodes = result.fileOptimizationDetails.map(detail => createDetailNode(detail, 'file'))
+
+		if (fileNodes.length > 0) {
+			children.push({ label: 'Files', isDirectory: true, children: fileNodes })
+		}
+	}
+
+	if (result.foldersAttempted) {
+		const folderNodes = result.folderOptimizationDetails.map(detail => createDetailNode(detail, 'folder'))
+
+		if (folderNodes.length > 0) {
+			children.push({ label: 'Folders', isDirectory: true, children: folderNodes })
+		}
+	}
+
+	rootNode.children = children
+
+	if (children.length > 0) {
+		return treeFormatter.formatTree(rootNode)
+	}
+
+	return ''
 } //<
 
 async function run(): Promise<void> { //>
 	const arg = (process.argv[2] as 'all' | 'file' | 'folder' | undefined) || 'all'
+	const treeFormatter = new TreeFormatterService()
 	let overallSuccess = true
 	let stepCounter = 1
 
-	// --- Step 1: Optimize Icons ---
-	console.log(`\n${ansii.blueLight}[Step ${stepCounter++}: Optimizing Icons (${arg.toUpperCase()})...]${ansii.none}`)
+	const canProceed = await localizeNewIcons()
 
-	const optResult: OptimizeIconsResult = await optimizeIconsMain(arg, true)
-
-	if (optResult.artboardFilesRemoved > 0 || optResult.pngFilesRemoved > 0) {
-		if (optResult.artboardFilesRemoved > 0)
-			console.log(`    ${ansii.dim}- ${optResult.artboardFilesRemoved} Artboard SVG files removed from source.${ansii.none}`)
-		if (optResult.pngFilesRemoved > 0)
-			console.log(`    ${ansii.dim}- ${optResult.pngFilesRemoved} PNG files removed from source.${ansii.none}`)
+	if (!canProceed) {
+		process.exit(1) // Exit if localization had a critical error
 	}
-	else {
-		console.log(`    ${ansii.dim}- No unwanted Artboard SVGs or PNGs found in source to remove.${ansii.none}`)
+	stepCounter++
+
+	// Check for any icons to process for optimization/previews
+	let internalIcons
+
+	try {
+		internalIcons = await fs.readdir(INTERNAL_ICONS_DEST_DIR)
+	}
+	catch (_e) {
+		internalIcons = []
 	}
 
-	let anyIconsOptimizedThisStep = false
+	const hasIconsToProcess = internalIcons.some(file => file.endsWith('.svg'))
 
-	if (optResult.filesAttempted) {
-		console.log(`    ${ansii.gold}Files:${ansii.none}`)
-		if (optResult.fileOptimizationDetails.length > 0) {
-			let maxFilePrefixAndNameLength = 0
+	// --- Step 2: Optimize Icons & Generate Previews (if icons exist) ---
+	if (hasIconsToProcess) {
+		console.log(`\n${ansii.blueLight}[Step ${stepCounter++}: Optimizing Icons (${arg.toUpperCase()})...]${ansii.none}`)
 
-			optResult.fileOptimizationDetails.forEach((detail, index) => {
-				const countStr = `${String(index + 1).padStart(String(optResult.fileOptimizationDetails.length).length, ' ')} of ${optResult.fileOptimizationDetails.length}`
-				const prefix = `        ${countStr} file: `
+		const optResult = await optimizeIconsMain(arg, true)
 
-				maxFilePrefixAndNameLength = Math.max(maxFilePrefixAndNameLength, prefix.length + detail.fileName.length)
-			})
-
-			optResult.fileOptimizationDetails.forEach((detail, index) => {
-				console.log(formatOptimizationDetailLine(detail, 'file', index + 1, optResult.fileOptimizationDetails.length, maxFilePrefixAndNameLength))
-			})
-			anyIconsOptimizedThisStep = true
+		if (optResult.artboardFilesRemoved > 0 || optResult.pngFilesRemoved > 0) {
+			if (optResult.artboardFilesRemoved > 0)
+				console.log(`    ${ansii.dim}- ${optResult.artboardFilesRemoved} Artboard SVG files removed from source.${ansii.none}`)
+			if (optResult.pngFilesRemoved > 0)
+				console.log(`    ${ansii.dim}- ${optResult.pngFilesRemoved} PNG files removed from source.${ansii.none}`)
 		}
 		else {
-			console.log(`        No file SVG files to optimize in ${optResult.sourceIconDirRelative}`)
+			console.log(`    ${ansii.dim}- No unwanted Artboard SVGs or PNGs found in source to remove.${ansii.none}`)
 		}
-	}
 
-	if (optResult.foldersAttempted) {
-		console.log(`    ${ansii.gold}Folders:${ansii.none}`)
-		if (optResult.folderOptimizationDetails.length > 0) {
-			let maxFolderPrefixAndNameLength = 0
+		const formattedResults = formatOptimizationResults(optResult, treeFormatter)
 
-			optResult.folderOptimizationDetails.forEach((detail, index) => {
-				const countStr = `${String(index + 1).padStart(String(optResult.folderOptimizationDetails.length).length, ' ')} of ${optResult.folderOptimizationDetails.length}`
-				const prefix = `        ${countStr} folder: `
-
-				maxFolderPrefixAndNameLength = Math.max(maxFolderPrefixAndNameLength, prefix.length + detail.fileName.length)
-			})
-
-			optResult.folderOptimizationDetails.forEach((detail, index) => {
-				console.log(formatOptimizationDetailLine(detail, 'folder', index + 1, optResult.folderOptimizationDetails.length, maxFolderPrefixAndNameLength))
-			})
-			anyIconsOptimizedThisStep = true
+		if (formattedResults) {
+			console.log(formattedResults)
+			console.log(`    ${ansii.green}✓ Icons optimized successfully.${ansii.none}`)
 		}
 		else {
-			console.log(`        No folder SVG files to optimize in ${optResult.sourceIconDirRelative}`)
+			console.log(`    ${ansii.blueLight}✓ No icons processed for optimization based on argument '${arg}'.${ansii.none}`)
+		}
+
+		// --- Generate Icon Previews ---
+		let previewTypeToRun: 'all' | 'file' | 'folder' | 'none' = 'none'
+
+		if (arg === 'all' && (optResult.filesFoundForOptimization > 0 || optResult.foldersFoundForOptimization > 0)) {
+			previewTypeToRun = 'all'
+		}
+		else if (arg === 'file' && optResult.filesFoundForOptimization > 0) {
+			previewTypeToRun = 'file'
+		}
+		else if (arg === 'folder' && optResult.foldersFoundForOptimization > 0) {
+			previewTypeToRun = 'folder'
+		}
+
+		if (previewTypeToRun !== 'none') {
+			console.log(`\n${ansii.blueLight}[Step ${stepCounter++}: Generating Icon Previews (${previewTypeToRun.toUpperCase()})...]${ansii.none}`)
+
+			const previewsSuccess = await generatePreviewsMain(previewTypeToRun, true)
+
+			if (previewsSuccess) {
+				console.log(`  ${ansii.green}✓ Icon previews generated successfully.${ansii.none}`)
+			}
+			else {
+				console.error(`  ${ansii.red}✗ Error generating icon previews.${ansii.none}`)
+				overallSuccess = false
+			}
 		}
 	}
 
-	if (anyIconsOptimizedThisStep) {
-		console.log(`    ${ansii.green}✓ Icons optimized successfully.${ansii.none}`)
+	// --- Step 3: Generate Icon Manifests (always run) ---
+	console.log(`\n${ansii.blueLight}[Step ${stepCounter++}: Generating Icon Manifests...]${ansii.none}`)
+
+	const manifestsSuccess = await generateManifestsMain(true)
+
+	if (manifestsSuccess) {
+		console.log(`  ${ansii.green}✓ Icon manifests generated successfully.${ansii.none}`)
 	}
 	else {
-		console.log(`    ${ansii.blueLight}✓ No icons processed for optimization based on argument '${arg}'.${ansii.none}`)
-	}
-
-	// --- Step 2: Generate Icon Manifests ---
-	const shouldGenerateManifests = optResult.filesAttempted || optResult.foldersAttempted
-
-	if (shouldGenerateManifests) {
-		console.log(`\n${ansii.blueLight}[Step ${stepCounter++}: Generating Icon Manifests...]${ansii.none}`)
-
-		const manifestsSuccess = await generateManifestsMain(true)
-
-		if (manifestsSuccess) {
-			console.log(`  ${ansii.green}✓ Icon manifests generated successfully.${ansii.none}`)
-		}
-		else {
-			console.error(`  ${ansii.red}✗ Error generating icon manifests.${ansii.none}`)
-			overallSuccess = false
-		}
-	}
-	else {
-		console.log(`\n${ansii.blueLight}[Step ${stepCounter++}: Generating Icon Manifests (Skipped - No relevant icon types processed)]${ansii.none}`)
-	}
-
-	// --- Step 3: Generate Icon Previews ---
-	let previewTypeToRun: 'all' | 'file' | 'folder' | 'none' = 'none'
-
-	if (arg === 'all' && (optResult.filesFoundForOptimization > 0 || optResult.foldersFoundForOptimization > 0)) {
-		previewTypeToRun = 'all'
-	}
-	else if (arg === 'file' && optResult.filesFoundForOptimization > 0) {
-		previewTypeToRun = 'file'
-	}
-	else if (arg === 'folder' && optResult.foldersFoundForOptimization > 0) {
-		previewTypeToRun = 'folder'
-	}
-
-	if (previewTypeToRun !== 'none') {
-		console.log(`\n${ansii.blueLight}[Step ${stepCounter++}: Generating Icon Previews (${previewTypeToRun.toUpperCase()})...]${ansii.none}`)
-
-		const previewsSuccess = await generatePreviewsMain(previewTypeToRun, true)
-
-		if (previewsSuccess) {
-			console.log(`  ${ansii.green}✓ Icon previews generated successfully.${ansii.none}`)
-		}
-		else {
-			console.error(`  ${ansii.red}✗ Error generating icon previews.${ansii.none}`)
-			overallSuccess = false
-		}
-	}
-	else {
-		console.log(`\n${ansii.blueLight}[Step ${stepCounter++}: Generating Icon Previews (Skipped - No relevant icons found/optimized for '${arg}')]${ansii.none}`)
+		console.error(`  ${ansii.red}✗ Error generating icon manifests.${ansii.none}`)
+		overallSuccess = false
 	}
 
 	// Final summary (simple version, no banner)
