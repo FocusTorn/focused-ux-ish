@@ -69,9 +69,9 @@
         }, //<
         
         
-        { "label": "Build Autoterm", //>
+        { "label": "Build Terminal Butler", //>
             "type": "shell",
-            "command": "pnpm turbo run build --output-logs=new-only --filter=fux-autoterm",
+            "command": "pnpm turbo run build --output-logs=new-only --filter=fux-terminal-butler",
             "problemMatcher": ["$tsc-watch", "$ts-esbuild-watch"],
             "presentation": {
                 "panel": "shared",

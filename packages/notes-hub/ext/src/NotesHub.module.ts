@@ -9,10 +9,19 @@ import type { ExtensionContext, Disposable } from 'vscode'
 import * as vscode from 'vscode'
 
 //= IMPLEMENTATION TYPES ======================================================================================
-import { INotesHubDataProvider, INotesHubItem, INotesHubService } from '@focused-ux/notes-hub-core'
-
-
-import { NotesHubService } from '@focused-ux/notes-hub-core'
+import type {
+	INotesHubItem,
+	INotesHubService,
+	INotesHubActionService,
+	INotesHubConfigService,
+	INotesHubProviderManager,
+} from '@focused-ux/notes-hub-core'
+import {
+	NotesHubService,
+	NotesHubActionService,
+	NotesHubConfigService,
+	NotesHubProviderManager,
+} from '@focused-ux/notes-hub-core'
 import { constants } from './_config/constants.js'
 
 //--------------------------------------------------------------------------------------------------------------<<
@@ -25,6 +34,9 @@ export class NotesHubModule {
 		container: DependencyContainer = globalContainer,
 	): void {
 		container.registerSingleton<INotesHubService>('INotesHubService', NotesHubService)
+		container.registerSingleton<INotesHubActionService>('INotesHubActionService', NotesHubActionService)
+		container.registerSingleton<INotesHubConfigService>('INotesHubConfigService', NotesHubConfigService)
+		container.registerSingleton<INotesHubProviderManager>('INotesHubProviderManager', NotesHubProviderManager)
 	}
 
 	private getService(): INotesHubService {
@@ -55,15 +67,16 @@ export class NotesHubModule {
 			[constants.commands.pasteItem]: (item?: INotesHubItem) => item && service.pasteItem(item),
 			[constants.commands.renameItem]: (item?: INotesHubItem) => item && service.renameItem(item),
 			[constants.commands.deleteItem]: (item?: INotesHubItem) => item && service.deleteItem(item),
-		};
+		}
 
 		return Object.entries(commandMap).map(([command, handler]) => {
-			return vscode.commands.registerCommand(command, handler);
-		});
+			return vscode.commands.registerCommand(command, handler)
+		})
 	}
 
 	public async initializeModule(): Promise<void> {
 		const service = this.getService()
+
 		await service.initializeNotesHub(constants.extension.configKey, constants.extension.id)
 		console.log(`[${constants.extension.name}] NotesHubModule initialized.`)
 	}
@@ -72,4 +85,5 @@ export class NotesHubModule {
 		this.getService()?.dispose()
 		console.log(`[${constants.extension.name}] NotesHubModule disposed.`)
 	}
+
 }

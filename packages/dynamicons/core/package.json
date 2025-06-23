@@ -19,10 +19,7 @@
         "lint": "eslint . --ext .ts",
         "lint:fix": "eslint . --ext .ts --fix",
         "== UTILITIES ======================================================================================== ": "",
-        "clean": "rimraf ./dist .turbo",
-        "optimize:icons": "cross-env NODE_NO_WARNINGS=1 pnpm exec ts-run  ./src/scripts/optimize_icons.ts",
-        "generate:manifests": "cross-env NODE_NO_WARNINGS=1 pnpm exec ts-run  ./src/scripts/generate_icon_manifests.ts",
-        "generate:previews": "cross-env NODE_NO_WARNINGS=1 pnpm exec ts-run ./src/scripts/generate_icon_previews.ts"
+        "clean": "rimraf ./dist .turbo"
     },
     "dependencies": {
         "@focused-ux/shared-services": "workspace:*",

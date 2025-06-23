@@ -104,7 +104,7 @@ export default function (plop) {
                 message: 'What is the name of the extension?',
             },
         ],
-        actions: (data) => {
+        actions: (_data) => {
             const actions = []
 
             // ┌──────────────────────────────────────────────────────────────────────────┐
@@ -194,17 +194,14 @@ export default function (plop) {
                 }
             )
 
-            // --- Create empty assets directory ---
+            //- Create empty assets directory ---------------
             actions.push({
                 type: 'add',
                 path: `${extBasePath}/assets/.gitkeep`,
                 template: '',
             })
 
-            // --- Success Message ---
-            actions.push(() => {
-                return `✅ Success! The mono-extension has been created.`
-            })
+            actions.push(() => { return `✅ Success! The mono-extension has been created.` })
 
             return actions
         },

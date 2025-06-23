@@ -10,6 +10,7 @@ export type { IQuickSettingsDataProvider } from './_interfaces/IQuickSettingsDat
 export type { ISavedStateItem } from './_interfaces/ISavedStateItem.js'
 export type { ISavedStatesDataProvider } from './_interfaces/ISavedStatesDataProvider.js'
 export type { IStorageService } from './_interfaces/IStorageService.js'
+export type { IContextFormattingService } from './_interfaces/IContextFormattingService.js'
 
 // Models
 export { FileExplorerItem } from './models/FileExplorerItem.js'
@@ -26,6 +27,7 @@ export { StorageService } from './services/CCP_Storage.service.js'
 export { ContextDataCollectorService } from './services/ContextDataCollector.service.js'
 export { FileContentProviderService } from './services/FileContentProvider.service.js'
 export { GoogleGenAiService } from './services/GoogleGenAi.service.js'
+export { ContextFormattingService } from './services/ContextFormatting.service.js'
 
 // Constants
 export { constants as ccpConstants } from './_config/constants.js'

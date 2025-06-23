@@ -15,12 +15,14 @@ import {
 	type IGoogleGenAiService,
 	type IContextDataCollectorService,
 	type IFileContentProviderService,
+	type IContextFormattingService,
 	// Services
 	ContextCherryPickerManager,
 	StorageService,
 	GoogleGenAiService,
 	ContextDataCollectorService,
 	FileContentProviderService,
+	ContextFormattingService,
 	// Providers
 	FileExplorerDataProvider,
 	SavedStatesDataProvider,
@@ -39,6 +41,7 @@ export class ContextCherryPickerModule { //>
 		container.registerSingleton<IGoogleGenAiService>('IGoogleGenAiService', GoogleGenAiService)
 		container.registerSingleton<IContextDataCollectorService>('IContextDataCollectorService', ContextDataCollectorService)
 		container.registerSingleton<IFileContentProviderService>('IFileContentProviderService', FileContentProviderService)
+		container.registerSingleton<IContextFormattingService>('IContextFormattingService', ContextFormattingService)
 		container.registerSingleton<IContextCherryPickerManager>('IContextCherryPickerManager', ContextCherryPickerManager)
 
 		// Providers

@@ -1,0 +1,1 @@
+plop-templates/constants.ts.hbs

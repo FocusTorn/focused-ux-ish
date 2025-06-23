@@ -17,7 +17,7 @@ import type { ICommonUtilsService } from '../_interfaces/ICommonUtilsService.js'
 //--------------------------------------------------------------------------------------------------------------<<
 
 @injectable()
-export class ShellUtilsService implements IShellUtilsService { //>
+export class ShellUtilsService implements IShellUtilsService {
 
 	constructor(
 		@inject('IWindow') private readonly iWindow: IWindow,
@@ -46,40 +46,41 @@ export class ShellUtilsService implements IShellUtilsService { //>
 		})
 	} //<
 
-	public async getCDCommand( //>
+		public async getCDCommand( //>
 		path: string | undefined,
 		enterPoetryShell = false,
 	): Promise<string | undefined> {
-		const isWindows = process.platform === 'win32'
-		const activeTerminal = this.iWindow?.activeTerminal
 		let commandStr: string | undefined
 
-		if (activeTerminal && path !== undefined) {
-			const terminalName = activeTerminal.name.toLowerCase()
-
-			if (isWindows && terminalName.includes('cmd')) {
-				commandStr = `cd /d "${path}"`
-			} else if (isWindows && (terminalName.includes('powershell') || terminalName.includes('pwsh'))) {
-				commandStr = `Set-Location '${path}'`
-			} else {
-				commandStr = `cd "${path}"`
-			}
-
-			if (enterPoetryShell) {
-				try {
-					cp.execSync('poetry --version', { stdio: 'ignore' })
-					commandStr += ' && poetry shell'
-				} catch (error) {
-					console.warn('[ShellUtilsService] Poetry check failed:', error)
-					this.iWindow.showWarningMessage(
-						'Poetry command not found or failed. Cannot activate Poetry shell.',
-					)
-				}
-			}
-		} else {
-			return undefined
+		if (path) {
+			// The `cd` command is the most universally supported for changing directories.
+			// This universal approach is more robust than guessing the shell type from a
+			// terminal's name, which is unreliable and fails if no terminal is active.
+			commandStr = `cd "${path}"`
 		}
+
+		if (enterPoetryShell) {
+			let poetryCommand = 'poetry shell'
+			try {
+				// Verify poetry is installed to provide a better error message.
+				cp.execSync('poetry --version', { stdio: 'ignore' })
+			}
+			catch (error) {
+				console.warn('[ShellUtilsService] Poetry check failed:', error)
+				this.iWindow.showWarningMessage(
+					'Poetry command not found or failed. Cannot activate Poetry shell.',
+				)
+				// If poetry isn't available, we can't create the poetry part of the command.
+				poetryCommand = ''
+			}
+
+			if (poetryCommand) {
+				// Combine with `cd` command if it exists, otherwise just use the poetry command.
+				commandStr = commandStr ? `${commandStr} && ${poetryCommand}` : poetryCommand
+			}
+		}
+
 		return commandStr
 	} //<
-
-} // <
+    
+}

@@ -1,0 +1,56 @@
+{
+
+    "version": "0.1.0",
+    "displayName": "F-UX: tabundle",
+    "description": DESCRIPTION_NEEDED,
+    "publisher": "NewRealityDesigns",
+    "repository": "https://github.com/FocusTorn/focused-ux",
+    "scripts": {
+        "== VALIDATE ========================================================================================= ": "",
+        "check-types": "tsc --noEmit -p tsconfig.json --pretty",
+        "lint": "eslint . --ext .ts",
+        "lint:fix": "eslint . --ext .ts --fix",
+        "== BUILD ============================================================================================ ": "",
+        "build": "pnpm run build:types && pnpm run build:js",
+        "build:clean": "pnpm run clean && pnpm run build",
+        "build:js": "fux-build ./src/extension.ts --outfile=./dist/extension.js",
+        "build:types": "tsc -p tsconfig.json --pretty",
+        "== FINALIZE ========================================================================================= ": "",
+        "package": "pnpm run build && pnpm run version-bump && vsce package --no-dependencies --out ../../../vsix_packages/ ",
+        "package:clean": "pnpm run build:clean && pnpm run version-bump && vsce package --no-dependencies --out ../../../vsix_packages/ ",
+        "publish": "vsce publish",
+        "== UTILITIES ======================================================================================== ": "",
+        "clean": "rimraf ./dist .turbo",
+        "version-bump": "tsx ./../../shared/tools/src/scripts/version_bump.ts"
+    },
+    "dependencies": { },
+    "devDependencies": { },
+    "icon": ICON_NEEDED,
+    "categories": [
+        CATEGORIES_NEEDED
+    ],
+    "keywords": [
+        "focused ux"
+        KEYWORDS_NEEDED
+    ],
+    "private": true,
+    "main": "./dist/extension.js",
+    "sideEffects": [
+        "reflect-metadata"
+    ],
+    "engines": {
+        "vscode": "^1.100.0"
+    },
+    "activationEvents": [
+        ACTIVATION_EVENTS_NEEDED
+    ],
+    "contributes": {
+        "commands": [],
+    }
+}
+
+
+
+
+
+}

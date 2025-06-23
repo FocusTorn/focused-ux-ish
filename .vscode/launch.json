@@ -93,21 +93,21 @@
 		}, //<
 
         
-        { "name": "Autoterm", //>
+        { "name": "Terminal Butler", //>
 			"type": "extensionHost",
 			"request": "launch",
 			"args": [
                 "--profile=Clean",
-				"--extensionDevelopmentPath=${workspaceFolder}/packages/autoterm/ext",
+				"--extensionDevelopmentPath=${workspaceFolder}/packages/terminal-butler/ext",
 				"${workspaceFolder}" 
 			],
 			"outFiles": [
-				"${workspaceFolder}/packages/autoterm/ext/dist/**/*.js",
+				"${workspaceFolder}/packages/terminal-butler/ext/dist/**/*.js",
                 "${workspaceFolder}/packages/shared/shared-services/dist/**/*.js" 
 
 			],
 			"sourceMaps": true,
-            "preLaunchTask": "Build Autoterm"
+            "preLaunchTask": "Build Terminal Butler"
 		}, //<
         
         

@@ -34,7 +34,8 @@ interface ProjectYamlConfig { //>
 	ContextCherryPicker?: {
 		file_groups?: FileGroupsConfig
 		settings?: {
-			default_project_structure_contents?: (string)[]
+			default_project_structure?: (string)[]
+			message_show_seconds?: (number | string)[]
 		}
 	}
 } //<
@@ -59,12 +60,14 @@ export class QuickSettingsDataProvider implements IQuickSettingsDataProvider { /
 
 	private async _initializeStatesFromConfig(): Promise<void> { //>
 		const config = await this._getProjectConfig()
-		const ccpConfig = config?.ContextCherryPicker
+		const keys = constants.projectConfig.keys
+		const ccpConfig = config?.[keys.contextCherryPicker]
 
 		// Handle Project Structure setting
 		let projectStructureValue: ProjectStructureSettingValue = 'all' // New default
 		const validValues: ProjectStructureSettingValue[] = ['none', 'selected', 'all']
-		const defaultValueFromConfig = ccpConfig?.settings?.default_project_structure_contents
+
+		const defaultValueFromConfig = ccpConfig?.[keys.settings]?.[keys.default_project_structure] as string[] | undefined
 
 		if (defaultValueFromConfig && Array.isArray(defaultValueFromConfig) && defaultValueFromConfig.length > 0) {
 			const configValue = defaultValueFromConfig[0]?.toLowerCase() as ProjectStructureSettingValue
@@ -76,7 +79,7 @@ export class QuickSettingsDataProvider implements IQuickSettingsDataProvider { /
 		this._settingsState.set(PROJECT_STRUCTURE_SETTING_ID, projectStructureValue)
 
 		// Handle File Groups
-		const fileGroups = ccpConfig?.file_groups
+		const fileGroups = ccpConfig?.[keys.file_groups]
 
 		if (fileGroups) {
 			for (const groupName in fileGroups) {

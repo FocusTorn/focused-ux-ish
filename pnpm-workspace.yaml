@@ -1,27 +1,36 @@
 packages:
   
-  - 'packages/shared/config-esbuild'
-  - 'packages/shared/config-eslint'
-  - 'packages/shared/config-tsc'
-  - 'packages/shared/shared-services'
-  - 'packages/shared/tools'
+  - packages/shared/config-esbuild
+  - packages/shared/config-eslint
+  - packages/shared/config-tsc
+  - packages/shared/shared-services
+  - packages/shared/tools
   
-  - 'packages/autoterm/core'
-  - 'packages/autoterm/ext'
-  - 'packages/chrono-copy/core'
-  - 'packages/chrono-copy/ext'
-  - 'packages/context-cherry-picker/core'
-  - 'packages/context-cherry-picker/ext'
-  - 'packages/dynamicons/core'
-  - 'packages/dynamicons/ext'
-  - 'packages/ghost-writer/core'
-  - 'packages/ghost-writer/ext'
-  - 'packages/notes-hub/core'
-  - 'packages/notes-hub/ext'
+  - packages/terminal-butler/core
+  - packages/terminal-butler/ext
+  - packages/chrono-copy/core
+  - packages/chrono-copy/ext
+  - packages/context-cherry-picker/core
+  - packages/context-cherry-picker/ext
+  - packages/dynamicons/core
+  - packages/dynamicons/ext
+  - packages/ghost-writer/core
+  - packages/ghost-writer/ext
+  - packages/notes-hub/core
+  - packages/notes-hub/ext
   
+allowedDeprecatedVersions:
+  core-js: '*'
+  fsevents: '*'
+  glob: '*'
+  inflight: '*'
+  lodash.get: '*'
+  resolve-url: '*'
+  rimraf: '*'
+  source-map-resolve: '*'
+  source-map-url: '*'
+  urix: '*'
   # - 'packages/*'
-
-
 
 onlyBuiltDependencies:
   - bun
@@ -29,18 +38,3 @@ onlyBuiltDependencies:
   - esbuild
   - puppeteer
   - sharp
-
-
-# packages:
-#   - apps/*
-#   - packages/shared/*
-#   - packages/dynamicons/core
-#   - packages/dynamicons/ext
-#   - packages/context-cherry-picker-ext
-
-# onlyBuiltDependencies:
-#   - bun
-#   - core-js
-#   - esbuild
-#   - puppeteer
-#   - sharp

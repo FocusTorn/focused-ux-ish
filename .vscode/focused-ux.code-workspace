@@ -1,11 +1,99 @@
 {
-	"folders": [
+    "folders": [ //>
         {
             "name": "ROOT",
-            "path": ".."
-        }
-    ],
+            "path": "..",
+        },
+    ], //<
+    
     "settings": {
-        "typescript.tsdk": "node_modules/typescript/lib"
-    }
+        
+        // TERMINAL --------->> 
+        "terminal.integrated.automationProfile.windows": { "path": "C:\\Program Files\\PowerShell\\7\\pwsh.exe" },
+        "terminal.integrated.defaultProfile.windows": "PSS",
+        "terminal.integrated.profiles.windows": {
+            "FUX": { //>
+                "overrideName": true,
+                "source": "PowerShell",
+                "icon": "terminal-powershell",
+                "args": [
+                    "-NoExit",
+                    "-File",
+                    "${workspaceFolder}/.vscode/profile.ps1" , 
+                    
+                    "-isInteractive"  
+                
+                ]
+            }, //<
+        },
+        
+        //------------------------------------------------<<
+        
+        // ESLint --------------->> 
+        
+        "eslint.useFlatConfig": true,
+        "eslint.workingDirectories": ["./"],
+        
+        //----------------------------------------------------<<
+        // Prettier ------------->> 
+        
+        "prettier.configPath": "prettier.config.cjs",
+        "prettier.experimentalTernaries": true,
+        "prettier.requireConfig": true,
+        
+        //----------------------------------------------------<<
+
+        "typescript.tsdk": "node_modules/typescript/lib",
+        "editor.formatOnSave": false,
+
+        "search.exclude": { //>
+            "**/node_modules": true,
+            "**/.turbo": true,
+            "**/dist": true,
+            "**/coverage": true
+        }, //<
+        "files.exclude": { //>
+            "**/node_modules": true,
+            "**/.turbo": true
+            // "**/dist": true,
+            // "**/coverage": true
+        }, //<
+        
+    },
 }
+
+
+
+        
+        // "terminal.integrated.profiles.windows": {
+        //     "Focused-UX Project Shell": {
+        //         "source": "PowerShell",
+        //         "args": [
+        //             "-NoExit", 
+        //             "-File", 
+        //             "${workspaceFolder}/.vscode/profile.ps1"
+        //         ],
+        //     },
+        // },
+        // "terminal.integrated.defaultProfile.windows": "Focused-UX Project Shell",
+        // "terminal.integrated.initialHint": false
+
+        
+        // "terminal.integrated.profiles.windows": {
+        //     "PowerShell": {
+        //         "source": "PowerShell",
+        //         "icon": "terminal-powershell",
+        //         "args": [
+        //             "-NoExit",
+        //             "-File",
+        //             "${workspaceFolder}/.vscode/profile.ps1"
+        //         ]
+        //     }
+        // },
+        // "terminal.integrated.defaultProfile.windows": "PowerShell"
+            
+
+    
+    
+
+

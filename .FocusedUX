@@ -1,14 +1,29 @@
-# ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+# │                                                                                                │
 # │                             Configuration for Focused UI Extension                             │
+# │                                                                                                │
 # └────────────────────────────────────────────────────────────────────────────────────────────────┘
 
+
+
+
+
+
+
+
+
+
+
+
+# ┌────────────────────────────────────────────────────────────────────────────┐
+# │                           Context Cherry Picker                            │
+# └────────────────────────────────────────────────────────────────────────────┘
 ContextCherryPicker:
     #==========================================================================================================
     settings:
         message_show_seconds:
-            - 1.5
+            - 3
         default_project_structure:
-            - All
+            - None
 
     #==========================================================================================================
     file_groups:
@@ -93,61 +108,3 @@ ContextCherryPicker:
 
         hide_children:
         # show this dir, but not any of its children individually in the <Context Explorer>
-# ContextCherryPicker:
-#   ignore:
-
-#     - "**/dist/**"
-#     - "**/tsconfig.tsbuildinfo"
-#     - "**/**/*.d.ts"
-#     - "**/**/*.map"
-#     - "**/*.svg"
-#     - "**/*.png"
-#     - "**/*.jpg"
-#     - "**/*.jpeg"
-
-#     # - ".gitignore"
-#     # - ".vscodeignore"
-
-#     #= STANDARD =================================================================
-#     - "**/node_modules/**"
-#     - "**/.git/**"
-#     # - "**/.vscode/**"
-#     - "**/.turbo/**"
-#     #- TESTING ----------------------------------------------
-#     - "coverage/"
-#     # - "**/*.log"
-#     #- BUILD ------------------------------------------------
-#     # - "**/build/**"
-#     # - "**/out/**"
-
-#     #= FOLDERS ==================================================================
-#     - "**/vsix_packages/**"
-
-#     #= FILES ====================================================================
-#     - ".editorconfig"
-
-#     - ".npmrc"
-#     - ".vscode-test.mjs"
-#     - "CHANGELOG.md"
-#     - "**/LICENSE.txt"
-#     - "package-lock.json"
-#     - "desktop.ini"
-
-#   projectTreeDisplay:
-#   # Even if QS:All is chosen, these will over ride the what is shown in <project_tree>
-
-#     alwaysHide:
-#     # Never show these in the <project_tree>
-
-#     showIfSelected:
-#     # These will show in the <project_tree>    these appear in <project_tree>  Only if selected items matching
-
-#   directoryContentDisplay:
-#     showDirHideContents:
-#     # show this dir, but not its children individually in UI
-#     # - "**/dynamicons/ext/assets/images"
-#     # - "**/dynamicons/ext/assets/icons/*_icons"
-
-#     hideDirAndContents:
-#     # directory and its contents are completely hidden from UI
-#       # - "assets/icons"

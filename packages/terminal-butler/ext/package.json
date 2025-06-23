@@ -1,0 +1,92 @@
+{
+    "name": "fux-terminal-butler",
+    "displayName": "F-UX: Terminal Butler",
+    "description": "Your personal assistant for automating terminal actions.",
+    "publisher": "NewRealityDesigns",
+    "repository": "https://github.com/FocusTorn/focused-ux",
+    "version": "0.1.0",
+    "scripts": {
+        "== VALIDATE ========================================================================================= ": "",
+        "check-types": "tsc --noEmit -p tsconfig.json --pretty",
+        "== BUILD ============================================================================================ ": "",
+        "build": "pnpm run build:types && pnpm run build:js",
+        "build:clean": "pnpm run clean && pnpm run build",
+        "build:js": "fux-build ./src/extension.ts --outfile=./dist/extension.js",
+        "build:types": "tsc -p tsconfig.json --pretty",
+        "== FINALIZE ========================================================================================= ": "",
+        "package": "pnpm run build && pnpm run version-bump && vsce package --no-dependencies --out ../../../vsix_packages/ ",
+        "package:clean": "pnpm run build:clean && pnpm run version-bump && vsce package --no-dependencies --out ../../../vsix_packages/ ",
+        "publish": "vsce publish",
+        "== UTILITIES ======================================================================================== ": "",
+        "clean": "rimraf ./dist .turbo",
+        "version-bump": "tsx ./../../shared/tools/src/scripts/version_bump.ts"
+    },
+    "dependencies": {
+        "@focused-ux/terminal-butler-core": "workspace:*",
+        "@focused-ux/shared-services": "workspace:*",
+        "reflect-metadata": "^0.2.2",
+        "tsyringe": "^4.10.0"
+    },
+    "devDependencies": {
+        "@focused-ux/config-esbuild": "workspace:*",
+        "@focused-ux/tsconfig": "workspace:*",
+        "@types/node": "latest",
+        "@types/vscode": "^1.100.0",
+        "typescript": "^5.8.3"
+    },
+    "icon": "assets/logo.png",
+    "categories": [
+        "Other"
+    ],
+    "keywords": [
+        "terminal",
+        "shell",
+        "automation",
+        "path",
+        "directory",
+        "poetry",
+        "butler",
+        "developer tools",
+        "focused ux"
+    ],
+    "private": true,
+    "main": "./dist/extension.js",
+    "sideEffects": [
+        "reflect-metadata"
+    ],
+    "engines": {
+        "vscode": "^1.100.0"
+    },
+    "activationEvents": [
+        "onCommand:fux-terminal-butler.updateTerminalPath",
+        "onCommand:fux-terminal-butler.enterPoetryShell"
+    ],
+    "contributes": {
+        "commands": [
+            {
+                "command": "fux-terminal-butler.updateTerminalPath",
+                "title": "Terminal Butler: CD to Path",
+                "category": "Terminal Butler"
+            },
+            {
+                "command": "fux-terminal-butler.enterPoetryShell",
+                "title": "Terminal Butler: Enter Poetry Shell",
+                "category": "Terminal Butler"
+            }
+        ],
+        "menus": {
+            "explorer/context": [
+                {
+                    "command": "fux-terminal-butler.updateTerminalPath",
+                    "when": "resourceLangId || explorerResourceIsFolder",
+                    "group": "navigation"
+                },
+                {
+                    "command": "fux-terminal-butler.enterPoetryShell",
+                    "when": "resourceLangId || explorerResourceIsFolder",
+                    "group": "navigation"
+                }
+            ]
+        }
+    }
+}

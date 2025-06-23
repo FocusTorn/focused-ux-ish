@@ -3,6 +3,7 @@
 //= IMPLEMENTATION TYPES ======================================================================================
 import type { INotesHubItem } from './INotesHubItem.js'
 import type { INotesHubDataProvider } from './INotesHubDataProvider.js'
+import type { NotesHubConfig } from './INotesHubConfigService.js'
 
 //--------------------------------------------------------------------------------------------------------------<<
 
@@ -31,14 +32,7 @@ export interface INotesHubService {
 	revealNotesHubItem: (provider: INotesHubDataProvider, item: INotesHubItem, select?: boolean) => Promise<void>
 
 	// Configuration
-	getNotesHubConfig: () => {
-		projectNotesPath: string
-		remoteNotesPath: string
-		globalNotesPath: string
-		isProjectNotesEnabled: boolean
-		isRemoteNotesEnabled: boolean
-		isGlobalNotesEnabled: boolean
-	}
+	getNotesHubConfig: () => NotesHubConfig
 
 	// Initialization (called by NotesHubModule)
 	initializeNotesHub: (configPrefix: string, commandPrefix: string) => Promise<void>

@@ -58,62 +58,6 @@ importers:
         specifier: ^5.8.3
         version: 5.8.3
 
-  packages/autoterm/core:
-    dependencies:
-      '@focused-ux/shared-services':
-        specifier: workspace:*
-        version: link:../../shared/shared-services
-      tsyringe:
-        specifier: ^4.10.0
-        version: 4.10.0
-    devDependencies:
-      '@focused-ux/config-esbuild':
-        specifier: workspace:*
-        version: link:../../shared/config-esbuild
-      '@focused-ux/tsconfig':
-        specifier: workspace:*
-        version: link:../../shared/config-tsc
-      '@types/node':
-        specifier: latest
-        version: 24.0.3
-      '@types/vscode':
-        specifier: ^1.100.0
-        version: 1.101.0
-      typescript:
-        specifier: ^5.8.3
-        version: 5.8.3
-
-  packages/autoterm/ext:
-    dependencies:
-      '@focused-ux/autoterm-core':
-        specifier: workspace:*
-        version: link:../core
-      '@focused-ux/shared-services':
-        specifier: workspace:*
-        version: link:../../shared/shared-services
-      reflect-metadata:
-        specifier: ^0.2.2
-        version: 0.2.2
-      tsyringe:
-        specifier: ^4.10.0
-        version: 4.10.0
-    devDependencies:
-      '@focused-ux/config-esbuild':
-        specifier: workspace:*
-        version: link:../../shared/config-esbuild
-      '@focused-ux/tsconfig':
-        specifier: workspace:*
-        version: link:../../shared/config-tsc
-      '@types/node':
-        specifier: latest
-        version: 24.0.3
-      '@types/vscode':
-        specifier: ^1.100.0
-        version: 1.101.0
-      typescript:
-        specifier: ^5.8.3
-        version: 5.8.3
-
   packages/chrono-copy/core:
     dependencies:
       '@focused-ux/shared-services':
@@ -181,6 +125,9 @@ importers:
       '@focused-ux/shared-services':
         specifier: workspace:*
         version: link:../../shared/shared-services
+      esbuild-bundle-analyzer:
+        specifier: ^0.0.1
+        version: 0.0.1
       js-yaml:
         specifier: ^4.1.0
         version: 4.1.0
@@ -639,6 +586,62 @@ importers:
       ts-node:
         specifier: ^10.9.2
         version: 10.9.2(@types/node@24.0.3)(typescript@5.8.3)
+      typescript:
+        specifier: ^5.8.3
+        version: 5.8.3
+
+  packages/terminal-butler/core:
+    dependencies:
+      '@focused-ux/shared-services':
+        specifier: workspace:*
+        version: link:../../shared/shared-services
+      tsyringe:
+        specifier: ^4.10.0
+        version: 4.10.0
+    devDependencies:
+      '@focused-ux/config-esbuild':
+        specifier: workspace:*
+        version: link:../../shared/config-esbuild
+      '@focused-ux/tsconfig':
+        specifier: workspace:*
+        version: link:../../shared/config-tsc
+      '@types/node':
+        specifier: latest
+        version: 24.0.3
+      '@types/vscode':
+        specifier: ^1.100.0
+        version: 1.101.0
+      typescript:
+        specifier: ^5.8.3
+        version: 5.8.3
+
+  packages/terminal-butler/ext:
+    dependencies:
+      '@focused-ux/shared-services':
+        specifier: workspace:*
+        version: link:../../shared/shared-services
+      '@focused-ux/terminal-butler-core':
+        specifier: workspace:*
+        version: link:../core
+      reflect-metadata:
+        specifier: ^0.2.2
+        version: 0.2.2
+      tsyringe:
+        specifier: ^4.10.0
+        version: 4.10.0
+    devDependencies:
+      '@focused-ux/config-esbuild':
+        specifier: workspace:*
+        version: link:../../shared/config-esbuild
+      '@focused-ux/tsconfig':
+        specifier: workspace:*
+        version: link:../../shared/config-tsc
+      '@types/node':
+        specifier: latest
+        version: 24.0.3
+      '@types/vscode':
+        specifier: ^1.100.0
+        version: 1.101.0
       typescript:
         specifier: ^5.8.3
         version: 5.8.3

@@ -1,32 +1,3 @@
-/* //>
-SCRIPT: generate_icon_manifests.ts
-PURPOSE:
-  Generates the 'base.theme.json' and a copy (e.g., 'dynamicons.theme.json')
-  for the VS Code icon theme. This script reads icon definitions and associations
-  from '.model.json' files and combines them with SVG icons found in specified asset directories.
-  The output 'base.theme.json' serves as the foundational manifest that the
-  extension's runtime IconThemeGeneratorService will use to dynamically build the
-  final theme by incorporating user-specific customizations.
-
-USAGE (Standalone):
-  npx ts-node --esm packages/dynamicons/core/src/scripts/generate_icon_manifests.ts
-
-PREQUISITES:
-  1. Optimized SVG Icons: (Assumes optimize_icons.ts has run)
-     - File Icons: 'packages/dynamicons/ext/assets/icons/file_icons/'
-     - Folder Icons: 'packages/dynamicons/ext/assets/icons/folder_icons/'
-  2. Model Files:
-     - '../models/file_icons.model.json'
-     - '../models/folder_icons.model.json'
-  3. Helper Function: readJsonFileSync (local version included).
-
-OUTPUT (relative to project root):
-  - 'packages/dynamicons/ext/assets/themes/base.theme.json'
-  - 'packages/dynamicons/ext/assets/themes/dynamicons.theme.json'
-
-IMPORTANT:
-  - This script DELETES and RECREATES the output theme files on each run.
-*/ //<
 // ESLint & Imports -->>
 
 //= NODE JS ===================================================================================================
@@ -42,6 +13,36 @@ import stripJsonComments from 'strip-json-comments'
 import { dynamiconsConstants } from '../_config/dynamicons.constants.js'
 
 //--------------------------------------------------------------------------------------------------------------<<
+
+/**
+ * SCRIPT: generate_icon_manifests.ts
+ * PURPOSE:
+ *   Generates the 'base.theme.json' and a copy (e.g., 'dynamicons.theme.json')
+ *   for the VS Code icon theme. This script reads icon definitions and associations
+ *   from '.model.json' files and combines them with SVG icons found in specified asset directories.
+ *   The output 'base.theme.json' serves as the foundational manifest that the
+ *   extension's runtime IconThemeGeneratorService will use to dynamically build the
+ *   final theme by incorporating user-specific customizations.
+ * 
+ * USAGE (Standalone):
+ *   npx ts-node --esm packages/dynamicons/core/src/scripts/generate_icon_manifests.ts
+ * 
+ * PREQUISITES:
+ *   1. Optimized SVG Icons: (Assumes optimize_icons.ts has run)
+ *      - File Icons: 'packages/dynamicons/ext/assets/icons/file_icons/'
+ *      - Folder Icons: 'packages/dynamicons/ext/assets/icons/folder_icons/'
+ *   2. Model Files:
+ *      - '../models/file_icons.model.json'
+ *      - '../models/folder_icons.model.json'
+ *   3. Helper Function: readJsonFileSync (local version included).
+ * 
+ * OUTPUT (relative to project root):
+ *   - 'packages/dynamicons/ext/assets/themes/base.theme.json'
+ *   - 'packages/dynamicons/ext/assets/themes/dynamicons.theme.json'
+ * 
+ * IMPORTANT:
+ *   - This script DELETES and RECREATES the output theme files on each run.
+ */
 
 const ansii = { //>
 	none: '\x1B[0m',
@@ -106,7 +107,7 @@ interface ThemeManifest { //>
 	highContrast?: { fileExtensions?: Record<string, string>, fileNames?: Record<string, string> }
 } //<
 
-export function readJsonFileSync<T = any>(filePath: string, encoding: BufferEncoding = 'utf-8'): T { //>
+function readJsonFileSync<T = any>(filePath: string, encoding: BufferEncoding = 'utf-8'): T { //>
 	const absolutePath = path.resolve(filePath)
 	const fileContent = fs.readFileSync(absolutePath, encoding)
 	const contentWithoutComments = stripJsonComments(fileContent.toString())
@@ -361,6 +362,7 @@ function checkForOrphanedIcons( //>
 		if (!fs.existsSync(dirInfo.path.replace(/\//g, path.sep))) {
 			continue
 		}
+
 		const assetFiles = fs.readdirSync(dirInfo.path.replace(/\//g, path.sep))
 
 		for (const assetFile of assetFiles) {
@@ -388,7 +390,7 @@ function checkForOrphanedIcons( //>
 		})
 		console.log('│')
 	}
-}
+} //<
 
 export async function main(silent: boolean = false): Promise<boolean> { //>
 	if (!silent) {
