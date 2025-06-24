@@ -1,11 +1,17 @@
 {
-    "extends": "@focused-ux/tsconfig/tsconfig.base.json",
+    "extends": "../../../tsconfig.base.json",
     "compilerOptions": {
         "declarationMap": false,
         "baseUrl": ".",
         "rootDir": "src",
-        "outDir": "dist"
+        "outDir": "dist",
+        "composite": true
     },
     "include": ["./src/**/*.ts"],
-    "exclude": ["node_modules", "dist"]
+    "exclude": ["node_modules", "dist"],
+    "references": [
+        {
+            "path": "../../shared/shared-services"
+        }
+    ]
 }

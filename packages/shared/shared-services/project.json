@@ -1,0 +1,51 @@
+{
+    "name": "@focused-ux/shared-services",
+    "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+    "sourceRoot": "packages/shared/shared-services/src",
+    "projectType": "library",
+    "targets": {
+        "build": {
+            "executor": "@nx/esbuild:esbuild",
+            "outputs": ["{options.outputPath}"],
+            "options": {
+                "outputPath": "packages/shared/shared-services/dist",
+                "main": "packages/shared/shared-services/src/index.ts",
+                "additionalEntryPoints": ["packages/shared/shared-services/src/node.ts"],
+                "tsConfig": "packages/shared/shared-services/tsconfig.json",
+                "format": ["esm"],
+                "external": [
+                    "vscode",
+                    "gpt-tokenizer",
+                    "gray-matter",
+                    "strip-json-comments",
+                    "tsyringe",
+                    "reflect-metadata"
+                ]
+            },
+            "dependsOn": ["build-types"]
+        },
+        "build-types": {
+            "executor": "nx:run-commands",
+            "outputs": ["{projectRoot}/dist"],
+            "options": {
+                "command": "tsc -p tsconfig.json --emitDeclarationOnly --pretty",
+                "cwd": "packages/shared/shared-services"
+            }
+        },
+        "check-types": {
+            "executor": "@nx/js:tsc",
+            "options": {
+                "main": "packages/shared/shared-services/src/index.ts",
+                "tsConfig": "packages/shared/shared-services/tsconfig.json",
+                "noEmit": true
+            }
+        },
+        "clean": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "rimraf ./dist .turbo",
+                "cwd": "packages/shared/shared-services"
+            }
+        }
+    }
+}

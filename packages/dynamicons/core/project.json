@@ -1,0 +1,58 @@
+{
+    "name": "@focused-ux/dynamicons-core",
+    "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+    "sourceRoot": "packages/dynamicons/core/src",
+    "projectType": "library",
+    "targets": {
+        "build": {
+            "executor": "@nx/esbuild:esbuild",
+            "outputs": ["{options.outputPath}"],
+            "options": {
+                "main": "packages/dynamicons/core/src/index.ts",
+                "outputPath": "packages/dynamicons/core/dist",
+                "outputFileName": "index.js",
+                "tsConfig": "packages/dynamicons/core/tsconfig.json",
+                "format": ["esm"],
+                "external": ["vscode", "tsyringe", "@focused-ux/shared-services"]
+            },
+            "dependsOn": ["build-types", "build-assets"]
+        },
+        "build-types": {
+            "executor": "nx:run-commands",
+            "outputs": ["{projectRoot}/dist"],
+            "options": {
+                "command": "tsc -p tsconfig.json --emitDeclarationOnly --pretty",
+                "cwd": "packages/dynamicons/core"
+            }
+        },
+        "build-assets": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "tsx ./src/scripts/build_dynamicon_assets.ts",
+                "cwd": "packages/dynamicons/core"
+            }
+        },
+        "check-types": {
+            "executor": "@nx/js:tsc",
+            "options": {
+                "main": "packages/dynamicons/core/src/index.ts",
+                "tsConfig": "packages/dynamicons/core/tsconfig.json",
+                "noEmit": true
+            }
+        },
+        "lint": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "eslint . --ext .ts",
+                "cwd": "packages/dynamicons/core"
+            }
+        },
+        "clean": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "rimraf ./dist .turbo",
+                "cwd": "packages/dynamicons/core"
+            }
+        }
+    }
+}

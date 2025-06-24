@@ -6,7 +6,6 @@
         "check-types": "tsc -p tsconfig.json --pretty"
     },
     "devDependencies": {
-        "@focused-ux/config-esbuild": "workspace:*",
         "@focused-ux/config-eslint": "workspace:*",
         "@focused-ux/tsconfig": "workspace:*",
         "chalk": "^5.4.1",

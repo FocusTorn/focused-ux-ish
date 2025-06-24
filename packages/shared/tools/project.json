@@ -1,0 +1,16 @@
+{
+    "name": "@focused-ux/tools",
+    "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+    "sourceRoot": "packages/shared/tools/src",
+    "projectType": "library",
+    "targets": {
+        "check-types": {
+            "executor": "@nx/js:tsc",
+            "options": {
+                "main": "packages/shared/tools/src/scripts/node/aggregate-eslint-errors.ts",
+                "tsConfig": "packages/shared/tools/tsconfig.json",
+                "noEmit": true
+            }
+        }
+    }
+}

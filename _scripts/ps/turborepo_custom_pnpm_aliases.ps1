@@ -1,5 +1,5 @@
 # ┌────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-# │                                   Custom PNPM Aliases for the Focused-UX Monorepo                                  │
+# │                                  Custom PNPM Aliases for the Focused-UX Monorepo                                   │
 # └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 # ======================================================================================================================
 # ===============================================================================
@@ -24,10 +24,15 @@ $packageAliases = @{
     "serv"   = "@focused-ux/shared-services";
 }
 
+
+
+
+
+
 # ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
 # │ Private Helper Function to Execute Shell Commands                                              │
 # │                                                                                                │
-# │ This centralizes the display and execution logic for both pnpm and nx commands.                │
+# │ This centralizes the display and execution logic for both pnpm and turbo commands.             │
 # └────────────────────────────────────────────────────────────────────────────────────────────────┘
 function _Invoke-Process { #>
     param(
@@ -63,7 +68,7 @@ function _Invoke-Process { #>
 # ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
 # │                                      Main Public Function                                      │
 # └────────────────────────────────────────────────────────────────────────────────────────────────┘
-function Invoke-NxCommand { #>
+function Invoke-TurboCommand { #>
     [CmdletBinding()]
     param(
         [Parameter(Mandatory=$true)]
@@ -83,7 +88,7 @@ function Invoke-NxCommand { #>
     if ($CommandArgs.Count -eq 0) { Write-Host "Please provide a command for '$Alias'."; return }
     $packageName = $packageAliases[$Alias]
 
-    # --- add/remove block (pnpm --filter) ---
+    # --- add/remove block ---
     if ($CommandArgs[0] -in 'add', 'remove') {
         if ($CommandArgs.Count -lt 2) { Write-Host "Please provide a package to $($CommandArgs[0])."; return }
 
@@ -97,7 +102,7 @@ function Invoke-NxCommand { #>
         # Call the helper to display and execute
         _Invoke-Process -Executable 'pnpm' -PreArgs $pnpmArgs -ShowCommandSwitch:$ShowCommand
 
-    # --- run/exec block (pnpm --filter) ---
+    # --- run/exec block ---
     } elseif ($CommandArgs[0] -in 'run', 'exec') {
         $subCommand = $CommandArgs[0]
         $subCommandArgs = $CommandArgs[1..($CommandArgs.Count - 1)]
@@ -112,33 +117,28 @@ function Invoke-NxCommand { #>
         }
         if ($taskOrExecName -eq $null) { Write-Host "No script/command name specified after '$subCommand'."; return }
 
-        $pnpmPreArgs = @($subCommand, $taskOrExecName)
-        if ($pnpmFlags) { $pnpmPreArgs += $pnpmFlags }
-        $pnpmPreArgs += "--filter=$packageName"
-        
+        $pnpmPreArgs = @($subCommand, $taskOrExecName) + $pnpmFlags + "--filter=$packageName"
         $pnpmPostArgs = $taskArgs
 
         # Call the helper to display and execute
         _Invoke-Process -Executable 'pnpm' -PreArgs $pnpmPreArgs -PostArgs $pnpmPostArgs -ShowCommandSwitch:$ShowCommand
 
-    # --- nx block ---
+    # --- turbo block ---
     } else {
-        # This block handles all other commands by passing them to Nx.
-        $task, $nxFlags, $taskArgs = $null, @(), @()
+        # This block handles all other commands by passing them to Turbo.
+        $task, $turboFlags, $taskArgs = $null, @(), @()
         foreach ($arg in $CommandArgs) {
-            if ($arg.StartsWith("--")) { $nxFlags += $arg }
+            if ($arg.StartsWith("--")) { $turboFlags += $arg }
             elseif ($task -eq $null) { $task = $arg }
             else { $taskArgs += $arg }
         }
         if ($task -eq $null) { Write-Host "No task specified (e.g., 'build', 'lint')."; return }
+        if (-not ($turboFlags -like "--output-logs*")) { $turboFlags += "--output-logs=new-only" }
 
-        $target = "$($packageName):$($task)"
-        $nxPreArgs = @('run', $target)
-        if ($nxFlags) { $nxPreArgs += $nxFlags }
-        if ($taskArgs) { $nxPreArgs += $taskArgs }
+        $turboPreArgs = @('run', $task) + $turboFlags + "--filter=$packageName" + $taskArgs
 
         # Call the helper to display and execute
-        _Invoke-Process -Executable 'nx' -PreArgs $nxPreArgs -ShowCommandSwitch:$ShowCommand
+        _Invoke-Process -Executable 'turbo' -PreArgs $turboPreArgs -ShowCommandSwitch:$ShowCommand
     }
 } #<
 
@@ -159,10 +159,7 @@ function _Invoke-PnpmRootPackageAction {
         [switch]$ShowCommand
     )
     # Build the base argument list by combining the action, package name, and all other arguments.
-    $pnpmArgs = @($Action, $PackageName)
-    if ($RemainingArgs -and $RemainingArgs.Count -gt 0) {
-        $pnpmArgs += $RemainingArgs
-    }
+    $pnpmArgs = @($Action, $PackageName) + $RemainingArgs
 
     # --workspace-root and --global are mutually exclusive. Check the fully constructed
     # argument list for a global flag before adding the workspace-root flag.
@@ -216,7 +213,7 @@ function Remove-PackageFromRoot {
 $packageAliases.GetEnumerator() | ForEach-Object { #>
     $aliasName = $_.Name
     $functionName = "Invoke-$($aliasName)Command"
-    $description = "Nx alias for $($_.Value)"
+    $description = "Turbo alias for $($_.Value)"
 
     # This template creates an intelligent wrapper function that explicitly handles
     # the --showcommand/--show switch to avoid parameter binding conflicts.
@@ -231,7 +228,7 @@ function {0} {{
         [string[]]$CommandArgs
     )
     # Explicitly pass the ShowCommand switch and splat the remaining arguments.
-    Invoke-NxCommand -Alias '{1}' -ShowCommand:$ShowCommand @CommandArgs
+    Invoke-TurboCommand -Alias '{1}' -ShowCommand:$ShowCommand @CommandArgs
 }}
 '@
     $functionScript = $functionTemplate -f $functionName, $aliasName

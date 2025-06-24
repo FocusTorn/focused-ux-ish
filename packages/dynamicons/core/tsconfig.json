@@ -1,42 +1,17 @@
 {
-    "extends": "@focused-ux/tsconfig/tsconfig.base.json",
-    
+    "extends": "../../../tsconfig.base.json",
     "compilerOptions": {
         "declarationMap": false,
-        
-        //= PATH ALIASES ========================================================================
         "baseUrl": ".",
         "rootDir": "src",
-        "outDir": "dist"
+        "outDir": "dist",
+        "composite": true
     },
-    "include": [
-        "./src/**/*.ts"
-    ],
-    "exclude": [
-        "node_modules",
-        "dist",
-        "src/scripts"
+    "include": ["./src/**/*.ts"],
+    "exclude": ["node_modules", "dist", "src/scripts"],
+    "references": [
+        {
+            "path": "../../shared/shared-services"
+        }
     ]
 }
-
-
-// {
-//     "extends": "@focused-ux/tsconfig/tsconfig.base.json",
-    
-//     "compilerOptions": {
-//         "declarationMap": false,
-        
-//         //= PATH ALIASES ========================================================================
-//         "baseUrl": ".",
-//         "rootDir": "src",
-//         "outDir": "dist",
-//     },
-//     "include": [
-//         "./src/**/*.ts",
-//     ],
-//     "exclude": [
-//         "node_modules",
-//         "dist",
-//     ],
-// }
-

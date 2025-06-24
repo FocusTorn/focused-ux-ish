@@ -1,0 +1,44 @@
+{
+    "$schema": "./node_modules/nx/schemas/nx-schema.json",
+    "namedInputs": {
+        "default": ["{projectRoot}/**/*"],
+        "production": [
+            "default",
+            "!{projectRoot}/**/*.test.ts",
+            "!{projectRoot}/**/test/**",
+            "!{projectRoot}/**/tests/**",
+            "!{projectRoot}/**/*.spec.ts"
+        ]
+    },
+    "defaultRunner": "nx/tasks-runners/default",
+    "targetDefaults": {
+        "build": {
+            "dependsOn": ["^build"],
+            "inputs": ["production", "^production"],
+            "outputs": ["{projectRoot}/dist"],
+            "cache": true
+        },
+        "build-types": {
+            "dependsOn": ["^build"],
+            "cache": true
+        },
+        "lint": {
+            "inputs": ["default", "{workspaceRoot}/eslint.config.js"],
+            "cache": true
+        },
+        "check-types": {
+            "dependsOn": ["^build"],
+            "cache": true
+        },
+        "build-js": {
+            "cache": true
+        },
+        "test": {
+            "cache": true
+        }
+    },
+    "workspaceLayout": {
+        "appsDir": "packages",
+        "libsDir": "packages"
+    }
+}

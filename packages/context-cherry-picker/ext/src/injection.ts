@@ -7,10 +7,19 @@ import { container } from 'tsyringe'
 import type { ExtensionContext } from 'vscode'
 
 //= IMPLEMENTATIONS ===========================================================================================
-import { CommonUtilsService, FileUtilsService, SharedServicesModule, TreeFormatterService } from '@focused-ux/shared-services'
-import type { ICommonUtilsService, IFileUtilsService, ITreeFormatterService } from '@focused-ux/shared-services'
-import { TokenizerService } from '@focused-ux/shared-services/services/Tokenizer.service.js'
-import type { ITokenizerService } from '@focused-ux/shared-services/services/Tokenizer.service.js'
+import {
+	CommonUtilsService,
+	FileUtilsService,
+	SharedServicesModule,
+	TreeFormatterService,
+	TokenizerService,
+} from '@focused-ux/shared-services'
+import type {
+	ICommonUtilsService,
+	IFileUtilsService,
+	ITreeFormatterService,
+	ITokenizerService,
+} from '@focused-ux/shared-services'
 import { ContextCherryPickerModule } from './ContextCherryPicker.module.js'
 
 //--------------------------------------------------------------------------------------------------------------<<

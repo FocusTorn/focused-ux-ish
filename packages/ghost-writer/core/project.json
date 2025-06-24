@@ -1,0 +1,51 @@
+{
+    "name": "@focused-ux/ghost-writer-core",
+    "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+    "sourceRoot": "packages/ghost-writer/core/src",
+    "projectType": "library",
+    "targets": {
+        "build": {
+            "executor": "@nx/esbuild:esbuild",
+            "outputs": ["{options.outputPath}"],
+            "options": {
+                "main": "packages/ghost-writer/core/src/index.ts",
+                "outputPath": "packages/ghost-writer/core/dist",
+                "outputFileName": "index.js",
+                "tsConfig": "packages/ghost-writer/core/tsconfig.json",
+                "format": ["esm"],
+                "external": ["vscode", "tsyringe", "@focused-ux/shared-services"]
+            },
+            "dependsOn": ["build-types"]
+        },
+        "build-types": {
+            "executor": "nx:run-commands",
+            "outputs": ["{projectRoot}/dist"],
+            "options": {
+                "command": "tsc -p tsconfig.json --emitDeclarationOnly --pretty",
+                "cwd": "packages/ghost-writer/core"
+            }
+        },
+        "check-types": {
+            "executor": "@nx/js:tsc",
+            "options": {
+                "main": "packages/ghost-writer/core/src/index.ts",
+                "tsConfig": "packages/ghost-writer/core/tsconfig.json",
+                "noEmit": true
+            }
+        },
+        "lint": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "pnpm eslint . --ext .ts",
+                "cwd": "packages/ghost-writer/core"
+            }
+        },
+        "clean": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "rimraf ./dist .turbo",
+                "cwd": "packages/ghost-writer/core"
+            }
+        }
+    }
+}

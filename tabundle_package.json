@@ -1,22 +1,10 @@
 {
-    "version": "0.1.13",
-    "name": "fux-chrono-copy",
-    "displayName": "F-UX: Chrono Copy",
-    "description": "Create versioned backups of files.",
+
+    "version": "0.1.0",
+    "displayName": "F-UX: tabundle",
+    "description": "A VS Code extension for bundling, saving, and restoring groups of editor tabs.",
     "publisher": "NewRealityDesigns",
     "repository": "https://github.com/FocusTorn/focused-ux",
-    "categories": [
-        "Other"
-    ],
-    "keywords": [
-        "backup",
-        "file",
-        "copy",
-        "versioning",
-        "snapshot",
-        "developer tools",
-        "focused ux"
-    ],
     "scripts": {
         "== VALIDATE ========================================================================================= ": "",
         "check-types": "tsc --noEmit -p tsconfig.json --pretty",
@@ -35,19 +23,23 @@
         "clean": "rimraf ./dist .turbo",
         "version-bump": "tsx ./../../shared/tools/src/scripts/version_bump.ts"
     },
-    "dependencies": {
-        "@focused-ux/chrono-copy-core": "workspace:*",
-        "@focused-ux/shared-services": "workspace:*",
-        "reflect-metadata": "^0.2.2",
-        "tsyringe": "^4.10.0"
-    },
-    "devDependencies": {
-        "@focused-ux/config-eslint": "workspace:*",
-        "@focused-ux/tsconfig": "workspace:*",
-        "@types/node": "latest",
-        "@types/vscode": "^1.100.0",
-        "typescript": "^5.8.3"
-    },
+    "dependencies": { },
+    "devDependencies": { },
+    "categories": [
+        "Other"
+    ],
+    "keywords": [
+        "focused ux",
+        "tabs",
+        "tab groups",
+        "bundle",
+        "session",
+        "workspace",
+        "productivity",
+        "workflow",
+        "developer tools",
+        "focused ux"
+    ],
     "private": true,
     "main": "./dist/extension.js",
     "sideEffects": [
@@ -57,24 +49,12 @@
         "vscode": "^1.100.0"
     },
     "activationEvents": [
-        "onCommand:fux-chronocopy.createBackup"
+        "onStartupFinished"
     ],
     "contributes": {
-        "commands": [
-            {
-                "command": "fux-chronocopy.createBackup",
-                "title": "F-UX CC: Create File Backup",
-                "category": "F-UX: Chronocopy"
-            }
-        ],
-        "menus": {
-            "explorer/context": [
-                {
-                    "command": "fux-chronocopy.createBackup",
-                    "when": "resourceUri",
-                    "group": "9_cutcopypaste@0"
-                }
-            ]
-        }
+        "commands": []
     }
 }
+
+
+

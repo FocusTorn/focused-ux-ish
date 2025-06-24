@@ -77,7 +77,7 @@ export class GoogleGenAiService implements IGoogleGenAiService { //>
 				try {
 					errorData = await response.json() as GoogleApiErrorResponse
 				}
-				// eslint-disable-next-line unused-imports/no-unused-vars
+				 
 				catch (_e) {
 					// Ignore if response body is not JSON or empty
 				}

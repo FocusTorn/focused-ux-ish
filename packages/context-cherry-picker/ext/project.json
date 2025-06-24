@@ -1,0 +1,65 @@
+{
+    "name": "fux-context-cherry-picker",
+    "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+    "sourceRoot": "packages/context-cherry-picker/ext/src",
+    "projectType": "application",
+    "targets": {
+        "build": {
+            "executor": "@nx/esbuild:esbuild",
+            "outputs": ["{options.outputPath}"],
+            "options": {
+                "main": "packages/context-cherry-picker/ext/src/extension.ts",
+                "outputPath": "packages/context-cherry-picker/ext/dist",
+                "outputFileName": "extension.js",
+                "tsConfig": "packages/context-cherry-picker/ext/tsconfig.json",
+                "format": ["esm"],
+                "assets": ["packages/context-cherry-picker/ext/assets"],
+                "external": ["vscode"]
+            }
+        },
+        "check-types": {
+            "executor": "@nx/js:tsc",
+            "options": {
+                "main": "packages/context-cherry-picker/ext/src/extension.ts",
+                "tsConfig": "packages/context-cherry-picker/ext/tsconfig.json",
+                "noEmit": true
+            }
+        },
+        "lint": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "pnpm eslint . --ext .ts",
+                "cwd": "packages/context-cherry-picker/ext"
+            }
+        },
+        "version-bump": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "tsx ./../../shared/tools/src/scripts/version_bump.ts",
+                "cwd": "packages/context-cherry-picker/ext"
+            }
+        },
+        "package": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "vsce package --no-dependencies --out ../../../vsix_packages/",
+                "cwd": "packages/context-cherry-picker/ext"
+            },
+            "dependsOn": ["build", "version-bump"]
+        },
+        "test": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "vitest run",
+                "cwd": "packages/context-cherry-picker/ext"
+            }
+        },
+        "clean": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "rimraf ./dist .turbo ./packed ./vsce_stage",
+                "cwd": "packages/context-cherry-picker/ext"
+            }
+        }
+    }
+}

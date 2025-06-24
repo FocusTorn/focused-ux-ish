@@ -28,7 +28,6 @@
         "tsyringe": "^4.10.0"
     },
     "devDependencies": {
-        "@focused-ux/config-esbuild": "workspace:*",
         "@focused-ux/tsconfig": "workspace:*",
         "@types/node": "latest",
         "@types/vscode": "^1.100.0",

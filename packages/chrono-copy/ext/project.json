@@ -1,0 +1,58 @@
+{
+    "name": "fux-chrono-copy",
+    "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+    "sourceRoot": "packages/chrono-copy/ext/src",
+    "projectType": "application",
+    "targets": {
+        "build": {
+            "executor": "@nx/esbuild:esbuild",
+            "outputs": ["{options.outputPath}"],
+            "options": {
+                "main": "packages/chrono-copy/ext/src/extension.ts",
+                "outputPath": "packages/chrono-copy/ext/dist",
+                "outputFileName": "extension.js",
+                "tsConfig": "packages/chrono-copy/ext/tsconfig.json",
+                "format": ["esm"],
+                "assets": ["packages/chrono-copy/ext/assets"],
+                "external": ["vscode"]
+            }
+        },
+        "check-types": {
+            "executor": "@nx/js:tsc",
+            "options": {
+                "main": "packages/chrono-copy/ext/src/extension.ts",
+                "tsConfig": "packages/chrono-copy/ext/tsconfig.json",
+                "noEmit": true
+            }
+        },
+        "lint": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "eslint . --ext .ts",
+                "cwd": "packages/chrono-copy/ext"
+            }
+        },
+        "version-bump": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "tsx ./../../shared/tools/src/scripts/version_bump.ts",
+                "cwd": "packages/chrono-copy/ext"
+            }
+        },
+        "package": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "vsce package --no-dependencies --out ../../../vsix_packages/",
+                "cwd": "packages/chrono-copy/ext"
+            },
+            "dependsOn": ["build", "version-bump"]
+        },
+        "clean": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "rimraf ./dist .turbo",
+                "cwd": "packages/chrono-copy/ext"
+            }
+        }
+    }
+}

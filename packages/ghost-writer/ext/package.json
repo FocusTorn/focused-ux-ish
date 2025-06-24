@@ -30,7 +30,6 @@
         "tsyringe": "^4.10.0"
     },
     "devDependencies": {
-        "@focused-ux/config-esbuild": "workspace:*",
         "@focused-ux/config-eslint": "workspace:*",
         "@focused-ux/tsconfig": "workspace:*",
         "@focused-ux/tools": "workspace:*",

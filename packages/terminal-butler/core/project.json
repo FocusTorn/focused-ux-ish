@@ -1,0 +1,44 @@
+{
+    "name": "@focused-ux/terminal-butler-core",
+    "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+    "sourceRoot": "packages/terminal-butler/core/src",
+    "projectType": "library",
+    "targets": {
+        "build": {
+            "executor": "@nx/esbuild:esbuild",
+            "outputs": ["{options.outputPath}"],
+            "options": {
+                "main": "packages/terminal-butler/core/src/index.ts",
+                "outputPath": "packages/terminal-butler/core/dist",
+                "outputFileName": "index.js",
+                "tsConfig": "packages/terminal-butler/core/tsconfig.json",
+                "format": ["esm"],
+                "external": ["vscode", "tsyringe", "@focused-ux/shared-services"]
+            },
+            "dependsOn": ["build-types"]
+        },
+        "build-types": {
+            "executor": "nx:run-commands",
+            "outputs": ["{projectRoot}/dist"],
+            "options": {
+                "command": "tsc -p tsconfig.json --emitDeclarationOnly --pretty",
+                "cwd": "packages/terminal-butler/core"
+            }
+        },
+        "check-types": {
+            "executor": "@nx/js:tsc",
+            "options": {
+                "main": "packages/terminal-butler/core/src/index.ts",
+                "tsConfig": "packages/terminal-butler/core/tsconfig.json",
+                "noEmit": true
+            }
+        },
+        "clean": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "rimraf ./dist .turbo",
+                "cwd": "packages/terminal-butler/core"
+            }
+        }
+    }
+}

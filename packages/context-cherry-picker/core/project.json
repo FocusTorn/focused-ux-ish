@@ -1,0 +1,60 @@
+{
+    "name": "@focused-ux/context-cherry-picker-core",
+    "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+    "sourceRoot": "packages/context-cherry-picker/core/src",
+    "projectType": "library",
+    "targets": {
+        "build": {
+            "executor": "@nx/esbuild:esbuild",
+            "outputs": ["{options.outputPath}"],
+            "options": {
+                "main": "packages/context-cherry-picker/core/src/index.ts",
+                "outputPath": "packages/context-cherry-picker/core/dist",
+                "outputFileName": "index.js",
+                "tsConfig": "packages/context-cherry-picker/core/tsconfig.json",
+                "format": ["esm"],
+                "external": [
+                    "vscode",
+                    "tsyringe",
+                    "@focused-ux/shared-services",
+                    "js-yaml",
+                    "micromatch",
+                    "reflect-metadata"
+                ]
+            },
+            "dependsOn": ["build-types"]
+        },
+        "build-types": {
+            "executor": "nx:run-commands",
+            "outputs": ["{projectRoot}/dist"],
+            "options": {
+                "command": "tsc -p tsconfig.json --emitDeclarationOnly --pretty",
+                "cwd": "packages/context-cherry-picker/core"
+            }
+        },
+        "check-types": {
+            "executor": "@nx/js:tsc",
+            "options": {
+                "main": "packages/context-cherry-picker/core/src/index.ts",
+                "tsConfig": "packages/context-cherry-picker/core/tsconfig.json",
+                "outputPath": "packages/context-cherry-picker/core/dist",
+
+                "noEmit": true
+            }
+        },
+        "lint": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "pnpm eslint . --ext .ts",
+                "cwd": "packages/context-cherry-picker/core"
+            }
+        },
+        "clean": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "rimraf ./dist .turbo",
+                "cwd": "packages/context-cherry-picker/core"
+            }
+        }
+    }
+}

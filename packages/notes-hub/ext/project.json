@@ -1,0 +1,58 @@
+{
+    "name": "fux-notes-hub",
+    "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+    "sourceRoot": "packages/notes-hub/ext/src",
+    "projectType": "application",
+    "targets": {
+        "build": {
+            "executor": "@nx/esbuild:esbuild",
+            "outputs": ["{options.outputPath}"],
+            "options": {
+                "main": "packages/notes-hub/ext/src/extension.ts",
+                "outputPath": "packages/notes-hub/ext/dist",
+                "outputFileName": "extension.js",
+                "tsConfig": "packages/notes-hub/ext/tsconfig.json",
+                "format": ["esm"],
+                "assets": ["packages/notes-hub/ext/assets"],
+                "external": ["vscode"]
+            }
+        },
+        "check-types": {
+            "executor": "@nx/js:tsc",
+            "options": {
+                "main": "packages/notes-hub/ext/src/extension.ts",
+                "tsConfig": "packages/notes-hub/ext/tsconfig.json",
+                "noEmit": true
+            }
+        },
+        "lint": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "pnpm eslint . --ext .ts",
+                "cwd": "packages/notes-hub/ext"
+            }
+        },
+        "version-bump": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "tsx ./../../shared/tools/src/scripts/version_bump.ts",
+                "cwd": "packages/notes-hub/ext"
+            }
+        },
+        "package": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "vsce package --no-dependencies --out ../../../vsix_packages/",
+                "cwd": "packages/notes-hub/ext"
+            },
+            "dependsOn": ["build", "version-bump"]
+        },
+        "clean": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "rimraf ./dist .turbo",
+                "cwd": "packages/notes-hub/ext"
+            }
+        }
+    }
+}

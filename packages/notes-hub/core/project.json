@@ -1,0 +1,51 @@
+{
+    "name": "@focused-ux/notes-hub-core",
+    "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+    "sourceRoot": "packages/notes-hub/core/src",
+    "projectType": "library",
+    "targets": {
+        "build": {
+            "executor": "@nx/esbuild:esbuild",
+            "outputs": ["{options.outputPath}"],
+            "options": {
+                "main": "packages/notes-hub/core/src/index.ts",
+                "outputPath": "packages/notes-hub/core/dist",
+                "outputFileName": "index.js",
+                "tsConfig": "packages/notes-hub/core/tsconfig.json",
+                "format": ["esm"],
+                "external": ["vscode", "tsyringe", "@focused-ux/shared-services"]
+            },
+            "dependsOn": ["build-types"]
+        },
+        "build-types": {
+            "executor": "nx:run-commands",
+            "outputs": ["{projectRoot}/dist"],
+            "options": {
+                "command": "tsc -p tsconfig.json --emitDeclarationOnly --pretty",
+                "cwd": "packages/notes-hub/core"
+            }
+        },
+        "check-types": {
+            "executor": "@nx/js:tsc",
+            "options": {
+                "main": "packages/notes-hub/core/src/index.ts",
+                "tsConfig": "packages/notes-hub/core/tsconfig.json",
+                "noEmit": true
+            }
+        },
+        "lint": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "pnpm eslint . --ext .ts",
+                "cwd": "packages/notes-hub/core"
+            }
+        },
+        "clean": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "rimraf ./dist .turbo",
+                "cwd": "packages/notes-hub/core"
+            }
+        }
+    }
+}

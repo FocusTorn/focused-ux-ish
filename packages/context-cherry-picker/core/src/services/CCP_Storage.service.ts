@@ -51,7 +51,8 @@ export class StorageService implements IStorageService { //>
 				try {
 					// Check if the storage file already exists
 					await this.workspaceAdapter.fs.stat(this.storageFileUri)
-				} catch { // Error object intentionally not used here
+				}
+				catch { // Error object intentionally not used here
 					// File doesn't exist or other stat error, try to create it
 					try {
 						// Ensure the globalStorageUri directory exists
@@ -59,7 +60,8 @@ export class StorageService implements IStorageService { //>
 						// Create the empty storage file
 						await this.workspaceAdapter.fs.writeFile(this.storageFileUri, Buffer.from(JSON.stringify({}, null, 2)))
 						console.log(`[${localCcpConstants.extension.nickName}] Storage file initialized at ${this.storageFileUri.fsPath}`)
-					} catch (createError) {
+					}
+					catch (createError) {
 						console.error(`[${localCcpConstants.extension.nickName}] Critical error creating storage file ${this.storageFileUri.fsPath}:`, createError)
 						// Propagate the error to fail the initialization promise
 						throw createError
@@ -74,8 +76,10 @@ export class StorageService implements IStorageService { //>
 		await this._initializeStorage() // Ensure storage is initialized before reading
 		try {
 			const fileContents = await this.workspaceAdapter.fs.readFile(this.storageFileUri)
+
 			return JSON.parse(Buffer.from(fileContents).toString('utf-8')) as SavedStatesFileFormat
-		} catch (error) {
+		}
+		catch (error) {
 			// Log error, but return an empty object to allow the application to proceed gracefully if possible
 			console.error(`[${localCcpConstants.extension.nickName}] Error reading storage file ${this.storageFileUri.fsPath}:`, error)
 			return {}
@@ -86,7 +90,8 @@ export class StorageService implements IStorageService { //>
 		await this._initializeStorage() // Ensure storage is initialized before writing
 		try {
 			await this.workspaceAdapter.fs.writeFile(this.storageFileUri, Buffer.from(JSON.stringify(data, null, 2)))
-		} catch (error) {
+		}
+		catch (error) {
 			console.error(`[${localCcpConstants.extension.nickName}] Error writing storage file ${this.storageFileUri.fsPath}:`, error)
 			throw error // Rethrow write errors as they might be critical
 		}
@@ -106,11 +111,13 @@ export class StorageService implements IStorageService { //>
 
 	async loadState(id: string): Promise<Array<{ uriString: string, checkboxState: TreeItemCheckboxState }> | undefined> { //>
 		const storage = await this.readStorage()
+
 		return storage[id]?.checkedItems
 	} //<
 
 	async loadAllSavedStates(): Promise<ISavedStateItem[]> { //>
 		const storage = await this.readStorage()
+
 		return Object.entries(storage).map(([id, data]) => ({
 			id,
 			label: data.label,
@@ -121,6 +128,7 @@ export class StorageService implements IStorageService { //>
 
 	async deleteState(id: string): Promise<void> { //>
 		const storage = await this.readStorage()
+
 		if (storage[id]) {
 			delete storage[id]
 			await this.writeStorage(storage)

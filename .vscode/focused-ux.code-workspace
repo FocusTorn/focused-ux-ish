@@ -44,7 +44,7 @@
         //----------------------------------------------------<<
 
         "typescript.tsdk": "node_modules/typescript/lib",
-        "editor.formatOnSave": false,
+        "editor.formatOnSave": true,
 
         "search.exclude": { //>
             "**/node_modules": true,

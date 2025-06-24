@@ -1,0 +1,63 @@
+{
+    "name": "fux-terminal-butler",
+    "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+    "sourceRoot": "packages/terminal-butler/ext/src",
+    "projectType": "application",
+    "targets": {
+        "build": {
+            "dependsOn": ["^build", "build-js", "build-types"]
+        },
+        "build-js": {
+            "executor": "@nx/esbuild:esbuild",
+            "outputs": ["{options.outputPath}"],
+            "options": {
+                "main": "packages/terminal-butler/ext/src/extension.ts",
+                "outputPath": "packages/terminal-butler/ext/dist",
+                "outputFileName": "extension.js",
+                "tsConfig": "packages/terminal-butler/ext/tsconfig.json",
+                "format": ["esm"],
+                "assets": ["packages/terminal-butler/ext/assets"],
+                "external": ["vscode"]
+            }
+        },
+        "build-types": {
+            "executor": "@nx/js:tsc",
+            "outputs": ["{options.outputPath}"],
+            "options": {
+                "main": "packages/terminal-butler/ext/src/extension.ts",
+                "tsConfig": "packages/terminal-butler/ext/tsconfig.json",
+                "outputPath": "packages/terminal-butler/ext/dist"
+            }
+        },
+        "check-types": {
+            "executor": "@nx/js:tsc",
+            "options": {
+                "main": "packages/terminal-butler/ext/src/extension.ts",
+                "tsConfig": "packages/terminal-butler/ext/tsconfig.json",
+                "noEmit": true
+            }
+        },
+        "version-bump": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "tsx ./../../shared/tools/src/scripts/version_bump.ts",
+                "cwd": "packages/terminal-butler/ext"
+            }
+        },
+        "package": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "vsce package --no-dependencies --out ../../../vsix_packages/",
+                "cwd": "packages/terminal-butler/ext"
+            },
+            "dependsOn": ["build", "version-bump"]
+        },
+        "clean": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "rimraf ./dist .turbo",
+                "cwd": "packages/terminal-butler/ext"
+            }
+        }
+    }
+}
