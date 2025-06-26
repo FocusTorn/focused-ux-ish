@@ -39,17 +39,7 @@
         "esbuild": "^0.25.5",
         "typescript": "^5.8.3"
     },
-    "icon": "assets/hub-logo.png",
-    "categories": [
-        "Other"
-    ],
-    "keywords": [
-        "notes",
-        "notebook",
-        "markdown",
-        "developer tools",
-        "focused ux"
-    ],
+    
     "private": true,
     "main": "./dist/extension.js",
     "sideEffects": [

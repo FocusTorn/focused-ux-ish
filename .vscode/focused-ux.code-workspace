@@ -10,7 +10,7 @@
         
         // TERMINAL --------->> 
         "terminal.integrated.automationProfile.windows": { "path": "C:\\Program Files\\PowerShell\\7\\pwsh.exe" },
-        "terminal.integrated.defaultProfile.windows": "PSS",
+        "terminal.integrated.defaultProfile.windows": "focused-ux",
         "terminal.integrated.profiles.windows": {
             "FUX": { //>
                 "overrideName": true,

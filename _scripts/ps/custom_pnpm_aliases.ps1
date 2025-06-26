@@ -193,4 +193,4 @@ function {0} {{
 # └───────────────────────────────────────────────────────────────────────────────────────────────────┘
 
 
-    Write-Host "$($PSStyle.Dim)✅ Custom PNPM Aliases for the Focused-UX.$($PSStyle.Reset)" ""
+    # Write-Host "$($PSStyle.Dim)✅ Custom PNPM Aliases for the Focused-UX.$($PSStyle.Reset)" ""

@@ -14,9 +14,9 @@ const resolvePluginPath = (relativePath: string): string => { //>
     return path.resolve(packageRoot, 'plugins', relativePath);
 }; //</
 
-const resolveSrcAssetPath = (relativePath: string): string => { //>
-    return path.resolve(packageRoot, 'src', relativePath);
-} //</
+// const resolveSrcAssetPath = (relativePath: string): string => { //>
+//     return path.resolve(packageRoot, 'src', relativePath);
+// } //</
 
 async function loadPlugins(pluginFileNames: string[]): Promise<any[]> { //>
     const loadedPlugins = await Promise.all(
