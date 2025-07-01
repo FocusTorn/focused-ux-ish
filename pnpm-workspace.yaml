@@ -1,10 +1,11 @@
 packages:
   
-  - packages/shared/config-esbuild
-  - packages/shared/config-eslint
-  - packages/shared/config-tsc
-  - packages/shared/shared-services
-  - packages/shared/tools
+  # - packages/**
+  - packages/_shared/config-esbuild
+  - packages/_shared/config-eslint
+  - packages/_shared/config-tsc
+  - packages/_shared/shared-services
+  - packages/_shared/tools
   
   - packages/terminal-butler/core
   - packages/terminal-butler/ext

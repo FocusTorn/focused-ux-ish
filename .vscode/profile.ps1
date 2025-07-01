@@ -36,7 +36,7 @@ function prompt {
     if ($NormalizedCurrentPath -eq $NormalizedProjectRoot -or $NormalizedCurrentPath.StartsWith($NormalizedProjectRoot + "\")) {
         $RelativePath = if ($NormalizedCurrentPath -eq $NormalizedProjectRoot) { "" } else { $NormalizedCurrentPath.Substring($NormalizedProjectRoot.Length + 1) }
         $pathSegment = if ($RelativePath -eq "") { "" } else { " $RelativePath" }
-        return "${Cyan2}FUX${pathSegment} />${Reset2} "
+        return "${Cyan2}f-ux${pathSegment} />${Reset2} "
     }
     else {
         $Host.UI.RawUI.WindowTitle = $CurrentPath

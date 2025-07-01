@@ -1,9 +1,0 @@
-
-!dist/extension.js
-!assets/**
-!package.json
-!LICENSE.txt
-!README.md
-!CHANGELOG.md
-
-**/*
